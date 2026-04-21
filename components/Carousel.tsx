@@ -12,6 +12,8 @@ export type CarouselItem = {
   imageAlt: string;
   title: string;
   description: string;
+  author?: string;
+  company?: string;
 };
 
 type Props = {
@@ -20,6 +22,8 @@ type Props = {
   iconAlt: string;
   viewAllHref: string;
   items: CarouselItem[];
+  viewAllLabel?: string;
+  readMoreLabel?: string;
 };
 
 export default function Carousel({
@@ -28,6 +32,8 @@ export default function Carousel({
   iconAlt,
   viewAllHref,
   items,
+  viewAllLabel = "לעוד פוסטים בנושא",
+  readMoreLabel = "קראו עוד",
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +65,7 @@ export default function Carousel({
         </h2>
         <div className="carousel-header-actions">
           <Link href={viewAllHref} className="view-all-btn">
-            לעוד פוסטים בנושא <ArrowLeft style={{ width: 18 }} />
+            {viewAllLabel} <ArrowLeft style={{ width: 18 }} />
           </Link>
           <div className="carousel-nav">
             <button
@@ -99,9 +105,14 @@ export default function Carousel({
             </div>
             <div className="carousel-content">
               <h3>{item.title}</h3>
+              {(item.author || item.company) && (
+                <p className="carousel-author">
+                  {item.author}{item.author && item.company && ", "}{item.company}
+                </p>
+              )}
               <p>{item.description}</p>
               <span className="read-more-link">
-                קראו עוד <ArrowLeft style={{ width: 18 }} />
+                {readMoreLabel} <ArrowLeft style={{ width: 18 }} />
               </span>
             </div>
           </Link>

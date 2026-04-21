@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Header() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isHome = pathname === "/" || pathname === "/v2";
   const [scrolled, setScrolled] = useState(false);
   const [hideLogo, setHideLogo] = useState(isHome);
 
@@ -66,17 +66,19 @@ export default function Header() {
 
         <nav className="nav-links">
           <a href="#">חזון</a>
-          <a href="#" className={activeSection === "magazine" ? "active" : ""}>
-            מגזין
-          </a>
-          <a href="#">כנסים</a>
+          <a href="#">הנבחרת</a>
+          <a href="#">הקהילות</a>
+          <a href="#">השקעות</a>
+          <a href="#">אירועים</a>
+          <a href="#">פסגת הנדל״ן</a>
+          <a href="#">נדלפודקאסט</a>
           <a href="#" className={activeSection === "jobs" ? "active" : ""}>
             משרות
           </a>
         </nav>
 
         <div className="nav-actions">
-          <button className="btn btn-glass">התחברות</button>
+          <button className="btn btn-glass">כניסת נדלניסטים</button>
           <button className="btn btn-primary">הצטרפות</button>
         </div>
       </div>

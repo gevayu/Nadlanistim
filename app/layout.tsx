@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BentoMouseTracker from "@/components/BentoMouseTracker";
 import RevealObserver from "@/components/RevealObserver";
+import ThemeController from "@/components/ThemeController";
 
 export const metadata: Metadata = {
   title: "הנדל\"ניסטים | העתיד של הנדל״ן",
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Footer />
         <BentoMouseTracker />
         <RevealObserver />
+        <ThemeController />
       </body>
     </html>
   );

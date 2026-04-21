@@ -1,12 +1,14 @@
 type Props = {
   size?: "large" | "small";
   label?: string;
+  number?: number;
   style?: React.CSSProperties;
 };
 
 export default function SponsorBanner({
   size = "large",
   label = "Sponsorship",
+  number,
   style,
 }: Props) {
   return (
@@ -14,6 +16,7 @@ export default function SponsorBanner({
       className={`sponsor-banner banner-${size} reveal`}
       style={style}
     >
+      {number && <span className="sponsor-number">#{number}</span>}
       {label}
     </div>
   );
