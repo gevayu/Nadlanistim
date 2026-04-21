@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הנדל"ניסטים | מנהל/ת פרויקטים בנדל״ן</title>
+    
+    <!-- Google Fonts Fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ==========================================================================
+           0. CUSTOM FONTS
+           ========================================================================== */
+        @font-face {
+            font-family: 'Liga Block PM';
+            src: url("Liga Block PM - Regular.woff2") format("woff2");
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Liga Block PM';
+            src: url("Liga Block PM - Medium.woff2") format("woff2");
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Liga Block PM';
+            src: url("Liga Block PM - Bold.woff2") format("woff2");
+            font-weight: 700; font-style: normal; font-display: swap;
+        }
+
+        /* ==========================================================================
+           1. DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            --bg-void: #000000;
+            --bg-surface: #0a0a0c;
+            --bg-card: rgba(15, 15, 18, 0.4);
+            --bg-glass: rgba(10, 10, 12, 0.6);
+            
+            --border-dim: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --border-glow: rgba(142, 198, 255, 0.4);
+            
+            --accent-primary: #8ec6ff;
+            --accent-glow: #3b82f6;
+            --accent-cyan: #04EEFE;
+            --accent-purple: #B000AD;
+            --accent-green: #00FF05;
+            
+            --text-pure: #ffffff;
+            --text-dim: #a1a1aa;
+            --text-dark: #27272a;
+            
+            --font-main: 'Liga Block PM', 'Heebo', sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ==========================================================================
+           2. RESET & BASE
+           ========================================================================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        ::selection { background: var(--accent-primary); color: #000; }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-dim);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-void); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .orb-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.1; animation: orbFloat 25s infinite alternate ease-in-out; }
+        .orb-1 { width: 800px; height: 800px; background: var(--accent-purple); top: -200px; right: -200px; }
+        .orb-2 { width: 600px; height: 600px; background: var(--accent-cyan); bottom: -100px; left: -200px; animation-delay: -10s; }
+        .orb-3 { width: 500px; height: 500px; background: var(--accent-green); top: 40%; left: 30%; animation-delay: -5s; opacity: 0.1; }
+        
+        @keyframes orbFloat { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-100px, 100px) scale(1.2); } }
+
+        /* Background Shapes */
+        .bg-shape {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.40;
+            filter: brightness(0.65);
+            mix-blend-mode: screen;
+        }
+        .bg-shape-1 {
+            top: 15%;
+            left: -10%;
+            width: 700px;
+            transform: rotate(15deg);
+        }
+        .bg-shape-2 {
+            bottom: 15%;
+            right: -10%;
+            width: 800px;
+            transform: rotate(-15deg);
+        }
+        .bg-shape-3 {
+            position: absolute;
+            bottom: -50px;
+            left: -5%;
+            width: 110%;
+            height: auto;
+            min-height: 200px;
+            opacity: 0.55;
+            filter: brightness(0.55);
+            transform: rotate(-2deg);
+            pointer-events: none;
+            z-index: 0;
+            mix-blend-mode: screen;
+        }
+
+        h1, h2, h3, h4, h5 { color: var(--text-pure); line-height: 1.2; }
+        a { color: inherit; text-decoration: none; }
+        img { display: block; max-width: 100%; }
+
+        /* Buttons & Tags */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 16px 32px; border-radius: 100px; font-weight: 600; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.4s var(--ease-out-expo);
+            border: 1px solid transparent; font-family: var(--font-main);
+        }
+        .btn-primary { background: var(--accent-primary); color: var(--bg-void); }
+        .btn-primary:hover { background: var(--accent-cyan); box-shadow: 0 0 40px rgba(4, 238, 254, 0.4); transform: scale(1.02) translateY(-2px); }
+        
+        .btn-glass { background: rgba(255,255,255,0.03); color: var(--text-pure); backdrop-filter: blur(20px); border: 1px solid var(--border-dim); }
+        .btn-glass:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); }
+        
+        /* Sponsorship Banners */
+        .sponsor-banner {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto 40px;
+            background: #0a0a0c;
+            border: 1px solid var(--border-dim);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-pure);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .sponsor-banner:hover {
+            background: #111114;
+            border-color: var(--border-hover);
+        }
+        .banner-large { height: 240px; }
+        .banner-small { height: 180px; margin-top: 0; margin-bottom: 40px; }
+
+        .tag {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+            border-radius: 100px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em;
+            background: rgba(0,0,0,0.5); border: 1px solid var(--border-dim);
+            backdrop-filter: blur(10px); color: var(--text-pure); text-transform: uppercase;
+        }
+        .tag .dot { width: 8px; height: 8px; background: var(--accent-cyan); border-radius: 50%; box-shadow: 0 0 10px var(--accent-cyan); }
+
+        /* Custom Graphic Icons */
+        .custom-icon { width: 48px; height: 48px; object-fit: contain; }
+        .custom-icon-sm { width: 27px; height: 27px; object-fit: contain; }
+        .custom-icon-lg { width: 84px; height: 84px; object-fit: contain; margin-bottom: 16px; }
+
+        /* Header */
+        .site-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 30px 0; transition: all 0.5s var(--ease-out-expo);
+        }
+        .site-header.scrolled {
+            padding: 15px 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-dim);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .site-header .logo { opacity: 1; pointer-events: auto; }
+        .logo img { max-height: 65px; object-fit: contain; }
+        .nav-links { display: flex; gap: 48px; background: rgba(255,255,255,0.03); padding: 12px 32px; border-radius: 100px; border: 1px solid var(--border-dim); backdrop-filter: blur(10px); }
+        .nav-links a { font-size: 0.95rem; font-weight: 500; color: var(--text-dim); transition: color 0.3s; }
+        .nav-links a:hover { color: var(--text-pure); }
+        .nav-actions { display: flex; gap: 16px; }
+
+        /* Bento Base */
+        .bento-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-dim);
+            border-radius: 32px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s var(--ease-out-expo);
+        }
+        .bento-card::before {
+            content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity 0.5s;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
+            pointer-events: none;
+        }
+        .bento-card:hover::before { opacity: 1; }
+        .bento-card > * { position: relative; z-index: 1; }
+
+        /* ==========================================================================
+           JOB POST SPECIFIC STYLES
+           ========================================================================== */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; width: 100%; }
+        
+        .job-page { padding-top: 160px; padding-bottom: 80px; }
+        
+        /* Top Navigation */
+        .top-actions { display: flex; justify-content: flex-start; align-items: center; gap: 24px; margin-bottom: 40px; }
+        .back-link { display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-weight: 500; transition: 0.3s; }
+        .back-link:hover { color: var(--text-pure); }
+
+        /* Job Header Banner */
+        .job-header-card { margin-bottom: 24px; padding: 60px; display: flex; align-items: center; justify-content: space-between; gap: 60px; }
+        .job-title-wrapper { flex-grow: 1; }
+        .job-title-wrapper h1 { font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 16px; letter-spacing: -0.02em; }
+        
+        .job-featured-image { width: 350px; height: 350px; border-radius: 24px; overflow: hidden; flex-shrink: 0; border: 1px solid var(--border-dim); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .job-featured-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s var(--ease-out-expo); filter: grayscale(20%) contrast(1.1); }
+        .job-header-card:hover .job-featured-image img { filter: grayscale(0%) contrast(1); transform: scale(1.05); }
+
+        /* Main Grid Layout */
+        .job-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        
+        /* Content Section */
+        .job-content-card { padding: 50px; font-size: 1.15rem; color: #d4d4d8; line-height: 1.8; }
+        .job-content-card h2 { font-size: 1.8rem; margin: 40px 0 20px; color: var(--text-pure); display: flex; align-items: center; gap: 16px; }
+        .job-content-card h2:first-child { margin-top: 0; }
+        .job-content-card p { margin-bottom: 24px; }
+        
+        .requirements-list { list-style: none; margin-bottom: 30px; }
+        .requirements-list li { position: relative; padding-inline-start: 45px; margin-bottom: 16px; }
+        .requirements-list li::before {
+            content: ''; position: absolute; right: 0; top: 2px; width: 27px; height: 27px;
+            background-image: url('3.png'); background-size: contain; background-repeat: no-repeat; background-position: center;
+        }
+
+        /* Tags List inside Content */
+        .job-tags-container { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-dim); }
+
+        /* Sidebar Section */
+        .job-sidebar { display: flex; flex-direction: column; gap: 24px; }
+        
+        .meta-list { list-style: none; display: flex; flex-direction: column; gap: 24px; }
+        .meta-list li { display: flex; align-items: flex-start; gap: 16px; font-size: 1.05rem; }
+        .meta-list li .custom-icon-sm { flex-shrink: 0; margin-top: 4px; }
+        .meta-list .meta-title { display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 4px; }
+        .meta-list .meta-value { color: var(--text-pure); font-weight: 500; }
+
+        .contact-box { margin-top: 30px; padding-top: 30px; border-top: 1px solid var(--border-dim); }
+        .contact-box p { font-size: 1rem; color: var(--text-dim); margin-bottom: 16px; }
+        .contact-link { display: flex; align-items: center; gap: 12px; color: var(--text-pure); font-weight: 500; margin-bottom: 12px; transition: 0.3s; }
+        .contact-link:hover { color: var(--accent-primary); }
+
+        /* Form Section */
+        .job-form-card { grid-column: 1 / -1; margin-top: 24px; padding: 60px; }
+        .form-header { text-align: center; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; }
+        .form-header h2 { font-size: 2.5rem; margin-bottom: 16px; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        
+        .form-label { color: var(--text-pure); font-weight: 500; font-size: 0.95rem; }
+        .form-input, .form-textarea {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--border-dim);
+            border-radius: 16px; padding: 16px 20px; color: var(--text-pure);
+            font-family: var(--font-main); font-size: 1rem; transition: all 0.3s;
+            width: 100%;
+        }
+        .form-input:focus, .form-textarea:focus { border-color: var(--accent-primary); outline: none; box-shadow: 0 0 0 4px rgba(142, 198, 255, 0.1); background: rgba(0,0,0,0.5); }
+        .form-textarea { resize: vertical; min-height: 120px; }
+        
+        /* File Upload Styling */
+        .file-upload-wrapper {
+            position: relative; border: 2px dashed var(--border-dim); border-radius: 16px;
+            padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s;
+            background: rgba(0,0,0,0.2);
+        }
+        .file-upload-wrapper:hover { border-color: var(--accent-primary); background: rgba(142, 198, 255, 0.05); }
+        .file-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .file-upload-content { display: flex; flex-direction: column; align-items: center; gap: 12px; pointer-events: none; }
+
+        /* Footer */
+        .giant-footer { padding: 60px 40px 40px; border-top: 1px solid var(--border-dim); position: relative; overflow: hidden; margin-top: 80px; }
+        .giant-footer .footer-logo-huge,
+        .giant-footer .footer-grid,
+        .giant-footer .container {
+            position: relative;
+            z-index: 1; /* מוודא שהתוכן מעל צורת הרקע */
+        }
+        .footer-logo-huge {
+            font-size: clamp(5rem, 15vw, 15rem); font-weight: 900; line-height: 0.8;
+            letter-spacing: -0.05em; text-align: center; margin-bottom: 60px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1600px; margin: 0 auto; }
+        .footer-links h4 { color: var(--text-pure); margin-bottom: 24px; font-size: 1.1rem; }
+        .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .footer-links a:hover { color: var(--text-pure); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            .job-grid { grid-template-columns: 1fr; }
+            .job-sidebar { order: -1; } 
+            .job-header-card { flex-direction: column-reverse; text-align: center; align-items: center; padding: 40px 20px; gap: 40px; }
+            .job-title-wrapper h1 { text-align: center; }
+            .tag { margin: 0 auto 20px; }
+            .job-featured-image { width: 100%; max-width: 400px; height: auto; aspect-ratio: 1/1; margin: 0 auto; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .nav-links, .nav-actions { display: none; }
+            .form-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .job-content-card, .job-form-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cinematic Background -->
+    <div class="noise-overlay"></div>
+    <div class="orb-container">
+        <!-- Shapes Under Bulbs -->
+        <img src="SHAPE 1.png" alt="רקע צורה 1" class="bg-shape bg-shape-1">
+        <img src="SHAPE 2.png" alt="רקע צורה 2" class="bg-shape bg-shape-2">
+        
+        <!-- Existing Bulbs -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header" id="header">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="LOGO-FULL.png" alt="לוגו הנדלניסטים">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#">חזון</a>
+                <a href="#">מגזין</a>
+                <a href="#">כנסים</a>
+                <a href="#" style="color: var(--text-pure);">משרות</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="btn btn-glass">התחברות</button>
+                <button class="btn btn-primary">הצטרפות</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="job-page container">
+        
+        <!-- Top Banner -->
+        <div class="sponsor-banner banner-large reveal active" style="margin-bottom: 40px;">Sponsorship</div>
+
+        <!-- Top Actions -->
+        <div class="top-actions reveal active">
+            <a href="#" class="back-link"><i data-lucide="arrow-right" style="width: 18px;"></i> חזרה ללוח הדרושים</a>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-glass" style="padding: 10px 20px; font-size: 0.95rem;">
+                    <i data-lucide="share-2" style="width: 16px;"></i> שיתוף המשרה
+                </button>
+            </div>
+        </div>
+
+        <!-- Job Header Hero -->
+        <div class="bento-card job-header-card reveal active" style="transition-delay: 0.1s;">
+            <div class="job-title-wrapper">
+                <div class="tag" style="margin-bottom: 20px; background: rgba(176,0,173,0.1); border-color: rgba(176,0,173,0.2); color: var(--accent-purple);">
+                    <img src="1.png" alt="משרה חמה" class="custom-icon-sm"> משרה חמה
+                </div>
+                <h1>מנהל/ת פיתוח עסקי ופרויקטים בנדל״ן</h1>
+                <p style="font-size: 1.2rem; color: var(--text-dim); max-width: 600px;">הזדמנות נדירה להשתלב בשדרת הניהול של אחת מקבוצות היזמות המובילות בישראל ולהוביל פרויקטים רחבי היקף.</p>
+            </div>
+            <!-- Featured Job Image -->
+            <div class="job-featured-image">
+                <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&q=80&w=800" alt="אילוסטרציה של אישה מנהלת פרויקטים באמצע עשייה">
+            </div>
+        </div>
+
+        <div class="job-grid">
+            
+            <!-- RIGHT COLUMN: Main Content -->
+            <div class="bento-card job-content-card reveal active" style="transition-delay: 0.2s;">
+                <h2><img src="2.png" alt="תיאור משרה" class="custom-icon"> תיאור המשרה</h2>
+                <p>קבוצת היזמות המובילה "פסגות נדל״ן" מחפשת מנהל/ת פיתוח עסקי ופרויקטים תותח/ית להצטרפות לצוות המטה בתל אביב. התפקיד כולל איתור, ייזום וניהול של פרויקטים למגורים ומסחר, בדגש על תחום ההתחדשות העירונית (פינוי בינוי ותמ״א 38).</p>
+                <p>אנו מחפשים אדם עם חזון, יכולות ניהול משא ומתן ברמה הגבוהה ביותר, והיכרות מעמיקה עם הרגולציה והרשויות המקומיות. במסגרת התפקיד תוביל/י את הפרויקט משלב איתור הקרקע ועד לקבלת היתרי בנייה ותחילת ביצוע.</p>
+
+                <h2><img src="4.png" alt="דרישות תפקיד" class="custom-icon"> דרישות עיקריות לתפקיד</h2>
+                <ul class="requirements-list">
+                    <li>תואר אקדמי רלוונטי (כלכלה, מנהל עסקים, משפטים, הנדסה או שמאות מקרקעין) – חובה.</li>
+                    <li>ניסיון של 3 שנים לפחות בייזום וניהול פרויקטים בנדל״ן / פיתוח עסקי בחברה יזמית.</li>
+                    <li>ניסיון מוכח והיכרות מעמיקה עם תחום ההתחדשות העירונית – יתרון משמעותי.</li>
+                    <li>יכולת ניתוח דוחות אפס והבנה פיננסית גבוהה.</li>
+                    <li>כישורי משא ומתן מעולים ויכולת עבודה מול מגוון ממשקים (בעלי קרקע, עורכי דין, רשויות, אדריכלים).</li>
+                    <li>ייצוגיות, כריזמה, ורעב להצלחה ולסגירת עסקאות.</li>
+                </ul>
+
+                <h2><img src="6.png" alt="הצעה" class="custom-icon"> מה אנחנו מציעים?</h2>
+                <p>תנאים מעולים למתאימים/ות, כולל שכר בסיס גבוה + בונוסים מתגמלים על סגירת עסקאות ועמידה באבני דרך. רכב צמוד, סביבת עבודה צעירה, דינמית וטכנולוגית במשרדים מפנקים במרכז תל אביב, ואפשרויות קידום נרחבות בתוך הקבוצה.</p>
+
+                <!-- Tags -->
+                <div class="job-tags-container">
+                    <span class="tag" style="background: transparent;"><span class="dot" style="background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);"></span> פיתוח עסקי</span>
+                    <span class="tag" style="background: transparent;"><span class="dot" style="background: var(--accent-purple); box-shadow: 0 0 10px var(--accent-purple);"></span> ניהול פרויקטים</span>
+                    <span class="tag" style="background: transparent;"><span class="dot" style="background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);"></span> התחדשות עירונית</span>
+                    <span class="tag" style="background: transparent;"><span class="dot" style="background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);"></span> משרת ניהול</span>
+                    <span class="tag" style="background: transparent;"><span class="dot" style="background: var(--accent-purple); box-shadow: 0 0 10px var(--accent-purple);"></span> בכירים</span>
+                </div>
+            </div>
+
+            <!-- LEFT COLUMN: Sidebar -->
+            <div class="job-sidebar">
+                <div class="bento-card reveal active" style="transition-delay: 0.3s; padding: 40px;">
+                    <ul class="meta-list">
+                        <li>
+                            <img src="3.png" alt="bullet" class="custom-icon-sm">
+                            <div>
+                                <span class="meta-title">פורסם על ידי</span>
+                                <span class="meta-value">פסגות נדל״ן יזמות בע״מ</span>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="3.png" alt="bullet" class="custom-icon-sm">
+                            <div>
+                                <span class="meta-title">סוג עבודה</span>
+                                <span class="meta-value">משרה מלאה (אופציה להיברידי)</span>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="3.png" alt="bullet" class="custom-icon-sm">
+                            <div>
+                                <span class="meta-title">מיקום</span>
+                                <span class="meta-value">מגדלי חג'ג', תל אביב</span>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="3.png" alt="bullet" class="custom-icon-sm">
+                            <div>
+                                <span class="meta-title">תאריך פרסום</span>
+                                <span class="meta-value">12 במרץ, 2026</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="contact-box">
+                        <p>שאלות בנוגע למשרה? צרו קשר ישירות:</p>
+                        <a href="mailto:jobs@psagot-nadlan.co.il" class="contact-link">
+                            <i data-lucide="mail" style="width: 18px;"></i> jobs@psagot-nadlan.co.il
+                        </a>
+                        <a href="tel:035551234" class="contact-link">
+                            <i data-lucide="phone" style="width: 18px;"></i> 03-555-1234
+                        </a>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 30px;" onclick="document.getElementById('apply-form').scrollIntoView({behavior: 'smooth'})">
+                        הגשת מועמדות <i data-lucide="arrow-down" style="width: 18px;"></i>
+                    </button>
+                </div>
+                
+                <!-- Extra Promo / Sponsor in Sidebar -->
+                <div class="bento-card reveal active" style="transition-delay: 0.4s; padding: 30px; text-align: center; background: linear-gradient(145deg, rgba(15,15,18,0.4) 0%, rgba(176,0,173,0.1) 100%);">
+                    <img src="5.png" alt="קידום" class="custom-icon-lg">
+                    <h3 style="margin-bottom: 12px; font-size: 1.2rem;">שדרגו את הפרופיל שלכם</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-dim); margin-bottom: 20px;">חברי פרימיום נהנים מחשיפה מוגברת למעסיקים ולמגייסים המובילים במשק.</p>
+                    <a href="#" class="btn btn-glass" style="width: 100%; padding: 10px;">לפרטים נוספים</a>
+                </div>
+            </div>
+
+            <!-- Middle Banner -->
+            <div class="sponsor-banner banner-small reveal" style="grid-column: 1 / -1; margin-top: 40px; margin-bottom: 0;">Sponsorship</div>
+
+            <!-- FULL WIDTH: Application Form -->
+            <div class="bento-card job-form-card reveal" id="apply-form">
+                <div class="form-header">
+                    <h2>הגשת מועמדות למשרה</h2>
+                    <p style="color: var(--text-dim); font-size: 1.1rem;">מלאו את הפרטים ונציג החברה יחזור אליכם בהקדם.</p>
+                </div>
+                
+                <form action="#" method="POST" class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">שם מלא *</label>
+                        <input type="text" class="form-input" placeholder="ישראל ישראלי" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">טלפון נייד *</label>
+                        <input type="tel" class="form-input" placeholder="050-0000000" style="text-align: right; direction: ltr;" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">כתובת אימייל *</label>
+                        <input type="email" class="form-input" placeholder="israel@example.com" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">קישור לפרופיל לינקדאין (אופציונלי)</label>
+                        <input type="url" class="form-input" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">קורות חיים *</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" class="file-upload-input" accept=".pdf,.doc,.docx" required>
+                            <div class="file-upload-content">
+                                <img src="1.png" alt="העלאה" class="custom-icon" style="width: 60px; height: 60px; margin-bottom: 8px;">
+                                <span style="color: var(--text-pure); font-weight: 500;">לחצו כאן להעלאת קובץ קורות חיים</span>
+                                <span style="font-size: 0.85rem; color: var(--text-dim);">תמיכה בקבצי PDF, DOCX (עד 5MB)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">כמה מילים עליכם (אופציונלי)</label>
+                        <textarea class="form-textarea" placeholder="ספרו לנו למה אתם המתאימים ביותר לתפקיד..."></textarea>
+                    </div>
+                    <div class="form-group full-width" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 20px; font-size: 1.2rem;">
+                            שליחת מועמדות <i data-lucide="send"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Banner -->
+    <div class="container">
+        <div class="sponsor-banner banner-large reveal">Sponsorship</div>
+    </div>
+
+    <!-- Giant Footer -->
+    <footer class="giant-footer">
+        <img src="SHAPE 3.png" alt="רקע צורה 3" class="bg-shape-3">
+        <div class="footer-logo-huge">הנדל"ניסטים</div>
+        <div class="container footer-grid">
+            <div class="footer-links">
+                <img src="logo-NADLANISTIM-no-sides.png" alt="לוגו הנדלניסטים" style="height: 55px; margin-bottom: 24px;">
+                <p style="color: var(--text-dim); max-width: 250px;">קהילת הנדל״ן האקסקלוסיבית של ישראל. מחברים בין הון, חזון וביצוע.</p>
+            </div>
+            <div class="footer-links">
+                <h4>פלטפורמה</h4>
+                <ul>
+                    <li><a href="#">מגזין ותוכן</a></li>
+                    <li><a href="#">לוח אירועים</a></li>
+                    <li><a href="#">זירת משרות</a></li>
+                    <li><a href="#">הצטרפות לקהילה</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>משפטי</h4>
+                <ul>
+                    <li><a href="#">תקנון האתר</a></li>
+                    <li><a href="#">מדיניות פרטיות</a></li>
+                    <li><a href="#">הצהרת נגישות</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>רשתות</h4>
+                <ul>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">WhatsApp</a></li>
+                    <li><a href="#">Facebook</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container" style="text-align: center; border-top: 1px solid var(--border-dim); margin-top: 40px; padding-top: 24px; color: var(--text-dim); font-size: 0.9rem;">
+            &copy; 2026 הנדל״ניסטים. כל הזכויות שמורות.
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Header Blur on Scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // Interactive File Upload Styling
+        const fileInput = document.querySelector('.file-upload-input');
+        const fileContent = document.querySelector('.file-upload-content span:nth-of-type(1)');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileContent.textContent = `קובץ נבחר: ${this.files[0].name}`;
+                fileContent.style.color = 'var(--accent-primary)';
+            } else {
+                fileContent.textContent = 'לחצו כאן להעלאת קובץ קורות חיים';
+                fileContent.style.color = 'var(--text-pure)';
+            }
+        });
+
+        // Bento Hover Mouse Effect
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        // Scroll Reveal Animation
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
