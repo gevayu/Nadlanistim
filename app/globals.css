@@ -476,9 +476,8 @@ img { display: block; max-width: 100%; }
    6. SPONSOR BANNERS
    ========================================================================= */
 .sponsor-number {
-    position: absolute; top: 50%; right: 32px; transform: translateY(-50%);
-    font-size: 1.1rem; font-weight: 700; letter-spacing: 0.05em;
-    color: var(--text-dim); opacity: 0.5;
+    font-size: 1rem; font-weight: 700; letter-spacing: 0.05em;
+    color: var(--text-dim); opacity: 0.5; margin-inline-start: 12px;
 }
 .sponsor-banner {
     width: 100%;
