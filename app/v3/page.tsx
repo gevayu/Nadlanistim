@@ -183,7 +183,7 @@ export default function HomePageV2() {
             className="hero-bg-element-2"
             aria-hidden
           />
-          <div className="container hero-content reveal active">
+          <div className="hero-content reveal active">
             <div className="hero-main-row">
               <div className="hero-logo-side">
                 <Image
@@ -218,7 +218,7 @@ export default function HomePageV2() {
             <span className="num">
               12K<span style={{ color: "var(--text-pure)" }}>+</span>
             </span>
-            <span className="label">מוחות מבריקים בקהילה</span>
+            <span className="label">מוחות מבריקים<br />בקהילה</span>
           </div>
           <div style={{ width: "100%", height: 1, background: "var(--border-dim)" }} />
           <div className="stat-group">
@@ -226,27 +226,27 @@ export default function HomePageV2() {
               className="num"
               style={{
                 fontSize: "4.5rem",
-                color: "var(--accent-purple)",
-                textShadow: "0 0 30px rgba(176,0,173,0.4)",
+                color: "var(--accent-primary)",
+                textShadow: "0 0 30px rgba(37,99,235,0.4)",
               }}
             >
               ₪1B+
             </span>
-            <span className="label">היקף עסקאות משוער</span>
+            <span className="label">היקף עסקאות<br />משוער</span>
           </div>
         </div>
       </div>
       </div>
 
-      <div className="container" style={{ paddingTop: 0, paddingBottom: 0 }}>
+      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 30 }}>
         <NewsTicker />
       </div>
 
-      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 36 }}>
+      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 60 }}>
         <SponsorBanner size="large" number={1} />
       </div>
 
-      <main className="container">
+      <main className="container" style={{ marginTop: 78 }}>
         <div className="bento-grid">
           <MeetNadlanist />
 
@@ -265,7 +265,7 @@ export default function HomePageV2() {
                 className="custom-icon"
               />
               <h3>משרות פרימיום</h3>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-dim)" }}>
+              <p style={{ color: "var(--text-dim)" }}>
                 לוח דרושים אקסקלוסיבי לתפקידי הנהלה ופיתוח.
               </p>
             </a>
@@ -278,7 +278,7 @@ export default function HomePageV2() {
                 className="custom-icon"
               />
               <h3>פודקאסט</h3>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-dim)" }}>
+              <p style={{ color: "var(--text-dim)" }}>
                 שיחות עומק עם האנשים שמזיזים את הקירות.
               </p>
             </a>
@@ -291,7 +291,7 @@ export default function HomePageV2() {
                 className="custom-icon"
               />
               <h3>נטוורקינג</h3>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-dim)" }}>
+              <p style={{ color: "var(--text-dim)" }}>
                 גישה ישירה למקבלי החלטות במשק.
               </p>
             </a>
@@ -304,7 +304,7 @@ export default function HomePageV2() {
                 className="custom-icon"
               />
               <h3>זירת עסקאות</h3>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-dim)" }}>
+              <p style={{ color: "var(--text-dim)" }}>
                 חיבור בין הון ליזמות מתחת לרדאר.
               </p>
             </a>
@@ -321,10 +321,9 @@ export default function HomePageV2() {
                   justifyContent: "center",
                 }}
               >
-                <h2 style={{ marginBottom: 16 }}>פסגת הנדל״ן של ישראל 2026</h2>
+                <h2 style={{ marginBottom: 16, whiteSpace: "nowrap" }}>פסגת הנדל״ן של ישראל 2026</h2>
                 <p
                   style={{
-                    fontSize: "1.3rem",
                     color: "var(--text-pure)",
                     maxWidth: 600,
                   }}
@@ -338,7 +337,6 @@ export default function HomePageV2() {
                     display: "flex",
                     gap: 40,
                     color: "#fff",
-                    fontSize: "1.1rem",
                   }}
                 >
                   <span>
@@ -375,11 +373,11 @@ export default function HomePageV2() {
         </div>
       </main>
 
-      <div className="container">
+      <div className="container" style={{ marginTop: 60 }}>
         <SponsorBanner size="small" number={2} />
       </div>
 
-      <div className="container">
+      <div className="container" style={{ marginTop: 60 }}>
         <div className="communities-strip">
           <h2 className="communities-title">הקהילות של הנדלניסטים</h2>
           <div className="communities-circles">
@@ -392,7 +390,7 @@ export default function HomePageV2() {
         </div>
       </div>
 
-      <div className="container" style={{ marginBottom: 48 }}>
+      <div className="container" style={{ marginTop: 60, marginBottom: 60 }}>
         <article className="bento-card card-event card-event-alt reveal">
           <div className="animated-border-bg" style={{ opacity: 0, background: "white" }} />
           <div className="inner-bg" />
@@ -444,7 +442,7 @@ export default function HomePageV2() {
         />
       </section>
 
-      <div className="container" style={{ marginTop: 24, marginBottom: 48 }}>
+      <div className="container" style={{ marginTop: 60, marginBottom: 60 }}>
         <SponsorBanner size="large" number={3} />
       </div>
     </>
