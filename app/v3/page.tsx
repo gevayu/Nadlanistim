@@ -238,15 +238,15 @@ export default function HomePageV2() {
       </div>
       </div>
 
-      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 30 }}>
+      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 0 }}>
         <NewsTicker />
       </div>
 
-      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 60 }}>
+      <div className="container" style={{ paddingTop: 0, paddingBottom: 0, marginTop: 30 }}>
         <SponsorBanner size="large" number={1} />
       </div>
 
-      <main className="container" style={{ marginTop: 78 }}>
+      <main className="container" style={{ marginTop: 20 }}>
         <div className="bento-grid">
           <MeetNadlanist />
 
@@ -373,11 +373,11 @@ export default function HomePageV2() {
         </div>
       </main>
 
-      <div className="container" style={{ marginTop: 60 }}>
+      <div className="container" style={{ marginTop: 30 }}>
         <SponsorBanner size="small" number={2} />
       </div>
 
-      <div className="container" style={{ marginTop: 60 }}>
+      <div className="container" style={{ marginTop: 30 }}>
         <div className="communities-strip">
           <h2 className="communities-title">הקהילות של הנדלניסטים</h2>
           <div className="communities-circles">
@@ -390,7 +390,7 @@ export default function HomePageV2() {
         </div>
       </div>
 
-      <div className="container" style={{ marginTop: 60, marginBottom: 60 }}>
+      <div className="container" style={{ marginTop: 30, marginBottom: 30 }}>
         <article className="bento-card card-event card-event-alt reveal">
           <div className="animated-border-bg" style={{ opacity: 0, background: "white" }} />
           <div className="inner-bg" />
