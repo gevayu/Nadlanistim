@@ -116,12 +116,12 @@ body.theme-light .carousel-content p,
 body.theme-light .footer-links a {
     font-size: 1.5rem !important;
 }
-body.theme-light .hero-title { margin-bottom: 8px; font-size: clamp(2.3rem, 5.2vw, 4.6rem); letter-spacing: -0.02em; }
+body.theme-light .hero-title { margin-bottom: 8px; font-size: clamp(2.3rem, 5.2vw, 4.6rem); letter-spacing: 0.01em; }
 body.theme-light .hero-text-side { gap: 12px; }
-body.theme-light .hero-main-row { gap: 8px; }
+body.theme-light .hero-main-row { gap: 32px; }
 body.theme-light .hero-stats-row .hero-content { max-width: 1520px; width: 100%; margin-right: 0; margin-left: auto; }
 body.theme-light .hero-logo-side img { width: 396px; }
-body.theme-light .hero-logo-side { padding: 0; margin: 0 -40px 0 -20px; }
+body.theme-light .hero-logo-side { padding: 0; margin: 0 0 0 -20px; }
 body.theme-light .hero-main-row { justify-content: flex-start; }
 body.theme-light .hero-desc { font-size: clamp(0.95rem, 1.4vw, 1.2rem); }
 body.theme-light .text-outline { -webkit-text-stroke: 4px rgba(9, 9, 11, 0.25); }
