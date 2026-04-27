@@ -24,6 +24,7 @@ type Props = {
   items: CarouselItem[];
   viewAllLabel?: string;
   readMoreLabel?: string;
+  wrapperClassName?: string;
 };
 
 export default function Carousel({
@@ -34,6 +35,7 @@ export default function Carousel({
   items,
   viewAllLabel = "לעוד פוסטים בנושא",
   readMoreLabel = "קראו עוד",
+  wrapperClassName = "",
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,7 @@ export default function Carousel({
   };
 
   return (
-    <div className="carousel-wrapper reveal">
+    <div className={`carousel-wrapper reveal ${wrapperClassName}`.trim()}>
       <div className="carousel-header">
         <h2 className="carousel-title">
           <Image
