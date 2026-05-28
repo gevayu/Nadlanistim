@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import BentoMouseTracker from "@/components/BentoMouseTracker";
 import RevealObserver from "@/components/RevealObserver";
 import ThemeController from "@/components/ThemeController";
+import LayoutGate from "@/components/LayoutGate";
 
 export const metadata: Metadata = {
   title: "הנדל\"ניסטים | העתיד של הנדל״ן",
@@ -21,11 +22,15 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <body>
-        <Background />
+        <LayoutGate>
+          <Background />
+        </LayoutGate>
         <Header />
         {children}
-        <Footer />
-        <BentoMouseTracker />
+        <LayoutGate>
+          <Footer />
+          <BentoMouseTracker />
+        </LayoutGate>
         <RevealObserver />
         <ThemeController />
       </body>

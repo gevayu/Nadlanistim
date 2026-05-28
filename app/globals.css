@@ -390,18 +390,27 @@ body.v4-dark-bg.theme-light .site-header.scrolled {
 }
 body.v4-dark-bg.theme-light .site-header::before { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
 body.v4-dark-bg.theme-light .giant-footer {
-    background: transparent;
-    border-top-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.65) !important;
+    border-top-color: rgba(255, 255, 255, 0.4);
 }
+body.v4-dark-bg.theme-light .giant-footer,
+body.v4-dark-bg.theme-light .giant-footer h4,
+body.v4-dark-bg.theme-light .giant-footer p,
+body.v4-dark-bg.theme-light .giant-footer a,
+body.v4-dark-bg.theme-light .footer-links a,
+body.v4-dark-bg.theme-light .footer-links h4,
+body.v4-dark-bg.theme-light .footer-bottom-bar,
+body.v4-dark-bg.theme-light .footer-bottom-bar a,
+body.v4-dark-bg.theme-light .footer-bottom-bar span { color: #09090b !important; }
+body.v4-dark-bg.theme-light .footer-bottom-bar { border-top-color: rgba(9, 9, 11, 0.15) !important; }
 
-/* v4 dark — flip text color to white, drop white surfaces to 20% glass */
+/* v4 dark — white surfaces at 65% glass with black text */
 body.v4-dark-bg.theme-light {
-    --text-pure: #ffffff;
-    --text-dim: rgba(255, 255, 255, 0.85);
-    --bg-surface: rgba(255, 255, 255, 0.2);
-    --bg-card: rgba(255, 255, 255, 0.2);
-    --bg-glass: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    --text-pure: #09090b;
+    --text-dim: #09090b;
+    --bg-surface: rgba(255, 255, 255, 0.65);
+    --bg-card: rgba(255, 255, 255, 0.65);
+    --bg-glass: rgba(255, 255, 255, 0.65);
 }
 body.v4-dark-bg.theme-light p,
 body.v4-dark-bg.theme-light li,
@@ -422,56 +431,35 @@ body.v4-dark-bg.theme-light .hero-desc,
 body.v4-dark-bg.theme-light .stat-group .label,
 body.v4-dark-bg.theme-light .read-more-link,
 body.v4-dark-bg.theme-light .view-all-btn,
-body.v4-dark-bg.theme-light .carousel-author { color: #ffffff !important; }
+body.v4-dark-bg.theme-light .ticker-track,
+body.v4-dark-bg.theme-light .communities-title,
+body.v4-dark-bg.theme-light .carousel-author { color: #09090b !important; }
 
-body.v4-dark-bg.theme-light .hero-title .filled {
-    background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-
-/* White/light surfaces → 20% white glass */
+/* White/light surfaces → 65% white glass */
 body.v4-dark-bg.theme-light .nav-links,
 body.v4-dark-bg.theme-light .btn-glass,
 body.v4-dark-bg.theme-light .sponsor-banner,
 body.v4-dark-bg.theme-light .bento-card,
-body.v4-dark-bg.theme-light .card-featured .featured-content {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-}
-body.v4-dark-bg.theme-light .sponsor-banner:hover,
-body.v4-dark-bg.theme-light .btn-glass:hover,
-body.v4-dark-bg.theme-light .bento-card:hover {
-    background: rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Header + ticker — same 20% white glass */
+body.v4-dark-bg.theme-light .card-featured .featured-content,
 body.v4-dark-bg.theme-light .site-header,
-body.v4-dark-bg.theme-light .site-header.scrolled {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border-bottom-color: rgba(255, 255, 255, 0.15);
-    box-shadow: none;
-}
-body.v4-dark-bg.theme-light .site-header::before { background: transparent; }
-body.v4-dark-bg.theme-light .news-ticker {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-}
-body.v4-dark-bg.theme-light .ticker-track { color: #ffffff; }
-
-/* Carousel cards (posts, podcast, jobs, funds) + communities strip + action buttons */
+body.v4-dark-bg.theme-light .site-header.scrolled,
+body.v4-dark-bg.theme-light .news-ticker,
 body.v4-dark-bg.theme-light .carousel-card,
 body.v4-dark-bg.theme-light .communities-strip,
 body.v4-dark-bg.theme-light .action-btn {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.65) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #09090b !important;
+    box-shadow: none;
 }
+body.v4-dark-bg.theme-light .sponsor-banner:hover,
+body.v4-dark-bg.theme-light .btn-glass:hover,
+body.v4-dark-bg.theme-light .bento-card:hover,
 body.v4-dark-bg.theme-light .action-btn:hover,
 body.v4-dark-bg.theme-light .carousel-card:hover {
-    background: rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.75) !important;
 }
-body.v4-dark-bg.theme-light .communities-title { color: #ffffff !important; }
+body.v4-dark-bg.theme-light .site-header::before { background: transparent; }
 
 /* Inverted carousel (השקעות) — white 80% bg + dark text */
 body.v4-dark-bg.theme-light .carousel-invert .carousel-card {
@@ -492,6 +480,16 @@ body.v4-dark-bg.theme-light .tag {
     background: rgba(255, 255, 255, 0.12) !important;
     border-color: rgba(255, 255, 255, 0.2) !important;
     color: #ffffff !important;
+}
+
+/* v4 — section titles + section buttons stay white over the dark page */
+body.v4-dark-bg.theme-light .carousel-title,
+body.v4-dark-bg.theme-light .carousel-header .view-all-btn,
+body.v4-dark-bg.theme-light .carousel-header .carousel-btn { color: #ffffff !important; }
+body.v4-dark-bg.theme-light .carousel-header .view-all-btn,
+body.v4-dark-bg.theme-light .carousel-header .carousel-btn {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 body {
