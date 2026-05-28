@@ -295,12 +295,14 @@
 @keyframes v5-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
 
 /* ===== Stats ===== */
+.v5-section-head--stats h2 { font-size: clamp(36px, 4.5vw, 64px); line-height: 1.05; letter-spacing: -0.025em; max-width: 14ch; }
 .v5-stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 80px; }
 .v5-stat { padding: 40px 32px; border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 16px; min-height: 240px; }
 .v5-stat__num { font-size: clamp(48px, 5.5vw, 76px); font-weight: 600; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .v5-stat__label { font-size: 14.5px; color: var(--ink-2); font-weight: 400; }
 .v5-stat__bar { height: 2px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden; margin-top: auto; }
-.v5-stat__bar > span { display: block; height: 100%; width: var(--w, 100%); background: var(--grad-1); transform-origin: right; }
+.v5-stat__bar > span { display: block; height: 100%; width: var(--w, 100%); background: var(--grad-1); transform: scaleX(0); transform-origin: right; transition: transform 1.2s var(--t) .15s; }
+.v5-stat.is-visible .v5-stat__bar > span { transform: scaleX(1); }
 
 /* ===== About ===== */
 .v5-about__grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(40px, 8vw, 120px); align-items: center; }
@@ -493,9 +495,33 @@
 .v5-footer__legal { display: flex; gap: 24px; }
 .v5-footer__legal a:hover { color: var(--ink); }
 
-/* ===== Reveal animation ===== */
-.v5-root [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--t-out), transform .8s var(--t-out); }
+/* ===== Hero intro timeline ===== */
+.v5-hero__title .v5-line > span { transform: translateY(110%); transition: transform 1.1s var(--t-out); }
+.v5-hero__eyebrow,
+.v5-hero__sub,
+.v5-hero__cta,
+.v5-hero__bottom,
+.v5-marquee { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--t-out), transform .7s var(--t-out); }
+.v5-hero.is-loaded .v5-hero__title .v5-line > span { transform: translateY(0); }
+.v5-hero.is-loaded .v5-hero__title .v5-line:nth-child(1) > span { transition-delay: .40s; }
+.v5-hero.is-loaded .v5-hero__title .v5-line:nth-child(2) > span { transition-delay: .50s; }
+.v5-hero.is-loaded .v5-hero__title .v5-line:nth-child(3) > span { transition-delay: .60s; }
+.v5-hero.is-loaded .v5-hero__eyebrow { opacity: 1; transform: none; transition-delay: .2s; }
+.v5-hero.is-loaded .v5-hero__sub { opacity: 1; transform: none; transition-delay: 1.0s; }
+.v5-hero.is-loaded .v5-hero__cta { opacity: 1; transform: none; transition-delay: 1.2s; }
+.v5-hero.is-loaded .v5-hero__bottom { opacity: 1; transform: none; transition-delay: 1.5s; }
+.v5-hero.is-loaded .v5-marquee { opacity: 1; transform: none; transition-delay: 1.7s; }
+
+/* ===== Scroll reveal (fade-up + stagger via JS-assigned delay) ===== */
+.v5-root [data-reveal] { opacity: 0; transform: translateY(32px); transition: opacity .9s var(--t), transform .9s var(--t); }
 .v5-root [data-reveal].is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v5-hero__title .v5-line > span,
+  .v5-hero__eyebrow, .v5-hero__sub, .v5-hero__cta, .v5-hero__bottom, .v5-marquee,
+  .v5-root [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .v5-stat.is-visible .v5-stat__bar > span { transform: scaleX(1) !important; }
+}
 
 /* ===== Responsive — Tablet ≤1100 ===== */
 @media (max-width: 1100px) {

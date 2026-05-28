@@ -130,7 +130,24 @@ function useScrolled(threshold = 40) {
 
 function useRevealOnScroll() {
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".v5-root [data-reveal]");
+    const els = Array.from(
+      document.querySelectorAll<HTMLElement>(".v5-root [data-reveal]")
+    );
+    // Stagger items by their index among data-reveal siblings (mirrors the
+    // reference's per-parent stagger for grids/section heads).
+    const byParent = new Map<Element, HTMLElement[]>();
+    els.forEach((el) => {
+      const parent = el.parentElement;
+      if (!parent) return;
+      const list = byParent.get(parent) ?? [];
+      list.push(el);
+      byParent.set(parent, list);
+    });
+    byParent.forEach((list) => {
+      list.forEach((el, i) => {
+        el.style.transitionDelay = `${Math.min(i, 8) * 0.06}s`;
+      });
+    });
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -140,10 +157,86 @@ function useRevealOnScroll() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
+  }, []);
+}
+
+function useHeroIntro() {
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>(".v5-hero");
+    if (!hero) return;
+    const id = requestAnimationFrame(() => hero.classList.add("is-loaded"));
+    return () => cancelAnimationFrame(id);
+  }, []);
+}
+
+function useParallax() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(min-width: 761px)").matches) return;
+    const els = Array.from(
+      document.querySelectorAll<HTMLElement>(".v5-root [data-parallax]")
+    );
+    const heroImg = document.querySelector<HTMLElement>(".v5-hero__media img");
+    let ticking = false;
+    const update = () => {
+      const vh = window.innerHeight;
+      els.forEach((el) => {
+        const speed = parseFloat(el.getAttribute("data-parallax") || "0.2");
+        const r = el.getBoundingClientRect();
+        const progress = (r.top + r.height / 2 - vh / 2) / vh;
+        el.style.transform = `translate3d(0, ${(-progress * speed * 40).toFixed(1)}px, 0)`;
+      });
+      if (heroImg) {
+        const sc = Math.min(1.12, 1 + Math.max(0, window.scrollY) / vh * 0.12);
+        heroImg.style.transform = `scale(${sc.toFixed(3)})`;
+      }
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+}
+
+function useMagnetic() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    if (!window.matchMedia("(min-width: 761px)").matches) return;
+    const els = Array.from(
+      document.querySelectorAll<HTMLElement>(".v5-root [data-magnetic]")
+    );
+    const cleanups = els.map((el) => {
+      const move = (e: MouseEvent) => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * 0.2;
+        const y = (e.clientY - r.top - r.height / 2) * 0.2;
+        el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+      };
+      const leave = () => {
+        el.style.transform = "";
+      };
+      el.addEventListener("mousemove", move);
+      el.addEventListener("mouseleave", leave);
+      return () => {
+        el.removeEventListener("mousemove", move);
+        el.removeEventListener("mouseleave", leave);
+      };
+    });
+    return () => cleanups.forEach((fn) => fn());
   }, []);
 }
 
@@ -157,7 +250,7 @@ function useStatCounters() {
           const el = entry.target as HTMLElement;
           const target = parseInt(el.dataset.count || "0", 10);
           const suffix = el.dataset.suffix || "";
-          const duration = 1800;
+          const duration = 2000;
           const start = performance.now();
           const tick = (now: number) => {
             const t = Math.min(1, (now - start) / duration);
@@ -180,8 +273,11 @@ export default function HomePageV5() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sent, setSent] = useState(false);
   const scrolled = useScrolled();
+  useHeroIntro();
   useRevealOnScroll();
   useStatCounters();
+  useParallax();
+  useMagnetic();
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
@@ -223,7 +319,7 @@ export default function HomePageV5() {
               <a key={href} href={href}>{label}</a>
             ))}
           </nav>
-          <a href="#contact" className="v5-btn v5-btn--primary v5-nav__cta">
+          <a href="#contact" className="v5-btn v5-btn--primary v5-nav__cta" data-magnetic="">
             <span className="v5-nav__cta-long">הצטרפו לקהילה</span>
             <span className="v5-nav__cta-short">הצטרפו</span>
             <ArrowIcon />
@@ -252,7 +348,7 @@ export default function HomePageV5() {
 
       {/* Hero */}
       <section className="v5-hero" id="top">
-        <div className="v5-hero__media">
+        <div className="v5-hero__media" data-parallax="0.3">
           <img
             src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=2400&q=80"
             alt=""
@@ -262,25 +358,25 @@ export default function HomePageV5() {
         <div className="v5-hero__glow" aria-hidden />
 
         <div className="v5-hero__content">
-          <div className="v5-hero__eyebrow v5-glass" data-reveal>
+          <div className="v5-hero__eyebrow v5-glass">
             <span className="v5-dot" />
             <span>קהילה פעילה · 2017 — היום</span>
           </div>
-          <h1 className="v5-hero__title" data-reveal>
+          <h1 className="v5-hero__title">
             <span className="v5-line"><span>הקהילה</span></span>
             <span className="v5-line"><span>שמחברת את עולם</span></span>
             <span className="v5-line"><span><em>הנדל״ן בישראל</em></span></span>
           </h1>
-          <p className="v5-hero__sub" data-reveal>
+          <p className="v5-hero__sub">
             מקום אחד ליזמים, משקיעים, שמאים, עו״ד, קבלנים, מתווכים, אדריכלים<br />
             ובעלי מקצוע — ליצור קשרים, ללמוד, להתפתח ולייצר הזדמנויות אמיתיות.
           </p>
-          <div className="v5-hero__cta" data-reveal>
-            <a href="#contact" className="v5-btn v5-btn--primary v5-btn--lg">
+          <div className="v5-hero__cta">
+            <a href="#contact" className="v5-btn v5-btn--primary v5-btn--lg" data-magnetic="">
               <span>הצטרפו לקהילה</span>
               <ArrowIcon />
             </a>
-            <a href="#events" className="v5-btn v5-btn--glass v5-btn--lg">
+            <a href="#events" className="v5-btn v5-btn--glass v5-btn--lg" data-magnetic="">
               <span>האירועים הקרובים</span>
             </a>
           </div>
@@ -312,7 +408,7 @@ export default function HomePageV5() {
       {/* Stats */}
       <section className="v5-section">
         <div className="v5-container">
-          <header className="v5-section-head" data-reveal>
+          <header className="v5-section-head v5-section-head--stats" data-reveal>
             <span className="v5-eyebrow"><span className="v5-dot" />הקהילה במספרים</span>
             <h2>קהילה גדולה. <em>השפעה אמיתית.</em></h2>
           </header>
@@ -356,10 +452,10 @@ export default function HomePageV5() {
               </ul>
             </div>
             <div className="v5-about__media" data-reveal>
-              <figure className="v5-about__img v5-about__img--lg">
+              <figure className="v5-about__img v5-about__img--lg" data-parallax="0.1">
                 <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80" alt="" />
               </figure>
-              <figure className="v5-about__img v5-about__img--sm">
+              <figure className="v5-about__img v5-about__img--sm" data-parallax="0.2">
                 <img src="https://images.unsplash.com/photo-1559223607-a43c990c692c?w=900&q=80" alt="" />
               </figure>
               <div className="v5-about__badge v5-glass">
@@ -500,7 +596,7 @@ export default function HomePageV5() {
 
       {/* Featured event */}
       <section className="v5-featured" id="featured">
-        <div className="v5-featured__bg">
+        <div className="v5-featured__bg" data-parallax="0.25">
           <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=2400&q=80" alt="" />
         </div>
         <div className="v5-container v5-featured__grid">
@@ -529,11 +625,11 @@ export default function HomePageV5() {
               </div>
             </div>
             <div className="v5-featured__cta" data-reveal>
-              <a href="#" className="v5-btn v5-btn--primary v5-btn--lg">
+              <a href="#" className="v5-btn v5-btn--primary v5-btn--lg" data-magnetic="">
                 <span>הירשמו לכנס</span>
                 <ArrowIcon />
               </a>
-              <a href="#" className="v5-btn v5-btn--glass v5-btn--lg">תוכנית הכנס</a>
+              <a href="#" className="v5-btn v5-btn--glass v5-btn--lg" data-magnetic="">תוכנית הכנס</a>
             </div>
           </div>
           <aside className="v5-featured__card v5-glass" data-reveal>
@@ -699,15 +795,15 @@ export default function HomePageV5() {
               תהליך ההצטרפות, החברות והאירועים הקרובים.
             </p>
             <div className="v5-contact__channels" data-reveal>
-              <a href="#" className="v5-contact__channel v5-glass">
+              <a href="#" className="v5-contact__channel v5-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4l-2.6-1.3a.8.8 0 0 0-.9.1l-1.2 1.2c-1.9-.9-3.4-2.4-4.3-4.3l1.2-1.2a.8.8 0 0 0 .1-.9L8.5 5.4a.8.8 0 0 0-.9-.4l-2.3.6a.8.8 0 0 0-.6.8c0 5.9 4.8 10.7 10.7 10.7a.8.8 0 0 0 .8-.6l.6-2.3a.8.8 0 0 0-.4-.9z" /></svg>
                 <span>וואטסאפ</span>
               </a>
-              <a href="#" className="v5-contact__channel v5-glass">
+              <a href="#" className="v5-contact__channel v5-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM8.3 18H5.7V9.7h2.6V18zM7 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM18 18h-2.6v-4.3c0-1 0-2.3-1.4-2.3-1.4 0-1.6 1.1-1.6 2.2V18H9.8V9.7h2.5v1.1h0c.4-.7 1.2-1.4 2.6-1.4 2.7 0 3.2 1.8 3.2 4.1V18z" /></svg>
                 <span>לינקדאין</span>
               </a>
-              <a href="mailto:hello@nadlanistim.co.il" className="v5-contact__channel v5-glass">
+              <a href="mailto:hello@nadlanistim.co.il" className="v5-contact__channel v5-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
                 <span>אימייל</span>
               </a>
@@ -744,7 +840,7 @@ export default function HomePageV5() {
                 {ROLE_OPTIONS.map((o) => <option key={o}>{o}</option>)}
               </select>
             </div>
-            <button type="submit" className="v5-btn v5-btn--primary v5-btn--block v5-btn--lg">
+            <button type="submit" className="v5-btn v5-btn--primary v5-btn--block v5-btn--lg" data-magnetic="">
               <span>שליחת בקשה</span>
               <ArrowIcon />
             </button>
