@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./v5.css";
 
 const ArrowIcon = () => (
@@ -257,8 +257,11 @@ export default function HomePageV5() {
             src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=2400&q=80"
             alt=""
           />
+          <div className="v5-hero__veil" />
         </div>
-        <div className="v5-container v5-hero__content">
+        <div className="v5-hero__glow" aria-hidden />
+
+        <div className="v5-hero__content">
           <div className="v5-hero__eyebrow v5-glass" data-reveal>
             <span className="v5-dot" />
             <span>קהילה פעילה · 2017 — היום</span>
@@ -277,32 +280,31 @@ export default function HomePageV5() {
               <span>הצטרפו לקהילה</span>
               <ArrowIcon />
             </a>
-            <a href="#events" className="v5-btn v5-btn--ghost v5-btn--lg">
+            <a href="#events" className="v5-btn v5-btn--glass v5-btn--lg">
               <span>האירועים הקרובים</span>
             </a>
           </div>
-          <div className="v5-hero__bottom">
-            <div className="v5-hero__scroll">
-              <span>גלילה</span>
-              <span className="v5-hero__scroll-line" />
-            </div>
-            <div className="v5-hero__caption">
-              <span className="v5-hero__caption-num">01 / 13</span>
-              <span>כנס הנדלניסטים השנתי · תל אביב</span>
-            </div>
+        </div>
+
+        <div className="v5-hero__bottom">
+          <div className="v5-hero__scroll">
+            <span>גלילה</span>
+            <span className="v5-hero__scroll-line" />
+          </div>
+          <div className="v5-hero__caption">
+            <span className="v5-hero__caption-num">01 / 13</span>
+            <span>כנס הנדלניסטים השנתי · תל אביב</span>
           </div>
         </div>
 
-        <div className="v5-container">
-          <div className="v5-marquee v5-glass" aria-hidden>
-            <div className="v5-marquee__track">
-              {[...MARQUEE, ...MARQUEE].map((term, i) => (
-                <span key={i} className="v5-mq-item">
-                  <span>{term}</span>
-                  <span className="v5-diamond">◆</span>
-                </span>
-              ))}
-            </div>
+        <div className="v5-marquee" aria-hidden>
+          <div className="v5-marquee__track">
+            {[...MARQUEE, ...MARQUEE].map((term, i) => (
+              <Fragment key={i}>
+                <span>{term}</span>
+                <span className="v5-diamond">◆</span>
+              </Fragment>
+            ))}
           </div>
         </div>
       </section>
@@ -531,7 +533,7 @@ export default function HomePageV5() {
                 <span>הירשמו לכנס</span>
                 <ArrowIcon />
               </a>
-              <a href="#" className="v5-btn v5-btn--ghost v5-btn--lg">תוכנית הכנס</a>
+              <a href="#" className="v5-btn v5-btn--glass v5-btn--lg">תוכנית הכנס</a>
             </div>
           </div>
           <aside className="v5-featured__card v5-glass" data-reveal>
