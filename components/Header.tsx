@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Header() {
   const pathname = usePathname();
-  if (pathname.startsWith("/v5")) return null;
+  if (pathname.startsWith("/v5") || pathname.startsWith("/v6")) return null;
   const isHome = pathname === "/" || pathname === "/v2" || pathname === "/v3" || pathname === "/v4";
   const [scrolled, setScrolled] = useState(false);
   const [hideLogo, setHideLogo] = useState(isHome);

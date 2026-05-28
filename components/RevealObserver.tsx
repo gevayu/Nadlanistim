@@ -7,7 +7,7 @@ export default function RevealObserver() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.startsWith("/v5")) return;
+    if (pathname.startsWith("/v5") || pathname.startsWith("/v6")) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
