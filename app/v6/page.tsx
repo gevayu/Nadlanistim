@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import "./v6.css";
 
 const ArrowIcon = () => (
@@ -9,18 +9,31 @@ const ArrowIcon = () => (
   </svg>
 );
 
+const ChevronRight = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
+    <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const ChevronLeft = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
+    <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 type MemberCategory = { count: string; title: string; desc: string; avatars: number[] };
-type WhyReason = { num: string; title: string; desc: string };
-type Story = { tag: string; quote: string; name: string; role: string; avatar: number };
-type Reco = { img: string; name: string; role: string; duration: string };
+type JobOffer = { tag: string; title: string; company: string; location: string; desc: string; img: string };
 type Project = { img: string; tag: string; title: string; desc: string; period: string; partners: string };
 type EventItem = { day: string; month: string; tag: string; accent?: boolean; title: string; desc: string; place: string; time: string };
-type ArticleItem = { cat: string; title: string; author: string; time: string };
+type ArticleItem = { cat: string; title: string; desc: string; author: string; time: string };
 
 const NAV_LINKS: [string, string][] = [
   ["#about", "הקהילה"],
+  ["#communities", "קהילות"],
   ["#members", "חברי הקהילה"],
   ["#stories", "סיפורי הצלחה"],
+  ["#podcast", "פודקאסט"],
+  ["#featured", "הכנס"],
   ["#events", "אירועים"],
   ["#articles", "תוכן מקצועי"],
   ["#contact", "צרו קשר"],
@@ -55,38 +68,60 @@ const MEMBERS: MemberCategory[] = [
   { count: "163", title: "שיווק ופרסום נדל״ן", desc: "אנשי שיווק, מיתוג, דיגיטל ופרסום מהמובילים בענף.", avatars: [9, 29, 49] },
 ];
 
-const WHY: WhyReason[] = [
-  { num: "01", title: "גישה לאנשים הנכונים", desc: "היכרות ישירה עם הדמויות שמזיזות את ענף הנדל״ן הישראלי." },
-  { num: "02", title: "נטוורקינג איכותי", desc: "מפגשים אינטימיים, פאנלים סגורים וטבלאות עגולות." },
-  { num: "03", title: "שיתופי פעולה", desc: "שותפויות עסקיות שמתחילות מהיכרות אישית בקהילה." },
-  { num: "04", title: "חשיפה להזדמנויות", desc: "פרויקטים ועסקאות שלא יוצאות החוצה — קודם בקהילה." },
-  { num: "05", title: "למידה מקצועית", desc: "הרצאות, מאסטרקלאסים ושיחות עומק עם המומחים בענף." },
-  { num: "06", title: "אירועים וכנסים", desc: "למעלה מ‑120 אירועים בשנה — מקטנים ועד הכנס השנתי." },
-  { num: "07", title: "קהילה פעילה", desc: "קבוצות, פורומים ושיחות יומיות סביב הנושאים החמים." },
-  { num: "08", title: "היכרויות עסקיות", desc: "מקרים אמיתיים של שותפים שמצאו זה את זה דרכנו." },
+type Nadlanist = { img: string; quote: string; name: string; role: string };
+
+const NADLANISTIM: Nadlanist[] = [
+  { img: "1560250097-0b93528c311a", name: "איתי לבנון", role: "יזם, לבנון נדל״ן", quote: "״הכרתי את השותף שלי לפרויקט של 40 יחידות דיור בערב סוף שנה של הנדלניסטים. שש שעות של שיחות הפכו לשותפות של שלוש שנים.״" },
+  { img: "1573496359142-b8d87734a5a2", name: "אלון שמיר", role: "סמנכ״ל פיתוח עסקי, שיכון ובינוי", quote: "״הקהילה היא המקום הראשון שאני בודק כשמחפשים שותף לעסקה. שלוש מהעסקאות הגדולות שלי התחילו בשיחת מסדרון בכנס.״" },
+  { img: "1580489944761-15a19d654956", name: "ד״ר ענת רוזנברג", role: "שמאית מקרקעין, רוזנברג שמאות", quote: "״בתור שמאית, הנטוורקינג כאן שינה לי את העסק. אני מלווה היום פרויקטים שלא הייתי מגיעה אליהם בלי הקהילה.״" },
+  { img: "1507003211169-0a1dd7228f2d", name: "יואב פרידמן", role: "מנכ״ל, פרידמן השקעות נדל״ן", quote: "״גייסנו 120 מיליון ש״ח לקרן הראשונה שלנו כמעט כולם מתוך הקהילה. אנשים שסומכים עליך כי הם מכירים אותך באמת.״" },
 ];
 
-const STORIES: Story[] = [
-  { tag: "שותפות עסקית", quote: "״מצאתי שותף לקרקע בקיסריה דרך קבוצת הוואטסאפ. סגרנו עסקה תוך שבועיים.״", name: "נועה ברגר", role: "יזמית, ברגר השקעות", avatar: 47 },
-  { tag: "לקוחות חדשים", quote: "״כעורך דין, הקהילה הפכה למקור הלקוחות הראשי שלי. שירות שמומלץ הוא הכי איכותי.״", name: "עו״ד דניאל כהן", role: "משרד כהן ושות׳", avatar: 33 },
-  { tag: "שיתוף פעולה", quote: "״באחת מהארוחות החודשיות פגשנו את אדריכל הפרויקט הבא שלנו. כימיה ב‑10 דקות.״", name: "רן מימון", role: "מנכ״ל, מימון בנייה", avatar: 53 },
+const JOB_OFFERS: JobOffer[] = [
+  { tag: "דרושים · משרת ניהול", title: "סמנכ״ל/ית פיתוח עסקי", company: "קרן השקעות נדל״ן", location: "תל אביב", desc: "הזדמנות נדירה להשתלב בהנהלת קרן השקעות נדל״ן בצמיחה — איתור, ייזום וניהול עסקאות קרקע ברחבי הארץ.", img: "1497366754035-f200968a6e72" },
+  { tag: "דרושים · שמאות", title: "שמאי/ת מקרקעין בכיר/ה", company: "פירמת שמאות מובילה", location: "רמת גן", desc: "פירמת שמאות גדולה מגייסת שמאי/ת מקרקעין לליווי פיננסי של פרויקטים ועריכת דוחות אפס לגופים מוסדיים.", img: "1554469384-e58fac16e23a" },
+  { tag: "דרושים · ניהול פרויקטים", title: "מנהל/ת פרויקטים בנדל״ן", company: "חברה יזמית מובילה", location: "אזור המרכז", desc: "לחברה יזמית מובילה באזור המרכז דרוש/ה מנהל/ת פרויקטים להובלת מיזמי פינוי בינוי ותמ״א 38 מקצה לקצה.", img: "1486406146926-c627a92ad1ab" },
 ];
 
-const RECOS: Reco[] = [
-  { img: "1573496359142-b8d87734a5a2", name: "אלון שמיר", role: "סמנכ״ל פיתוח עסקי, שיכון ובינוי", duration: "02:14" },
-  { img: "1580489944761-15a19d654956", name: "ד״ר ענת רוזנברג", role: "שמאית מקרקעין, רוזנברג שמאות", duration: "01:47" },
-  { img: "1507003211169-0a1dd7228f2d", name: "יואב פרידמן", role: "מנכ״ל, פרידמן השקעות נדל״ן", duration: "03:02" },
+const FEATURES: [string, string][] = [
+  ["זירת עסקאות", "חיבור בין הון ליזמות מתחת לרדאר."],
+  ["נטוורקינג", "גישה ישירה למקבלי החלטות במשק."],
+  ["פודקאסט", "שיחות עומק עם האנשים שמזיזים את הקירות."],
+  ["משרות פרימיום", "לוח דרושים אקסקלוסיבי לתפקידי הנהלה ופיתוח."],
 ];
+
+const COMMUNITIES = Array.from({ length: 10 }, (_, i) => ({
+  id: i + 1,
+  logo: "/community-badge.png",
+  label: "תת קהילה",
+}));
 
 const FEATURED_DETAILS: [string, string][] = [
   ["מיקום", "אקספו תל אביב, ביתן 1"],
   ["שעות", "09:00 — 21:00"],
-  ["פאנלים", "14 מסלולים מקבילים"],
-  ["משתתפים", "+1,400"],
+  ["פאנלים", "3 מסלולים מקבילים"],
+  ["משתתפים", "800"],
 ];
 
-const SPONSORS_MAIN = ["שיכון ובינוי", "אזורים", "דוניץ", "אאורה", "צ׳ריטון", "אפריקה ישראל"];
-const SPONSORS_EVENT = ["בנק לאומי", "דלויט", "EY", "KPMG", "PWC", "גורניצקי", "הרצוג פוקס", "גושן ארנון"];
+type Sponsor = { name: string; logo?: string };
+const SPONSORS_MAIN: Sponsor[] = [
+  { name: "שיכון ובינוי", logo: "/v6-assets/sponsors/shikun.webp" },
+  { name: "אזורים", logo: "/v6-assets/sponsors/azorim.png" },
+  { name: "דוניץ", logo: "/v6-assets/sponsors/donitz.png" },
+  { name: "אאורה", logo: "/v6-assets/sponsors/aura.png" },
+  { name: "צ׳ריטון" },
+  { name: "אפריקה ישראל", logo: "/v6-assets/sponsors/africa.svg" },
+];
+const SPONSORS_EVENT: Sponsor[] = [
+  { name: "בנק לאומי", logo: "/v6-assets/sponsors/leumi.png" },
+  { name: "דלויט", logo: "/v6-assets/sponsors/deloitte.svg" },
+  { name: "EY", logo: "/v6-assets/sponsors/ey.svg" },
+  { name: "KPMG", logo: "/v6-assets/sponsors/kpmg.svg" },
+  { name: "PWC", logo: "/v6-assets/sponsors/pwc.svg" },
+  { name: "גורניצקי" },
+  { name: "הרצוג פוקס", logo: "/v6-assets/sponsors/herzog.png" },
+  { name: "גושן ארנון" },
+];
 
 const PROJECTS: Project[] = [
   { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 — היום", partners: "3 שותפים" },
@@ -95,16 +130,23 @@ const PROJECTS: Project[] = [
   { img: "1582407947304-fd86f028f716", tag: "מימון", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
 ];
 
+const PODCASTS: { title: string; desc: string; img: string }[] = [
+  { img: "1589903308904-1010c2294adc", title: "ריבית, אינפלציה ונדל״ן – מה שמישהו צריך לומר", desc: "שרון אוחנה ונועם כרמי מנתחים את ההחלטות של בנק ישראל ומה הן אומרות למי שמחזיק נכסים." },
+  { img: "1590602847861-f357a9332bbc", title: "נדל״ן בדובאי: האמת מאחורי הבאז", desc: "שרון אוחנה ואלון בן-דוד מגיעים ישירות מדובאי עם תובנות שלא תשמעו בשום מקום אחר." },
+  { img: "1478737270239-2f02b77fc618", title: "פינוי בינוי: הכסף הגדול שכולם מפספסים", desc: "שרון אוחנה בשיחה עם נועם כרמי על למה רוב היזמים נכנסים לפינוי‑בינוי מאוחר מדי – ואיך עושים את זה נכון." },
+  { img: "1598488035139-bdbb2231ce04", title: "האם שוק הנדל״ן בישראל עומד לפני תיקון?", desc: "שרון אוחנה ואלון בן-דוד דנים בסיכונים ובהזדמנויות שמביאה עמה תקופת חוסר הוודאות." },
+];
+
 const SECONDARY_ARTICLES: ArticleItem[] = [
-  { cat: "רגולציה", title: "חוק התחדשות עירונית 2026 — מה צריך לדעת", author: "עו״ד דניאל כהן", time: "9 דק׳" },
-  { cat: "פרופטק", title: "5 פלטפורמות שמשנות את עולם המכרזים", author: "שירה אלוני", time: "6 דק׳" },
-  { cat: "מימון", title: "קרנות חוב נדל״ן — איך לבחור נכון", author: "רן מימון", time: "11 דק׳" },
+  { cat: "רגולציה", title: "חוק התחדשות עירונית 2026 — מה צריך לדעת", desc: "כל מה שיזמים ובעלי דירות חייבים להבין לפני שנכנסים לפרויקט.", author: "עו״ד דניאל כהן", time: "9 דק׳" },
+  { cat: "פרופטק", title: "5 פלטפורמות שמשנות את עולם המכרזים", desc: "הכלים הדיגיטליים שמקצרים את הדרך מהמכרז ועד הזכייה.", author: "שירה אלוני", time: "6 דק׳" },
+  { cat: "מימון", title: "קרנות חוב נדל״ן — איך לבחור נכון", desc: "מה ההבדל בין הקרנות, ואיך מזהים את הסיכון האמיתי.", author: "רן מימון", time: "11 דק׳" },
 ];
 
 const EVENTS: EventItem[] = [
   { day: "28", month: "מאי", tag: "ארוחת ערב סגורה", title: "שולחן עגול — יזמי התחדשות עירונית", desc: "20 יזמים. שולחן אחד. נושאים חמים בתעשייה. רק לחברי קהילה.", place: "מסעדת מסה, תל אביב", time: "20:00" },
   { day: "04", month: "יוני", tag: "מאסטרקלאס", title: "קרנות חוב פרטיות — A to Z", desc: "שלוש שעות עומק עם מנהלי שלוש הקרנות המובילות בארץ.", place: "WeWork גינדי, ת״א", time: "09:30" },
-  { day: "14", month: "יוני", tag: "הכנס השנתי", accent: true, title: "כנס הנדלניסטים 2026", desc: "היום הגדול של הקהילה. 42 מרצים. 14 פאנלים. +1,400 משתתפים.", place: "אקספו תל אביב", time: "09:00 — 21:00" },
+  { day: "14", month: "יוני", tag: "הכנס השנתי", accent: true, title: "כנס הנדלניסטים 2026", desc: "היום הגדול של הקהילה. 42 מרצים. 3 פאנלים. 800 משתתפים.", place: "אקספו תל אביב", time: "09:00 — 21:00" },
   { day: "02", month: "יולי", tag: "סיור מקצועי", title: "סיור בפרויקטים החדשים בתל אביב", desc: "סיור מודרך עם היזמים — ארבעה מגדלים בלב העיר.", place: "נקודת מפגש — שרונה", time: "16:00" },
 ];
 
@@ -269,6 +311,356 @@ function useStatCounters() {
   }, []);
 }
 
+function MembersCarousel({ items }: { items: MemberCategory[] }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+  const [animate, setAnimate] = useState(false);
+  const [rtl, setRtl] = useState(true);
+  const [enabled, setEnabled] = useState(false);
+  const pausedRef = useRef(false);
+
+  // Three identical copies give a buffer on both sides so the loop is seamless:
+  // we ride the middle copy and snap back by exactly one copy whenever a move
+  // crosses into a neighbour — invisibly, since every copy looks the same.
+  const loop = [...items, ...items, ...items];
+
+  // One-card step (card width + gap) and the width of a single copy.
+  const measure = () => {
+    const tr = trackRef.current;
+    if (!tr) return { step: 0, setLen: 0 };
+    const first = tr.firstElementChild as HTMLElement | null;
+    const gap = parseFloat(getComputedStyle(tr).columnGap || "0") || 0;
+    const step = first ? first.getBoundingClientRect().width + gap : 0;
+    return { step, setLen: step * items.length };
+  };
+
+  const go = (dir: number) => {
+    const { step } = measure();
+    if (step === 0) return;
+    setAnimate(true);
+    setOffset((cur) => cur + dir * step);
+  };
+
+  // After each eased move settles, re-center into the middle copy without a
+  // transition — the jump is invisible because the copies are identical.
+  const onTransitionEnd = () => {
+    const { setLen } = measure();
+    if (setLen === 0) return;
+    setAnimate(false);
+    setOffset((cur) => {
+      if (cur >= setLen * 2) return cur - setLen;
+      if (cur < setLen) return cur + setLen;
+      return cur;
+    });
+  };
+
+  // Enable transform mode above mobile; keep native touch-scroll on small screens.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 761px)");
+    const apply = () => {
+      const on = mq.matches;
+      setEnabled(on);
+      const vp = viewportRef.current;
+      if (vp) setRtl(getComputedStyle(vp).direction === "rtl");
+      setAnimate(false);
+      setOffset(on ? measure().setLen : 0);
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    window.addEventListener("resize", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      window.removeEventListener("resize", apply);
+    };
+  }, []);
+
+  // Gentle 5s auto-advance — eased via CSS transition, paused on hover.
+  useEffect(() => {
+    if (!enabled) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      if (!pausedRef.current) go(1);
+    }, 5000);
+    return () => window.clearInterval(id);
+  }, [enabled]);
+
+  const rendered = enabled ? loop : items;
+  const translate = enabled ? (rtl ? offset : -offset) : 0;
+
+  return (
+    <div
+      className="v6-members-carousel"
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+    >
+      <button
+        type="button"
+        className="v6-members__arrow v6-members__arrow--prev v6-glass"
+        aria-label="הקטגוריה הקודמת"
+        onClick={() => go(-1)}
+      >
+        <ChevronRight />
+      </button>
+      <div className="v6-members__viewport" ref={viewportRef}>
+        <div
+          className="v6-members__grid"
+          ref={trackRef}
+          onTransitionEnd={onTransitionEnd}
+          style={{
+            transform: `translate3d(${translate}px, 0, 0)`,
+            transition: animate ? undefined : "none",
+          }}
+        >
+          {rendered.map((m, i) => (
+            <article key={`${m.title}-${i}`} className="v6-member v6-glass">
+              <div className="v6-member__count">{m.count}</div>
+              <h3>{m.title}</h3>
+              <p>{m.desc}</p>
+              <div className="v6-member__avatars" aria-hidden>
+                {m.avatars.map((a) => (
+                  <span key={a} style={{ backgroundImage: `url(https://i.pravatar.cc/80?img=${a})` }} />
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <button
+        type="button"
+        className="v6-members__arrow v6-members__arrow--next v6-glass"
+        aria-label="הקטגוריה הבאה"
+        onClick={() => go(1)}
+      >
+        <ChevronLeft />
+      </button>
+    </div>
+  );
+}
+
+function NadlanistCarousel({ people }: { people: Nadlanist[] }) {
+  const [i, setI] = useState(0);
+  const pausedRef = useRef(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      if (!pausedRef.current) setI((p) => (p + 1) % people.length);
+    }, 7000);
+    return () => window.clearInterval(id);
+  }, [people.length]);
+
+  const p = people[i];
+
+  return (
+    <article
+      className="v6-story v6-story--lg v6-glass v6-meet"
+      data-reveal
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+    >
+      <figure className="v6-story__img v6-meet__img">
+        <img key={`meet-img-${i}`} src={`https://images.unsplash.com/photo-${p.img}?w=1000&q=80`} alt={p.name} />
+      </figure>
+      <div className="v6-story__body">
+        <span className="v6-meet__eyebrow"><span className="v6-dot" />הכר את הנדלניסט</span>
+        <div className="v6-meet__slide" key={`meet-${i}`}>
+          <blockquote>{p.quote}</blockquote>
+          <div className="v6-story__by">
+            <div>
+              <div className="v6-story__name">{p.name}</div>
+              <div className="v6-story__role">{p.role}</div>
+            </div>
+          </div>
+        </div>
+        <div className="v6-cardfoot">
+          <a href="#" className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
+          <div className="v6-cardnav">
+            <button type="button" className="v6-cardarrow" aria-label="הנדלניסט הקודם" onClick={() => setI((prev) => (prev - 1 + people.length) % people.length)}>
+              <ChevronRight />
+            </button>
+            <div className="v6-carddots" aria-label="הנדלניסטים">
+              {people.map((_, n) => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`v6-carddot${n === i ? " is-active" : ""}`}
+                  aria-label={`נדלניסט ${n + 1}`}
+                  onClick={() => setI(n)}
+                />
+              ))}
+            </div>
+            <button type="button" className="v6-cardarrow" aria-label="הנדלניסט הבא" onClick={() => setI((prev) => (prev + 1) % people.length)}>
+              <ChevronLeft />
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function JobRotator({ jobs }: { jobs: JobOffer[] }) {
+  const [i, setI] = useState(0);
+  const pausedRef = useRef(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      if (!pausedRef.current) setI((p) => (p + 1) % jobs.length);
+    }, 7000);
+    return () => window.clearInterval(id);
+  }, [jobs.length]);
+
+  const j = jobs[i];
+
+  return (
+    <article
+      className="v6-jobrot v6-glass"
+      data-reveal
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+      aria-label="הצעות עבודה בקהילה"
+    >
+      <figure className="v6-jobrot__img">
+        <img key={`job-img-${i}`} src={`https://images.unsplash.com/photo-${j.img}?w=1100&q=80`} alt="" />
+        <span className="v6-jobrot__badge">משרה פתוחה</span>
+      </figure>
+      <div className="v6-jobrot__body">
+        <div className="v6-jobrot__slide" key={`job-${i}`}>
+          <span className="v6-jobrot__tag">{j.tag}</span>
+          <h3>{j.title}</h3>
+          <div className="v6-jobrot__meta">
+            <span>{j.company}</span><span>·</span><span>{j.location}</span>
+          </div>
+          <p>{j.desc}</p>
+        </div>
+        <div className="v6-cardfoot">
+          <a href="#" className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
+          <div className="v6-cardnav">
+            <button type="button" className="v6-cardarrow" aria-label="המשרה הקודמת" onClick={() => setI((prev) => (prev - 1 + jobs.length) % jobs.length)}>
+              <ChevronRight />
+            </button>
+            <div className="v6-carddots">
+              {jobs.map((_, n) => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`v6-carddot${n === i ? " is-active" : ""}`}
+                  aria-label={`משרה ${n + 1}`}
+                  onClick={() => setI(n)}
+                />
+              ))}
+            </div>
+            <button type="button" className="v6-cardarrow" aria-label="המשרה הבאה" onClick={() => setI((prev) => (prev + 1) % jobs.length)}>
+              <ChevronLeft />
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function CommunitiesCarousel({ items }: { items: { id: number; logo: string; label: string }[] }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+  const [animate, setAnimate] = useState(false);
+  const [rtl, setRtl] = useState(true);
+  const [enabled, setEnabled] = useState(false);
+  const pausedRef = useRef(false);
+  const loop = [...items, ...items, ...items];
+
+  const measure = () => {
+    const tr = trackRef.current;
+    if (!tr) return { step: 0, setLen: 0 };
+    const first = tr.firstElementChild as HTMLElement | null;
+    const gap = parseFloat(getComputedStyle(tr).columnGap || "0") || 0;
+    const step = first ? first.getBoundingClientRect().width + gap : 0;
+    return { step, setLen: step * items.length };
+  };
+
+  const go = (dir: number) => {
+    const { step } = measure();
+    if (step === 0) return;
+    setAnimate(true);
+    setOffset((cur) => cur + dir * step);
+  };
+
+  const onTransitionEnd = () => {
+    const { setLen } = measure();
+    if (setLen === 0) return;
+    setAnimate(false);
+    setOffset((cur) => {
+      if (cur >= setLen * 2) return cur - setLen;
+      if (cur < setLen) return cur + setLen;
+      return cur;
+    });
+  };
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 761px)");
+    const apply = () => {
+      const on = mq.matches;
+      setEnabled(on);
+      const vp = viewportRef.current;
+      if (vp) setRtl(getComputedStyle(vp).direction === "rtl");
+      setAnimate(false);
+      setOffset(on ? measure().setLen : 0);
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    window.addEventListener("resize", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      window.removeEventListener("resize", apply);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      if (!pausedRef.current) go(1);
+    }, 4000);
+    return () => window.clearInterval(id);
+  }, [enabled]);
+
+  const rendered = enabled ? loop : items;
+  const translate = enabled ? (rtl ? offset : -offset) : 0;
+
+  return (
+    <div
+      className="v6-comm-carousel"
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+    >
+      <button type="button" className="v6-members__arrow v6-members__arrow--prev v6-glass" aria-label="הקהילה הקודמת" onClick={() => go(-1)}>
+        <ChevronRight />
+      </button>
+      <div className="v6-comm__viewport" ref={viewportRef}>
+        <div
+          className="v6-comm__track"
+          ref={trackRef}
+          onTransitionEnd={onTransitionEnd}
+          style={{ transform: `translate3d(${translate}px, 0, 0)`, transition: animate ? undefined : "none" }}
+        >
+          {rendered.map((c, i) => (
+            <div key={`${c.id}-${i}`} className="v6-comm">
+              <div className="v6-comm__logo"><img src={c.logo} alt="" /></div>
+              <span className="v6-comm__label">{c.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <button type="button" className="v6-members__arrow v6-members__arrow--next v6-glass" aria-label="הקהילה הבאה" onClick={() => go(1)}>
+        <ChevronLeft />
+      </button>
+    </div>
+  );
+}
+
 export default function HomePageV6() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sent, setSent] = useState(false);
@@ -358,10 +750,6 @@ export default function HomePageV6() {
         <div className="v6-hero__glow" aria-hidden />
 
         <div className="v6-hero__content">
-          <div className="v6-hero__eyebrow v6-glass">
-            <span className="v6-dot" />
-            <span>קהילה פעילה · 2017 — היום</span>
-          </div>
           <h1 className="v6-hero__title">
             <span className="v6-line"><span>הקהילה</span></span>
             <span className="v6-line"><span>שמחברת את עולם</span></span>
@@ -401,6 +789,15 @@ export default function HomePageV6() {
                 <span className="v6-diamond">◆</span>
               </Fragment>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sponsorship strip */}
+      <section className="v6-section">
+        <div className="v6-container">
+          <div className="v6-sponsorstrip v6-glass" data-reveal>
+            <span className="v6-sponsorstrip__title">Sponsorship#1</span>
           </div>
         </div>
       </section>
@@ -467,6 +864,16 @@ export default function HomePageV6() {
         </div>
       </section>
 
+      {/* Communities */}
+      <section className="v6-section" id="communities">
+        <div className="v6-container">
+          <header className="v6-section-head v6-section-head--comm" data-reveal>
+            <h2>הקהילות של <em>הנדלניסטים</em></h2>
+          </header>
+          <CommunitiesCarousel items={COMMUNITIES} />
+        </div>
+      </section>
+
       {/* Members */}
       <section className="v6-section" id="members">
         <div className="v6-container">
@@ -475,119 +882,31 @@ export default function HomePageV6() {
             <h2>הערך הוא <em>האנשים</em>.</h2>
             <p className="v6-section-head__sub">עשרה עולמות מקצועיים. אלפי אנשי מקצוע. גג אחד.</p>
           </header>
-          <div className="v6-members__grid">
-            {MEMBERS.map((m) => (
-              <article key={m.title} className="v6-member v6-glass" data-reveal>
-                <div className="v6-member__count">{m.count}</div>
-                <h3>{m.title}</h3>
-                <p>{m.desc}</p>
-                <div className="v6-member__avatars" aria-hidden>
-                  {m.avatars.map((a) => (
-                    <span key={a} style={{ backgroundImage: `url(https://i.pravatar.cc/80?img=${a})` }} />
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <header className="v6-section-head v6-section-head--center" data-reveal>
-            <span className="v6-eyebrow"><span className="v6-dot" />למה להצטרף</span>
-            <h2>שמונה סיבות.<br /><em>אחת מספיקה.</em></h2>
-          </header>
-          <div className="v6-why__grid">
-            {WHY.map((w) => (
-              <article key={w.num} className="v6-why__card v6-glass" data-reveal>
-                <div className="v6-why__num">{w.num}</div>
-                <h3>{w.title}</h3>
-                <p>{w.desc}</p>
-              </article>
-            ))}
-          </div>
+          <MembersCarousel items={MEMBERS} />
         </div>
       </section>
 
       {/* Stories */}
       <section className="v6-section" id="stories">
         <div className="v6-container">
-          <header className="v6-section-head" data-reveal>
-            <span className="v6-eyebrow"><span className="v6-dot" />סיפורי הצלחה</span>
-            <h2>חיבורים שהפכו <em>לעסקאות.</em></h2>
-            <p className="v6-section-head__sub">לא טקסט שיווקי. סיפורים אמיתיים של אנשים אמיתיים בקהילה.</p>
+          <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
+            <h2>חיבורים שהופכים <em>לעסקאות</em></h2>
           </header>
           <div className="v6-stories__grid">
-            <article className="v6-story v6-story--lg v6-glass" data-reveal>
-              <figure className="v6-story__img">
-                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=900&q=80" alt="" />
-              </figure>
-              <div className="v6-story__body">
-                <blockquote>״הכרתי את השותף שלי לפרויקט של 40 יחידות דיור בערב סוף שנה של הנדלניסטים. שש שעות של שיחות הפכו לשותפות של שלוש שנים.״</blockquote>
-                <div className="v6-story__by">
-                  <div className="v6-story__avatar" style={{ backgroundImage: "url(https://i.pravatar.cc/120?img=68)" }} />
-                  <div>
-                    <div className="v6-story__name">איתי לבנון</div>
-                    <div className="v6-story__role">יזם, לבנון נדל״ן</div>
-                  </div>
-                </div>
-              </div>
-            </article>
-            {STORIES.map((s) => (
-              <article key={s.name} className="v6-story v6-glass" data-reveal>
-                <span className="v6-story__tag">{s.tag}</span>
-                <blockquote>{s.quote}</blockquote>
-                <div className="v6-story__by">
-                  <div className="v6-story__avatar" style={{ backgroundImage: `url(https://i.pravatar.cc/120?img=${s.avatar})` }} />
-                  <div>
-                    <div className="v6-story__name">{s.name}</div>
-                    <div className="v6-story__role">{s.role}</div>
-                  </div>
-                </div>
-              </article>
-            ))}
-            <article className="v6-story v6-story--lg v6-story--accent v6-glass" data-reveal>
-              <figure className="v6-story__img">
-                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900&q=80" alt="" />
-              </figure>
-              <div className="v6-story__body">
-                <blockquote>״הצטרפנו לקהילה כסטארטאפ קטן. שנתיים אחרי, חצי מבסיס הלקוחות שלנו הם חברים בקהילה. זה לא מקרה.״</blockquote>
-                <div className="v6-story__by">
-                  <div className="v6-story__avatar" style={{ backgroundImage: "url(https://i.pravatar.cc/120?img=24)" }} />
-                  <div>
-                    <div className="v6-story__name">שירה אלוני</div>
-                    <div className="v6-story__role">מייסדת, PropAI</div>
-                  </div>
-                </div>
-              </div>
-            </article>
+            <NadlanistCarousel people={NADLANISTIM} />
+            <JobRotator jobs={JOB_OFFERS} />
           </div>
         </div>
       </section>
 
-      {/* Recommendations */}
+      {/* Feature row */}
       <section className="v6-section">
         <div className="v6-container">
-          <header className="v6-section-head v6-section-head--center" data-reveal>
-            <span className="v6-eyebrow"><span className="v6-dot" />המלצות מקצועיות</span>
-            <h2>מה אומרים <em>עלינו.</em></h2>
-          </header>
-          <div className="v6-recos__grid">
-            {RECOS.map((r) => (
-              <article key={r.name} className="v6-reco" data-reveal>
-                <div className="v6-reco__video v6-glass">
-                  <img src={`https://images.unsplash.com/photo-${r.img}?w=900&q=80`} alt="" />
-                  <button className="v6-reco__play" aria-label="נגן וידאו">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
-                  </button>
-                  <div className="v6-reco__duration">{r.duration}</div>
-                </div>
-                <div className="v6-reco__meta">
-                  <div className="v6-reco__name">{r.name}</div>
-                  <div className="v6-reco__role">{r.role}</div>
-                </div>
+          <div className="v6-features__grid">
+            {FEATURES.map(([title, desc]) => (
+              <article key={title} className="v6-feature v6-glass" data-reveal>
+                <h3>{title}</h3>
+                <p>{desc}</p>
               </article>
             ))}
           </div>
@@ -597,7 +916,7 @@ export default function HomePageV6() {
       {/* Featured event */}
       <section className="v6-featured" id="featured">
         <div className="v6-featured__bg" data-parallax="0.25">
-          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=2400&q=80" alt="" />
+          <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=2400&q=80" alt="" />
         </div>
         <div className="v6-container v6-featured__grid">
           <div className="v6-featured__text">
@@ -630,6 +949,7 @@ export default function HomePageV6() {
                 <ArrowIcon />
               </a>
               <a href="#" className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תוכנית הכנס</a>
+              <a href="#" className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תמונות מהכנס שעבר</a>
             </div>
           </div>
           <aside className="v6-featured__card v6-glass" data-reveal>
@@ -647,27 +967,62 @@ export default function HomePageV6() {
         </div>
       </section>
 
+      {/* Sponsorship strip */}
+      <section className="v6-section">
+        <div className="v6-container">
+          <div className="v6-sponsorstrip v6-sponsorstrip--sm v6-glass" data-reveal>
+            <span className="v6-sponsorstrip__title">Sponsorship#2</span>
+          </div>
+        </div>
+      </section>
+
       {/* Sponsors */}
       <section className="v6-section">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--center" data-reveal>
             <span className="v6-eyebrow"><span className="v6-dot" />שותפים</span>
-            <h2>עומדים <em>איתנו.</em></h2>
+            <h2>עובדים <em>איתנו.</em></h2>
           </header>
           <div className="v6-sponsors__group" data-reveal>
             <h4 className="v6-sponsors__title">שותפים קבועים</h4>
             <div className="v6-sponsors__logos">
-              {SPONSORS_MAIN.map((n) => (
-                <div key={n} className="v6-sponsors__logo">{n}</div>
+              {SPONSORS_MAIN.map((s) => (
+                <div key={s.name} className="v6-sponsors__logo">
+                  {s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name}
+                </div>
               ))}
             </div>
           </div>
           <div className="v6-sponsors__group" data-reveal>
             <h4 className="v6-sponsors__title">נותני חסות לאירועים</h4>
             <div className="v6-sponsors__logos v6-sponsors__logos--sm">
-              {SPONSORS_EVENT.map((n) => (
-                <div key={n} className="v6-sponsors__logo">{n}</div>
+              {SPONSORS_EVENT.map((s) => (
+                <div key={s.name} className="v6-sponsors__logo">
+                  {s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name}
+                </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Young Nadlanistim feature banner */}
+      <section className="v6-section">
+        <div className="v6-container">
+          <header className="v6-section-head" data-reveal>
+            <span className="v6-eyebrow"><span className="v6-dot" />פרויקט מיוחד</span>
+            <h2>נבחרת הנדלניסטים הצעירים</h2>
+          </header>
+          <div className="v6-youth" data-reveal>
+            <div className="v6-youth__bg">
+              <img src="/group-people-new-year-s-party.jpg" alt="" />
+            </div>
+            <div className="v6-youth__content">
+              <p>25 נדלניסטים ונדלניסטיות מתחת לגיל 45 שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
+              <a href="#" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+                <span>צפו בפרויקט המיוחד</span>
+                <ArrowIcon />
+              </a>
             </div>
           </div>
         </div>
@@ -676,15 +1031,21 @@ export default function HomePageV6() {
       {/* Projects */}
       <section className="v6-section">
         <div className="v6-container">
-          <header className="v6-section-head" data-reveal>
-            <span className="v6-eyebrow"><span className="v6-dot" />פרויקטים ושיתופי פעולה</span>
-            <h2>דברים <em>שקרו כאן.</em></h2>
-            <p className="v6-section-head__sub">פרויקטים, עסקאות ושיתופי פעולה שנולדו בתוך הקהילה.</p>
+          <header className="v6-section-head v6-section-head--row" data-reveal>
+            <div>
+              <span className="v6-eyebrow"><span className="v6-dot" />פרויקטים ושיתופי פעולה</span>
+              <h2>דברים <em>שקורים כאן.</em></h2>
+              <p className="v6-section-head__sub">פרויקטים, עסקאות ושיתופי פעולה שנולדו בתוך הקהילה.</p>
+            </div>
+            <a href="#" className="v6-link-arrow">
+              <span>כל ההצעות</span>
+              <ArrowIcon />
+            </a>
           </header>
           <div className="v6-projects__grid">
             {PROJECTS.map((p) => (
-              <article key={p.title} className="v6-project" data-reveal>
-                <figure className="v6-project__img v6-glass">
+              <article key={p.title} className="v6-project v6-glass" data-reveal>
+                <figure className="v6-project__img">
                   <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
                   <div className="v6-project__tag">{p.tag}</div>
                 </figure>
@@ -707,7 +1068,7 @@ export default function HomePageV6() {
           <header className="v6-section-head v6-section-head--row" data-reveal>
             <div>
               <span className="v6-eyebrow"><span className="v6-dot" />תוכן מקצועי</span>
-              <h2>קריאה <em>איכותית.</em></h2>
+              <h2>נדלניסטים <em>כותבים</em></h2>
             </div>
             <a href="#" className="v6-link-arrow">
               <span>כל הכתבות</span>
@@ -732,8 +1093,43 @@ export default function HomePageV6() {
               <article key={a.title} className="v6-article v6-glass" data-reveal>
                 <div className="v6-article__cat">{a.cat}</div>
                 <h3>{a.title}</h3>
+                <p className="v6-article__excerpt">{a.desc}</p>
                 <div className="v6-article__meta">
                   <span>{a.author}</span><span>·</span><span>{a.time}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nadlpodcast */}
+      <section className="v6-section" id="podcast">
+        <div className="v6-container">
+          <header className="v6-section-head v6-section-head--row" data-reveal>
+            <div>
+              <span className="v6-eyebrow"><span className="v6-dot" />נדלפודקאסט</span>
+              <h2>שיחות שאסור <em>לפספס.</em></h2>
+              <p className="v6-section-head__sub">שיחות עומק עם האנשים שמזיזים את שוק הנדל״ן בישראל.</p>
+            </div>
+            <a href="#" className="v6-link-arrow">
+              <span>כל הפרקים</span>
+              <ArrowIcon />
+            </a>
+          </header>
+          <div className="v6-podcasts__grid">
+            {PODCASTS.map((p) => (
+              <article key={p.title} className="v6-podcast v6-glass" data-reveal>
+                <figure className="v6-podcast__img">
+                  <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
+                </figure>
+                <div className="v6-podcast__body">
+                  <h3>{p.title}</h3>
+                  <p>{p.desc}</p>
+                  <a href="#" className="v6-link-arrow v6-podcast__cta">
+                    <span>לשמיעה</span>
+                    <ArrowIcon />
+                  </a>
                 </div>
               </article>
             ))}
@@ -750,7 +1146,7 @@ export default function HomePageV6() {
               <h2>הקלנדר <em>שלכם.</em></h2>
             </div>
             <a href="#" className="v6-link-arrow">
-              <span>לכל האירועים</span>
+              <span>כל האירועים</span>
               <ArrowIcon />
             </a>
           </header>
@@ -840,16 +1236,28 @@ export default function HomePageV6() {
                 {ROLE_OPTIONS.map((o) => <option key={o}>{o}</option>)}
               </select>
             </div>
+            <label className="v6-contact__consent" htmlFor="f-consent">
+              <input id="f-consent" type="checkbox" required />
+              <span>מוסכמים עלי מדיניות הפרטיות של האתר וקבלת דיוורים מהקהילה.</span>
+            </label>
             <button type="submit" className="v6-btn v6-btn--primary v6-btn--block v6-btn--lg" data-magnetic="">
               <span>שליחת בקשה</span>
               <ArrowIcon />
             </button>
-            <p className="v6-contact__fine">בלחיצה על שליחה את/ה מאשר/ת קבלת תקשורת מהקהילה.</p>
             <div className="v6-contact__sent-msg">
               <strong>הבקשה נשלחה. ✓</strong>
               <span>נחזור אליך תוך 24 שעות.</span>
             </div>
           </form>
+        </div>
+      </section>
+
+      {/* Sponsorship strip */}
+      <section className="v6-section">
+        <div className="v6-container">
+          <div className="v6-sponsorstrip v6-glass" data-reveal>
+            <span className="v6-sponsorstrip__title">Sponsorship#3</span>
+          </div>
         </div>
       </section>
 
