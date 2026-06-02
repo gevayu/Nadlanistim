@@ -269,7 +269,7 @@
 .v6-hero__title .v6-line { display: block; overflow: hidden; padding-bottom: 0.05em; }
 .v6-hero__title .v6-line > span { display: block; }
 .v6-root em { font-style: normal; background: var(--grad-accent-text); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
-.v6-hero__sub { font-size: clamp(17px, 1.4vw, 21px); font-weight: 300; line-height: 1.6; color: var(--ink-2); max-width: 820px; margin-bottom: 88px; }
+.v6-root .v6-hero__sub { font-size: clamp(17px, 1.4vw, 21px); font-weight: 300; line-height: 1.6; color: var(--ink-2); max-width: 820px; margin-bottom: 76px; }
 .v6-hero__cta { display: flex; gap: 16px; flex-wrap: wrap; }
 
 .v6-hero__bottom {
@@ -676,7 +676,7 @@
 
   .v6-hero { padding: 120px var(--gutter) 130px; min-height: auto; }
   .v6-hero__title { font-size: clamp(36px, 11vw, 52px); margin-bottom: 24px; max-width: none; }
-  .v6-hero__sub { font-size: 15px; margin-bottom: 32px; line-height: 1.55; }
+  .v6-root .v6-hero__sub { font-size: 15px; margin-bottom: 32px; line-height: 1.55; }
   .v6-hero__sub br { display: none; }
   .v6-hero__cta { flex-direction: column; align-items: stretch; gap: 10px; }
   .v6-hero__cta .v6-btn { width: 100%; }

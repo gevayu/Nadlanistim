@@ -1009,7 +1009,7 @@ export default function HomePageV6() {
       {/* Young Nadlanistim feature banner */}
       <section className="v6-section">
         <div className="v6-container">
-          <header className="v6-section-head" data-reveal>
+          <header className="v6-section-head v6-section-head--nowrap" data-reveal>
             <span className="v6-eyebrow"><span className="v6-dot" />פרויקט מיוחד</span>
             <h2>נבחרת הנדלניסטים הצעירים</h2>
           </header>
