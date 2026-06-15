@@ -175,6 +175,7 @@
 .v6-section-head--row { max-width: none; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; }
 .v6-section-head h2 { font-size: clamp(40px, 5.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; }
 .v6-section-head__sub { margin-top: 24px; font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); font-weight: 300; line-height: 1.5; }
+.v6-tag-members { display: inline-block; vertical-align: middle; margin-inline-start: 12px; padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--cyan); background: rgba(34,211,238,.12); border: 1px solid rgba(34,211,238,.32); white-space: nowrap; }
 
 .v6-link-arrow {
   display: inline-flex; align-items: center; gap: 8px; font-weight: 500; font-size: 15px; color: var(--ink);
@@ -375,7 +376,7 @@
 .v6-member__avatars span:first-child { margin-inline-start: 0; }
 
 /* ===== Stories ===== */
-.v6-stories__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.v6-stories__grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
 .v6-story { padding: 36px; border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 24px; transition: transform .5s var(--t); }
 .v6-story:hover { transform: translateY(-4px); }
 .v6-story--lg { grid-column: span 2; padding: 0; overflow: hidden; flex-direction: row; }
@@ -398,7 +399,7 @@
 .v6-meet__eyebrow { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 7px 14px; border-radius: 999px; background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.25); color: #C4B5FD; font-size: 12px; font-weight: 600; letter-spacing: .02em; }
 .v6-meet__slide { display: flex; flex-direction: column; gap: 24px; animation: v6-fade-up .6s var(--t); }
 .v6-meet__img { overflow: hidden; }
-.v6-meet__img img { transform: scale(1.18); transform-origin: center 22%; animation: v6-fade .8s var(--t); }
+.v6-meet__img img { object-position: center center; transform: scale(1.06); transform-origin: center center; animation: v6-fade .8s var(--t); }
 
 /* ===== Shared card footer (nav + CTA) for rotating cards ===== */
 .v6-cardfoot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; }
@@ -454,7 +455,7 @@
 .v6-reco__role { font-size: 14px; color: var(--muted); font-weight: 300; }
 
 /* ===== Featured ===== */
-.v6-featured { position: relative; padding: clamp(120px, 14vw, 200px) 0; color: var(--ink); overflow: hidden; }
+.v6-featured { position: relative; padding: clamp(56px, 7vw, 96px) 0; color: var(--ink); overflow: hidden; }
 .v6-featured__bg { position: absolute; inset: 0; z-index: 0; }
 .v6-featured__bg img { width: 100%; height: 115%; object-fit: cover; filter: brightness(.3) contrast(1.1) saturate(.7); }
 .v6-featured__bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(139,92,246,.25), transparent 60%), linear-gradient(135deg, rgba(7,8,15,.7) 0%, rgba(7,8,15,.5) 100%); }
@@ -490,8 +491,8 @@
 .v6-sponsors__logo { padding: 28px 14px; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: var(--muted); border-radius: var(--r-sm); background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); text-align: center; letter-spacing: -0.01em; transition: all .4s var(--t); }
 .v6-sponsors__logos--sm .v6-sponsors__logo { padding: 22px 10px; font-size: 13px; }
 .v6-sponsors__logo:hover { color: var(--ink); background: var(--glass-bg-strong); border-color: var(--glass-border-strong); transform: translateY(-2px); }
-.v6-sponsors__img { max-width: 80%; max-height: 34px; width: auto; height: auto; object-fit: contain; filter: brightness(0) invert(1); opacity: .6; transition: opacity .4s var(--t); }
-.v6-sponsors__logos--sm .v6-sponsors__img { max-height: 28px; }
+.v6-sponsors__img { height: 11px; width: auto; max-width: 70%; object-fit: contain; filter: brightness(0) invert(1); opacity: .6; transition: opacity .4s var(--t); }
+.v6-sponsors__logos--sm .v6-sponsors__img { height: 10px; }
 .v6-sponsors__logo:hover .v6-sponsors__img { opacity: 1; }
 
 /* ===== Projects ===== */
@@ -502,6 +503,7 @@
 .v6-project__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--t); opacity: .9; }
 .v6-project:hover .v6-project__img img { transform: scale(1.06); opacity: 1; }
 .v6-project__tag { position: absolute; top: 14px; right: 14px; z-index: 4; background: rgba(7,8,15,.55); backdrop-filter: blur(12px); color: var(--ink); padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; border: 1px solid rgba(255,255,255,.12); }
+.v6-project__members { position: absolute; bottom: 14px; left: 14px; z-index: 4; padding: 5px 11px; border-radius: 999px; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: var(--cyan); background: rgba(7,8,15,.55); backdrop-filter: blur(12px); border: 1px solid rgba(34,211,238,.32); }
 .v6-project__body { padding: 22px 22px 24px; }
 .v6-project__body h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; }
 .v6-project__body p { font-size: 14px; color: var(--muted); line-height: 1.55; font-weight: 300; margin-bottom: 12px; }
@@ -548,6 +550,7 @@
 /* ===== Events ===== */
 .v6-events__list { display: flex; flex-direction: column; gap: 16px; }
 .v6-event { display: grid; grid-template-columns: 160px 1fr 160px; gap: 32px; align-items: center; padding: 32px; border-radius: var(--r); transition: all .4s var(--t); }
+.v6-event--nodate { grid-template-columns: 1fr auto; }
 .v6-event:hover { background: var(--glass-bg-strong); transform: translateX(-6px); }
 .v6-event__date { display: flex; align-items: baseline; gap: 8px; }
 .v6-event__day { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -767,7 +770,7 @@
   .v6-reco__name { font-size: 15px; }
   .v6-reco__role { font-size: 12.5px; }
 
-  .v6-featured { padding: 80px 0; }
+  .v6-featured { padding: 48px 0; }
   .v6-featured__grid { gap: 32px; }
   .v6-featured__title { font-size: clamp(40px, 11vw, 54px); margin-bottom: 22px; }
   .v6-featured__desc { font-size: 15px; margin-bottom: 28px; }

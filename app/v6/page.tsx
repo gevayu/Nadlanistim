@@ -28,18 +28,15 @@ type EventItem = { day: string; month: string; tag: string; accent?: boolean; ti
 type ArticleItem = { cat: string; title: string; desc: string; author: string; time: string };
 
 const NAV_LINKS: [string, string][] = [
-  ["#about", "הקהילה"],
-  ["#communities", "קהילות"],
-  ["#members", "חברי הקהילה"],
-  ["#stories", "סיפורי הצלחה"],
+  ["#stories", "קריירה"],
   ["#podcast", "פודקאסט"],
-  ["#featured", "הכנס"],
+  ["#dealroom", "חדר העסקאות"],
   ["#events", "אירועים"],
   ["#articles", "תוכן מקצועי"],
   ["#contact", "צרו קשר"],
 ];
 
-const MARQUEE = ["יזמים", "משקיעים", "שמאים", "עורכי דין", "קבלנים", "מתווכים", "אדריכלים", "חברות מימון", "פרופטק", "שיווק נדל״ן"];
+const MARQUEE = ["יזמים", "משקיעים", "שמאים", "עורכי דין", "קבלנים", "אדריכלים", "חברות מימון", "פרופטק", "שיווק נדל״ן"];
 
 const STATS = [
   { count: 3400, label: "חברי קהילה פעילים", suffix: "+", width: "96%" },
@@ -61,7 +58,6 @@ const MEMBERS: MemberCategory[] = [
   { count: "118", title: "שמאי מקרקעין", desc: "שמאים מובילים בענף, שמלווים עסקאות, פרויקטים ובדיקות נאותות.", avatars: [8, 18, 28] },
   { count: "294", title: "עורכי דין", desc: "משרדי עו״ד בנדל״ן, ליווי עסקאות, התחדשות עירונית ומיסוי.", avatars: [5, 25, 45] },
   { count: "208", title: "קבלנים ומבצעים", desc: "חברות ביצוע, קבלני שלד וגמר, ספקי תשתיות ושירותי בנייה.", avatars: [14, 34, 54] },
-  { count: "521", title: "מתווכים", desc: "סוכנויות תיווך ומתווכים פרטיים — מסחרי, מגורים, יוקרה.", avatars: [20, 40, 60] },
   { count: "142", title: "אדריכלים ומתכננים", desc: "משרדי תכנון ובינוי ערים, אדריכלי פנים ועיצוב מבנים.", avatars: [2, 32, 52] },
   { count: "94", title: "חברות מימון", desc: "בנקאים, יועצי משכנתאות, קרנות חוב והון פרטי.", avatars: [17, 37, 57] },
   { count: "76", title: "פרופטק", desc: "סטארטאפים וחברות טכנולוגיה שמשנות את ענף הנדל״ן.", avatars: [11, 31, 51] },
@@ -78,16 +74,10 @@ const NADLANISTIM: Nadlanist[] = [
 ];
 
 const JOB_OFFERS: JobOffer[] = [
-  { tag: "דרושים · משרת ניהול", title: "סמנכ״ל/ית פיתוח עסקי", company: "קרן השקעות נדל״ן", location: "תל אביב", desc: "הזדמנות נדירה להשתלב בהנהלת קרן השקעות נדל״ן בצמיחה — איתור, ייזום וניהול עסקאות קרקע ברחבי הארץ.", img: "1497366754035-f200968a6e72" },
-  { tag: "דרושים · שמאות", title: "שמאי/ת מקרקעין בכיר/ה", company: "פירמת שמאות מובילה", location: "רמת גן", desc: "פירמת שמאות גדולה מגייסת שמאי/ת מקרקעין לליווי פיננסי של פרויקטים ועריכת דוחות אפס לגופים מוסדיים.", img: "1554469384-e58fac16e23a" },
-  { tag: "דרושים · ניהול פרויקטים", title: "מנהל/ת פרויקטים בנדל״ן", company: "חברה יזמית מובילה", location: "אזור המרכז", desc: "לחברה יזמית מובילה באזור המרכז דרוש/ה מנהל/ת פרויקטים להובלת מיזמי פינוי בינוי ותמ״א 38 מקצה לקצה.", img: "1486406146926-c627a92ad1ab" },
-];
-
-const FEATURES: [string, string][] = [
-  ["זירת עסקאות", "חיבור בין הון ליזמות מתחת לרדאר."],
-  ["נטוורקינג", "גישה ישירה למקבלי החלטות במשק."],
-  ["פודקאסט", "שיחות עומק עם האנשים שמזיזים את הקירות."],
-  ["משרות פרימיום", "לוח דרושים אקסקלוסיבי לתפקידי הנהלה ופיתוח."],
+  { tag: "קריירה · משרת ניהול", title: "סמנכ״ל/ית פיתוח עסקי", company: "קרן השקעות נדל״ן", location: "תל אביב", desc: "הזדמנות נדירה להשתלב בהנהלת קרן השקעות נדל״ן בצמיחה — איתור, ייזום וניהול עסקאות קרקע ברחבי הארץ.", img: "1556157382-97eda2d62296" },
+  { tag: "קריירה · שמאות", title: "שמאי/ת מקרקעין בכיר/ה", company: "פירמת שמאות מובילה", location: "רמת גן", desc: "פירמת שמאות גדולה מגייסת שמאי/ת מקרקעין לליווי פיננסי של פרויקטים ועריכת דוחות אפס לגופים מוסדיים.", img: "1551836022-d5d88e9218df" },
+  { tag: "קריירה · ניהול פרויקטים", title: "מנהל/ת פרויקטים בנדל״ן", company: "חברה יזמית מובילה", location: "אזור המרכז", desc: "לחברה יזמית מובילה באזור המרכז דרוש/ה מנהל/ת פרויקטים להובלת מיזמי פינוי בינוי ותמ״א 38 מקצה לקצה.", img: "1521119989659-a83eee488004" },
+  { tag: "קריירה · שיווק ומכירות", title: "מנהל/ת שיווק ומכירות", company: "חברת שיווק נדל״ן מובילה", location: "הרצליה פיתוח", desc: "חברת שיווק נדל״ן מובילה מגייסת מנהל/ת שיווק ומכירות להובלת קמפיינים ומכירת פרויקטי יוקרה.", img: "1507003211169-0a1dd7228f2d" },
 ];
 
 const COMMUNITIES = Array.from({ length: 10 }, (_, i) => ({
@@ -127,7 +117,7 @@ const PROJECTS: Project[] = [
   { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 — היום", partners: "3 שותפים" },
   { img: "1486406146926-c627a92ad1ab", tag: "קרקע יזמית", title: "מתחם מסחרי, ראש העין", desc: "קבוצת השקעה של 14 חברי קהילה. הון של 28M ש״ח.", period: "2023", partners: "14 שותפים" },
   { img: "1448630360428-65456885c650", tag: "מגדל יוקרה", title: "מגדל הברזל, רמת גן", desc: "שותפות יזמית בין שני חברים. 32 קומות, מסחר ומגורים.", period: "2022 — 2025", partners: "2 שותפים" },
-  { img: "1582407947304-fd86f028f716", tag: "מימון", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
+  { img: "1582407947304-fd86f028f716", tag: "קומבינציה", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
 ];
 
 const PODCASTS: { title: string; desc: string; img: string }[] = [
@@ -148,6 +138,12 @@ const EVENTS: EventItem[] = [
   { day: "04", month: "יוני", tag: "מאסטרקלאס", title: "קרנות חוב פרטיות — A to Z", desc: "שלוש שעות עומק עם מנהלי שלוש הקרנות המובילות בארץ.", place: "WeWork גינדי, ת״א", time: "09:30" },
   { day: "14", month: "יוני", tag: "הכנס השנתי", accent: true, title: "כנס הנדלניסטים 2026", desc: "היום הגדול של הקהילה. 42 מרצים. 3 פאנלים. 800 משתתפים.", place: "אקספו תל אביב", time: "09:00 — 21:00" },
   { day: "02", month: "יולי", tag: "סיור מקצועי", title: "סיור בפרויקטים החדשים בתל אביב", desc: "סיור מודרך עם היזמים — ארבעה מגדלים בלב העיר.", place: "נקודת מפגש — שרונה", time: "16:00" },
+];
+
+const PAST_EVENTS = [
+  { tag: "הכנס השנתי", title: "כנס הנדלניסטים 2025", desc: "יום שלם של פאנלים, עסקאות ונטוורקינג עם מיטב אנשי הענף.", place: "אקספו תל אביב", time: "מאי 2025" },
+  { tag: "משלחת בינלאומית", title: "משלחת נדל״ן לדובאי", desc: "חמישה ימים, עשרים חברי קהילה, ושוק שמשנה את כללי המשחק.", place: "דובאי, איחוד האמירויות", time: "מרץ 2025" },
+  { tag: "ערב חברים", title: "חמש שנים לקהילה — ערב גאלה", desc: "חגגנו חמש שנים יחד עם כל מי שבנה את הקהילה מהיום הראשון.", place: "האנגר 11, נמל ת״א", time: "דצמבר 2024" },
 ];
 
 const ROLE_OPTIONS = ["יזם / יזמית", "משקיע / משקיעה", "שמאי מקרקעין", "עו״ד", "קבלן", "מתווך / מתווכת", "אדריכל / אדריכלית", "חברת מימון", "פרופטק", "שיווק נדל״ן", "אחר"];
@@ -708,12 +704,12 @@ export default function HomePageV6() {
           </a>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">
             {NAV_LINKS.map(([href, label]) => (
-              <a key={href} href={href}>{label}</a>
+              <a key={label} href={href}>{label}</a>
             ))}
           </nav>
           <a href="#contact" className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
-            <span className="v6-nav__cta-long">הצטרפו לקהילה</span>
-            <span className="v6-nav__cta-short">הצטרפו</span>
+            <span className="v6-nav__cta-long">Members Only</span>
+            <span className="v6-nav__cta-short">Members</span>
             <ArrowIcon />
           </a>
         </div>
@@ -729,10 +725,10 @@ export default function HomePageV6() {
             </svg>
           </button>
           {NAV_LINKS.map(([href, label]) => (
-            <a key={href} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
+            <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
           ))}
           <a href="#contact" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
-            <span>הצטרפו לקהילה</span>
+            <span>Members Only</span>
             <ArrowIcon />
           </a>
         </div>
@@ -756,7 +752,7 @@ export default function HomePageV6() {
             <span className="v6-line"><span><em>הנדל״ן בישראל</em></span></span>
           </h1>
           <p className="v6-hero__sub">
-            מקום אחד ליזמים, משקיעים, שמאים, עו״ד, קבלנים, מתווכים, אדריכלים<br />
+            מקום אחד ליזמים, משקיעים, שמאים, עו״ד, קבלנים, אדריכלים<br />
             ובעלי מקצוע — ליצור קשרים, ללמוד, להתפתח ולייצר הזדמנויות אמיתיות.
           </p>
           <div className="v6-hero__cta">
@@ -886,27 +882,45 @@ export default function HomePageV6() {
         </div>
       </section>
 
-      {/* Stories */}
-      <section className="v6-section" id="stories">
+      {/* Meet the Nadlanist */}
+      <section className="v6-section">
         <div className="v6-container">
-          <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
-            <h2>חיבורים שהופכים <em>לעסקאות</em></h2>
-          </header>
-          <div className="v6-stories__grid">
-            <NadlanistCarousel people={NADLANISTIM} />
-            <JobRotator jobs={JOB_OFFERS} />
-          </div>
+          <NadlanistCarousel people={NADLANISTIM} />
         </div>
       </section>
 
-      {/* Feature row */}
+      {/* Events (duplicate, above Stories) */}
       <section className="v6-section">
         <div className="v6-container">
-          <div className="v6-features__grid">
-            {FEATURES.map(([title, desc]) => (
-              <article key={title} className="v6-feature v6-glass" data-reveal>
-                <h3>{title}</h3>
-                <p>{desc}</p>
+          <header className="v6-section-head v6-section-head--row" data-reveal>
+            <div>
+              <span className="v6-eyebrow"><span className="v6-dot" />אירועים קרובים</span>
+              <h2>אירועי נדלניסטים <em>הקרובים</em></h2>
+            </div>
+            <a href="#" className="v6-link-arrow">
+              <span>כל האירועים</span>
+              <ArrowIcon />
+            </a>
+          </header>
+          <div className="v6-events__list">
+            {EVENTS.slice(0, 3).map((e) => (
+              <article key={e.title} className="v6-event v6-glass" data-reveal>
+                <div className="v6-event__date">
+                  <span className="v6-event__day">{e.day}</span>
+                  <span className="v6-event__month">{e.month}</span>
+                </div>
+                <div className="v6-event__body">
+                  <span className={`v6-event__tag${e.accent ? " v6-event__tag--accent" : ""}`}>{e.tag}</span>
+                  <h3>{e.title}</h3>
+                  <p>{e.desc}</p>
+                  <div className="v6-event__meta">
+                    <span>{e.place}</span><span>·</span><span>{e.time}</span>
+                  </div>
+                </div>
+                <a href="#" className="v6-event__cta">
+                  <span>הירשמו</span>
+                  <ArrowIcon />
+                </a>
               </article>
             ))}
           </div>
@@ -967,6 +981,53 @@ export default function HomePageV6() {
         </div>
       </section>
 
+      {/* Deal room (Projects) */}
+      <section className="v6-section" id="dealroom">
+        <div className="v6-container">
+          <header className="v6-section-head v6-section-head--row" data-reveal>
+            <div>
+              <span className="v6-eyebrow"><span className="v6-dot" />פרויקטים ושיתופי פעולה</span>
+              <h2>חדר <em>עסקאות.</em> <span className="v6-tag-members">Members Only</span></h2>
+              <p className="v6-section-head__sub">פרויקטים, עסקאות ושיתופי פעולה שנולדו בתוך הקהילה.</p>
+            </div>
+            <a href="#" className="v6-link-arrow">
+              <span>כל ההצעות</span>
+              <ArrowIcon />
+            </a>
+          </header>
+          <div className="v6-projects__grid">
+            {PROJECTS.map((p) => (
+              <article key={p.title} className="v6-project v6-glass" data-reveal>
+                <figure className="v6-project__img">
+                  <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
+                  <div className="v6-project__tag">{p.tag}</div>
+                  <span className="v6-project__members">Members Only</span>
+                </figure>
+                <div className="v6-project__body">
+                  <h3>{p.title}</h3>
+                  <p>{p.desc}</p>
+                  <div className="v6-project__meta">
+                    <span>{p.period}</span><span>·</span><span>{p.partners}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stories */}
+      <section className="v6-section" id="stories">
+        <div className="v6-container">
+          <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
+            <h2>חיבורים שהופכים <em>לעסקאות</em></h2>
+          </header>
+          <div className="v6-stories__grid">
+            <JobRotator jobs={JOB_OFFERS} />
+          </div>
+        </div>
+      </section>
+
       {/* Sponsorship strip */}
       <section className="v6-section">
         <div className="v6-container">
@@ -1024,40 +1085,6 @@ export default function HomePageV6() {
                 <ArrowIcon />
               </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <header className="v6-section-head v6-section-head--row" data-reveal>
-            <div>
-              <span className="v6-eyebrow"><span className="v6-dot" />פרויקטים ושיתופי פעולה</span>
-              <h2>דברים <em>שקורים כאן.</em></h2>
-              <p className="v6-section-head__sub">פרויקטים, עסקאות ושיתופי פעולה שנולדו בתוך הקהילה.</p>
-            </div>
-            <a href="#" className="v6-link-arrow">
-              <span>כל ההצעות</span>
-              <ArrowIcon />
-            </a>
-          </header>
-          <div className="v6-projects__grid">
-            {PROJECTS.map((p) => (
-              <article key={p.title} className="v6-project v6-glass" data-reveal>
-                <figure className="v6-project__img">
-                  <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
-                  <div className="v6-project__tag">{p.tag}</div>
-                </figure>
-                <div className="v6-project__body">
-                  <h3>{p.title}</h3>
-                  <p>{p.desc}</p>
-                  <div className="v6-project__meta">
-                    <span>{p.period}</span><span>·</span><span>{p.partners}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>
@@ -1142,8 +1169,8 @@ export default function HomePageV6() {
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--row" data-reveal>
             <div>
-              <span className="v6-eyebrow"><span className="v6-dot" />אירועים קרובים</span>
-              <h2>הקלנדר <em>שלכם.</em></h2>
+              <span className="v6-eyebrow"><span className="v6-dot" />אירועי עבר</span>
+              <h2>חוזרים <em>לרגעים היפים.</em></h2>
             </div>
             <a href="#" className="v6-link-arrow">
               <span>כל האירועים</span>
@@ -1151,14 +1178,10 @@ export default function HomePageV6() {
             </a>
           </header>
           <div className="v6-events__list">
-            {EVENTS.map((e) => (
-              <article key={e.title} className="v6-event v6-glass" data-reveal>
-                <div className="v6-event__date">
-                  <span className="v6-event__day">{e.day}</span>
-                  <span className="v6-event__month">{e.month}</span>
-                </div>
+            {PAST_EVENTS.map((e) => (
+              <article key={e.title} className="v6-event v6-event--nodate v6-glass" data-reveal>
                 <div className="v6-event__body">
-                  <span className={`v6-event__tag${e.accent ? " v6-event__tag--accent" : ""}`}>{e.tag}</span>
+                  <span className="v6-event__tag">{e.tag}</span>
                   <h3>{e.title}</h3>
                   <p>{e.desc}</p>
                   <div className="v6-event__meta">
@@ -1166,7 +1189,7 @@ export default function HomePageV6() {
                   </div>
                 </div>
                 <a href="#" className="v6-event__cta">
-                  <span>הירשמו</span>
+                  <span>לתמונות</span>
                   <ArrowIcon />
                 </a>
               </article>
@@ -1196,8 +1219,12 @@ export default function HomePageV6() {
                 <span>וואטסאפ</span>
               </a>
               <a href="#" className="v6-contact__channel v6-glass" data-magnetic="">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM8.3 18H5.7V9.7h2.6V18zM7 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM18 18h-2.6v-4.3c0-1 0-2.3-1.4-2.3-1.4 0-1.6 1.1-1.6 2.2V18H9.8V9.7h2.5v1.1h0c.4-.7 1.2-1.4 2.6-1.4 2.7 0 3.2 1.8 3.2 4.1V18z" /></svg>
-                <span>לינקדאין</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
+                <span>אינסטגרם</span>
+              </a>
+              <a href="#" className="v6-contact__channel v6-glass" data-magnetic="">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3a5 5 0 0 0 4 4.2v3a8 8 0 0 1-4-1.2v5.6a6 6 0 1 1-6-6c.34 0 .67.03 1 .08v3.18a3 3 0 1 0 2 2.82V3h3z" /></svg>
+                <span>טיקטוק</span>
               </a>
               <a href="mailto:hello@nadlanistim.co.il" className="v6-contact__channel v6-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
