@@ -493,6 +493,7 @@
 .v6-sponsors__logo:hover { color: var(--ink); background: var(--glass-bg-strong); border-color: var(--glass-border-strong); transform: translateY(-2px); }
 .v6-sponsors__img { height: 11px; width: auto; max-width: 70%; object-fit: contain; filter: brightness(0) invert(1); opacity: .6; transition: opacity .4s var(--t); }
 .v6-sponsors__logos--sm .v6-sponsors__img { height: 10px; }
+.v6-sponsors__logos:not(.v6-sponsors__logos--sm) .v6-sponsors__logo:nth-child(-n+3) .v6-sponsors__img { height: 20px; }
 .v6-sponsors__logo:hover .v6-sponsors__img { opacity: 1; }
 
 /* ===== Projects ===== */
