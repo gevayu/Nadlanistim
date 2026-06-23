@@ -28,6 +28,7 @@ type EventItem = { day: string; month: string; tag: string; accent?: boolean; ti
 type ArticleItem = { cat: string; title: string; desc: string; author: string; time: string };
 
 const NAV_LINKS: [string, string][] = [
+  ["#about", "מי אנחנו?"],
   ["#stories", "קריירה"],
   ["#podcast", "פודקאסט"],
   ["#dealroom", "חדר העסקאות"],
