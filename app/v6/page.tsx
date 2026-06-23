@@ -29,11 +29,11 @@ type ArticleItem = { cat: string; title: string; desc: string; author: string; t
 
 const NAV_LINKS: [string, string][] = [
   ["#about", "מי אנחנו?"],
-  ["#stories", "קריירה"],
+  ["#articles", "תוכן מקצועי"],
+  ["#events", "אירועים"],
   ["#podcast", "פודקאסט"],
   ["#dealroom", "חדר העסקאות"],
-  ["#events", "אירועים"],
-  ["#articles", "תוכן מקצועי"],
+  ["#stories", "קריירה"],
   ["#contact", "צרו קשר"],
 ];
 
