@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usesV6Chrome } from "@/lib/site-chrome";
 
 export default function Header() {
   const pathname = usePathname();
-  if (pathname.startsWith("/v5") || pathname.startsWith("/v6")) return null;
+  if (usesV6Chrome(pathname)) return null;
   const isHome = pathname === "/" || pathname === "/v2" || pathname === "/v3" || pathname === "/v4";
   const [scrolled, setScrolled] = useState(false);
   const [hideLogo, setHideLogo] = useState(isHome);
