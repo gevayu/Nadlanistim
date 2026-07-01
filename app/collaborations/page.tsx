@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
+import "./collaborations.css";
+import { COLLABS } from "./data";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -9,24 +11,13 @@ const ArrowIcon = () => (
   </svg>
 );
 
-type Collab = { looking: string; title: string; place: string; invest: string; stage: string; by: string; date: string };
-
-const COLLABS: Collab[] = [
-  { looking: "שותף פיננסי", title: "פינוי־בינוי, גבעת שמואל", place: "מרכז", invest: "מיליון+", stage: "תכנון", by: "איתי לבנון", date: "15.11.2023" },
-  { looking: "שותף מקצועי", title: "מתחם מסחרי, ראש העין", place: "מרכז", invest: "עד 500K", stage: "רעיון", by: "נועה ברגר", date: "14.11.2023" },
-  { looking: "קבלן מבצע", title: "מגדל יוקרה, רמת גן", place: "מרכז", invest: "מיליון+", stage: "ביצוע", by: "רן מימון", date: "13.11.2023" },
-  { looking: "יועץ פרופטק", title: "פלטפורמת ניהול נכסים", place: "כל הארץ", invest: "ללא השקעה כספית", stage: "מתקדם", by: "שירה אלוני", date: "12.11.2023" },
-  { looking: "שותף לקרקע", title: "קרקע חקלאית להפשרה", place: "צפון", invest: "עד 100K", stage: "רעיון", by: "דוד מזרחי", date: "11.11.2023" },
-  { looking: "משקיע שותף", title: "קרן חוב נדל״ן", place: "מרכז", invest: "מיליון+", stage: "תכנון", by: "יואב פרידמן", date: "10.11.2023" },
-];
-
 const TABS = ["מחפש שותף", "פרויקטים פעילים", "סיפורי הצלחה"];
 
-const FILTERS: { label: string; color: string; items: string[] }[] = [
-  { label: "לפי סוג", color: "blue", items: ["קרקע", "בנייה", "שיפוצים", "השקעות", "טכנולוגיה"] },
-  { label: "לפי תפקיד נדרש", color: "purple", items: ["שותף פיננסי", "שותף מקצועי", "קבלן", "יועץ"] },
-  { label: "לפי אזור", color: "green", items: ["צפון", "מרכז", "דרום", "ירושלים", "כל הארץ"] },
-  { label: "לפי רמת השקעה", color: "amber", items: ["עד 100K", "עד 500K", "מיליון+", "ללא השקעה כספית"] },
+const FILTERS: { label: string; options: string[] }[] = [
+  { label: "סוג", options: ["סוג", "קרקע", "בנייה", "שיפוצים", "השקעות", "טכנולוגיה"] },
+  { label: "תפקיד נדרש", options: ["תפקיד נדרש", "שותף פיננסי", "שותף מקצועי", "קבלן", "יועץ"] },
+  { label: "אזור", options: ["אזור", "צפון", "מרכז", "דרום", "ירושלים", "כל הארץ"] },
+  { label: "רמת השקעה", options: ["רמת השקעה", "עד 100K", "עד 500K", "מיליון+", "ללא השקעה כספית"] },
 ];
 
 export default function CollaborationsPage() {
@@ -49,21 +40,21 @@ export default function CollaborationsPage() {
             <p>הצלחות הכי גדולות קורות יחד. מצא שותפים, בנה פרויקטים, צמח.</p>
           </div>
 
-          <div className="pg-tabs" data-reveal>
-            {TABS.map((t, i) => (
-              <button key={t} type="button" className={`pg-tab${i === tab ? " is-active" : ""}`} onClick={() => setTab(i)}>{t}</button>
-            ))}
-          </div>
+          {/* Refined controls panel */}
+          <div className="co-controls v6-glass" data-reveal>
+            <div className="co-tabs">
+              {TABS.map((t, i) => (
+                <button key={t} type="button" className={`co-tab${i === tab ? " is-active" : ""}`} onClick={() => setTab(i)}>{t}</button>
+              ))}
+            </div>
 
-          <div className="pg-filterbar" data-reveal>
-            {FILTERS.map((f) => (
-              <div className="pg-fgroup" key={f.label}>
-                <span className="pg-fgroup__label">{f.label}:</span>
-                {f.items.map((it) => (
-                  <button type="button" key={it} className={`pg-pill pg-pill--${f.color}`}>{it}</button>
-                ))}
-              </div>
-            ))}
+            <div className="co-selects">
+              {FILTERS.map((f) => (
+                <select key={f.label} className="pg-select" aria-label={f.label} defaultValue={f.options[0]}>
+                  {f.options.map((o) => <option key={o}>{o}</option>)}
+                </select>
+              ))}
+            </div>
           </div>
 
           <div className="pg-grid">
@@ -78,7 +69,7 @@ export default function CollaborationsPage() {
                 <span className="pg-stage">שלב: {c.stage}</span>
                 <div className="pg-card__foot">
                   <span className="pg-card__date">פורסם ע״י {c.by}</span>
-                  <a href="/profile" className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
+                  <a href={`/collaboration/${c.slug}`} className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
                     <span>פרטים נוספים</span>
                   </a>
                 </div>
@@ -87,7 +78,7 @@ export default function CollaborationsPage() {
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+            <a href="/collaboration-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>פרסם שיתוף פעולה — חינם לחברי הקהילה</span>
               <ArrowIcon />
             </a>

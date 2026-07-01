@@ -45,6 +45,13 @@
 
 /* Forms reuse .v6-field / .v6-field-row from v6.css; add textarea support */
 .pg-form { display: flex; flex-direction: column; gap: 18px; }
+.pg-formgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.pg-formgrid .pg-full { grid-column: 1 / -1; }
+.pg-form h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.pg-upload { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 26px; border-radius: var(--r); border: 1.5px dashed var(--glass-border-strong); color: var(--muted); font-size: 14px; cursor: pointer; transition: all .25s var(--t); }
+.pg-upload:hover { border-color: var(--cyan); color: var(--ink-2); }
+.pg-upload svg { width: 20px; height: 20px; }
+@media (max-width: 640px) { .pg-formgrid { grid-template-columns: 1fr; } }
 .v6-root .v6-field textarea {
   width: 100%; padding: 15px 18px; border-radius: var(--r-sm);
   background: rgba(255,255,255,.03); border: 1px solid var(--glass-border);

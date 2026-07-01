@@ -13,8 +13,10 @@
 // chrome. Note: V6_EXACT_ROUTES uses EXACT matching so "/jobs" (the new board)
 // does NOT capture the legacy "/jobs/bd-project-manager" detail page.
 
-// Version sites — these and their subpaths use V6 chrome.
-const V6_PREFIX_ROUTES = ["/v5", "/v6"];
+// Prefix routes — these and their subpaths use V6 chrome (version sites +
+// dynamic detail routes). Matched as exact OR `route + "/..."`, so "/collaboration"
+// covers "/collaboration/[slug]" but NOT "/collaborations" or "/collaboration-new".
+const V6_PREFIX_ROUTES = ["/v5", "/v6", "/collaboration"];
 
 // Standalone V6-design internal pages — matched exactly.
 export const V6_EXACT_ROUTES = [
@@ -22,9 +24,12 @@ export const V6_EXACT_ROUTES = [
   "/post",
   "/job",
   "/jobs",
+  "/job-new",
+  "/nadlanist-new",
   "/profile",
   "/event-recap",
   "/collaborations",
+  "/collaboration-new",
   "/contact",
   "/event",
   "/event-party",

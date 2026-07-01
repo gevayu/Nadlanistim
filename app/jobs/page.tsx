@@ -73,7 +73,7 @@ export default function JobsPage() {
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/job" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+            <a href="/job-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>פרסם משרה פתוחה — חינם לחברי הקהילה</span>
               <ArrowIcon />
             </a>

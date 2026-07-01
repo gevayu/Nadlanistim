@@ -21,7 +21,7 @@
 .ep-marquee__track .d { color: var(--pink); }
 @keyframes ep-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.ep-section-title { text-align: center; font-size: clamp(26px, 2.8vw, 38px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 44px; }
+.v6-root .ep-section-title { text-align: center; font-size: clamp(26px, 2.8vw, 38px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 44px; }
 
 /* Details */
 .ep-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1000px; margin: 0 auto; }

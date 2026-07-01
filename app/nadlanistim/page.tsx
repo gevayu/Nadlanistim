@@ -56,7 +56,7 @@ export default function NadlanistimPage() {
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך — הגש מועמדות להצגה</span><ArrowIcon /></a>
+            <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך — הצטרף למדריך</span><ArrowIcon /></a>
             <a href="/#contact" className="v6-btn v6-btn--glass v6-btn--lg">רוצה להיות חלק מהסיפור? הצטרף לקהילה</a>
           </div>
         </div>

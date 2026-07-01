@@ -1,0 +1,53 @@
+/* Collaborations — refined controls panel. Scoped under .v6-root. */
+
+.co-controls { max-width: 980px; margin: 0 auto 44px; padding: 0; border-radius: var(--r-lg); overflow: hidden; }
+
+/* Tabs */
+.co-tabs { display: flex; gap: 8px; padding: 16px; justify-content: center; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.co-tab { padding: 10px 22px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink-2); background: transparent; border: 1px solid transparent; cursor: pointer; transition: all .25s var(--t); }
+.co-tab:hover:not(.is-active) { color: var(--ink); background: var(--glass-bg-strong); }
+.co-tab.is-active { color: #fff; background: var(--grad-1); border-color: transparent; box-shadow: 0 6px 20px rgba(79,141,251,.28); }
+
+/* Filters as a single row of dropdowns */
+.co-selects { display: flex; flex-wrap: wrap; gap: 12px; padding: 20px 24px; justify-content: center; align-items: center; }
+.co-selects .pg-select { min-width: 160px; }
+
+/* Filter groups (legacy pill variant) */
+.co-filters { padding: 6px 24px; }
+.co-fgroup { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.co-fgroup:last-child { border-bottom: 0; }
+.co-fgroup__label { flex: 0 0 132px; font-size: 13.5px; font-weight: 600; color: var(--muted); text-align: right; }
+.co-fpills { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+.co-fpill { padding: 7px 15px; border-radius: 999px; font-size: 12.5px; font-weight: 500; cursor: pointer; color: var(--ink-2); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); transition: all .22s var(--t); }
+.co-fpill:hover { color: var(--ink); border-color: var(--glass-border-strong); transform: translateY(-1px); }
+.co-fpill.is-active { color: #fff; background: var(--grad-1); border-color: transparent; box-shadow: 0 4px 14px rgba(79,141,251,.3); }
+
+/* Footer */
+.co-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); background: rgba(255,255,255,.02); }
+.co-foot__count b { color: var(--cyan); font-weight: 600; }
+.co-clear { color: var(--ink-2); cursor: pointer; font-weight: 500; background: none; border: 0; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; transition: color .25s var(--t); }
+.co-clear svg { width: 14px; height: 14px; }
+.co-clear:hover { color: var(--cyan); }
+
+@media (max-width: 620px) {
+  .co-fgroup { flex-direction: column; align-items: stretch; gap: 8px; }
+  .co-fgroup__label { flex: none; }
+}
+
+/* ===== Single collaboration ===== */
+.co-cover { margin: 0 0 28px; aspect-ratio: 16/7; border-radius: var(--r); overflow: hidden; border: 1px solid var(--glass-border); position: relative; }
+.co-cover img { width: 100%; height: 100%; object-fit: cover; }
+.co-cover__stage { position: absolute; top: 14px; inset-inline-start: 14px; padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 600; background: rgba(7,8,15,.55); backdrop-filter: blur(10px); color: var(--cyan); border: 1px solid rgba(34,211,238,.3); }
+.co-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+.co-mi { padding: 16px 18px; border-radius: var(--r); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); }
+.co-mi__label { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.co-mi__val { font-size: 15px; font-weight: 600; color: var(--ink); }
+@media (max-width: 760px) { .co-meta-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ===== New collaboration form ===== */
+.co-formgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.co-formgrid .co-full { grid-column: 1 / -1; }
+.co-upload { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 26px; border-radius: var(--r); border: 1.5px dashed var(--glass-border-strong); color: var(--muted); font-size: 14px; cursor: pointer; transition: all .25s var(--t); }
+.co-upload:hover { border-color: var(--cyan); color: var(--ink-2); }
+.co-upload svg { width: 20px; height: 20px; }
+@media (max-width: 640px) { .co-formgrid { grid-template-columns: 1fr; } }
