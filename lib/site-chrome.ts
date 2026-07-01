@@ -16,7 +16,7 @@
 // Prefix routes — these and their subpaths use V6 chrome (version sites +
 // dynamic detail routes). Matched as exact OR `route + "/..."`, so "/collaboration"
 // covers "/collaboration/[slug]" but NOT "/collaborations" or "/collaboration-new".
-const V6_PREFIX_ROUTES = ["/v5", "/v6", "/collaboration"];
+const V6_PREFIX_ROUTES = ["/v5", "/v6", "/collaboration", "/nadlanist", "/podcast", "/community", "/youth"];
 
 // Standalone V6-design internal pages — matched exactly.
 export const V6_EXACT_ROUTES = [
@@ -35,6 +35,8 @@ export const V6_EXACT_ROUTES = [
   "/event-party",
   "/events",
   "/nadlanistim",
+  "/communities",
+  "/account",
 ];
 
 export function usesV6Chrome(pathname: string | null | undefined): boolean {

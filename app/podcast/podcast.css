@@ -1,0 +1,49 @@
+/* Podcast pages — scoped under .v6-root. */
+
+/* Archive grid */
+.pc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+.pc-card { display: flex; gap: 20px; padding: 18px; border-radius: var(--r-lg); transition: transform .5s var(--t), background .4s var(--t); }
+.pc-card:hover { transform: translateY(-4px); background: var(--glass-bg-strong); }
+.pc-card__img { flex: 0 0 140px; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; position: relative; }
+.pc-card__img img { width: 100%; height: 100%; object-fit: cover; }
+.pc-card__play { position: absolute; inset: 0; margin: auto; width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.94); color: #07080F; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+.pc-card__play svg { width: 20px; height: 20px; margin-inline-start: 3px; }
+.pc-card__body { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pc-card__eyebrow { font-size: 12px; font-family: var(--font-mono); color: var(--cyan); }
+.pc-card__title { font-size: 17px; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; color: var(--ink); }
+.pc-card__guests { font-size: 13px; color: var(--muted); }
+.pc-card__more { margin-top: auto; font-size: 13.5px; font-weight: 500; color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; }
+.pc-card:hover .pc-card__more { color: var(--cyan); }
+.pc-card__more svg { width: 14px; height: 14px; }
+
+/* Single episode */
+.pc-hero { display: flex; gap: 32px; align-items: center; max-width: 900px; margin: 0 auto; }
+.pc-hero__cover { flex: 0 0 260px; aspect-ratio: 1; border-radius: var(--r-lg); overflow: hidden; position: relative; border: 1px solid var(--glass-border); }
+.pc-hero__cover img { width: 100%; height: 100%; object-fit: cover; }
+.pc-hero__play { position: absolute; inset: 0; margin: auto; width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,.95); color: #07080F; display: grid; place-items: center; box-shadow: 0 8px 30px rgba(0,0,0,.45); }
+.pc-hero__play svg { width: 26px; height: 26px; margin-inline-start: 4px; }
+.pc-hero__eyebrow { font-size: 13px; font-family: var(--font-mono); color: var(--cyan); letter-spacing: .04em; }
+.pc-hero h1 { font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin: 10px 0; }
+.pc-hero__guests { font-size: 15px; color: var(--muted); }
+
+/* Player bar */
+.pc-player { max-width: 900px; margin: 32px auto 0; padding: 18px 22px; border-radius: 999px; display: flex; align-items: center; gap: 16px; }
+.pc-player__btn { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; background: var(--grad-1); color: #fff; display: grid; place-items: center; }
+.pc-player__btn svg { width: 20px; height: 20px; margin-inline-start: 2px; }
+.pc-player__bar { flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; }
+.pc-player__bar > span { display: block; height: 100%; width: 32%; background: var(--grad-1); }
+.pc-player__time { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); flex-shrink: 0; }
+
+.pc-body { max-width: 760px; margin: 44px auto 0; }
+.pc-notes { display: flex; flex-direction: column; gap: 12px; }
+.pc-note { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; color: var(--ink-2); line-height: 1.55; font-weight: 300; }
+.pc-note__n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; background: var(--grad-1); }
+
+@media (max-width: 760px) {
+  .pc-grid { grid-template-columns: 1fr; }
+  .pc-card { flex-direction: column; }
+  .pc-card__img { flex: none; width: 100%; aspect-ratio: 16/9; }
+  .pc-hero { flex-direction: column; text-align: center; }
+  .pc-hero__cover { flex: none; width: 200px; }
+  .pc-player { border-radius: var(--r-lg); }
+}

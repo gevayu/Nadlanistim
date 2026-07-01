@@ -1,0 +1,50 @@
+/* Young Nadlanistim team page — scoped under .v6-root. */
+
+.yt-hero { position: relative; border-radius: var(--r-lg); overflow: hidden; padding: clamp(56px, 8vw, 112px) clamp(24px, 4vw, 60px); text-align: center; }
+.yt-hero__bg { position: absolute; inset: 0; z-index: 0; }
+.yt-hero__bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.4) saturate(1.1); }
+.yt-hero__bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 35%, rgba(139,92,246,.32), transparent 60%), radial-gradient(ellipse at 15% 90%, rgba(34,211,238,.22), transparent 55%), linear-gradient(180deg, rgba(7,8,15,.5), rgba(7,8,15,.86)); }
+.yt-hero__in { position: relative; z-index: 2; max-width: 780px; margin: 0 auto; }
+.yt-badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--cyan); background: rgba(34,211,238,.14); border: 1px solid rgba(34,211,238,.34); margin-bottom: 22px; }
+.yt-hero h1 { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 700; }
+.yt-hero h1 em { font-style: normal; }
+.yt-hero p { margin: 18px auto 30px; max-width: 620px; font-size: clamp(17px, 1.6vw, 20px); color: var(--ink); font-weight: 300; line-height: 1.5; }
+
+.yt-stats { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 8px; }
+.yt-stat { padding: 6px 4px; min-width: 120px; }
+.yt-stat b { display: block; font-size: clamp(30px, 3.6vw, 46px); font-weight: 700; letter-spacing: -0.03em; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.yt-stat span { font-size: 13.5px; color: var(--ink-2); }
+
+.v6-root .yt-section-title { text-align: center; font-size: clamp(24px, 2.6vw, 34px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 44px; }
+.v6-root .yt-lead { max-width: 720px; margin: 0 auto; text-align: center; font-size: 16px; color: var(--ink-2); line-height: 1.7; font-weight: 300; }
+
+.yt-members { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.yt-member { display: flex; align-items: flex-start; gap: 20px; padding: 24px; border-radius: var(--r-lg); transition: transform .5s var(--t), background .4s var(--t); }
+.yt-member:hover { transform: translateY(-5px); background: var(--glass-bg-strong); }
+.yt-member__av { flex: 0 0 auto; width: 104px; height: 104px; border-radius: 18px; overflow: hidden; border: 1px solid var(--glass-border-strong); }
+.yt-member__av img { width: 100%; height: 100%; object-fit: cover; }
+.yt-member__info { min-width: 0; }
+.yt-member__name { font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.yt-member__role { font-size: 13px; color: var(--cyan); margin-top: 2px; font-weight: 500; }
+.v6-root .yt-member__line { font-size: 14.5px; color: var(--ink-2); line-height: 1.55; margin-top: 10px; font-weight: 300; }
+.yt-member__more { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 12px; transition: color .3s var(--t); }
+.yt-member__more svg { width: 15px; height: 15px; }
+.yt-member:hover .yt-member__more { color: var(--cyan); }
+
+.yt-fullimg { margin: 32px 0; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 16 / 9; }
+.yt-fullimg img { width: 100%; height: 100%; object-fit: cover; }
+.yt-video { position: relative; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 16 / 9; background: #000; }
+.yt-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.yt-back { display: inline-block; font-size: 14px; color: var(--muted); margin-bottom: 20px; transition: color .3s var(--t); }
+.yt-back:hover { color: var(--cyan); }
+.yt-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+.yt-perks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 44px; max-width: 840px; margin: 0 auto; }
+.yt-perk { display: flex; gap: 14px; align-items: flex-start; }
+.yt-perk__ic { font-size: 22px; }
+.yt-perk b { font-size: 16px; color: var(--ink); }
+.yt-perk p { font-size: 13.5px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+
+@media (max-width: 860px) { .yt-members { grid-template-columns: 1fr; } .yt-perks { grid-template-columns: 1fr; } }
+@media (max-width: 460px) { .yt-member { flex-direction: column; align-items: center; text-align: center; } .yt-member__av { width: 96px; height: 96px; } }
