@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import "./youth.css";
 import { MEMBERS } from "./data";
@@ -10,14 +11,21 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const PERKS = [
-  { ic: "🚀", t: "מנטורינג אישי", d: "ליווי מהנדלניסטים הבכירים בקהילה." },
-  { ic: "🤝", t: "גישה מועדפת לעסקאות", d: "הזדמנויות ושותפויות לפני כולם." },
-  { ic: "🎓", t: "מסלול צמיחה", d: "סדנאות, מאסטרקלאסים וכלים מעשיים." },
-  { ic: "🎤", t: "במה", d: "חשיפה, הרצאות ופרויקטים משותפים." },
-];
+// Field category per member (for the filter row)
+const FIELD: Record<string, string> = {
+  "yuval-adri": "יזמות", "dana-segev": "השקעות", "omer-ben-haim": "תיווך", "lia-carmon": "אדריכלות",
+  "itamar-raz": "פרופטק", "shani-logasi": "שמאות", "roi-almog": "יזמות", "mor-peretz": "מימון",
+  "noa-shviro": "השקעות", "gal-hadad": "יזמות", "tomer-azoulay": "תיווך", "maya-barnea": "אדריכלות",
+  "eden-mor": "יזמות", "adi-shani": "השקעות", "yarin-cohen": "יזמות", "hila-nave": "מימון",
+  "daniel-rom": "פרופטק", "shir-gabay": "השקעות", "ron-elkabetz": "יזמות", "tal-ben-david": "תיווך",
+  "amit-zohar": "שמאות", "noya-levi": "עיצוב", "bar-mizrahi": "יזמות", "lior-katz": "השקעות", "rotem-dagan": "יזמות",
+};
+const FILTERS = ["הכל", "יזמות", "השקעות", "תיווך", "אדריכלות", "שמאות", "פרופטק", "מימון", "עיצוב"];
 
 export default function YouthPage() {
+  const [active, setActive] = useState("הכל");
+  const shown = active === "הכל" ? MEMBERS : MEMBERS.filter((m) => FIELD[m.slug] === active);
+
   return (
     <SiteShell>
       {/* Hero banner */}
@@ -52,9 +60,21 @@ export default function YouthPage() {
       <section className="v6-section">
         <div className="v6-container">
           <h2 className="yt-section-title" data-reveal>חברי הנבחרת</h2>
+          <div className="yt-filters" data-reveal>
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                type="button"
+                className={`yt-filter${active === f ? " is-active" : ""}`}
+                onClick={() => setActive(f)}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
           <div className="yt-members">
-            {MEMBERS.map((m) => (
-              <a key={m.slug} href={`/youth/${m.slug}`} className="yt-member v6-glass" data-reveal>
+            {shown.map((m) => (
+              <a key={m.slug} href={`/youth/${m.slug}`} className="yt-member v6-glass">
                 <div className="yt-member__av"><img src={`https://i.pravatar.cc/320?img=${m.img}`} alt={m.name} /></div>
                 <div className="yt-member__info">
                   <div className="yt-member__name">{m.name}</div>
@@ -65,24 +85,12 @@ export default function YouthPage() {
               </a>
             ))}
           </div>
-          <div className="pg-cta-row" data-reveal>
-            <a href="/nadlanistim" className="v6-btn v6-btn--glass v6-btn--lg">לכל הנדלניסטים</a>
-          </div>
         </div>
       </section>
 
-      {/* Perks */}
+      {/* Join CTA */}
       <section className="v6-section">
         <div className="v6-container">
-          <h2 className="yt-section-title" data-reveal>מה מקבלים?</h2>
-          <div className="yt-perks">
-            {PERKS.map((p) => (
-              <div key={p.t} className="yt-perk" data-reveal>
-                <span className="yt-perk__ic">{p.ic}</span>
-                <div><b>{p.t}</b><p>{p.d}</p></div>
-              </div>
-            ))}
-          </div>
           <div className="pg-cta-row" data-reveal>
             <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להצטרף לנבחרת? הגישו מועמדות</span><ArrowIcon /></a>
           </div>

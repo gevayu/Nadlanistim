@@ -14,7 +14,8 @@ Dark, glassy, RTL, Hebrew-first. Everything is scoped under `.v6-root`.
   `padding-inline`, `inset-inline-start`) so things mirror correctly. Use physical
   `left`/`right` only for true visual corners (e.g. badge pinned bottom-left).
 - **Font:** `"Google Sans"` (self-hosted woff2, weights 400/500/600/700 + 600 italic),
-  fallback `"Heebo", system-ui`. Mono accents: `--font-mono` (Roboto Mono).
+  fallback `"Heebo", system-ui`. **One font only** — no separate mono face; `--font-mono`
+  is aliased to the main stack, so numeric/eyebrow accents render in Google Sans too.
 - **Component CSS lives in `v6.css`**, grouped by section with `/* ===== Name ===== */`
   banners. Keep that convention.
 - **No Tailwind / CSS modules.** Plain BEM-ish classes: `v6-block`, `v6-block__el`,

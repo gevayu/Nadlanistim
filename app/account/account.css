@@ -12,7 +12,7 @@
 .ac-ql:hover { transform: translateY(-5px); background: var(--glass-bg-strong); }
 .ac-ql__ic { font-size: 26px; margin-bottom: 8px; }
 .ac-ql__t { font-size: 15px; font-weight: 600; color: var(--ink); }
-.ac-ql__n { font-size: 12.5px; color: var(--cyan); margin-top: 5px; font-family: var(--font-mono); }
+.ac-ql__n { font-size: 12.5px; color: var(--cyan); margin-top: 5px; }
 
 .ac-section { margin-top: 48px; }
 .ac-section__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }

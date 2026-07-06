@@ -60,6 +60,9 @@ export default function CollaborationsPage() {
           <div className="pg-grid">
             {COLLABS.map((c) => (
               <article key={c.title} className="pg-card v6-glass" data-reveal>
+                <figure className="pg-card__cover">
+                  <img src={`https://images.unsplash.com/photo-${c.img}?w=640&q=80&auto=format&fit=crop`} alt="" loading="lazy" />
+                </figure>
                 <div className="pg-card__by">מחפש: <b>{c.looking}</b></div>
                 <h3 className="pg-card__title">{c.title}</h3>
                 <div className="pg-card__rows">

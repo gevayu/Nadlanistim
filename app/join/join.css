@@ -1,0 +1,39 @@
+/* Join / membership page — scoped under .v6-root. */
+
+/* About + highlights */
+.jn-about { max-width: 780px; margin: 0 auto; text-align: center; }
+.v6-root .jn-about p { font-size: 16.5px; color: var(--ink-2); line-height: 1.8; font-weight: 300; margin-bottom: 16px; }
+.jn-highlights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
+.jn-hl { padding: 22px 16px; border-radius: var(--r-lg); text-align: center; }
+.jn-hl b { display: block; font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -0.02em; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.jn-hl span { font-size: 13px; color: var(--ink-2); }
+
+/* Section title */
+.jn-title { text-align: center; font-size: clamp(24px, 2.6vw, 34px); font-weight: 700; letter-spacing: -0.02em; }
+.v6-root .jn-title { margin-bottom: 12px; }
+.jn-sub { text-align: center; font-size: 15px; color: var(--muted); }
+.v6-root .jn-sub { margin-bottom: 40px; }
+
+/* Pricing plans */
+.jn-plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; max-width: 760px; margin: 0 auto; }
+.jn-plan { position: relative; padding: 34px 30px; border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 6px; transition: transform .5s var(--t), border-color .4s var(--t); }
+.jn-plan:hover { transform: translateY(-6px); }
+.jn-plan--featured { border: 1px solid rgba(34,211,238,.4); box-shadow: 0 20px 60px rgba(34,211,238,.12); }
+.jn-plan__badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: #07080f; background: var(--grad-1); white-space: nowrap; }
+.jn-plan__name { font-size: 17px; font-weight: 600; color: var(--ink); }
+.jn-plan__price { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 4px; }
+.jn-plan__price b { font-size: clamp(38px, 5vw, 52px); font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+.jn-plan__price span { font-size: 15px; color: var(--muted); }
+.jn-plan__note { font-size: 13px; color: var(--cyan); font-weight: 500; }
+.jn-plan__feats { list-style: none; margin: 18px 0 24px; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+.jn-plan__feats li { display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; color: var(--ink-2); line-height: 1.45; }
+.jn-plan__feats svg { width: 17px; height: 17px; color: var(--cyan); flex-shrink: 0; margin-top: 2px; }
+.jn-plan .v6-btn { margin-top: auto; }
+
+/* Terms */
+.jn-terms { max-width: 780px; margin: 0 auto; counter-reset: term; display: flex; flex-direction: column; gap: 14px; }
+.jn-term { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; border-radius: var(--r); }
+.jn-term::before { counter-increment: term; content: counter(term); flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: var(--cyan); background: rgba(34,211,238,.12); border: 1px solid rgba(34,211,238,.3); }
+.v6-root .jn-term p { font-size: 15px; color: var(--ink-2); line-height: 1.55; font-weight: 300; }
+
+@media (max-width: 860px) { .jn-highlights { grid-template-columns: repeat(2, 1fr); } .jn-plans { grid-template-columns: 1fr; max-width: 460px; } }

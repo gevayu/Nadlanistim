@@ -18,6 +18,11 @@
 .v6-root .yt-section-title { text-align: center; font-size: clamp(24px, 2.6vw, 34px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 44px; }
 .v6-root .yt-lead { max-width: 720px; margin: 0 auto; text-align: center; font-size: 16px; color: var(--ink-2); line-height: 1.7; font-weight: 300; }
 
+.yt-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 40px; }
+.yt-filter { padding: 9px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink-2); background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; transition: color .3s var(--t), background .3s var(--t), border-color .3s var(--t); }
+.yt-filter:hover { color: var(--ink); border-color: var(--glass-border-strong); }
+.yt-filter.is-active { color: #07080f; background: var(--grad-1); border-color: transparent; font-weight: 600; }
+
 .yt-members { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .yt-member { display: flex; align-items: flex-start; gap: 20px; padding: 24px; border-radius: var(--r-lg); transition: transform .5s var(--t), background .4s var(--t); }
 .yt-member:hover { transform: translateY(-5px); background: var(--glass-bg-strong); }
