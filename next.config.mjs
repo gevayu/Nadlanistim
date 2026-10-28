@@ -11,7 +11,11 @@ const nextConfig = {
   // The live homepage is the V6 design. Temporary (307) so "/" can later serve V6 directly.
   // Browsers keep the #fragment, so "/#contact" lands on "/v6#contact".
   async redirects() {
-    return [{ source: "/", destination: "/v6", permanent: false }];
+    return [
+      { source: "/", destination: "/v6", permanent: false },
+      // The single job page moved to /job/<serial> when listings came from WordPress.
+      { source: "/job", destination: "/jobs", permanent: true },
+    ];
   },
 };
 

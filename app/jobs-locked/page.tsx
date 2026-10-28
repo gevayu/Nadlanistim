@@ -1,8 +1,6 @@
-"use client";
-
 import SiteShell from "../v6/SiteShell";
 import "../collaborations/collaborations.css";
-import { JOBS } from "../jobs/data";
+import { getJobs } from "../jobs/wp";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -16,7 +14,8 @@ const LockIcon = () => (
   </svg>
 );
 
-export default function JobsLockedPage() {
+export default async function JobsLockedPage() {
+  const jobs = await getJobs();
   return (
     <SiteShell>
       <section className="v6-section">
@@ -27,7 +26,7 @@ export default function JobsLockedPage() {
           </div>
 
           <div className="pg-grid">
-            {JOBS.map((j) => (
+            {jobs.map((j) => (
               <article key={j.id} className="lk-card v6-glass" data-reveal>
                 {/* Visible: title + publish date */}
                 <div className="lk-card__head">

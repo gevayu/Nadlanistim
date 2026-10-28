@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { getCollab } from "../collaborations/data";
 import { getCommunity } from "../communities/data";
-import { getJob } from "../jobs/data";
 import { getNadlanist } from "../nadlanistim/data";
 import { getEpisode } from "../podcast/data";
 import { getMember } from "../youth/data";
@@ -20,7 +19,6 @@ const PAGES: Record<string, Crumb> = {
   "/event-recap": { label: "כנס הנדלניסטים 2025", parent: "/events" },
   "/jobs": { label: "לוח דרושים" },
   "/jobs-locked": { label: "לוח דרושים" },
-  "/job": { label: getJob(1001)?.title ?? "משרה", parent: "/jobs" },
   "/job-new": { label: "פרסום בלוח הדרושים", parent: "/jobs" },
   "/collaborations": { label: "שיתופי פעולה" },
   "/collaborations-locked": { label: "שיתופי פעולה" },
@@ -38,26 +36,28 @@ const PAGES: Record<string, Crumb> = {
 };
 
 // Detail pages: /<section>/<slug> -> parent list page + the item's name from its data file.
+// CMS-backed sections (job) have no local data; their page passes the name in via SiteShell `crumb`.
 const DETAIL: Record<string, { parent: string; name: (slug: string) => string | undefined }> = {
   collaboration: { parent: "/collaborations", name: (s) => getCollab(s)?.title },
   nadlanist: { parent: "/nadlanistim", name: (s) => getNadlanist(s)?.name },
   community: { parent: "/communities", name: (s) => getCommunity(s)?.name },
   podcast: { parent: "/podcast", name: (s) => getEpisode(s)?.title },
   youth: { parent: "/youth", name: (s) => getMember(s)?.name },
+  job: { parent: "/jobs", name: () => undefined },
 };
 
-function trail(path: string): { href: string; label: string }[] {
+function trail(path: string, label?: string): { href: string; label: string }[] {
   const [, section, slug] = path.split("/");
   const detail = slug ? DETAIL[section] : undefined;
-  const current = detail ? { label: detail.name(slug) ?? "", parent: detail.parent } : PAGES[path];
+  const current = detail ? { label: label ?? detail.name(slug) ?? "", parent: detail.parent } : PAGES[path];
   if (!current?.label) return [];
   const up = current.parent ? trail(current.parent) : [];
   return [...up, { href: path, label: current.label }];
 }
 
-export default function Breadcrumbs() {
+export default function Breadcrumbs({ current }: { current?: string }) {
   const path = usePathname() ?? "";
-  const items = trail(path);
+  const items = trail(path, current);
   if (!items.length) return null;
 
   return (

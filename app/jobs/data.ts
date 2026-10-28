@@ -14,6 +14,10 @@ export type Job = {
   field: string;
   desc: string;
   date: string; // dd.mm.yyyy
+  // Only listings from WordPress carry these.
+  slug?: string;
+  reqs?: string[];
+  tags?: string[];
 };
 
 export const JOB_KINDS: Record<JobKind, string> = {
@@ -21,6 +25,17 @@ export const JOB_KINDS: Record<JobKind, string> = {
   seek: "מחפש/ת עבודה",
 };
 
+// WordPress "employment" select value -> label shown as "סוג עבודה".
+export const JOB_TYPES: Record<string, string> = {
+  full: "משרה מלאה",
+  part: "משרה חלקית",
+  freelance: "פרילנס",
+  partnership: "שותפות עסקית",
+  volunteering: "התנדבות",
+  services: "מציעים שירותים",
+};
+
+// Fallback when the backend is unreachable; the live listings come from WordPress (jobs/wp.ts).
 export const JOBS: Job[] = [
   { id: 1008, kind: "seek", title: "מנהלת שיווק עם 6 שנות ניסיון בנדל״ן", by: "נועה ברגר", email: "noa@nadlanistim.co.il", type: "משרה מלאה", place: "תל אביב", field: "שיווק", desc: "מחפשת תפקיד ניהול שיווק בחברת יזמות או תיווך. ניסיון בהשקות של פרויקטים למגורים.", date: "17.11.2023" },
   { id: 1007, kind: "seek", title: "בוגר שמאות מקרקעין מחפש משרד להתמחות", by: "עומר בן חיים", email: "omer@nadlanistim.co.il", type: "משרה חלקית", place: "ירושלים", field: "שמאות", desc: "סיימתי תואר בשמאות מקרקעין ומחפש משרד שמאות להשלמת ההתמחות.", date: "16.11.2023" },

@@ -1,7 +1,6 @@
-"use client";
-
-import SiteShell from "../v6/SiteShell";
-import { getJob } from "../jobs/data";
+import { notFound } from "next/navigation";
+import SiteShell from "../../v6/SiteShell";
+import { getJobById } from "../../jobs/wp";
 
 const ShareIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -16,29 +15,13 @@ const MailIcon = () => (
   </svg>
 );
 
-// ponytail: the page still shows listing 1001 only; description/requirements/tags below are its copy.
-// Upgrade path: /job/[id] reading getJob(id), with those three fields moved into jobs/data.ts.
-const job = getJob(1001)!;
+export default async function JobPage({ params }: { params: Promise<{ id: string }> }) {
+  const job = await getJobById(Number((await params).id));
+  if (!job) notFound();
+  const paragraphs = job.desc.split(/\n+/).filter(Boolean);
 
-const DESCRIPTION = [
-  "אנו מחפשים מנהל/ת פרויקטים מנוסה ומוכשר/ת להצטרף לצוות הדינמי שלנו. התפקיד כולל ניהול פרויקטים מורכבים בתחום הנדל״ן, החל משלב התכנון הראשוני, דרך הליווי והביצוע בשטח, ועד למסירה הסופית ללקוח. המועמד/ת תהיה אחראי/ת על עמידה בלוחות זמנים, ניהול תקציב, תיאום בין גורמים שונים (קבלנים, אדריכלים, מהנדסים), ובקרת איכות.",
-  "התפקיד דורש יכולות ניהוליות גבוהות, ראייה מערכתית, יכולת פתרון בעיות ויחסי אנוש מצוינים. הזדמנות מצוינת להשתלב בחברה מובילה בתחומה ולהיות חלק מפרויקטים משמעותיים המשפיעים על נוף העיר.",
-];
-
-const REQUIREMENTS = [
-  "ניסיון מוכח של 3 שנים לפחות בניהול פרויקטים בתחום הנדל״ן.",
-  "השכלה רלוונטית (הנדסה אזרחית, אדריכלות, ניהול פרויקטים).",
-  "יכולת עבודה עצמאית ובצוות.",
-  "שליטה מלאה בתוכנות MS Project ו‑Office.",
-  "רישיון נהיגה בתוקף.",
-  "יכולת הגעה עצמאית לאתרי הפרויקטים.",
-];
-
-const TAGS = ["ניסיון", "תל אביב", "משרה מלאה", "ניהול פרויקטים", "נדל״ן"];
-
-export default function JobPage() {
   return (
-    <SiteShell>
+    <SiteShell crumb={job.title}>
 
       <section className="v6-section">
         <div className="v6-container">
@@ -62,22 +45,26 @@ export default function JobPage() {
 
             <div className="pg-block">
               <h2>תיאור המשרה</h2>
-              {DESCRIPTION.map((p, i) => <p key={i}>{p}</p>)}
+              {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
             </div>
 
-            <div className="pg-block">
-              <h2>דרישות עיקריות</h2>
-              <ul className="pg-bullets">
-                {REQUIREMENTS.map((r) => <li key={r}>{r}</li>)}
-              </ul>
-            </div>
-
-            <div className="pg-block">
-              <h2>תגיות</h2>
-              <div className="pg-tags">
-                {TAGS.map((t) => <span key={t} className="pg-tag">{t}</span>)}
+            {!!job.reqs?.length && (
+              <div className="pg-block">
+                <h2>דרישות עיקריות</h2>
+                <ul className="pg-bullets">
+                  {job.reqs.map((r) => <li key={r}>{r}</li>)}
+                </ul>
               </div>
-            </div>
+            )}
+
+            {!!job.tags?.length && (
+              <div className="pg-block">
+                <h2>תגיות</h2>
+                <div className="pg-tags">
+                  {job.tags.map((t) => <span key={t} className="pg-tag">{t}</span>)}
+                </div>
+              </div>
+            )}
 
             <div className="pg-divider" />
             <div className="pg-actions">

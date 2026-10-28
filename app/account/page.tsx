@@ -86,7 +86,7 @@ export default function AccountPage() {
             </div>
             <div className="ac-list">
               {JOBS.map((j) => (
-                <a key={j.title} href="/job" className="ac-row v6-glass" data-reveal>
+                <a key={j.title} href="/jobs" className="ac-row v6-glass" data-reveal>
                   <div className="ac-row__ic">💼</div>
                   <div className="ac-row__body">
                     <div className="ac-row__title">{j.title}</div>

@@ -156,7 +156,7 @@
 .pg-card__by b { color: var(--cyan); font-weight: 500; }
 .pg-card__rows { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; color: var(--ink-2); }
 .pg-card__rows b { color: var(--muted); font-weight: 500; margin-inline-end: 5px; }
-.pg-card__desc { font-size: 14px; color: var(--muted); line-height: 1.55; font-weight: 300; }
+.pg-card__desc { font-size: 14px; color: var(--muted); line-height: 1.55; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .pg-card__foot { margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .pg-card__date { font-size: 12px; color: var(--muted-2); }
 

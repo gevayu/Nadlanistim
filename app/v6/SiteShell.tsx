@@ -35,8 +35,11 @@ function useRevealOnScroll() {
   }, []);
 }
 
-/** Standard V6 chrome wrapper for internal pages: ambient + fixed nav + footer. */
-export default function SiteShell({ children }: { children: React.ReactNode }) {
+/**
+ * Standard V6 chrome wrapper for internal pages: ambient + fixed nav + footer.
+ * `crumb` names the current page in the breadcrumbs when only the page knows it (CMS content).
+ */
+export default function SiteShell({ children, crumb }: { children: React.ReactNode; crumb?: string }) {
   useRevealOnScroll();
   return (
     <div className="v6-root">
@@ -48,7 +51,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       </div>
       <SiteHeader />
       <main className="pg-wrap">
-        <Breadcrumbs />
+        <Breadcrumbs current={crumb} />
         <SponsorStrip />
         {children}
       </main>
