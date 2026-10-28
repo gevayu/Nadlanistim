@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import "../v6/v6.css";
 import "./post-archive.css";
 import SiteHeader from "../v6/SiteHeader";
+import SponsorStrip from "../v6/SponsorStrip";
 import SiteFooter from "../v6/SiteFooter";
 
 const ArrowIcon = () => (
@@ -87,14 +88,7 @@ export default function PostArchive() {
       <SiteHeader />
 
       <main style={{ paddingTop: "140px" }}>
-        {/* Sponsorship strip */}
-        <section className="v6-section">
-          <div className="v6-container">
-            <div className="v6-sponsorstrip v6-glass" data-reveal>
-              <span className="v6-sponsorstrip__title">Sponsorship#1</span>
-            </div>
-          </div>
-        </section>
+        <SponsorStrip />
 
         {/* Archive */}
         <section className="v6-section">

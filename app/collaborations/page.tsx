@@ -25,13 +25,6 @@ export default function CollaborationsPage() {
 
   return (
     <SiteShell>
-      <section className="v6-section">
-        <div className="v6-container">
-          <div className="v6-sponsorstrip v6-glass" data-reveal>
-            <span className="v6-sponsorstrip__title">Sponsorship#1</span>
-          </div>
-        </div>
-      </section>
 
       <section className="v6-section">
         <div className="v6-container">

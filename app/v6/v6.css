@@ -202,7 +202,8 @@
 .v6-nav__logo img { height: 56px; width: auto; transition: height .4s var(--t); }
 .v6-nav.is-scrolled .v6-nav__logo img { height: 36px; }
 .v6-nav__links { display: flex; align-items: center; gap: 28px; margin-inline-start: auto; }
-.v6-nav__links a { font-size: 14px; font-weight: 400; color: var(--ink-2); transition: color .3s var(--t); }
+.v6-nav__links a { font-size: 14px; font-weight: 400; color: var(--ink-2); white-space: nowrap; transition: color .3s var(--t); }
+@media (max-width: 1320px) { .v6-nav__links { gap: 18px; } .v6-nav__links a { font-size: 13px; } }
 .v6-nav__links a:hover { color: var(--ink); }
 .v6-nav__cta { padding: 11px 22px; font-size: 13.5px; }
 .v6-nav__cta-short { display: none; }

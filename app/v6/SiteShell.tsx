@@ -5,6 +5,7 @@ import "./v6.css";
 import "./pages.css";
 import SiteHeader from "./SiteHeader";
 import SiteFooter from "./SiteFooter";
+import SponsorStrip from "./SponsorStrip";
 
 function useRevealOnScroll() {
   useEffect(() => {
@@ -45,7 +46,10 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <div className="v6-ambient__grain" />
       </div>
       <SiteHeader />
-      <main className="pg-wrap">{children}</main>
+      <main className="pg-wrap">
+        <SponsorStrip />
+        {children}
+      </main>
       <SiteFooter />
     </div>
   );

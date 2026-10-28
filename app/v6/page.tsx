@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import SponsorStrip from "./SponsorStrip";
 import "./v6.css";
 
 const ArrowIcon = () => (
@@ -29,6 +30,7 @@ type ArticleItem = { cat: string; title: string; desc: string; author: string; t
 
 const NAV_LINKS: [string, string][] = [
   ["#about", "מי אנחנו?"],
+  ["/nadlanistim", "הכר את הנדלניסט"],
   ["#articles", "תוכן מקצועי"],
   ["#events", "אירועים"],
   ["#podcast", "פודקאסט"],
@@ -102,16 +104,6 @@ const SPONSORS_MAIN: Sponsor[] = [
   { name: "אאורה", logo: "/v6-assets/sponsors/aura.png" },
   { name: "צ׳ריטון" },
   { name: "אפריקה ישראל", logo: "/v6-assets/sponsors/africa.svg" },
-];
-const SPONSORS_EVENT: Sponsor[] = [
-  { name: "בנק לאומי", logo: "/v6-assets/sponsors/leumi.png" },
-  { name: "דלויט", logo: "/v6-assets/sponsors/deloitte.svg" },
-  { name: "EY", logo: "/v6-assets/sponsors/ey.svg" },
-  { name: "KPMG", logo: "/v6-assets/sponsors/kpmg.svg" },
-  { name: "PWC", logo: "/v6-assets/sponsors/pwc.svg" },
-  { name: "גורניצקי" },
-  { name: "הרצוג פוקס", logo: "/v6-assets/sponsors/herzog.png" },
-  { name: "גושן ארנון" },
 ];
 
 const PROJECTS: Project[] = [
@@ -790,14 +782,7 @@ export default function HomePageV6() {
         </div>
       </section>
 
-      {/* Sponsorship strip */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <div className="v6-sponsorstrip v6-glass" data-reveal>
-            <span className="v6-sponsorstrip__title">Sponsorship#1</span>
-          </div>
-        </div>
-      </section>
+      <SponsorStrip />
 
       {/* Stats */}
       <section className="v6-section">
@@ -1021,7 +1006,7 @@ export default function HomePageV6() {
       <section className="v6-section" id="stories">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
-            <h2>חיבורים שהופכים <em>לעסקאות</em></h2>
+            <h2>קריירה / <em>שיתופי פעולה</em></h2>
           </header>
           <div className="v6-stories__grid">
             <JobRotator jobs={JOB_OFFERS} />
@@ -1043,22 +1028,12 @@ export default function HomePageV6() {
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--center" data-reveal>
             <span className="v6-eyebrow"><span className="v6-dot" />שותפים</span>
-            <h2>עובדים <em>איתנו.</em></h2>
+            <h2>מיוצגים <em>בקהילה</em></h2>
           </header>
           <div className="v6-sponsors__group" data-reveal>
             <h4 className="v6-sponsors__title">שותפים קבועים</h4>
             <div className="v6-sponsors__logos">
               {SPONSORS_MAIN.map((s) => (
-                <div key={s.name} className="v6-sponsors__logo">
-                  {s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="v6-sponsors__group" data-reveal>
-            <h4 className="v6-sponsors__title">נותני חסות לאירועים</h4>
-            <div className="v6-sponsors__logos v6-sponsors__logos--sm">
-              {SPONSORS_EVENT.map((s) => (
                 <div key={s.name} className="v6-sponsors__logo">
                   {s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name}
                 </div>
@@ -1096,7 +1071,7 @@ export default function HomePageV6() {
           <header className="v6-section-head v6-section-head--row" data-reveal>
             <div>
               <span className="v6-eyebrow"><span className="v6-dot" />תוכן מקצועי</span>
-              <h2>נדלניסטים <em>כותבים</em></h2>
+              <h2>חברי הקהילה <em>כותבים</em></h2>
             </div>
             <a href="#" className="v6-link-arrow">
               <span>כל הכתבות</span>
@@ -1137,7 +1112,7 @@ export default function HomePageV6() {
           <header className="v6-section-head v6-section-head--row" data-reveal>
             <div>
               <span className="v6-eyebrow"><span className="v6-dot" />נדלפודקאסט</span>
-              <h2>שיחות שאסור <em>לפספס.</em></h2>
+              <h2>הפרקים הכי <em>נצפים</em></h2>
               <p className="v6-section-head__sub">שיחות עומק עם האנשים שמזיזים את שוק הנדל״ן בישראל.</p>
             </div>
             <a href="#" className="v6-link-arrow">
@@ -1277,15 +1252,6 @@ export default function HomePageV6() {
               <span>נחזור אליך תוך 24 שעות.</span>
             </div>
           </form>
-        </div>
-      </section>
-
-      {/* Sponsorship strip */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <div className="v6-sponsorstrip v6-glass" data-reveal>
-            <span className="v6-sponsorstrip__title">Sponsorship#3</span>
-          </div>
         </div>
       </section>
 

@@ -11,6 +11,7 @@ const ArrowIcon = () => (
 // Canonical V6 header links (absolute so they work from any route).
 const NAV_LINKS: [string, string][] = [
   ["/#about", "מי אנחנו?"],
+  ["/nadlanistim", "הכר את הנדלניסט"],
   ["/#articles", "תוכן מקצועי"],
   ["/#events", "אירועים"],
   ["/#podcast", "פודקאסט"],
