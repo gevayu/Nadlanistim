@@ -17,7 +17,7 @@ export default function CommunitiesPage() {
         <div className="v6-container">
           <div className="pg-head" data-reveal>
             <h1>הקהילות של <em>הנדלניסטים</em></h1>
-            <p>קהילה אחת גדולה - ובתוכה עשר תתי‑קהילות ממוקדות. בחרו את התחומים שלכם, הצטרפו לשיחות הרלוונטיות אליכם, ותמצאו את האנשים שמדברים בדיוק בשפה שלכם.</p>
+            <p>קהילה אחת גדולה - ובתוכה עשר קהילות ממוקדות. בחרו את התחומים שלכם, הצטרפו לשיחות הרלוונטיות אליכם, ותמצאו את האנשים שמדברים בדיוק בשפה שלכם.</p>
           </div>
 
           <div className="cm-grid">
@@ -27,13 +27,13 @@ export default function CommunitiesPage() {
                 <h3>{c.name}</h3>
                 <p>{c.tagline}</p>
                 <div className="cm-card__members">{c.members} חברים</div>
-                <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לתת הקהילה</span>
+                <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>
               </a>
             ))}
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>לא מצאתם תת‑קהילה? הציעו אחת חדשה</span><ArrowIcon /></a>
+            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>לא מצאתם קהילה? הציעו אחת חדשה</span><ArrowIcon /></a>
           </div>
         </div>
       </section>

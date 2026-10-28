@@ -1,4 +1,5 @@
-export type Happening = { ic: string; t: string; d: string };
+export type HappeningIcon = "calendar" | "chat" | "expert" | "deal";
+export type Happening = { ic: HappeningIcon; t: string; d: string };
 
 export type Community = {
   slug: string;
@@ -22,10 +23,10 @@ export const communityLogo = (c: Community) => c.logo ?? DEFAULT_LOGO;
 export const communityWhatsapp = (c: Community) => c.whatsapp ?? WHATSAPP_PLACEHOLDER;
 
 const BASE_HAPPENINGS = (name: string): Happening[] => [
-  { ic: "📅", t: "מפגש חודשי", d: `מפגש פיזי אחת לחודש של קהילת ${name} - הרצאה, דיון ונטוורקינג.` },
-  { ic: "💬", t: "קבוצת וואטסאפ פעילה", d: "שאלות, תשובות והזדמנויות שקורות בזמן אמת, כל יום." },
-  { ic: "🎓", t: "מומחים אורחים", d: "מפגשי עומק עם המובילים בתחום, רק לחברי הקהילה." },
-  { ic: "🤝", t: "שיתוף עסקאות", d: "חברי הקהילה חולקים עסקאות, שותפויות והזדמנויות ראשונים." },
+  { ic: "calendar", t: "מפגש חודשי", d: `מפגש פיזי אחת לחודש של קהילת ${name} - הרצאה, דיון ונטוורקינג.` },
+  { ic: "chat", t: "קבוצת וואטסאפ פעילה", d: "שאלות, תשובות והזדמנויות שקורות בזמן אמת, כל יום." },
+  { ic: "expert", t: "מומחים אורחים", d: "מפגשי עומק עם המובילים בתחום, רק לחברי הקהילה." },
+  { ic: "deal", t: "שיתוף עסקאות", d: "חברי הקהילה חולקים עסקאות, שותפויות והזדמנויות ראשונים." },
 ];
 
 export const COMMUNITIES: Community[] = [
