@@ -36,11 +36,6 @@
 .yt-member__more svg { width: 15px; height: 15px; }
 .yt-member:hover .yt-member__more { color: var(--cyan); }
 
-.yt-fullimg { margin: 32px 0; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 16 / 9; }
-.yt-fullimg img { width: 100%; height: 100%; object-fit: cover; }
-.yt-video { position: relative; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 16 / 9; background: #000; }
-.yt-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-
 .yt-back { display: inline-block; font-size: 14px; color: var(--muted); margin-bottom: 20px; transition: color .3s var(--t); }
 .yt-back:hover { color: var(--cyan); }
 .yt-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }

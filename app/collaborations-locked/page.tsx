@@ -1,8 +1,7 @@
-"use client";
-
 import SiteShell from "../v6/SiteShell";
 import "../collaborations/collaborations.css";
-import { COLLABS } from "../collaborations/data";
+import { onBoard } from "../collaborations/data";
+import { getCollabs } from "../collaborations/wp";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -16,7 +15,8 @@ const LockIcon = () => (
   </svg>
 );
 
-export default function CollaborationsLockedPage() {
+export default async function CollaborationsLockedPage() {
+  const collabs = (await getCollabs()).filter(onBoard);
   return (
     <SiteShell>
       <section className="v6-section">
@@ -27,7 +27,7 @@ export default function CollaborationsLockedPage() {
           </div>
 
           <div className="pg-grid">
-            {COLLABS.map((c) => (
+            {collabs.map((c) => (
               <article key={c.slug} className="lk-card v6-glass" data-reveal>
                 {/* Visible: title + publish date */}
                 <div className="lk-card__head">
@@ -38,15 +38,19 @@ export default function CollaborationsLockedPage() {
                 {/* Locked body: blurred details + capsule overlay */}
                 <div className="lk-locked">
                   <div className="lk-blur" aria-hidden="true">
-                    <div className="pg-card__by">מחפש: <b>{c.looking}</b></div>
-                    <div className="pg-card__rows">
-                      <div><b>מיקום:</b>{c.place}</div>
-                      <div><b>השקעה נדרשת:</b>{c.invest}</div>
-                    </div>
-                    <span className="pg-stage">שלב: {c.stage}</span>
-                    <div className="pg-card__foot">
-                      <span className="pg-card__date">פורסם ע״י {c.by}</span>
-                    </div>
+                    {c.looking && <div className="pg-card__by">מחפש: <b>{c.looking}</b></div>}
+                    {(c.place || c.invest) && (
+                      <div className="pg-card__rows">
+                        {c.place && <div><b>מיקום:</b>{c.place}</div>}
+                        {c.invest && <div><b>השקעה נדרשת:</b>{c.invest}</div>}
+                      </div>
+                    )}
+                    {c.stage && <span className="pg-stage">שלב: {c.stage}</span>}
+                    {c.by && (
+                      <div className="pg-card__foot">
+                        <span className="pg-card__date">פורסם ע״י {c.by}</span>
+                      </div>
+                    )}
                   </div>
 
                   <a href="/join" className="lk-capsule">

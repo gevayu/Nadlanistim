@@ -1,6 +1,5 @@
 export type Nadlanist = {
   slug: string;
-  img?: number; // placeholder avatar for local entries without a photo
   name: string;
   role: string;
   field: string;
@@ -8,7 +7,7 @@ export type Nadlanist = {
   quote: string;
   bio: string[];
   email: string;
-  photo?: string; // WordPress featured image or an uploaded data URL; falls back to the placeholder avatar `img`
+  photo?: string; // WordPress featured image, or a data URL uploaded in /my-account
   phone?: string; // collected, never shown on the site
   linkedin?: string;
   instagram?: string;
@@ -19,98 +18,5 @@ export type Nadlanist = {
 export const FIELDS = ["יזמות", "השקעות", "שיווק", "ייעוץ", "אדריכלות", "תיווך", "שמאות", "מימון", "פרופטק", "משפט"];
 export const PLACES = ["תל אביב", "מרכז", "צפון", "דרום", "ירושלים", "כל הארץ"];
 
-export const avatarSrc = (n: Nadlanist, size = 200) => n.photo ?? `https://i.pravatar.cc/${size}?img=${n.img}`;
-
-// Fallback when the backend is unreachable; the live directory comes from WordPress (nadlanistim/wp.ts).
-// /my-account and the community members carousel still read this list.
-export const NADLANISTIM: Nadlanist[] = [
-  {
-    slug: "avi-cohen",
-    img: 12,
-    name: "אבי כהן",
-    role: "יזם נדל״ן ומנטור",
-    field: "יזמות",
-    place: "תל אביב",
-    quote: "מאמין בכוחה של קהילה לשינוי וצמיחה אישית ומקצועית.",
-    bio: [
-      "אבי כהן הוא יזם נדל״ן ותיק עם למעלה מ‑20 שנות ניסיון בתחום. הוא החל את דרכו כמשקיע קטן והפך לאחד השמות המובילים בענף, עם פרויקטים מוצלחים למגורים ומסחר ברחבי הארץ.",
-      "מה שהביא אותי לקהילה הוא הרצון לחלוק ידע וניסיון עם דור היזמים הבא, וללמוד מנקודות מבט חדשות. אני מאמין בכוחה של קהילה תומכת ליצירת הזדמנויות וצמיחה הדדית.",
-    ],
-    email: "avi@nadlanistim.co.il",
-  },
-  {
-    slug: "sara-levi",
-    img: 5,
-    name: "שרה לוי",
-    role: "מומחית לשיווק דיגיטלי בנדל״ן",
-    field: "שיווק",
-    place: "מרכז",
-    quote: "התשוקה שלי היא לחבר בין אנשים לנכסים, דרך חדשנות.",
-    bio: [
-      "שרה מובילה אסטרטגיות שיווק דיגיטלי לחברות נדל״ן מובילות, עם התמחות בבניית קמפיינים שממירים עניין לעסקאות.",
-      "אני כאן כדי לעזור ליזמים ולמתווכים להבין את הכוח של הדיגיטל - ולהשתמש בו נכון כדי לבלוט בשוק רווי.",
-    ],
-    email: "sara@nadlanistim.co.il",
-    openToWork: true,
-  },
-  {
-    slug: "david-mizrahi",
-    img: 33,
-    name: "דוד מזרחי",
-    role: "יועץ השקעות נדל״ן",
-    field: "ייעוץ",
-    place: "כל הארץ",
-    quote: "אני כאן כדי לעזור לכם למצוא את ההשקעה הבאה שלכם.",
-    bio: [
-      "דוד מלווה משקיעים פרטיים ומוסדיים באיתור, ניתוח וסגירת עסקאות נדל״ן - מהפריפריה ועד המרכז.",
-      "הגישה שלי פשוטה: נתונים לפני רגש, ותכנון לפני חתימה. ככה בונים תיק נכסים שמחזיק לאורך זמן.",
-    ],
-    email: "david@nadlanistim.co.il",
-  },
-  {
-    slug: "rachel-cohen",
-    img: 24,
-    name: "רחל כהן",
-    role: "אדריכלית ומעצבת פנים",
-    field: "אדריכלות",
-    place: "ירושלים",
-    quote: "יוצרת חללים שמשלבים פונקציונליות ויופי.",
-    bio: [
-      "רחל מתכננת מבני מגורים ומסחר, עם דגש על בנייה ירוקה, אור טבעי ושימוש חכם בשטח.",
-      "אני מאמינה שאדריכלות טובה לא רק נראית טוב - היא משנה את איך שאנשים חיים ועובדים במרחב.",
-    ],
-    email: "rachel@nadlanistim.co.il",
-  },
-  {
-    slug: "yossi-levi",
-    img: 53,
-    name: "יוסי לוי",
-    role: "מתווך נדל״ן בכיר",
-    field: "תיווך",
-    place: "הרצליה",
-    quote: "מוצא את הבית המושלם לכל לקוח, בכל פעם מחדש.",
-    bio: [
-      "יוסי מתמחה בתיווך נכסי יוקרה במרכז הארץ, עם היכרות עמוקה של השוק ורשת קשרים רחבה.",
-      "בשבילי תיווך זה קודם כל אמון. לקוח מרוצה חוזר, וממליץ - וזה כל הסיפור.",
-    ],
-    email: "yossi@nadlanistim.co.il",
-  },
-  {
-    slug: "michal-mizrahi",
-    img: 47,
-    name: "מיכל מזרחי",
-    role: "שמאית מקרקעין",
-    field: "שמאות",
-    place: "כל הארץ",
-    quote: "מספקת הערכות שווי מדויקות ואמינות לכל סוגי הנכסים.",
-    bio: [
-      "מיכל שמאית מקרקעין מוסמכת, המלווה עסקאות, פרויקטים ובדיקות נאותות עבור גופים פרטיים ומוסדיים.",
-      "דיוק ואובייקטיביות הם הבסיס לעבודה שלי - כי החלטה טובה מתחילה בהערכה נכונה.",
-    ],
-    email: "michal@nadlanistim.co.il",
-  },
-];
-
-export function getNadlanist(slug: string): Nadlanist | undefined {
-  return NADLANISTIM.find((n) => n.slug === slug);
-}
+// The signed-in member. The site has no login yet; /profile, /account and /my-account are this member.
+export const CURRENT_MEMBER = "avi-cohen";

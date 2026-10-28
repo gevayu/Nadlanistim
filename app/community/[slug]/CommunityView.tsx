@@ -4,8 +4,8 @@ import { useRef } from "react";
 import { CalendarDays, GraduationCap, Handshake, MessageCircle } from "lucide-react";
 import SiteShell from "../../v6/SiteShell";
 import "../../communities/communities.css";
-import { communityLogo, imageSrc, type Community } from "../../communities/data";
-import { NADLANISTIM } from "../../nadlanistim/data";
+import { communityLogo, type Community } from "../../communities/data";
+import type { Nadlanist } from "../../nadlanistim/data";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -18,7 +18,7 @@ const ChevIcon = () => (
   </svg>
 );
 
-function MembersCarousel() {
+function MembersCarousel({ people }: { people: Nadlanist[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: number) => {
     const el = ref.current;
@@ -29,9 +29,9 @@ function MembersCarousel() {
     <div className="cs-mem-carousel" data-reveal>
       <button className="cs-mem-arrow cs-mem-arrow--prev" aria-label="הקודם" onClick={() => scroll(1)}><ChevIcon /></button>
       <div className="cs-mem-track" ref={ref}>
-        {NADLANISTIM.map((n) => (
+        {people.map((n) => (
           <a key={n.slug} href={`/nadlanist/${n.slug}`} className="cs-mem v6-glass">
-            <div className="cs-mem__av"><img src={`https://i.pravatar.cc/240?img=${n.img}`} alt={n.name} /></div>
+            <div className="cs-mem__av"><img src={n.photo} alt={n.name} /></div>
             <div className="cs-mem__name">{n.name}</div>
             <div className="cs-mem__role">{n.role}</div>
             <p className="cs-mem__quote">״{n.quote}״</p>
@@ -47,7 +47,7 @@ function MembersCarousel() {
 // White line icons for "מה קורה בקהילה" (no colour emoji)
 const HAPPENING_ICONS = { calendar: CalendarDays, chat: MessageCircle, expert: GraduationCap, deal: Handshake };
 
-export default function CommunityView({ c, others }: { c?: Community; others: Community[] }) {
+export default function CommunityView({ c, others, people }: { c?: Community; others: Community[]; people: Nadlanist[] }) {
 
   if (!c) {
     return (
@@ -75,9 +75,9 @@ export default function CommunityView({ c, others }: { c?: Community; others: Co
           <a href="/communities" className="cs-back" data-reveal>→ כל הקהילות</a>
 
           <div className="cs-hero" data-reveal>
-            <div className="cs-hero__bg"><img src={imageSrc(c.cover, 1400)} alt="" /></div>
+            <div className="cs-hero__bg">{c.cover && <img src={c.cover} alt="" />}</div>
             <div className="cs-hero__in">
-              <span className="cs-hero__badge">● קהילה · {c.members} חברים</span>
+              <span className="cs-hero__badge">● קהילה{c.members && ` · ${c.members} חברים`}</span>
               <h1>{c.name}</h1>
               <p>{c.tagline}</p>
               <a href="#join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הצטרפו לקהילה</span><ArrowIcon /></a>
@@ -87,66 +87,80 @@ export default function CommunityView({ c, others }: { c?: Community; others: Co
       </section>
 
       {/* About */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <div className="cs-about" data-reveal>
-            <h2 className="cs-title">על הקהילה</h2>
-            {c.about.map((p, i) => <p key={i} className="cs-lead">{p}</p>)}
+      {c.about.length > 0 && (
+        <section className="v6-section">
+          <div className="v6-container">
+            <div className="cs-about" data-reveal>
+              <h2 className="cs-title">על הקהילה</h2>
+              {c.about.map((p, i) => <p key={i} className="cs-lead">{p}</p>)}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* What happens here */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <h2 className="cs-title cs-title--center" data-reveal>מה קורה בקהילה</h2>
-          <div className="cs-happenings">
-            {c.happenings.map((h) => {
-              const Icon = HAPPENING_ICONS[h.ic];
-              return (
-                <div key={h.t} className="cs-hap v6-glass" data-reveal>
-                  <span className="cs-hap__ic"><Icon strokeWidth={1.6} aria-hidden /></span>
-                  <div>
-                    <b>{h.t}</b>
-                    <p>{h.d}</p>
+      {c.happenings.length > 0 && (
+        <section className="v6-section">
+          <div className="v6-container">
+            <h2 className="cs-title cs-title--center" data-reveal>מה קורה בקהילה</h2>
+            <div className="cs-happenings">
+              {c.happenings.map((h) => {
+                const Icon = HAPPENING_ICONS[h.ic];
+                return (
+                  <div key={h.t} className="cs-hap v6-glass" data-reveal>
+                    <span className="cs-hap__ic"><Icon strokeWidth={1.6} aria-hidden /></span>
+                    <div>
+                      <b>{h.t}</b>
+                      <p>{h.d}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Gallery */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <h2 className="cs-title cs-title--center" data-reveal>מהשטח</h2>
-          <div className="cs-gallery">
-            {c.gallery.map((g, i) => (
-              <figure key={g + i} className="cs-shot" data-reveal>
-                <img src={imageSrc(g, 800)} alt="" />
-              </figure>
-            ))}
+      {c.gallery.length > 0 && (
+        <section className="v6-section">
+          <div className="v6-container">
+            <h2 className="cs-title cs-title--center" data-reveal>מהשטח</h2>
+            <div className="cs-gallery">
+              {c.gallery.map((g, i) => (
+                <figure key={g + i} className="cs-shot" data-reveal>
+                  <img src={g} alt="" />
+                </figure>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Members from the nadlanistim index */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <h2 className="cs-title cs-title--center" data-reveal>חלק מהחברים בקהילה</h2>
-          <MembersCarousel />
-        </div>
-      </section>
+      {people.length > 0 && (
+        <section className="v6-section">
+          <div className="v6-container">
+            <h2 className="cs-title cs-title--center" data-reveal>חלק מהחברים בקהילה</h2>
+            <MembersCarousel people={people} />
+          </div>
+        </section>
+      )}
 
       {/* Join CTA */}
       <section className="v6-section" id="join">
         <div className="v6-container">
           <div className="cs-join v6-glass" data-reveal>
             <h2>רוצים להיות חלק מקהילת <em>{c.name}</em>?</h2>
-            <p>הצטרפו ל‑{c.members} החברים שכבר מדברים, לומדים וסוגרים עסקאות יחד. חינם לחברי הנדלניסטים.</p>
+            <p>הצטרפו ל{c.members ? `‑${c.members} ` : ""}חברים שכבר מדברים, לומדים וסוגרים עסקאות יחד. חינם לחברי הנדלניסטים.</p>
             <div className="pg-actions" style={{ justifyContent: "center" }}>
-              <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הצטרפו לקהילה</span><ArrowIcon /></a>
+              {/* The community's WhatsApp group when WordPress has its link; the site's join form otherwise. */}
+              <a
+                href={c.whatsapp ?? "/#contact"}
+                {...(c.whatsapp && { target: "_blank", rel: "noopener noreferrer" })}
+                className="v6-btn v6-btn--primary v6-btn--lg"
+                data-magnetic=""
+              ><span>הצטרפו לקהילה</span><ArrowIcon /></a>
               <a href="/communities" className="v6-btn v6-btn--glass v6-btn--lg">לכל הקהילות</a>
             </div>
           </div>
@@ -154,22 +168,24 @@ export default function CommunityView({ c, others }: { c?: Community; others: Co
       </section>
 
       {/* Other communities */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <h2 className="cs-title cs-title--center" data-reveal>עוד קהילות</h2>
-          <div className="cm-grid">
-            {others.map((o) => (
-              <a key={o.slug} href={`/community/${o.slug}`} className="cm-card v6-glass" data-reveal>
-                <div className="cm-card__logo"><img src={communityLogo(o)} alt="" /></div>
-                <h3>{o.name}</h3>
-                <p>{o.tagline}</p>
-                <div className="cm-card__members">{o.members} חברים</div>
-                <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>
-              </a>
-            ))}
+      {others.length > 0 && (
+        <section className="v6-section">
+          <div className="v6-container">
+            <h2 className="cs-title cs-title--center" data-reveal>עוד קהילות</h2>
+            <div className="cm-grid">
+              {others.map((o) => (
+                <a key={o.slug} href={`/community/${o.slug}`} className="cm-card v6-glass" data-reveal>
+                  <div className="cm-card__logo"><img src={communityLogo(o)} alt="" /></div>
+                  <h3>{o.name}</h3>
+                  <p>{o.tagline}</p>
+                  {o.members && <div className="cm-card__members">{o.members} חברים</div>}
+                  <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </SiteShell>
   );
 }

@@ -26,7 +26,7 @@ export default async function CommunitiesPage() {
                 <div className="cm-card__logo"><img src={communityLogo(c)} alt="" /></div>
                 <h3>{c.name}</h3>
                 <p>{c.tagline}</p>
-                <div className="cm-card__members">{c.members} חברים</div>
+                {c.members && <div className="cm-card__members">{c.members} חברים</div>}
                 <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>
               </a>
             ))}

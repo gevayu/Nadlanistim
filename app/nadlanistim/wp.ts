@@ -1,6 +1,6 @@
 // Nadlanistim directory from WordPress (nad_nadlanist + its "פרטי נדלניסט/ית" ACF group).
 import { byPublished, wpLines, wpQuery } from "../../lib/wp";
-import { NADLANISTIM, type Nadlanist } from "./data";
+import type { Nadlanist } from "./data";
 
 type WpNadlanist = {
   databaseId: number;
@@ -43,10 +43,9 @@ const toNadlanist = ({ slug, title, featuredImage, nadlanistFields: f }: WpNadla
   // Upgrade: add them to group_nad_nadlanist in the importer plugin and map them here.
 });
 
-/** The directory (youth team excluded), oldest member first. Falls back to the local copy if the backend is down. */
+/** The directory (youth team excluded), oldest member first. */
 export async function getNadlanistim(): Promise<Nadlanist[]> {
   const data = await wpQuery<{ nadlanists: { nodes: WpNadlanist[] } }>(QUERY);
-  if (!data) return NADLANISTIM;
   return data.nadlanists.nodes
     .filter((n) => !n.cohorts.nodes.some((c) => c.name === YOUTH_COHORT))
     .sort(byPublished)

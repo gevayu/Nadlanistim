@@ -1,8 +1,13 @@
-"use client";
-
 import SiteShell from "../v6/SiteShell";
 import "./account.css";
-import { COLLABS } from "../collaborations/data";
+import { onBoard } from "../collaborations/data";
+import { getCollabs } from "../collaborations/wp";
+import { eventHref, isVolunteer } from "../events/data";
+import { getEvents } from "../events/wp";
+import { getJobs } from "../jobs/wp";
+import { CURRENT_MEMBER } from "../nadlanistim/data";
+import { getNadlanistim } from "../nadlanistim/wp";
+import { getEpisodes } from "../podcast/wp";
 
 const ChevronIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -10,38 +15,32 @@ const ChevronIcon = () => (
   </svg>
 );
 
-const QUICK = [
-  { ic: "🤝", t: "עסקאות בלעדיות", n: "6 פעילות", href: "/collaborations" },
-  { ic: "💼", t: "משרות לחברים", n: "6 פתוחות", href: "/jobs" },
-  { ic: "🪩", t: "מסיבות והקלטות", n: "עדכני", href: "/event-recap" },
-  { ic: "🎙️", t: "פרקים מלאים", n: "12 פרקים", href: "/podcast" },
-];
+// "יולי 2025" from the ISO date WordPress stores.
+const monthYear = (iso: string) => new Intl.DateTimeFormat("he-IL", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+const dot = (...parts: string[]) => parts.filter(Boolean).join(" · ");
 
-const DEALS = COLLABS.slice(0, 3);
+export default async function AccountPage() {
+  const [people, collabs, jobs, events, episodes] = await Promise.all([getNadlanistim(), getCollabs(), getJobs(), getEvents(), getEpisodes()]);
+  const me = people.find((n) => n.slug === CURRENT_MEMBER);
+  const deals = collabs.filter(onBoard);
+  const past = events.filter((e) => e.past && !isVolunteer(e)).sort((a, b) => b.date.localeCompare(a.date));
+  const quick = [
+    { ic: "🤝", t: "עסקאות בלעדיות", n: `${deals.length} פעילות`, href: "/collaborations" },
+    { ic: "💼", t: "משרות לחברים", n: `${jobs.length} פתוחות`, href: "/jobs" },
+    { ic: "🪩", t: "מסיבות והקלטות", n: `${past.length} אירועים`, href: "/events" },
+    { ic: "🎙️", t: "פרקים מלאים", n: `${episodes.length} פרקים`, href: "/podcast" },
+  ];
 
-const JOBS = [
-  { title: "סמנכ״ל/ית פיתוח עסקי", meta: "קרן השקעות נדל״ן · תל אביב" },
-  { title: "שמאי/ת מקרקעין בכיר/ה", meta: "פירמת שמאות מובילה · רמת גן" },
-  { title: "מנהל/ת פרויקטים בנדל״ן", meta: "חברה יזמית מובילה · אזור המרכז" },
-];
-
-const PARTIES = [
-  { ic: "🎉", title: "מסיבת הקיץ 2025 - הקלטות וגלריה", meta: "יולי 2025 · Rooftop TLV", href: "/event-recap" },
-  { ic: "🍸", title: "ערב גאלה - 5 שנים לקהילה", meta: "דצמבר 2024 · האנגר 11", href: "/event-recap" },
-  { ic: "🎬", title: "כנס הנדלניסטים 2025 - הרצאות מלאות", meta: "מאי 2025 · אקספו ת״א", href: "/event-recap" },
-];
-
-export default function AccountPage() {
   return (
     <SiteShell>
       <section className="v6-section">
         <div className="v6-container">
           {/* Account header */}
           <div className="ac-head v6-glass" data-reveal>
-            <div className="ac-head__av"><img src="https://i.pravatar.cc/160?img=12" alt="" /></div>
+            <div className="ac-head__av">{me?.photo && <img src={me.photo} alt="" />}</div>
             <div>
-              <div className="ac-head__name">שלום, אבי כהן 👋</div>
-              <div className="ac-head__meta">חבר/ה מאז 2021 · חברות פרימיום פעילה</div>
+              <div className="ac-head__name">שלום, {me?.name} 👋</div>
+              {me?.role && <div className="ac-head__meta">{me.role}</div>}
             </div>
             <span className="ac-head__badge">MEMBERS ONLY ✓</span>
             <a href="/my-account" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>עריכת הפרופיל שלי</a>
@@ -49,7 +48,7 @@ export default function AccountPage() {
 
           {/* Quick access */}
           <div className="ac-quick">
-            {QUICK.map((q) => (
+            {quick.map((q) => (
               <a key={q.t} href={q.href} className="ac-ql v6-glass" data-reveal>
                 <div className="ac-ql__ic">{q.ic}</div>
                 <div className="ac-ql__t">{q.t}</div>
@@ -65,12 +64,12 @@ export default function AccountPage() {
               <a href="/collaborations" className="v6-link-arrow"><span>לכל העסקאות</span><ChevronIcon /></a>
             </div>
             <div className="ac-list">
-              {DEALS.map((d) => (
+              {deals.slice(0, 3).map((d) => (
                 <a key={d.slug} href={`/collaboration/${d.slug}`} className="ac-row v6-glass" data-reveal>
                   <div className="ac-row__ic">🤝</div>
                   <div className="ac-row__body">
                     <div className="ac-row__title">{d.title}</div>
-                    <div className="ac-row__meta">מחפש: {d.looking} · {d.place} · {d.invest}</div>
+                    <div className="ac-row__meta">{dot(d.looking && `מחפש: ${d.looking}`, d.place, d.invest)}</div>
                   </div>
                   <span className="ac-row__arrow"><ChevronIcon /></span>
                 </a>
@@ -85,12 +84,12 @@ export default function AccountPage() {
               <a href="/jobs" className="v6-link-arrow"><span>לכל המשרות</span><ChevronIcon /></a>
             </div>
             <div className="ac-list">
-              {JOBS.map((j) => (
-                <a key={j.title} href="/jobs" className="ac-row v6-glass" data-reveal>
+              {jobs.slice(0, 3).map((j) => (
+                <a key={j.id} href={`/job/${j.id}`} className="ac-row v6-glass" data-reveal>
                   <div className="ac-row__ic">💼</div>
                   <div className="ac-row__body">
                     <div className="ac-row__title">{j.title}</div>
-                    <div className="ac-row__meta">{j.meta}</div>
+                    <div className="ac-row__meta">{dot(j.company || j.by, j.place)}</div>
                   </div>
                   <span className="ac-row__arrow"><ChevronIcon /></span>
                 </a>
@@ -105,12 +104,12 @@ export default function AccountPage() {
               <a href="/events" className="v6-link-arrow"><span>לכל האירועים</span><ChevronIcon /></a>
             </div>
             <div className="ac-list">
-              {PARTIES.map((p) => (
-                <a key={p.title} href={p.href} className="ac-row v6-glass" data-reveal>
-                  <div className="ac-row__ic">{p.ic}</div>
+              {past.slice(0, 3).map((p) => (
+                <a key={p.slug} href={eventHref(p)} className="ac-row v6-glass" data-reveal>
+                  <div className="ac-row__ic">🎉</div>
                   <div className="ac-row__body">
                     <div className="ac-row__title">{p.title}</div>
-                    <div className="ac-row__meta">{p.meta}</div>
+                    <div className="ac-row__meta">{dot(monthYear(p.date), p.place)}</div>
                   </div>
                   <span className="ac-row__arrow"><ChevronIcon /></span>
                 </a>

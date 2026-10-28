@@ -1,6 +1,6 @@
 // Communities from WordPress (nad_community + its "פרטי קהילה" ACF group).
 import { byPublished, wpLines, wpQuery } from "../../lib/wp";
-import { BASE_HAPPENINGS, COMMUNITY_LIST, type Community, type HappeningIcon } from "./data";
+import type { Community, HappeningIcon } from "./data";
 
 type WpCommunity = {
   databaseId: number;
@@ -15,6 +15,7 @@ type WpCommunity = {
     about: string | null;
     happenings: string | null;
     gallery: { nodes: { sourceUrl: string }[] } | null;
+    linkUrl: string | null;
   } | null;
 };
 
@@ -22,7 +23,7 @@ const QUERY = `{ communities(first: 100) { nodes {
   databaseId date slug title
   featuredImage { node { sourceUrl(size: LARGE) } }
   communityFields {
-    tagline membersCount about happenings
+    tagline membersCount about happenings linkUrl
     logo { node { sourceUrl(size: MEDIUM) } }
     gallery { nodes { sourceUrl(size: MEDIUM_LARGE) } }
   }
@@ -43,14 +44,15 @@ const toCommunity = ({ slug, title, featuredImage, communityFields: f }: WpCommu
     members: String(f?.membersCount ?? ""),
     cover: featuredImage?.node.sourceUrl ?? "",
     about: wpLines(f?.about),
-    happenings: happenings.length ? happenings : BASE_HAPPENINGS(title),
+    happenings,
     gallery: f?.gallery?.nodes.map((g) => g.sourceUrl) ?? [],
     logo: f?.logo?.node.sourceUrl,
+    whatsapp: f?.linkUrl || undefined,
   };
 };
 
-/** All communities, oldest first. Falls back to the local copy if the backend is down. */
+/** All communities, oldest first. */
 export async function getCommunities(): Promise<Community[]> {
   const data = await wpQuery<{ communities: { nodes: WpCommunity[] } }>(QUERY);
-  return data ? data.communities.nodes.sort(byPublished).map(toCommunity) : COMMUNITY_LIST;
+  return data.communities.nodes.sort(byPublished).map(toCommunity);
 }

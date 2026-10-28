@@ -2,13 +2,6 @@ import { notFound } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import { getJobById } from "../../jobs/wp";
 
-const ShareIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-    <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
-    <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" strokeLinecap="round" />
-  </svg>
-);
-
 const MailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
     <rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" />
@@ -29,12 +22,14 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
             <div className="pg-panel__head">
               <div className="pg-panel__title">
                 <h1>{job.title}</h1>
-                <div className="pg-panel__by">פורסם על ידי <a href="/profile"><b>{job.by}</b></a></div>
+                <div className="pg-panel__by">פורסם על ידי <b>{job.by}</b></div>
                 <div className="pg-panel__id">מס׳ משרה {job.id}</div>
               </div>
-              <div className="pg-panel__logo">
-                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&q=80" alt="" />
-              </div>
+              {job.img && (
+                <div className="pg-panel__logo">
+                  <img src={job.img} alt="" />
+                </div>
+              )}
             </div>
 
             <div className="pg-meta">
@@ -75,10 +70,6 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
                 title={`שליחת הודעה ל${job.by}`}
               >
                 <MailIcon />
-              </a>
-              <a href="#" className="v6-btn v6-btn--primary" data-magnetic="">
-                <span>שתף משרה</span>
-                <ShareIcon />
               </a>
               <a href="/jobs" className="v6-btn v6-btn--glass">חזרה ללוח הדרושים</a>
             </div>

@@ -10,14 +10,16 @@
 
 .ev-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1000px; margin: 0 auto; }
 .ev-detail { padding: 26px 20px; border-radius: var(--r-lg); text-align: center; }
-.ev-detail__icon { font-size: 24px; margin-bottom: 10px; }
+.ev-detail__icon { font-size: 24px; margin-bottom: 10px; color: #fff; }
+.ev-detail__icon svg { width: 26px; height: 26px; display: inline-block; }
 .ev-detail__label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
 .ev-detail__val { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.4; }
 .ev-detail__sub { font-size: 12.5px; color: var(--cyan); margin-top: 6px; }
 
 .ev-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px 44px; max-width: 840px; margin: 0 auto; }
 .ev-feature { display: flex; gap: 14px; align-items: flex-start; }
-.ev-feature__ic { font-size: 22px; line-height: 1.2; }
+.ev-feature__ic { flex: 0 0 auto; width: 24px; height: 24px; color: #fff; }
+.ev-feature__ic svg { width: 100%; height: 100%; display: block; }
 .ev-feature b { font-size: 16px; color: var(--ink); }
 .ev-feature p { font-size: 13.5px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
 
@@ -47,9 +49,7 @@
 .ev-faq__q { color: var(--cyan); font-weight: 700; flex-shrink: 0; }
 
 .ev-band { border-radius: var(--r-lg); padding: clamp(28px, 4vw, 48px); text-align: center; background: linear-gradient(135deg, rgba(139,92,246,.24), rgba(34,211,238,.16)); border: 1px solid var(--glass-border-strong); }
-.ev-band h2 { font-size: clamp(24px, 2.6vw, 34px); margin-bottom: 10px; }
-.ev-band p { color: var(--ink-2); margin-bottom: 22px; font-size: 15px; }
-.ev-band__note { margin-top: 16px; font-size: 13px; color: var(--muted); }
+.ev-band h2 { font-size: clamp(24px, 2.6vw, 34px); margin-bottom: 24px; }
 
 @media (max-width: 1100px) { .ev-details { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 760px) {

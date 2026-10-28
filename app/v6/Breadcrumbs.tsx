@@ -1,11 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { getCollab } from "../collaborations/data";
-import { getCommunity } from "../communities/data";
-import { getNadlanist } from "../nadlanistim/data";
-import { getEpisode } from "../podcast/data";
-import { getMember } from "../youth/data";
 
 type Crumb = { label: string; parent?: string };
 
@@ -33,23 +28,27 @@ const PAGES: Record<string, Crumb> = {
   "/join": { label: "הצטרפות לקהילה" },
   "/account": { label: "האזור האישי" },
   "/my-account": { label: "החשבון שלי", parent: "/account" },
+  "/checkout": { label: "תשלום" },
+  "/thank-you": { label: "תודה" },
 };
 
-// Detail pages: /<section>/<slug> -> parent list page + the item's name from its data file.
-// CMS-backed sections (job) have no local data; their page passes the name in via SiteShell `crumb`.
-const DETAIL: Record<string, { parent: string; name: (slug: string) => string | undefined }> = {
-  collaboration: { parent: "/collaborations", name: (s) => getCollab(s)?.title },
-  nadlanist: { parent: "/nadlanistim", name: (s) => getNadlanist(s)?.name },
-  community: { parent: "/communities", name: (s) => getCommunity(s)?.name },
-  podcast: { parent: "/podcast", name: (s) => getEpisode(s)?.title },
-  youth: { parent: "/youth", name: (s) => getMember(s)?.name },
-  job: { parent: "/jobs", name: () => undefined },
+// Detail pages: /<section>/<slug> -> its list page. The item's name comes from WordPress via the page (SiteShell `crumb`).
+const DETAIL_PARENT: Record<string, string> = {
+  collaboration: "/collaborations",
+  nadlanist: "/nadlanistim",
+  community: "/communities",
+  podcast: "/podcast",
+  youth: "/youth",
+  job: "/jobs",
+  article: "/post-archive",
 };
 
 function trail(path: string, label?: string): { href: string; label: string }[] {
   const [, section, slug] = path.split("/");
-  const detail = slug ? DETAIL[section] : undefined;
-  const current = detail ? { label: label ?? detail.name(slug) ?? "", parent: detail.parent } : PAGES[path];
+  const parent = slug ? DETAIL_PARENT[section] : undefined;
+  const page = PAGES[path];
+  // A page fed from WordPress passes its own name (SiteShell `crumb`), which wins over the static label.
+  const current = parent ? { label: label ?? "", parent } : page && { ...page, label: label ?? page.label };
   if (!current?.label) return [];
   const up = current.parent ? trail(current.parent) : [];
   return [...up, { href: path, label: current.label }];

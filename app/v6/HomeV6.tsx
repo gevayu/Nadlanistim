@@ -4,6 +4,11 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { celebrate } from "./confetti";
 import SponsorStrip from "./SponsorStrip";
 import { communityLogo, type Community } from "../communities/data";
+import type { Job } from "../jobs/data";
+import { eventHref, featuredEvent, isVolunteer, splitTitle, type EventItem } from "../events/data";
+import type { Deal, Sponsor } from "./wp";
+import type { Article } from "../post-archive/data";
+import type { Episode } from "../podcast/data";
 import "./v6.css";
 
 const ArrowIcon = () => (
@@ -25,10 +30,7 @@ const ChevronLeft = () => (
 );
 
 type MemberCategory = { count: string; title: string; desc: string; avatars: number[] };
-type JobOffer = { tag: string; title: string; company: string; location: string; desc: string; img: string };
-type Project = { slug: string; img: string; tag: string; title: string; desc: string; period: string; partners: string };
-type EventItem = { day: string; month: string; tag: string; accent?: boolean; title: string; desc: string; place: string; time: string };
-type ArticleItem = { cat: string; title: string; desc: string; author: string; time: string };
+type JobOffer = { tag: string; title: string; company: string; location: string; desc: string; img: string; href?: string };
 
 const NAV_LINKS: [string, string][] = [
   ["#about", "מי אנחנו?"],
@@ -78,12 +80,22 @@ const NADLANISTIM: Nadlanist[] = [
   { img: "1507003211169-0a1dd7228f2d", name: "יואב פרידמן", role: "מנכ״ל, פרידמן השקעות נדל״ן", quote: "״גייסנו 120 מיליון ש״ח לקרן הראשונה שלנו כמעט כולם מתוך הקהילה. אנשים שסומכים עליך כי הם מכירים אותך באמת.״" },
 ];
 
-const JOB_OFFERS: JobOffer[] = [
-  { tag: "קריירה · משרת ניהול", title: "סמנכ״ל/ית פיתוח עסקי", company: "קרן השקעות נדל״ן", location: "תל אביב", desc: "הזדמנות נדירה להשתלב בהנהלת קרן השקעות נדל״ן בצמיחה - איתור, ייזום וניהול עסקאות קרקע ברחבי הארץ.", img: "1556157382-97eda2d62296" },
-  { tag: "קריירה · שמאות", title: "שמאי/ת מקרקעין בכיר/ה", company: "פירמת שמאות מובילה", location: "רמת גן", desc: "פירמת שמאות גדולה מגייסת שמאי/ת מקרקעין לליווי פיננסי של פרויקטים ועריכת דוחות אפס לגופים מוסדיים.", img: "1551836022-d5d88e9218df" },
-  { tag: "קריירה · ניהול פרויקטים", title: "מנהל/ת פרויקטים בנדל״ן", company: "חברה יזמית מובילה", location: "אזור המרכז", desc: "לחברה יזמית מובילה באזור המרכז דרוש/ה מנהל/ת פרויקטים להובלת מיזמי פינוי בינוי ותמ״א 38 מקצה לקצה.", img: "1521119989659-a83eee488004" },
-  { tag: "קריירה · שיווק ומכירות", title: "מנהל/ת שיווק ומכירות", company: "חברת שיווק נדל״ן מובילה", location: "הרצליה פיתוח", desc: "חברת שיווק נדל״ן מובילה מגייסת מנהל/ת שיווק ומכירות להובלת קמפיינים ומכירת פרויקטי יוקרה.", img: "1507003211169-0a1dd7228f2d" },
-];
+
+// Homepage career card from a WordPress listing: first paragraph only, linking to the listing.
+const toJobOffer = (j: Job): JobOffer => ({
+  tag: j.tag ?? "",
+  title: j.title,
+  company: j.company || j.by,
+  location: j.place,
+  desc: j.desc.split(/\n+/)[0],
+  img: j.img ?? "",
+  href: `/job/${j.id}`,
+});
+
+// Event cards: date badge and the month line read the ISO date WordPress stores.
+const heMonth = (iso: string) => new Intl.DateTimeFormat("he-IL", { month: "long", timeZone: "UTC" }).format(new Date(iso));
+const heDay = (iso: string) => iso.slice(8, 10);
+const heMonthYear = (iso: string) => `${heMonth(iso)} ${iso.slice(0, 4)}`;
 
 // The communities carousel shows the real sub-communities, each linking to its own page.
 const carouselItems = (communities: Community[]) =>
@@ -94,55 +106,12 @@ const carouselItems = (communities: Community[]) =>
     href: `/community/${c.slug}`,
   }));
 
-const FEATURED_DETAILS: [string, string][] = [
-  ["מיקום", "אקספו תל אביב, ביתן 1"],
-  ["שעות", "09:00 - 21:00"],
-  ["פאנלים", "3 מסלולים מקבילים"],
-  ["משתתפים", "800"],
-];
 
-type Sponsor = { name: string; logo?: string };
-const SPONSORS_MAIN: Sponsor[] = [
-  { name: "שיכון ובינוי", logo: "/v6-assets/sponsors/shikun.webp" },
-  { name: "אזורים", logo: "/v6-assets/sponsors/azorim.png" },
-  { name: "דוניץ", logo: "/v6-assets/sponsors/donitz.png" },
-  { name: "אאורה", logo: "/v6-assets/sponsors/aura.png" },
-  { name: "צ׳ריטון" },
-  { name: "אפריקה ישראל", logo: "/v6-assets/sponsors/africa.svg" },
-];
 
-const PROJECTS: Project[] = [
-  { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", slug: "pinui-binui-givat-shmuel", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 - היום", partners: "3 שותפים" },
-  { img: "1486406146926-c627a92ad1ab", tag: "קרקע יזמית", slug: "mercantile-rosh-haayin", title: "מתחם מסחרי, ראש העין", desc: "קבוצת השקעה של 14 חברי קהילה. הון של 28M ש״ח.", period: "2023", partners: "14 שותפים" },
-  { img: "1448630360428-65456885c650", tag: "מגדל יוקרה", slug: "luxury-tower-ramat-gan", title: "מגדל הברזל, רמת גן", desc: "שותפות יזמית בין שני חברים. 32 קומות, מסחר ומגורים.", period: "2022 - 2025", partners: "2 שותפים" },
-  { img: "1582407947304-fd86f028f716", tag: "קומבינציה", slug: "real-estate-debt-fund", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
-];
 
-const PODCASTS: { slug: string; title: string; desc: string; img: string }[] = [
-  { img: "1589903308904-1010c2294adc", slug: "interest-inflation-real-estate", title: "ריבית, אינפלציה ונדל״ן – מה שמישהו צריך לומר", desc: "שרון אוחנה ונועם כרמי מנתחים את ההחלטות של בנק ישראל ומה הן אומרות למי שמחזיק נכסים." },
-  { img: "1590602847861-f357a9332bbc", slug: "dubai-real-estate", title: "נדל״ן בדובאי: האמת מאחורי הבאז", desc: "שרון אוחנה ואלון בן-דוד מגיעים ישירות מדובאי עם תובנות שלא תשמעו בשום מקום אחר." },
-  { img: "1478737270239-2f02b77fc618", slug: "pinui-binui-money", title: "פינוי בינוי: הכסף הגדול שכולם מפספסים", desc: "שרון אוחנה בשיחה עם נועם כרמי על למה רוב היזמים נכנסים לפינוי‑בינוי מאוחר מדי – ואיך עושים את זה נכון." },
-  { img: "1598488035139-bdbb2231ce04", slug: "market-correction", title: "האם שוק הנדל״ן בישראל עומד לפני תיקון?", desc: "שרון אוחנה ואלון בן-דוד דנים בסיכונים ובהזדמנויות שמביאה עמה תקופת חוסר הוודאות." },
-];
 
-const SECONDARY_ARTICLES: ArticleItem[] = [
-  { cat: "רגולציה", title: "חוק התחדשות עירונית 2026 - מה צריך לדעת", desc: "כל מה שיזמים ובעלי דירות חייבים להבין לפני שנכנסים לפרויקט.", author: "עו״ד דניאל כהן", time: "9 דק׳" },
-  { cat: "פרופטק", title: "5 פלטפורמות שמשנות את עולם המכרזים", desc: "הכלים הדיגיטליים שמקצרים את הדרך מהמכרז ועד הזכייה.", author: "שירה אלוני", time: "6 דק׳" },
-  { cat: "מימון", title: "קרנות חוב נדל״ן - איך לבחור נכון", desc: "מה ההבדל בין הקרנות, ואיך מזהים את הסיכון האמיתי.", author: "רן מימון", time: "11 דק׳" },
-];
 
-const EVENTS: EventItem[] = [
-  { day: "28", month: "מאי", tag: "ארוחת ערב סגורה", title: "שולחן עגול - יזמי התחדשות עירונית", desc: "20 יזמים. שולחן אחד. נושאים חמים בתעשייה. רק לחברי קהילה.", place: "מסעדת מסה, תל אביב", time: "20:00" },
-  { day: "04", month: "יוני", tag: "מאסטרקלאס", title: "קרנות חוב פרטיות - A to Z", desc: "שלוש שעות עומק עם מנהלי שלוש הקרנות המובילות בארץ.", place: "WeWork גינדי, ת״א", time: "09:30" },
-  { day: "14", month: "יוני", tag: "הכנס השנתי", accent: true, title: "כנס הנדלניסטים 2026", desc: "היום הגדול של הקהילה. 42 מרצים. 3 פאנלים. 800 משתתפים.", place: "אקספו תל אביב", time: "09:00 - 21:00" },
-  { day: "02", month: "יולי", tag: "סיור מקצועי", title: "סיור בפרויקטים החדשים בתל אביב", desc: "סיור מודרך עם היזמים - ארבעה מגדלים בלב העיר.", place: "נקודת מפגש - שרונה", time: "16:00" },
-];
 
-const PAST_EVENTS = [
-  { tag: "הכנס השנתי", title: "כנס הנדלניסטים 2025", desc: "יום שלם של פאנלים, עסקאות ונטוורקינג עם מיטב אנשי הענף.", place: "אקספו תל אביב", time: "מאי 2025" },
-  { tag: "משלחת בינלאומית", title: "משלחת נדל״ן לדובאי", desc: "חמישה ימים, עשרים חברי קהילה, ושוק שמשנה את כללי המשחק.", place: "דובאי, איחוד האמירויות", time: "מרץ 2025" },
-  { tag: "ערב חברים", title: "חמש שנים לקהילה - ערב גאלה", desc: "חגגנו חמש שנים יחד עם כל מי שבנה את הקהילה מהיום הראשון.", place: "האנגר 11, נמל ת״א", time: "דצמבר 2024" },
-];
 
 const ROLE_OPTIONS = ["יזם / יזמית", "משקיע / משקיעה", "שמאי מקרקעין", "עו״ד", "קבלן", "מתווך / מתווכת", "אדריכל / אדריכלית", "חברת מימון", "פרופטק", "שיווק נדל״ן", "אחר"];
 
@@ -517,7 +486,7 @@ function JobRotator({ jobs }: { jobs: JobOffer[] }) {
       aria-label="הצעות עבודה בקהילה"
     >
       <figure className="v6-jobrot__img">
-        <img key={`job-img-${i}`} src={`https://images.unsplash.com/photo-${j.img}?w=1100&q=80`} alt="" />
+        {j.img && <img key={`job-img-${i}`} src={j.img} alt="" />}
         <span className="v6-jobrot__badge">משרה פתוחה</span>
       </figure>
       <div className="v6-jobrot__body">
@@ -530,7 +499,7 @@ function JobRotator({ jobs }: { jobs: JobOffer[] }) {
           <p>{j.desc}</p>
         </div>
         <div className="v6-cardfoot">
-          <a href="#" className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
+          <a href={j.href ?? "/jobs"} className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
           <div className="v6-cardnav">
             <button type="button" className="v6-cardarrow" aria-label="המשרה הקודמת" onClick={() => setI((prev) => (prev - 1 + jobs.length) % jobs.length)}>
               <ChevronRight />
@@ -655,7 +624,27 @@ function CommunitiesCarousel({ items }: { items: { id: string; logo: string; lab
   );
 }
 
-export default function HomePageV6({ communities }: { communities: Community[] }) {
+type HomeProps = {
+  communities: Community[];
+  jobs: Job[];
+  events: EventItem[];
+  articles: Article[]; // newest first
+  episodes: Episode[]; // most recent episode first
+  home: { deals: Deal[]; sponsors: Sponsor[] };
+};
+
+export default function HomePageV6({ communities, jobs, events, articles, episodes, home }: HomeProps) {
+  const jobOffers = jobs.slice(0, 4).map(toJobOffer);
+  const { deals, sponsors } = home;
+  const byDate = (a: EventItem, b: EventItem) => a.date.localeCompare(b.date);
+  const upcoming = events.filter((e) => !e.past && !isVolunteer(e)).sort(byDate).slice(0, 3);
+  const past = events.filter((e) => e.past && !isVolunteer(e)).sort(byDate).reverse().slice(0, 3);
+  const featured = featuredEvent(events);
+  const leadArticle = articles.find((a) => a.featured) ?? articles[0];
+  const moreArticles = articles.filter((a) => a !== leadArticle).slice(0, 3);
+  // Headline on two lines with the second highlighted: the part after " - ", else the last word.
+  const [featuredMain, featuredAccent] = ((t) =>
+    t.includes(" - ") ? splitTitle(t) : [t.slice(0, t.lastIndexOf(" ")), t.slice(t.lastIndexOf(" ") + 1)])(featured?.title ?? "");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sent, setSent] = useState(false);
   const scrolled = useScrolled();
@@ -888,20 +877,20 @@ export default function HomePageV6({ communities }: { communities: Community[] }
               <span className="v6-eyebrow"><span className="v6-dot" />אירועים קרובים</span>
               <h2>אירועי נדלניסטים <em>הקרובים</em></h2>
             </div>
-            <a href="#" className="v6-link-arrow">
+            <a href="/events" className="v6-link-arrow">
               <span>כל האירועים</span>
               <ArrowIcon />
             </a>
           </header>
           <div className="v6-events__list">
-            {EVENTS.slice(0, 3).map((e) => (
-              <a key={e.title} href="/event" className="v6-event v6-glass" data-reveal>
+            {upcoming.map((e) => (
+              <a key={e.slug} href={eventHref(e)} className="v6-event v6-glass" data-reveal>
                 <div className="v6-event__date">
-                  <span className="v6-event__day">{e.day}</span>
-                  <span className="v6-event__month">{e.month}</span>
+                  <span className="v6-event__day">{heDay(e.date)}</span>
+                  <span className="v6-event__month">{heMonth(e.date)}</span>
                 </div>
                 <div className="v6-event__body">
-                  <span className={`v6-event__tag${e.accent ? " v6-event__tag--accent" : ""}`}>{e.tag}</span>
+                  <span className={`v6-event__tag${e.accent ? " v6-event__tag--accent" : ""}`}>{e.types[0]}</span>
                   <h3>{e.title}</h3>
                   <p>{e.desc}</p>
                   <div className="v6-event__meta">
@@ -927,17 +916,14 @@ export default function HomePageV6({ communities }: { communities: Community[] }
           <div className="v6-featured__text">
             <span className="v6-eyebrow" data-reveal><span className="v6-dot" />האירוע המרכזי</span>
             <div className="v6-featured__date" data-reveal>
-              <div><span>14</span>יוני</div>
+              <div><span>{heDay(featured?.date ?? "")}</span>{featured && heMonth(featured.date)}</div>
               <div className="v6-featured__date-sep" />
-              <div><span>2026</span>תל אביב</div>
+              <div><span>{featured?.date.slice(0, 4)}</span>{featured?.place.split(",")[0]}</div>
             </div>
             <h2 className="v6-featured__title" data-reveal>
-              כנס הנדלניסטים<br /><em>השנתי 2026</em>
+              {featuredMain}{featuredAccent && <><br /><em>{featuredAccent}</em></>}
             </h2>
-            <p className="v6-featured__desc" data-reveal>
-              12 שעות של פאנלים, מאסטרקלאסים ונטוורקינג בלב תל אביב.
-              עם הדמויות המובילות בענף - יזמים, משקיעים, רגולטורים ומקבלי החלטות.
-            </p>
+            <p className="v6-featured__desc" data-reveal>{featured?.desc}</p>
             <div className="v6-featured__speakers" data-reveal>
               <div className="v6-featured__speakers-imgs">
                 {[12, 22, 32, 42, 52].map((n) => (
@@ -949,20 +935,22 @@ export default function HomePageV6({ communities }: { communities: Community[] }
               </div>
             </div>
             <div className="v6-featured__cta" data-reveal>
-              <a href="#" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+              <a href={featured?.cta || (featured ? eventHref(featured) : "/events")} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>הירשמו לכנס</span>
                 <ArrowIcon />
               </a>
-              <a href="#" className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תוכנית הכנס</a>
-              <a href="#" className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תמונות מהכנס שעבר</a>
+              <a href={featured ? eventHref(featured) : "/events"} className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תוכנית הכנס</a>
+              <a href={past[0] ? eventHref(past[0]) : "/events"} className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תמונות מהכנס שעבר</a>
             </div>
           </div>
           <aside className="v6-featured__card v6-glass" data-reveal>
             <div className="v6-featured__card-img">
-              <img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=900&q=80" alt="" />
+              {featured?.img && <img src={featured.img} alt="" />}
             </div>
             <div className="v6-featured__card-body">
-              {FEATURED_DETAILS.map(([k, v]) => (
+              {([["מיקום", featured?.place], ["שעות", featured?.time], ["מחיר", featured?.price], ["למי", featured?.audience]] as const)
+                .filter(([, v]) => v)
+                .map(([k, v]) => (
                 <div key={k} className="v6-featured__card-row">
                   <span>{k}</span><strong>{v}</strong>
                 </div>
@@ -987,10 +975,12 @@ export default function HomePageV6({ communities }: { communities: Community[] }
             </a>
           </header>
           <div className="v6-projects__grid">
-            {PROJECTS.map((p) => (
-              <a key={p.title} href={`/collaboration/${p.slug}`} className="v6-project v6-glass" data-reveal>
+            {/* ponytail: a WordPress deal has no link field, so its card opens the collaborations board.
+                Upgrade: add a collaboration link to group_nad_deal and use it here. */}
+            {deals.map((p) => (
+              <a key={p.title} href="/collaborations" className="v6-project v6-glass" data-reveal>
                 <figure className="v6-project__img">
-                  <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
+                  {p.img && <img src={p.img} alt="" />}
                   <div className="v6-project__tag">{p.tag}</div>
                   <span className="v6-project__members">Members Only</span>
                 </figure>
@@ -1026,11 +1016,12 @@ export default function HomePageV6({ communities }: { communities: Community[] }
           <div className="v6-sponsors__group" data-reveal>
             <h4 className="v6-sponsors__title">שותפים קבועים</h4>
             <div className="v6-sponsors__logos">
-              {SPONSORS_MAIN.map((s) => (
-                <div key={s.name} className="v6-sponsors__logo">
-                  {s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name}
-                </div>
-              ))}
+              {sponsors.map((s) => {
+                const mark = s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name;
+                return s.url
+                  ? <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="v6-sponsors__logo">{mark}</a>
+                  : <div key={s.name} className="v6-sponsors__logo">{mark}</div>;
+              })}
             </div>
           </div>
         </div>
@@ -1049,7 +1040,7 @@ export default function HomePageV6({ communities }: { communities: Community[] }
             </div>
             <div className="v6-youth__content">
               <p>25 נדלניסטים ונדלניסטיות מתחת לגיל 45 שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
-              <a href="#" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+              <a href="/youth" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>צפו בפרויקט המיוחד</span>
                 <ArrowIcon />
               </a>
@@ -1066,32 +1057,34 @@ export default function HomePageV6({ communities }: { communities: Community[] }
               <span className="v6-eyebrow"><span className="v6-dot" />תוכן מקצועי</span>
               <h2>חברי הקהילה <em>כותבים</em></h2>
             </div>
-            <a href="#" className="v6-link-arrow">
+            <a href="/post-archive" className="v6-link-arrow">
               <span>כל הכתבות</span>
               <ArrowIcon />
             </a>
           </header>
           <div className="v6-articles__grid">
-            <a href="/post" className="v6-article v6-article--feature v6-glass" data-reveal>
-              <figure className="v6-article__img">
-                <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=80" alt="" />
-              </figure>
-              <div className="v6-article__body">
-                <div className="v6-article__cat">ניתוח שוק</div>
-                <h3>איפה נסגרות עכשיו עסקאות הקרקע הכי טובות?</h3>
-                <p>מיפוי של 18 חודשים אחרונים בשוק הקרקעות הפרטי - והאזורים שמתחתם הפעילות שקטה אבל הרווחיות גבוהה.</p>
-                <div className="v6-article__meta">
-                  <span>אלון שמיר</span><span>·</span><span>14 דק׳ קריאה</span><span>·</span><span>מאי 2026</span>
+            {leadArticle && (
+              <a href={`/article/${leadArticle.slug}`} className="v6-article v6-article--feature v6-glass" data-reveal>
+                <figure className="v6-article__img">
+                  {leadArticle.img && <img src={leadArticle.img} alt="" />}
+                </figure>
+                <div className="v6-article__body">
+                  <div className="v6-article__cat">{leadArticle.cats[0]}</div>
+                  <h3>{leadArticle.title}</h3>
+                  <p>{leadArticle.excerpt}</p>
+                  <div className="v6-article__meta">
+                    <span>{leadArticle.author.name}</span><span>·</span><span>{leadArticle.minutes} דק׳ קריאה</span><span>·</span><span>{leadArticle.date}</span>
+                  </div>
                 </div>
-              </div>
-            </a>
-            {SECONDARY_ARTICLES.map((a) => (
-              <a key={a.title} href="/post" className="v6-article v6-glass" data-reveal>
-                <div className="v6-article__cat">{a.cat}</div>
+              </a>
+            )}
+            {moreArticles.map((a) => (
+              <a key={a.slug} href={`/article/${a.slug}`} className="v6-article v6-glass" data-reveal>
+                <div className="v6-article__cat">{a.cats[0]}</div>
                 <h3>{a.title}</h3>
-                <p className="v6-article__excerpt">{a.desc}</p>
+                <p className="v6-article__excerpt">{a.excerpt}</p>
                 <div className="v6-article__meta">
-                  <span>{a.author}</span><span>·</span><span>{a.time}</span>
+                  <span>{a.author.name}</span><span>·</span><span>{a.minutes} דק׳</span>
                 </div>
               </a>
             ))}
@@ -1108,16 +1101,16 @@ export default function HomePageV6({ communities }: { communities: Community[] }
               <h2>הפרקים הכי <em>נצפים</em></h2>
               <p className="v6-section-head__sub">שיחות עומק עם האנשים שמזיזים את שוק הנדל״ן בישראל.</p>
             </div>
-            <a href="#" className="v6-link-arrow">
+            <a href="/podcast" className="v6-link-arrow">
               <span>כל הפרקים</span>
               <ArrowIcon />
             </a>
           </header>
           <div className="v6-podcasts__grid">
-            {PODCASTS.map((p) => (
-              <a key={p.title} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
+            {episodes.slice(0, 4).map((p) => (
+              <a key={p.slug} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
                 <figure className="v6-podcast__img">
-                  <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
+                  {p.img && <img src={p.img} alt="" />}
                 </figure>
                 <div className="v6-podcast__body">
                   <h3>{p.title}</h3>
@@ -1141,20 +1134,20 @@ export default function HomePageV6({ communities }: { communities: Community[] }
               <span className="v6-eyebrow"><span className="v6-dot" />אירועי עבר</span>
               <h2>חוזרים <em>לרגעים היפים.</em></h2>
             </div>
-            <a href="#" className="v6-link-arrow">
+            <a href="/events" className="v6-link-arrow">
               <span>כל האירועים</span>
               <ArrowIcon />
             </a>
           </header>
           <div className="v6-events__list">
-            {PAST_EVENTS.map((e) => (
-              <a key={e.title} href="/event-recap" className="v6-event v6-event--nodate v6-glass" data-reveal>
+            {past.map((e) => (
+              <a key={e.slug} href={eventHref(e)} className="v6-event v6-event--nodate v6-glass" data-reveal>
                 <div className="v6-event__body">
-                  <span className="v6-event__tag">{e.tag}</span>
+                  <span className="v6-event__tag">{e.types[0]}</span>
                   <h3>{e.title}</h3>
                   <p>{e.desc}</p>
                   <div className="v6-event__meta">
-                    <span>{e.place}</span><span>·</span><span>{e.time}</span>
+                    <span>{e.place}</span><span>·</span><span>{heMonthYear(e.date)}</span>
                   </div>
                 </div>
                 <span className="v6-event__cta">
@@ -1174,7 +1167,7 @@ export default function HomePageV6({ communities }: { communities: Community[] }
             <h2>קריירה</h2>
           </header>
           <div className="v6-stories__grid">
-            <JobRotator jobs={JOB_OFFERS} />
+            <JobRotator jobs={jobOffers} />
           </div>
         </div>
       </section>

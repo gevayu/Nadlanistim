@@ -1,13 +1,16 @@
 // Jobs board listings from WordPress (nad_job + its "פרטי משרה" ACF group).
 import { wpDate, wpLines, wpQuery } from "../../lib/wp";
-import { JOBS, JOB_TYPES, type Job } from "./data";
+import { JOB_TYPES, type Job } from "./data";
 
 type WpJob = {
   databaseId: number;
   slug: string;
   title: string;
   date: string;
+  featuredImage: { node: { sourceUrl: string } } | null;
   jobFields: {
+    tag: string | null;
+    company: string | null;
     publisher: string | null;
     location: string | null;
     field: string[] | null;
@@ -21,10 +24,11 @@ type WpJob = {
 
 const QUERY = `{ jobs(first: 100, where: { orderby: { field: DATE, order: DESC } }) { nodes {
   databaseId slug title date
-  jobFields { publisher location field employment description requirements tags contactEmail }
+  featuredImage { node { sourceUrl(size: MEDIUM_LARGE) } }
+  jobFields { tag company publisher location field employment description requirements tags contactEmail }
 } } }`;
 
-const toJob = ({ databaseId, slug, title, date, jobFields: f }: WpJob): Job => ({
+const toJob = ({ databaseId, slug, title, date, featuredImage, jobFields: f }: WpJob): Job => ({
   // The WordPress post ID is the public serial: unique and never reused.
   id: databaseId,
   slug,
@@ -40,13 +44,16 @@ const toJob = ({ databaseId, slug, title, date, jobFields: f }: WpJob): Job => (
   desc: f?.description ?? "",
   date: wpDate(date),
   reqs: wpLines(f?.requirements),
+  tag: f?.tag ?? undefined,
+  company: f?.company ?? undefined,
+  img: featuredImage?.node.sourceUrl,
   tags: wpLines(f?.tags),
 });
 
-/** Live listings, newest first. Falls back to the local copy if the backend is down. */
+/** Live listings, newest first. */
 export async function getJobs(): Promise<Job[]> {
   const data = await wpQuery<{ jobs: { nodes: WpJob[] } }>(QUERY);
-  return data ? data.jobs.nodes.map(toJob) : JOBS;
+  return data.jobs.nodes.map(toJob);
 }
 
 export async function getJobById(id: number): Promise<Job | undefined> {

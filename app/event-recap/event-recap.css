@@ -24,7 +24,6 @@
 .rc-video img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
 .rc-video__play { position: absolute; inset: 0; margin: auto; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.95); color: #07080F; display: grid; place-items: center; box-shadow: 0 8px 32px rgba(0,0,0,.45); }
 .rc-video__play svg { width: 30px; height: 30px; margin-inline-start: 4px; }
-.rc-lock { text-align: center; color: var(--muted); font-size: 14px; margin-top: 16px; }
 
 .rc-testi { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; max-width: 900px; margin: 0 auto; }
 .rc-testi__card { padding: 26px; border-radius: var(--r-lg); }

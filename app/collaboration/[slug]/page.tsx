@@ -1,9 +1,6 @@
-"use client";
-
-import { useParams } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import "../../collaborations/collaborations.css";
-import { getCollab } from "../../collaborations/data";
+import { getCollabs } from "../../collaborations/wp";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -15,17 +12,9 @@ const WhatsappIcon = () => (<svg viewBox="0 0 24 24" fill="currentColor" aria-hi
 // Israeli local number ("050-1234567") -> wa.me international form ("972501234567")
 const waNumber = (phone: string) => "972" + phone.replace(/\D/g, "").replace(/^0/, "");
 
-const ShareIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-    <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
-    <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" strokeLinecap="round" />
-  </svg>
-);
-
-export default function CollaborationSinglePage() {
-  const params = useParams();
-  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
-  const collab = slug ? getCollab(slug) : undefined;
+export default async function CollaborationSinglePage({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = decodeURIComponent((await params).slug);
+  const collab = (await getCollabs()).find((c) => c.slug === slug);
 
   if (!collab) {
     return (
@@ -52,72 +41,89 @@ export default function CollaborationSinglePage() {
     { label: "רמת השקעה", val: collab.invest },
     { label: "שלב", val: collab.stage },
     { label: "תאריך פרסום", val: collab.date },
-  ];
+  ].filter((m) => m.val);
 
   return (
-    <SiteShell>
+    <SiteShell crumb={collab.title}>
       <section className="v6-section">
         <div className="v6-container">
           <article className="pg-panel v6-glass" style={{ maxWidth: 920 }} data-reveal>
-            <figure className="co-cover">
-              <img src={`https://images.unsplash.com/photo-${collab.img}?w=1400&q=80`} alt="" />
-              <span className="co-cover__stage">שלב: {collab.stage}</span>
-            </figure>
+            {collab.img && (
+              <figure className="co-cover">
+                <img src={collab.img} alt="" />
+                {collab.stage && <span className="co-cover__stage">שלב: {collab.stage}</span>}
+              </figure>
+            )}
 
             <div className="pg-panel__head">
               <div className="pg-panel__title">
                 <h1>{collab.title}</h1>
-                <div className="pg-panel__by">פורסם על ידי <a href="/profile"><b>{collab.by}</b></a> · {collab.byRole}</div>
+                {(collab.by || collab.byRole) && (
+                  <div className="pg-panel__by">
+                    פורסם על ידי {collab.by && <b>{collab.by}</b>}{collab.by && collab.byRole && " · "}{collab.byRole}
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="co-meta-grid">
-              {META.map((m) => (
-                <div key={m.label} className="co-mi">
-                  <div className="co-mi__label">{m.label}</div>
-                  <div className="co-mi__val">{m.val}</div>
+            {META.length > 0 && (
+              <div className="co-meta-grid">
+                {META.map((m) => (
+                  <div key={m.label} className="co-mi">
+                    <div className="co-mi__label">{m.label}</div>
+                    <div className="co-mi__val">{m.val}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {collab.description.length > 0 && (
+              <div className="pg-block">
+                <h2>תיאור הפרויקט</h2>
+                {collab.description.map((p, i) => <p key={i}>{p}</p>)}
+              </div>
+            )}
+
+            {collab.lookingList.length > 0 && (
+              <div className="pg-block">
+                <h2>מה מחפשים</h2>
+                <ul className="pg-bullets">{collab.lookingList.map((l) => <li key={l}>{l}</li>)}</ul>
+              </div>
+            )}
+
+            {collab.tags.length > 0 && (
+              <div className="pg-block">
+                <h2>תגיות</h2>
+                <div className="pg-tags">{collab.tags.map((t) => <span key={t} className="pg-tag">{t}</span>)}</div>
+              </div>
+            )}
+
+            {(collab.email || collab.phone) && (
+              <div className="pg-block">
+                <h2>פרטי יצירת קשר</h2>
+                <div className="pg-contact-lines">
+                  {collab.by && <div><b>איש קשר:</b> {collab.by}</div>}
+                  {collab.email && <div><b>אימייל:</b> <a href={`mailto:${collab.email}`}>{collab.email}</a></div>}
+                  {collab.phone && <div><b>טלפון:</b> {collab.phone}</div>}
                 </div>
-              ))}
-            </div>
-
-            <div className="pg-block">
-              <h2>תיאור הפרויקט</h2>
-              {collab.description.map((p, i) => <p key={i}>{p}</p>)}
-            </div>
-
-            <div className="pg-block">
-              <h2>מה מחפשים</h2>
-              <ul className="pg-bullets">{collab.lookingList.map((l) => <li key={l}>{l}</li>)}</ul>
-            </div>
-
-            <div className="pg-block">
-              <h2>תגיות</h2>
-              <div className="pg-tags">{collab.tags.map((t) => <span key={t} className="pg-tag">{t}</span>)}</div>
-            </div>
-
-            <div className="pg-block">
-              <h2>פרטי יצירת קשר</h2>
-              <div className="pg-contact-lines">
-                <div><b>איש קשר:</b> {collab.by}</div>
-                <div><b>אימייל:</b> <a href={`mailto:${collab.email}`}>{collab.email}</a></div>
-                <div><b>טלפון:</b> {collab.phone}</div>
+                {collab.phone && (
+                  <a
+                    href={`https://wa.me/${waNumber(collab.phone)}?text=${encodeURIComponent(`היי${collab.by ? ` ${collab.by}` : ""}, ראיתי באתר הנדלניסטים את "${collab.title}" ואשמח לשמוע עוד.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="v6-btn v6-btn--primary v6-btn--lg"
+                    data-magnetic=""
+                    style={{ marginTop: 20 }}
+                  >
+                    <WhatsappIcon />
+                    <span>{collab.by ? `שליחת הודעה בוואטסאפ ל${collab.by}` : "שליחת הודעה בוואטסאפ"}</span>
+                  </a>
+                )}
               </div>
-              <a
-                href={`https://wa.me/${waNumber(collab.phone)}?text=${encodeURIComponent(`היי ${collab.by}, ראיתי באתר הנדלניסטים את "${collab.title}" ואשמח לשמוע עוד.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="v6-btn v6-btn--primary v6-btn--lg"
-                data-magnetic=""
-                style={{ marginTop: 20 }}
-              >
-                <WhatsappIcon />
-                <span>שליחת הודעה בוואטסאפ ל{collab.by}</span>
-              </a>
-            </div>
+            )}
 
             <div className="pg-divider" />
             <div className="pg-actions">
-              <a href="#" className="v6-btn v6-btn--primary" data-magnetic=""><span>שתף רעיון</span><ShareIcon /></a>
               <a href="/collaborations" className="v6-btn v6-btn--glass">חזרה ללוח שיתופי הפעולה</a>
             </div>
           </article>

@@ -2,7 +2,7 @@
 
 import SiteShell from "../../v6/SiteShell";
 import "../../collaborations/collaborations.css";
-import { avatarSrc, type Nadlanist } from "../../nadlanistim/data";
+import { type Nadlanist } from "../../nadlanistim/data";
 import { useNadlanistim } from "../../nadlanistim/member";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 
@@ -43,7 +43,7 @@ export default function Profile({ people, slug }: { people: Nadlanist[]; slug: s
           <article className="pg-panel v6-glass" data-reveal>
             <div className="pg-profile2__hero">
               <div className="pg-profile2__img">
-                <img src={avatarSrc(n, 600)} alt={n.openToWork ? `${n.name} · פתוח/ה להצעות עבודה` : n.name} />
+                <img src={n.photo} alt={n.openToWork ? `${n.name} · פתוח/ה להצעות עבודה` : n.name} />
                 {n.openToWork && <OpenToWorkRing />}
               </div>
               <div className="pg-profile2__text">
@@ -76,7 +76,6 @@ export default function Profile({ people, slug }: { people: Nadlanist[]; slug: s
 
             <div className="pg-divider" />
             <div className="pg-actions" style={{ justifyContent: "center" }}>
-              <a href="#" className="v6-btn v6-btn--primary" data-magnetic=""><span>שתף פרופיל</span><ArrowIcon /></a>
               <a href="/nadlanistim" className="v6-btn v6-btn--glass">חזרה למדריך הנדלניסטים</a>
             </div>
           </article>

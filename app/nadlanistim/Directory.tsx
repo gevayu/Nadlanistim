@@ -1,7 +1,7 @@
 "use client";
 
 import SiteShell from "../v6/SiteShell";
-import { avatarSrc, type Nadlanist } from "./data";
+import { type Nadlanist } from "./data";
 import { useNadlanistim } from "./member";
 import OpenToWorkRing from "../v6/OpenToWorkRing";
 
@@ -41,7 +41,7 @@ export default function Directory({ people: base }: { people: Nadlanist[] }) {
             {people.map((p) => (
               <a key={p.slug} href={`/nadlanist/${p.slug}`} className="pg-person v6-glass" data-reveal>
                 <div className="pg-person__av">
-                  <img src={avatarSrc(p)} alt={p.openToWork ? `${p.name} · פתוח/ה להצעות עבודה` : p.name} />
+                  <img src={p.photo} alt={p.openToWork ? `${p.name} · פתוח/ה להצעות עבודה` : p.name} />
                   {p.openToWork && <OpenToWorkRing />}
                 </div>
                 <div className="pg-person__name">{p.name}</div>

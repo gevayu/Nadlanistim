@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NADLANISTIM, type Nadlanist } from "./data";
+import { CURRENT_MEMBER, type Nadlanist } from "./data";
 
-// The signed-in member. The site has no login yet; /profile and /account are Avi Cohen too.
-export const CURRENT_MEMBER = "avi-cohen";
+export { CURRENT_MEMBER };
 
 // ponytail: edits from /my-account live in this browser's localStorage only - other visitors
 // don't see them. Upgrade path: login + a members table/API, then read/write there instead.
 const KEY = "nadlanistim.member";
 
-export type MemberEdits = Partial<Omit<Nadlanist, "slug" | "img">>;
+export type MemberEdits = Partial<Omit<Nadlanist, "slug">>;
 
 export function loadEdits(): MemberEdits | null {
   try {
@@ -29,7 +28,7 @@ const withEdits = (list: Nadlanist[], edits: MemberEdits | null) =>
   edits ? list.map((n) => (n.slug === CURRENT_MEMBER ? { ...n, ...edits } : n)) : list;
 
 /** `base` with the current member's saved edits applied (after mount, so SSR stays stable). */
-export function useNadlanistim(base: Nadlanist[] = NADLANISTIM): Nadlanist[] {
+export function useNadlanistim(base: Nadlanist[]): Nadlanist[] {
   const [list, setList] = useState(base);
   useEffect(() => setList(withEdits(base, loadEdits())), [base]);
   return list;
