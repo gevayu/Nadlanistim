@@ -1002,18 +1002,6 @@ export default function HomePageV6() {
         </div>
       </section>
 
-      {/* Stories */}
-      <section className="v6-section" id="stories">
-        <div className="v6-container">
-          <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
-            <h2>קריירה</h2>
-          </header>
-          <div className="v6-stories__grid">
-            <JobRotator jobs={JOB_OFFERS} />
-          </div>
-        </div>
-      </section>
-
       {/* Sponsorship strip */}
       <section className="v6-section">
         <div className="v6-container">
@@ -1170,6 +1158,18 @@ export default function HomePageV6() {
                 </a>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stories */}
+      <section className="v6-section" id="stories">
+        <div className="v6-container">
+          <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
+            <h2>קריירה</h2>
+          </header>
+          <div className="v6-stories__grid">
+            <JobRotator jobs={JOB_OFFERS} />
           </div>
         </div>
       </section>
