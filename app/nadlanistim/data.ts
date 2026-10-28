@@ -8,7 +8,18 @@ export type Nadlanist = {
   quote: string;
   bio: string[];
   email: string;
+  photo?: string; // uploaded image (data URL); falls back to the placeholder avatar `img`
+  phone?: string; // collected, never shown on the site
+  linkedin?: string;
+  instagram?: string;
+  openToWork?: boolean; // green #OPENTOWORK ring around the avatar
 };
+
+// Choices for the member form (/my-account, /nadlanist-new) and the directory filters.
+export const FIELDS = ["יזמות", "השקעות", "שיווק", "ייעוץ", "אדריכלות", "תיווך", "שמאות", "מימון", "פרופטק", "משפט"];
+export const PLACES = ["תל אביב", "מרכז", "צפון", "דרום", "ירושלים", "כל הארץ"];
+
+export const avatarSrc = (n: Nadlanist, size = 200) => n.photo ?? `https://i.pravatar.cc/${size}?img=${n.img}`;
 
 export const NADLANISTIM: Nadlanist[] = [
   {
@@ -38,6 +49,7 @@ export const NADLANISTIM: Nadlanist[] = [
       "אני כאן כדי לעזור ליזמים ולמתווכים להבין את הכוח של הדיגיטל — ולהשתמש בו נכון כדי לבלוט בשוק רווי.",
     ],
     email: "sara@nadlanistim.co.il",
+    openToWork: true,
   },
   {
     slug: "david-mizrahi",

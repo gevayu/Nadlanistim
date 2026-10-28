@@ -40,6 +40,7 @@ export const V6_EXACT_ROUTES = [
   "/nadlanistim",
   "/communities",
   "/account",
+  "/my-account",
 ];
 
 export function usesV6Chrome(pathname: string | null | undefined): boolean {

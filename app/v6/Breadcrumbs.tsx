@@ -34,6 +34,7 @@ const PAGES: Record<string, Crumb> = {
   "/contact": { label: "צור קשר" },
   "/join": { label: "הצטרפות לקהילה" },
   "/account": { label: "האזור האישי" },
+  "/my-account": { label: "החשבון שלי", parent: "/account" },
 };
 
 // Detail pages: /<section>/<slug> -> parent list page + the item's name from its data file.

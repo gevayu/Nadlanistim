@@ -3,7 +3,9 @@
 import { useParams } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import "../../collaborations/collaborations.css";
-import { getNadlanist } from "../../nadlanistim/data";
+import { avatarSrc } from "../../nadlanistim/data";
+import { useNadlanistim } from "../../nadlanistim/member";
+import OpenToWorkRing from "../../v6/OpenToWorkRing";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,7 +19,7 @@ const MailIcon = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 export default function NadlanistSinglePage() {
   const params = useParams();
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
-  const n = slug ? getNadlanist(slug) : undefined;
+  const n = useNadlanistim().find((x) => x.slug === slug);
 
   if (!n) {
     return (
@@ -44,7 +46,8 @@ export default function NadlanistSinglePage() {
           <article className="pg-panel v6-glass" data-reveal>
             <div className="pg-profile2__hero">
               <div className="pg-profile2__img">
-                <img src={`https://i.pravatar.cc/600?img=${n.img}`} alt={n.name} />
+                <img src={avatarSrc(n, 600)} alt={n.openToWork ? `${n.name} · פתוח/ה להצעות עבודה` : n.name} />
+                {n.openToWork && <OpenToWorkRing />}
               </div>
               <div className="pg-profile2__text">
                 <h1>{n.name}</h1>
@@ -68,8 +71,8 @@ export default function NadlanistSinglePage() {
             <div className="pg-social-wrap" style={{ marginTop: 32 }}>
               <div className="pg-social-head">צרו קשר</div>
               <div className="pg-social">
-                <a href="#" aria-label="LinkedIn"><LinkedinIcon /></a>
-                <a href="#" aria-label="Instagram"><InstagramIcon /></a>
+                {n.linkedin && <a href={n.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon /></a>}
+                {n.instagram && <a href={n.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>}
                 <a href={`mailto:${n.email}`} aria-label="אימייל"><MailIcon /></a>
               </div>
             </div>

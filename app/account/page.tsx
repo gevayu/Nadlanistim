@@ -44,6 +44,7 @@ export default function AccountPage() {
               <div className="ac-head__meta">חבר/ה מאז 2021 · חברות פרימיום פעילה</div>
             </div>
             <span className="ac-head__badge">MEMBERS ONLY ✓</span>
+            <a href="/my-account" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>עריכת הפרופיל שלי</a>
           </div>
 
           {/* Quick access */}

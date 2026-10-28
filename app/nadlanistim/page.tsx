@@ -1,7 +1,9 @@
 "use client";
 
 import SiteShell from "../v6/SiteShell";
-import { NADLANISTIM } from "./data";
+import { avatarSrc } from "./data";
+import { useNadlanistim } from "./member";
+import OpenToWorkRing from "../v6/OpenToWorkRing";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -15,6 +17,8 @@ const FILTERS: { label: string; options: string[] }[] = [
 ];
 
 export default function NadlanistimPage() {
+  const people = useNadlanistim();
+
   return (
     <SiteShell>
       <section className="v6-section">
@@ -34,9 +38,12 @@ export default function NadlanistimPage() {
           </div>
 
           <div className="pg-grid">
-            {NADLANISTIM.map((p) => (
+            {people.map((p) => (
               <a key={p.slug} href={`/nadlanist/${p.slug}`} className="pg-person v6-glass" data-reveal>
-                <div className="pg-person__av"><img src={`https://i.pravatar.cc/200?img=${p.img}`} alt={p.name} /></div>
+                <div className="pg-person__av">
+                  <img src={avatarSrc(p)} alt={p.openToWork ? `${p.name} · פתוח/ה להצעות עבודה` : p.name} />
+                  {p.openToWork && <OpenToWorkRing />}
+                </div>
                 <div className="pg-person__name">{p.name}</div>
                 <div className="pg-person__role">{p.role}</div>
                 <p className="pg-person__q">״{p.quote}״</p>
