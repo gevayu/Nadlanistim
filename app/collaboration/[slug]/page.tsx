@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import "../../collaborations/collaborations.css";
@@ -11,6 +10,11 @@ const ArrowIcon = () => (
     <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+const WhatsappIcon = () => (<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M17.5 14.4l-2.6-1.3a.8.8 0 0 0-.9.1l-1.2 1.2c-1.9-.9-3.4-2.4-4.3-4.3l1.2-1.2a.8.8 0 0 0 .1-.9L8.5 5.4a.8.8 0 0 0-.9-.4l-2.3.6a.8.8 0 0 0-.6.8c0 5.9 4.8 10.7 10.7 10.7a.8.8 0 0 0 .8-.6l.6-2.3a.8.8 0 0 0-.4-.9z" /></svg>);
+
+// Israeli local number ("050-1234567") -> wa.me international form ("972501234567")
+const waNumber = (phone: string) => "972" + phone.replace(/\D/g, "").replace(/^0/, "");
+
 const ShareIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
     <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
@@ -22,7 +26,6 @@ export default function CollaborationSinglePage() {
   const params = useParams();
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   const collab = slug ? getCollab(slug) : undefined;
-  const [sent, setSent] = useState(false);
 
   if (!collab) {
     return (
@@ -99,26 +102,17 @@ export default function CollaborationSinglePage() {
                 <div><b>אימייל:</b> <a href={`mailto:${collab.email}`}>{collab.email}</a></div>
                 <div><b>טלפון:</b> {collab.phone}</div>
               </div>
-              <p className="pg-note">מעוניינים? השאירו פרטים ו{collab.by} יחזור אליכם:</p>
-              {sent ? (
-                <div className="pg-sent">הפנייה נשלחה. ✓ ניצור קשר בהקדם.</div>
-              ) : (
-                <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
-                  <div className="v6-field">
-                    <label htmlFor="cs-name">שם מלא</label>
-                    <input id="cs-name" type="text" required placeholder="ישראלה ישראלי" />
-                  </div>
-                  <div className="v6-field">
-                    <label htmlFor="cs-email">אימייל</label>
-                    <input id="cs-email" type="email" required placeholder="you@email.com" />
-                  </div>
-                  <div className="v6-field">
-                    <label htmlFor="cs-msg">הודעה</label>
-                    <textarea id="cs-msg" required placeholder="ספרו בקצרה על עצמכם ועל ההתאמה לשותפות…" />
-                  </div>
-                  <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שלח פנייה</span><ArrowIcon /></button>
-                </form>
-              )}
+              <a
+                href={`https://wa.me/${waNumber(collab.phone)}?text=${encodeURIComponent(`היי ${collab.by}, ראיתי באתר הנדלניסטים את "${collab.title}" ואשמח לשמוע עוד.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v6-btn v6-btn--primary v6-btn--lg"
+                data-magnetic=""
+                style={{ marginTop: 20 }}
+              >
+                <WhatsappIcon />
+                <span>שליחת הודעה בוואטסאפ ל{collab.by}</span>
+              </a>
             </div>
 
             <div className="pg-divider" />

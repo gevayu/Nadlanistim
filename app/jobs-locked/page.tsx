@@ -2,6 +2,7 @@
 
 import SiteShell from "../v6/SiteShell";
 import "../collaborations/collaborations.css";
+import { JOBS } from "../jobs/data";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -15,17 +16,6 @@ const LockIcon = () => (
   </svg>
 );
 
-type Job = { title: string; by: string; type: string; place: string; desc: string; date: string };
-
-const JOBS: Job[] = [
-  { title: "מנהל/ת פרויקטים בנדל״ן", by: "אבי כהן", type: "משרה מלאה", place: "תל אביב", desc: "ניהול פרויקטים מורכבים בתחום הנדל״ן, כולל תכנון, ביצוע ובקרת תקציב.", date: "15.11.2023" },
-  { title: "יועץ/ת שיווק דיגיטלי", by: "שרה לוי", type: "פרילנס", place: "מרחוק", desc: "בניית אסטרטגיות שיווק דיגיטלי וניהול קמפיינים לחברות נדל״ן.", date: "14.11.2023" },
-  { title: "שותף/ה למיזם סטארט-אפ נדל״ן", by: "דוד מזרחי", type: "שותפות עסקית", place: "תל אביב", desc: "מחפשים שותף טכנולוגי עם ניסיון בפיתוח פלטפורמות דיגיטליות.", date: "13.11.2023" },
-  { title: "מתנדב/ת לפרויקט שיפוץ קהילתי", by: "רחל כהן", type: "התנדבות", place: "ירושלים", desc: "דרושים מתנדבים עם ידע בשיפוצים קלים לעזרה בפרויקט קהילתי.", date: "12.11.2023" },
-  { title: "מתווך/ת נדל״ן למשרד בוטיק", by: "יוסי לוי", type: "משרה חלקית", place: "הרצליה", desc: "מתווך/ת עם רישיון וניסיון למשרד תיווך יוקרתי.", date: "11.11.2023" },
-  { title: "שמאי/ת מקרקעין עצמאי/ת", by: "מיכל מזרחי", type: "מציעים שירותים", place: "כל הארץ", desc: "שמאית מקרקעין מוסמכת מציעה שירותי הערכת שווי לנכסים.", date: "10.11.2023" },
-];
-
 export default function JobsLockedPage() {
   return (
     <SiteShell>
@@ -38,7 +28,7 @@ export default function JobsLockedPage() {
 
           <div className="pg-grid">
             {JOBS.map((j) => (
-              <article key={j.title} className="lk-card v6-glass" data-reveal>
+              <article key={j.id} className="lk-card v6-glass" data-reveal>
                 {/* Visible: title + publish date */}
                 <div className="lk-card__head">
                   <h3 className="lk-card__title">{j.title}</h3>

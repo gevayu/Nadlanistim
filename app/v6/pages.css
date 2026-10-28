@@ -96,8 +96,28 @@
 
 /* ===== Board pages (jobs / collaborations / events / nadlanistim) ===== */
 .pg-toolbar { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 36px; }
-.pg-select { appearance: none; -webkit-appearance: none; padding: 11px 40px 11px 16px; border-radius: 999px; font-size: 13.5px; font-weight: 500; color: var(--ink-2); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 14px center; background-size: 16px; transition: border-color .3s var(--t); }
+.pg-select { appearance: none; -webkit-appearance: none; padding: 11px 16px; padding-inline-end: 40px; border-radius: 999px; font-size: 13.5px; font-weight: 500; color: var(--ink-2); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 14px center; background-size: 16px; transition: border-color .3s var(--t); }
 .pg-select:focus { outline: none; border-color: var(--cyan); }
+/* form controls don't inherit the page font by default */
+.v6-root select, .v6-root input, .v6-root textarea { font-family: inherit; }
+.pg-empty { text-align: center; color: var(--muted); margin: 8px 0 32px; }
+.pg-card__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 22px; }
+.pg-card__id { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--muted-2); }
+
+/* Posting type choice (job-new) — two pill radios */
+.pg-kind { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.pg-kind legend { width: 100%; margin-bottom: 10px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.pg-kind__opt { position: relative; cursor: pointer; }
+.pg-kind__opt input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.pg-kind__opt span { display: inline-block; padding: 10px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink-2); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); transition: all .3s var(--t); }
+.pg-kind__opt input:checked + span { color: var(--ink); border-color: var(--cyan); background: rgba(34,211,238,.13); }
+.pg-kind__opt input:focus-visible + span { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+/* Round icon-only button (e.g. message the job poster) */
+.pg-iconbtn { width: 48px; height: 48px; border-radius: 50%; display: inline-grid; place-items: center; flex-shrink: 0; color: var(--ink); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); transition: all .35s var(--t); }
+.pg-iconbtn:hover { border-color: var(--cyan); color: var(--cyan); transform: scale(1.06); }
+.pg-iconbtn svg { width: 20px; height: 20px; }
+.pg-panel__id { margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--muted-2); letter-spacing: .02em; }
 .pg-select option { background: #0C0E1A; color: var(--ink); }
 
 .pg-search { padding: 11px 18px; border-radius: 999px; font-size: 13.5px; color: var(--ink); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); min-width: 220px; font-family: inherit; }

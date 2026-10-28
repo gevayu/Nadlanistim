@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../v6/v6.css";
 import "./post-archive.css";
 import SiteHeader from "../v6/SiteHeader";
 import SponsorStrip from "../v6/SponsorStrip";
+import Breadcrumbs from "../v6/Breadcrumbs";
 import SiteFooter from "../v6/SiteFooter";
 
 const ArrowIcon = () => (
@@ -39,12 +40,6 @@ const POSTS: Post[] = [
   { img: "1556761175-5973dc0f32e7", type: "מדריך", cat: "ניהול נכסים", read: "7 דק׳", title: "ניהול נכסים מרחוק — המדריך המעשי", excerpt: "תהליכים, כלים ואנשים שמאפשרים לנהל תיק נכסים בלי להיות בשטח כל יום.", author: "נועה ברגר", date: "מרץ 2026" },
 ];
 
-const FILTERS: { title: string; color: string; items: string[] }[] = [
-  { title: "לפי נושא", color: "blue", items: ["מיסוי", "משפט", "מימון", "שיווק", "טכנולוגיה", "ניהול נכסים", "השקעות"] },
-  { title: "לפי רמה", color: "green", items: ["בסיסי", "מתקדם", "מומחה"] },
-  { title: "לפי סוג", color: "purple", items: ["מדריך", "הסבר", "מחקר", "Case Study"] },
-  { title: "לפי משך קריאה", color: "amber", items: ["3 דקות", "5-7 דקות", "10+ דקות"] },
-];
 
 function useRevealOnScroll() {
   useEffect(() => {
@@ -75,6 +70,10 @@ function useRevealOnScroll() {
 
 export default function PostArchive() {
   useRevealOnScroll();
+  const [query, setQuery] = useState("");
+  const q = query.trim().toLowerCase();
+  const matches = (p: Post) => !q || [p.title, p.excerpt, p.cat, p.type, p.author].some((t) => t.toLowerCase().includes(q));
+  const found = POSTS.filter(matches).length;
 
   return (
     <div className="v6-root">
@@ -88,6 +87,7 @@ export default function PostArchive() {
       <SiteHeader />
 
       <main style={{ paddingTop: "140px" }}>
+        <Breadcrumbs />
         <SponsorStrip />
 
         {/* Archive */}
@@ -98,44 +98,41 @@ export default function PostArchive() {
               <p>כי ידע זה לא רק כוח, זה גם רווח. מאמרים מעמיקים, מדריכים מקצועיים והסברים של אמת.</p>
             </div>
 
-            <div className="pa-layout">
-              <aside className="pa-side v6-glass" data-reveal>
-                {FILTERS.map((f) => (
-                  <div className="pa-filter" key={f.title}>
-                    <div className="pa-filter__title">{f.title}</div>
-                    <div className="pa-filter__pills">
-                      {f.items.map((it) => (
-                        <button type="button" key={it} className={`pa-pill pa-pill--${f.color}`}>{it}</button>
-                      ))}
+            <div className="pa-search-wrap" data-reveal>
+              <input
+                type="search"
+                className="pa-search"
+                placeholder="חיפוש מאמר, נושא או כותב…"
+                aria-label="חיפוש בבית הידע"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
+            {found === 0 && <p className="pa-empty">לא נמצאו מאמרים עבור ״{query.trim()}״.</p>}
+
+            <div className="pa-grid">
+              {POSTS.map((p) => (
+                <a key={p.title} href="/post" className="pa-card v6-glass" data-reveal hidden={!matches(p)}>
+                  <figure className="pa-card__img">
+                    <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
+                    <span className="pa-card__type">{p.type}</span>
+                  </figure>
+                  <div className="pa-card__body">
+                    <div className="pa-card__top">
+                      <span>{p.cat}</span>
+                      <span className="pa-dot" />
+                      <ClockIcon /><span>{p.read}</span>
+                    </div>
+                    <h3 className="pa-card__title">{p.title}</h3>
+                    <p className="pa-card__excerpt">{p.excerpt}</p>
+                    <span className="pa-card__more"><span>קרא עוד</span><ArrowIcon /></span>
+                    <div className="pa-card__meta">
+                      <span>{p.author}</span><span className="pa-sep">·</span>
+                      <span>{p.date}</span>
                     </div>
                   </div>
-                ))}
-              </aside>
-
-              <div className="pa-grid">
-                {POSTS.map((p) => (
-                  <a key={p.title} href="/post" className="pa-card v6-glass" data-reveal>
-                    <figure className="pa-card__img">
-                      <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
-                      <span className="pa-card__type">{p.type}</span>
-                    </figure>
-                    <div className="pa-card__body">
-                      <div className="pa-card__top">
-                        <span>{p.cat}</span>
-                        <span className="pa-dot" />
-                        <ClockIcon /><span>{p.read}</span>
-                      </div>
-                      <h3 className="pa-card__title">{p.title}</h3>
-                      <p className="pa-card__excerpt">{p.excerpt}</p>
-                      <span className="pa-card__more"><span>קרא עוד</span><ArrowIcon /></span>
-                      <div className="pa-card__meta">
-                        <span>{p.author}</span><span className="pa-sep">·</span>
-                        <span>{p.date}</span>
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
+                </a>
+              ))}
             </div>
 
             <div className="pa-cta" data-reveal>

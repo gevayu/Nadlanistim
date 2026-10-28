@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SiteShell from "../v6/SiteShell";
+import { JOB_KINDS, type JobKind } from "../jobs/data";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,24 +18,41 @@ const SELECTS: { id: string; label: string; options: string[] }[] = [
 
 export default function JobNewPage() {
   const [sent, setSent] = useState(false);
+  const [kind, setKind] = useState<JobKind>("offer");
+  const seek = kind === "seek";
+
+  // /job-new?kind=seek opens the form on "looking for work"
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("kind") === "seek") setKind("seek");
+  }, []);
 
   return (
     <SiteShell>
       <section className="v6-section">
         <div className="v6-container">
           <div className="pg-head" data-reveal>
-            <h1>פרסום <em>משרה חדשה</em></h1>
-            <p>מחפשים עובד/ת, שותף/ה או נותן שירות? פרסמו את המשרה ותנו לקהילה למצוא לכם את האדם הנכון. חינם לחברי הקהילה.</p>
+            <h1>פרסום <em>בלוח הדרושים</em></h1>
+            <p>מחפשים עובד/ת, שותף/ה או נותן שירות? פרסמו את המשרה ותנו לקהילה למצוא לכם את האדם הנכון. חינם לחברי הקהילה. מחפשים עבודה? פרסמו מודעה וספרו לקהילה מה אתם מחפשים.</p>
           </div>
 
           <article className="pg-panel v6-glass" style={{ maxWidth: 760 }} data-reveal>
             {sent ? (
-              <div className="pg-sent">המשרה נשלחה לאישור. ✓ היא תעלה ללוח הדרושים תוך 24 שעות.</div>
+              <div className="pg-sent">{seek ? "המודעה" : "המשרה"} נשלחה לאישור. ✓ היא תעלה ללוח הדרושים תוך 24 שעות.</div>
             ) : (
               <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+                <fieldset className="pg-kind">
+                  <legend>מה תרצו לפרסם?</legend>
+                  {(Object.keys(JOB_KINDS) as JobKind[]).map((k) => (
+                    <label key={k} className="pg-kind__opt">
+                      <input type="radio" name="kind" value={k} checked={kind === k} onChange={() => setKind(k)} />
+                      <span>{JOB_KINDS[k]}</span>
+                    </label>
+                  ))}
+                </fieldset>
+
                 <div className="v6-field">
-                  <label htmlFor="j-title">כותרת המשרה</label>
-                  <input id="j-title" type="text" required placeholder="לדוגמה: מנהל/ת פרויקטים בנדל״ן" />
+                  <label htmlFor="j-title">{seek ? "כותרת המודעה" : "כותרת המשרה"}</label>
+                  <input id="j-title" type="text" required placeholder={seek ? "לדוגמה: מנהלת שיווק מחפשת משרה בחברת יזמות" : "לדוגמה: מנהל/ת פרויקטים בנדל״ן"} />
                 </div>
 
                 <div className="pg-formgrid">
@@ -50,11 +68,11 @@ export default function JobNewPage() {
                 </div>
 
                 <div className="v6-field">
-                  <label htmlFor="j-desc">תיאור המשרה</label>
-                  <textarea id="j-desc" required placeholder="פרטו על התפקיד, האחריות ומה מחפשים…" />
+                  <label htmlFor="j-desc">{seek ? "ספרו על עצמכם" : "תיאור המשרה"}</label>
+                  <textarea id="j-desc" required placeholder={seek ? "ניסיון, תחומי מומחיות ואיזה תפקיד אתם מחפשים…" : "פרטו על התפקיד, האחריות ומה מחפשים…"} />
                 </div>
                 <div className="v6-field">
-                  <label htmlFor="j-req">דרישות עיקריות</label>
+                  <label htmlFor="j-req">{seek ? "כישורים עיקריים" : "דרישות עיקריות"}</label>
                   <textarea id="j-req" placeholder="דרישה אחת בכל שורה…" />
                 </div>
                 <div className="v6-field">
@@ -85,7 +103,7 @@ export default function JobNewPage() {
                 </label>
 
                 <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" data-magnetic="">
-                  <span>פרסם משרה</span>
+                  <span>{seek ? "פרסם חיפוש עבודה" : "פרסם משרה"}</span>
                   <ArrowIcon />
                 </button>
               </form>

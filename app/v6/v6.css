@@ -299,6 +299,14 @@
 .v6-marquee__track .v6-diamond { color: var(--violet); font-size: 8px; }
 @keyframes v6-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
 
+/* Breadcrumbs — top of every inner page (v6/Breadcrumbs.tsx) */
+.v6-crumbs ol { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.v6-crumbs li { display: inline-flex; align-items: center; gap: 6px; }
+.v6-crumbs li + li::before { content: "‹"; color: var(--muted-2); }
+.v6-crumbs a { color: var(--muted); transition: color .3s var(--t); }
+.v6-crumbs a:hover { color: var(--cyan); }
+.v6-crumbs [aria-current="page"] { color: var(--ink-2); font-weight: 500; }
+
 /* ===== Sponsorship strip ===== */
 .v6-sponsorstrip { width: 100%; height: 240px; border-radius: var(--r-lg); display: grid; place-items: center; overflow: hidden; }
 .v6-sponsorstrip--sm { height: 180px; }

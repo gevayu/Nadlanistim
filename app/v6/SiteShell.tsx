@@ -6,6 +6,7 @@ import "./pages.css";
 import SiteHeader from "./SiteHeader";
 import SiteFooter from "./SiteFooter";
 import SponsorStrip from "./SponsorStrip";
+import Breadcrumbs from "./Breadcrumbs";
 
 function useRevealOnScroll() {
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       </div>
       <SiteHeader />
       <main className="pg-wrap">
+        <Breadcrumbs />
         <SponsorStrip />
         {children}
       </main>
