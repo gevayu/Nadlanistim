@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import confetti from "canvas-confetti";
+import { celebrate } from "./confetti";
 import SponsorStrip from "./SponsorStrip";
 import { COMMUNITIES as COMMUNITY_DATA, communityLogo } from "../communities/data";
 import "./v6.css";
@@ -1220,13 +1220,7 @@ export default function HomePageV6() {
             onSubmit={(e) => {
               e.preventDefault();
               setSent(true);
-              confetti({
-                particleCount: 160,
-                spread: 100,
-                origin: { y: 0.6 },
-                colors: ["#8B5CF6", "#22D3EE", "#F472B6", "#ffffff"],
-                disableForReducedMotion: true,
-              });
+              celebrate();
             }}
           >
             <h3>הרשמה לקהילה</h3>

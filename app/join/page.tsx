@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import "./join.css";
+import { celebrate } from "../v6/confetti";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -70,7 +71,7 @@ export default function JoinPage() {
       <section className="v6-section">
         <div className="v6-container">
           <div className="pg-head" data-reveal>
-            <h1>הצטרפו ל<em>הנדלניסטים</em></h1>
+            <h1>הצטרפו ל<em>נדלניסטים</em></h1>
             <p>הקהילה המובילה של אנשי הנדל״ן בישראל. כאן נפגשים, לומדים, סוגרים עסקאות וצומחים יחד.</p>
           </div>
 
@@ -118,8 +119,8 @@ export default function JoinPage() {
           <h2 className="jn-title" data-reveal>תקנון הקהילה</h2>
           <p className="jn-sub" data-reveal>כמה כללים פשוטים ששומרים על קהילה איכותית ומכבדת.</p>
           <div className="jn-terms">
-            {TERMS.map((t) => (
-              <div key={t} className="jn-term v6-glass" data-reveal><p>{t}</p></div>
+            {TERMS.map((t, i) => (
+              <div key={t} className="jn-term v6-glass" data-reveal><span className="jn-term__n">{i + 1}</span><p>{t}</p></div>
             ))}
           </div>
         </div>
@@ -135,7 +136,7 @@ export default function JoinPage() {
             {sent ? (
               <div className="pg-sent">הבקשה נשלחה! ✓ ניצור איתכם קשר בהקדם להשלמת ההצטרפות והתשלום.</div>
             ) : (
-              <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+              <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); celebrate(); }}>
                 <div className="pg-formgrid">
                   <div className="v6-field">
                     <label htmlFor="j-name">שם מלא</label>

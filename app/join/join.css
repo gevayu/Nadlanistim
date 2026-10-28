@@ -31,9 +31,10 @@
 .jn-plan .v6-btn { margin-top: auto; }
 
 /* Terms */
-.jn-terms { max-width: 780px; margin: 0 auto; counter-reset: term; display: flex; flex-direction: column; gap: 14px; }
-.jn-term { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; border-radius: var(--r); }
-.jn-term::before { counter-increment: term; content: counter(term); flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: var(--cyan); background: rgba(34,211,238,.12); border: 1px solid rgba(34,211,238,.3); }
+.jn-terms { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.jn-term { display: flex; gap: 14px; align-items: center; padding: 18px 22px; border-radius: var(--r); }
+/* Number badge: a real element, since .v6-glass already owns ::before */
+.jn-term__n { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; line-height: 1; color: var(--cyan); background: rgba(34,211,238,.12); border: 1px solid rgba(34,211,238,.3); }
 .v6-root .jn-term p { font-size: 15px; color: var(--ink-2); line-height: 1.55; font-weight: 300; }
 
 @media (max-width: 860px) { .jn-highlights { grid-template-columns: repeat(2, 1fr); } .jn-plans { grid-template-columns: 1fr; max-width: 460px; } }
