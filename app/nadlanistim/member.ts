@@ -6,7 +6,7 @@ import { NADLANISTIM, type Nadlanist } from "./data";
 // The signed-in member. The site has no login yet; /profile and /account are Avi Cohen too.
 export const CURRENT_MEMBER = "avi-cohen";
 
-// ponytail: edits from /my-account live in this browser's localStorage only — other visitors
+// ponytail: edits from /my-account live in this browser's localStorage only - other visitors
 // don't see them. Upgrade path: login + a members table/API, then read/write there instead.
 const KEY = "nadlanistim.member";
 

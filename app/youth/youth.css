@@ -1,4 +1,4 @@
-/* Young Nadlanistim team page — scoped under .v6-root. */
+/* Young Nadlanistim team page - scoped under .v6-root. */
 
 .yt-hero { position: relative; border-radius: var(--r-lg); overflow: hidden; padding: clamp(56px, 8vw, 112px) clamp(24px, 4vw, 60px); text-align: center; }
 .yt-hero__bg { position: absolute; inset: 0; z-index: 0; }

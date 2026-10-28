@@ -24,7 +24,7 @@ export default function NadlanistimPage() {
       <section className="v6-section">
         <div className="v6-container">
           <div className="pg-head" data-reveal>
-            <h1>הכר את הנדלניסטים שלנו — <em>סיפורים של אנשים אמיתיים</em></h1>
+            <h1>הכר את הנדלניסטים שלנו - <em>סיפורים של אנשים אמיתיים</em></h1>
             <p>הקהילה שלנו בנויה מאנשים עם סיפורים ייחודיים, חלומות, והישגים. כל נדלניסט מביא איתו ניסיון, ערכים ורצון לתרום ולהיתרום. בואו להכיר את הפנים מאחורי הקהילה.</p>
           </div>
 
@@ -53,7 +53,7 @@ export default function NadlanistimPage() {
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך — הצטרף למדריך</span><ArrowIcon /></a>
+            <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך - הצטרף למדריך</span><ArrowIcon /></a>
             <a href="/#contact" className="v6-btn v6-btn--glass v6-btn--lg">רוצה להיות חלק מהסיפור? הצטרף לקהילה</a>
           </div>
         </div>

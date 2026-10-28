@@ -1,4 +1,4 @@
-/* v6 — homepage styles, matched to reference spec. Scoped under .v6-root. */
+/* v6 - homepage styles, matched to reference spec. Scoped under .v6-root. */
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap");
 
 @font-face {
@@ -58,7 +58,7 @@
   --t: cubic-bezier(.22, .61, .36, 1);
   --t-out: cubic-bezier(.16, 1, .3, 1);
   --section-y: clamp(16px, 2.25vw, 28px);
-  /* No separate mono face — accents use the main font (Google Sans/Heebo) per design directive. */
+  /* No separate mono face - accents use the main font (Google Sans/Heebo) per design directive. */
   --font-mono: "Google Sans", "Heebo", -apple-system, system-ui, sans-serif;
 
   background: var(--bg);
@@ -299,7 +299,7 @@
 .v6-marquee__track .v6-diamond { color: var(--violet); font-size: 8px; }
 @keyframes v6-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
 
-/* Breadcrumbs — top of every inner page (v6/Breadcrumbs.tsx) */
+/* Breadcrumbs - top of every inner page (v6/Breadcrumbs.tsx) */
 .v6-crumbs ol { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
 .v6-crumbs li { display: inline-flex; align-items: center; gap: 6px; }
 .v6-crumbs li + li::before { content: "‹"; color: var(--muted-2); }
@@ -442,7 +442,7 @@
 .v6-feature:hover { transform: translateY(-6px); background: rgba(0,0,0,.35); }
 .v6-feature h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
 .v6-feature p { font-size: 14px; color: var(--muted); line-height: 1.55; font-weight: 300; }
-/* Staggered 1s fade-in entrance — animation (entrance) kept separate from transition (hover) */
+/* Staggered 1s fade-in entrance - animation (entrance) kept separate from transition (hover) */
 @keyframes v6-feat-in { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 .v6-root .v6-feature[data-reveal] { transition: transform .45s var(--t), background .4s var(--t); }
 .v6-root .v6-feature[data-reveal].is-visible { animation: v6-feat-in 1s var(--t) both; }
@@ -652,7 +652,7 @@
   .v6-meet__img img { animation: none !important; }
 }
 
-/* ===== Responsive — Tablet ≤1100 ===== */
+/* ===== Responsive - Tablet ≤1100 ===== */
 @media (max-width: 1100px) {
   .v6-nav { top: 12px; }
   .v6-nav__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; }
@@ -685,7 +685,7 @@
   .v6-footer__top { grid-template-columns: 1fr; gap: 48px; }
 }
 
-/* ===== Responsive — Mobile ≤760 ===== */
+/* ===== Responsive - Mobile ≤760 ===== */
 @media (max-width: 760px) {
   .v6-root { --section-y: clamp(12px, 2.25vw, 18px); --gutter: 20px; }
 

@@ -16,7 +16,7 @@ const DownloadIcon = () => (
 const GALLERY = ["1540575467063-178a50c2df87", "1511795409834-ef04bbd61622", "1505373877841-8d25f7d46678", "1556761175-5973dc0f32e7", "1559223607-a43c990c692c", "1591115765373-5207764f72e7"];
 
 const TAKEAWAYS = [
-  { t: "השוק מתאזן — ההזדמנויות עוברות לפריפריה", d: "הנתונים שהוצגו מראים שינוי ברור באזורי הביקוש, עם פוטנציאל תשואה גבוה מחוץ למרכז." },
+  { t: "השוק מתאזן - ההזדמנויות עוברות לפריפריה", d: "הנתונים שהוצגו מראים שינוי ברור באזורי הביקוש, עם פוטנציאל תשואה גבוה מחוץ למרכז." },
   { t: "מימון חכם מנצח מימון זול", d: "מבנה העסקה והגמישות מול הבנקים חשובים לא פחות מהריבית עצמה." },
   { t: "קהילה היא יתרון תחרותי", d: "רוב העסקאות שנסגרו השנה התחילו מהיכרות אישית בתוך הקהילה." },
 ];
@@ -42,7 +42,7 @@ export default function EventRecapPage() {
         <div className="v6-container">
           <div className="rc-hero" data-reveal>
             <span className="rc-badge">✓ האירוע הסתיים</span>
-            <h1>כנס הנדלניסטים — <em>תודה שהייתם איתנו</em></h1>
+            <h1>כנס הנדלניסטים - <em>תודה שהייתם איתנו</em></h1>
             <p>יום שלם של פאנלים, עסקאות ונטוורקינג. ריכזנו לכם את כל הרגעים, התובנות והחומרים במקום אחד.</p>
             <a href="#" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>צפו בהקלטה המלאה</span><ArrowIcon /></a>
           </div>
@@ -156,7 +156,7 @@ export default function EventRecapPage() {
             <div className="rc-next__img"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=700&q=80" alt="" /></div>
             <div className="rc-next__body">
               <div className="rc-next__date">14 ביוני 2026 · תל אביב</div>
-              <h3>מאסטרקלאס — קרנות חוב פרטיות</h3>
+              <h3>מאסטרקלאס - קרנות חוב פרטיות</h3>
               <a href="/event" className="v6-btn v6-btn--primary"><span>שמרו לי מקום</span><ArrowIcon /></a>
             </div>
           </div>

@@ -55,7 +55,7 @@ export default function SiteHeader() {
           <button className="v6-nav__menu" aria-label="פתח תפריט" onClick={() => setDrawerOpen(true)}>
             <span /><span /><span />
           </button>
-          <a href="/" className="v6-nav__logo" aria-label="הנדלניסטים — דף הבית">
+          <a href="/" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
             <img src="/v6-assets/logo.png" alt="הנדלניסטים" />
           </a>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">

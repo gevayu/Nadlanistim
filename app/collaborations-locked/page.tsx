@@ -23,7 +23,7 @@ export default function CollaborationsLockedPage() {
         <div className="v6-container">
           <div className="pg-head" data-reveal>
             <h1>עסקאות <em>לחברי הקהילה</em></h1>
-            <p>העסקאות המלאות שמורות לחברי הנדלניסטים. הצטרפו כדי לחשוף את כל הפרטים — שותפים, מיקום, היקף השקעה ויצירת קשר.</p>
+            <p>העסקאות המלאות שמורות לחברי הנדלניסטים. הצטרפו כדי לחשוף את כל הפרטים - שותפים, מיקום, היקף השקעה ויצירת קשר.</p>
           </div>
 
           <div className="pg-grid">

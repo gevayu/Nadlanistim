@@ -1,4 +1,4 @@
-/* Members-only account dashboard — scoped under .v6-root. */
+/* Members-only account dashboard - scoped under .v6-root. */
 
 .ac-head { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; padding: 28px 32px; border-radius: var(--r-lg); }
 .ac-head__av { width: 74px; height: 74px; border-radius: 50%; overflow: hidden; border: 1px solid var(--glass-border-strong); flex-shrink: 0; }

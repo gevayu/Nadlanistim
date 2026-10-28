@@ -82,7 +82,7 @@ body.theme-light .noise-overlay { opacity: 0.02; }
 body.theme-light .orb { opacity: 0.3; filter: blur(180px); }
 body.theme-light .orb-3 { opacity: 0.3; }
 
-/* Background shape PNGs were painted for dark mode (screen blend) —
+/* Background shape PNGs were painted for dark mode (screen blend) -
    invert them and use multiply so they darken the white canvas instead. */
 body.theme-light .bg-shape,
 body.theme-light .bg-shape-3 {
@@ -159,7 +159,7 @@ body.theme-light .hero-stats-panel {
     background: transparent;
 }
 
-/* Hero background PNGs use screen blend for dark bg — flip to multiply */
+/* Hero background PNGs use screen blend for dark bg - flip to multiply */
 body.theme-light .hero-section .hero-bg-element,
 body.theme-light .hero-section .hero-bg-element-2,
 body.theme-light .article-page .hero-bg-element,
@@ -404,7 +404,7 @@ body.v4-dark-bg.theme-light .footer-bottom-bar a,
 body.v4-dark-bg.theme-light .footer-bottom-bar span { color: #09090b !important; }
 body.v4-dark-bg.theme-light .footer-bottom-bar { border-top-color: rgba(9, 9, 11, 0.15) !important; }
 
-/* v4 dark — white surfaces at 65% glass with black text */
+/* v4 dark - white surfaces at 65% glass with black text */
 body.v4-dark-bg.theme-light {
     --text-pure: #09090b;
     --text-dim: #09090b;
@@ -461,7 +461,7 @@ body.v4-dark-bg.theme-light .carousel-card:hover {
 }
 body.v4-dark-bg.theme-light .site-header::before { background: transparent; }
 
-/* Inverted carousel (השקעות) — white 80% bg + dark text */
+/* Inverted carousel (השקעות) - white 80% bg + dark text */
 body.v4-dark-bg.theme-light .carousel-invert .carousel-card {
     background: rgba(255, 255, 255, 0.65) !important;
     border-color: rgba(255, 255, 255, 0.4) !important;
@@ -482,7 +482,7 @@ body.v4-dark-bg.theme-light .tag {
     color: #ffffff !important;
 }
 
-/* v4 — section titles + section buttons stay white over the dark page */
+/* v4 - section titles + section buttons stay white over the dark page */
 body.v4-dark-bg.theme-light .carousel-title,
 body.v4-dark-bg.theme-light .carousel-header .view-all-btn,
 body.v4-dark-bg.theme-light .carousel-header .carousel-btn { color: #ffffff !important; }

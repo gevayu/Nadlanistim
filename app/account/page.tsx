@@ -26,9 +26,9 @@ const JOBS = [
 ];
 
 const PARTIES = [
-  { ic: "🎉", title: "מסיבת הקיץ 2025 — הקלטות וגלריה", meta: "יולי 2025 · Rooftop TLV", href: "/event-recap" },
-  { ic: "🍸", title: "ערב גאלה — 5 שנים לקהילה", meta: "דצמבר 2024 · האנגר 11", href: "/event-recap" },
-  { ic: "🎬", title: "כנס הנדלניסטים 2025 — הרצאות מלאות", meta: "מאי 2025 · אקספו ת״א", href: "/event-recap" },
+  { ic: "🎉", title: "מסיבת הקיץ 2025 - הקלטות וגלריה", meta: "יולי 2025 · Rooftop TLV", href: "/event-recap" },
+  { ic: "🍸", title: "ערב גאלה - 5 שנים לקהילה", meta: "דצמבר 2024 · האנגר 11", href: "/event-recap" },
+  { ic: "🎬", title: "כנס הנדלניסטים 2025 - הרצאות מלאות", meta: "מאי 2025 · אקספו ת״א", href: "/event-recap" },
 ];
 
 export default function AccountPage() {

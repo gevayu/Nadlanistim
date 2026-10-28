@@ -1,5 +1,5 @@
 // ─── Site chrome configuration ───────────────────────────────────────────────
-// Routes listed here use the V6 chrome — the canonical SiteHeader / SiteFooter
+// Routes listed here use the V6 chrome - the canonical SiteHeader / SiteFooter
 // (app/v6/SiteHeader.tsx, app/v6/SiteFooter.tsx). On these routes the legacy
 // global header/footer (components/Header, components/Footer) and Background are
 // hidden, so the page renders the V6 chrome instead.
@@ -13,12 +13,12 @@
 // chrome. Note: V6_EXACT_ROUTES uses EXACT matching so "/jobs" (the new board)
 // does NOT capture the legacy "/jobs/bd-project-manager" detail page.
 
-// Prefix routes — these and their subpaths use V6 chrome (version sites +
+// Prefix routes - these and their subpaths use V6 chrome (version sites +
 // dynamic detail routes). Matched as exact OR `route + "/..."`, so "/collaboration"
 // covers "/collaboration/[slug]" but NOT "/collaborations" or "/collaboration-new".
 const V6_PREFIX_ROUTES = ["/v5", "/v6", "/collaboration", "/nadlanist", "/podcast", "/community", "/youth"];
 
-// Standalone V6-design internal pages — matched exactly.
+// Standalone V6-design internal pages - matched exactly.
 export const V6_EXACT_ROUTES = [
   "/post-archive",
   "/post",

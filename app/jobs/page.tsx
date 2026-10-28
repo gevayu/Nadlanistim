@@ -50,8 +50,8 @@ export default function JobsPage() {
       <section className="v6-section">
         <div className="v6-container">
           <div className="pg-head" data-reveal>
-            <h1>לוח דרושים — <em>הזדמנויות בקהילה שלנו</em></h1>
-            <p>החזון שלנו הוא לחבר בין אנשים בקהילה, לפתוח דלתות ולהציע את הזה לזה. כאן תוכלו למצוא הזדמנויות עבודה, לפרסם שאתם מחפשים עבודה, להציע שירותים, למצוא שותפים עסקיים ואף להתנדב בפרויקטים קהילתיים — הכל מתוך אמון וקשר שכבר קיימים בקהילה.</p>
+            <h1>לוח דרושים - <em>הזדמנויות בקהילה שלנו</em></h1>
+            <p>החזון שלנו הוא לחבר בין אנשים בקהילה, לפתוח דלתות ולהציע את הזה לזה. כאן תוכלו למצוא הזדמנויות עבודה, לפרסם שאתם מחפשים עבודה, להציע שירותים, למצוא שותפים עסקיים ואף להתנדב בפרויקטים קהילתיים - הכל מתוך אמון וקשר שכבר קיימים בקהילה.</p>
           </div>
 
           <form className="pg-toolbar" data-reveal onSubmit={(e) => { e.preventDefault(); setApplied(draft); }}>
@@ -98,7 +98,7 @@ export default function JobsPage() {
 
           <div className="pg-cta-row" data-reveal>
             <a href="/job-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
-              <span>פרסם משרה פתוחה — חינם לחברי הקהילה</span>
+              <span>פרסם משרה פתוחה - חינם לחברי הקהילה</span>
               <ArrowIcon />
             </a>
             <a href="/job-new?kind=seek" className="v6-btn v6-btn--glass v6-btn--lg">פרסם שאתה מחפש עבודה</a>

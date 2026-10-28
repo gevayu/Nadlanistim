@@ -1,4 +1,4 @@
-/** Sponsorship #1 strip — top of every V6 page (SiteShell, home, post-archive). */
+/** Sponsorship #1 strip - top of every V6 page (SiteShell, home, post-archive). */
 export default function SponsorStrip() {
   return (
     <section className="v6-section">

@@ -75,7 +75,7 @@ export default function CollaborationsPage() {
 
           <div className="pg-cta-row" data-reveal>
             <a href="/collaboration-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
-              <span>פרסם שיתוף פעולה — חינם לחברי הקהילה</span>
+              <span>פרסם שיתוף פעולה - חינם לחברי הקהילה</span>
               <ArrowIcon />
             </a>
             <a href="/profile" className="v6-btn v6-btn--glass v6-btn--lg">הצג את הפרויקטים שלך</a>

@@ -1,4 +1,4 @@
-/* Event recap page — scoped under .v6-root, reuses v6 tokens. */
+/* Event recap page - scoped under .v6-root, reuses v6 tokens. */
 
 .rc-hero { text-align: center; max-width: 780px; margin: 0 auto; }
 .rc-badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: #86EFAC; background: rgba(34,197,94,.14); border: 1px solid rgba(34,197,94,.34); margin-bottom: 22px; }

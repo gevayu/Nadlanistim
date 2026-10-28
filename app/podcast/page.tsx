@@ -18,7 +18,7 @@ export default function PodcastArchivePage() {
         <div className="v6-container">
           <div className="pg-head" data-reveal>
             <h1>נדל<em>פודקאסט</em></h1>
-            <p>שיחות עומק עם האנשים שמזיזים את שוק הנדל״ן בישראל. פרק חדש כל שבועיים — האזינו, למדו, והישארו צעד לפני כולם.</p>
+            <p>שיחות עומק עם האנשים שמזיזים את שוק הנדל״ן בישראל. פרק חדש כל שבועיים - האזינו, למדו, והישארו צעד לפני כולם.</p>
           </div>
 
           <div className="pc-grid">

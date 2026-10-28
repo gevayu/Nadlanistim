@@ -56,7 +56,7 @@ export default function EventPage() {
         <div className="v6-container">
           <div className="ev-hero" data-reveal>
             <span className="ev-badge">● אירוע קרוב</span>
-            <h1>מאסטרקלאס: קרנות חוב פרטיות — <em>מרגש ומזמין</em></h1>
+            <h1>מאסטרקלאס: קרנות חוב פרטיות - <em>מרגש ומזמין</em></h1>
             <p>שלוש שעות עומק עם מנהלי שלוש הקרנות המובילות בארץ.</p>
             <a href="#register" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שמרו לי מקום</span><ArrowIcon /></a>
           </div>
@@ -97,7 +97,7 @@ export default function EventPage() {
       {/* Speaker */}
       <section className="v6-section">
         <div className="v6-container">
-          <h2 className="ev-section-title" data-reveal>מי מעביר — על המנחה</h2>
+          <h2 className="ev-section-title" data-reveal>מי מעביר - על המנחה</h2>
           <div className="ev-speaker v6-glass" data-reveal>
             <div className="ev-speaker__img"><img src="https://i.pravatar.cc/320?img=53" alt="" /></div>
             <div>
@@ -134,7 +134,7 @@ export default function EventPage() {
             {TESTIMONIALS.map((t) => (
               <article key={t.by} className="ev-testi__card v6-glass" data-reveal>
                 <div className="ev-testi__q">{t.q}</div>
-                <div className="ev-testi__by">— {t.by}</div>
+                <div className="ev-testi__by">- {t.by}</div>
               </article>
             ))}
           </div>

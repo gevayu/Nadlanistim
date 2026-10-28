@@ -37,7 +37,7 @@ const GALLERY = ["1470225620780-dba8ba36b745", "1516450360452-9312f5e86fc7", "14
 const VIBES = [
   { q: "״הכי כיף שהיה. רקדנו עד 3, וגם סגרתי עסקה.״", by: "נועה ברגר" },
   { q: "״סוף סוף אירוע נדל״ן שבא בלי עניבה.״", by: "אלון שמיר" },
-  { q: "״האנשים, המוזיקה, הוייב — מושלם.״", by: "שירה אלוני" },
+  { q: "״האנשים, המוזיקה, הוייב - מושלם.״", by: "שירה אלוני" },
 ];
 
 const FAQ = [
@@ -60,7 +60,7 @@ export default function EventPartyPage() {
             <div className="ep-hero">
               <span className="ep-badge">🎉 מסיבת הקיץ 2026</span>
               <h1 className="ep-neon">מסיבת<br />הנדלניסטים</h1>
-              <p>לילה אחד. הבר פתוח, המוזיקה חזקה, וכל מי שמזיז את הנדל״ן בישראל — על רחבת ריקודים אחת.</p>
+              <p>לילה אחד. הבר פתוח, המוזיקה חזקה, וכל מי שמזיז את הנדל״ן בישראל - על רחבת ריקודים אחת.</p>
               <div className="ep-hero__cta">
                 <a href="#register" className="v6-btn v6-btn--lg ep-btn--party" data-magnetic=""><span>שריינו מקום</span><ArrowIcon /></a>
                 <a href="#lineup" className="v6-btn v6-btn--glass v6-btn--lg">מי על הדקים?</a>
@@ -148,7 +148,7 @@ export default function EventPartyPage() {
             {VIBES.map((v) => (
               <article key={v.by} className="ep-vibe__card v6-glass" data-reveal>
                 <div className="ep-vibe__q">{v.q}</div>
-                <div className="ep-vibe__by">— {v.by}</div>
+                <div className="ep-vibe__by">- {v.by}</div>
               </article>
             ))}
           </div>

@@ -58,7 +58,7 @@ const ABOUT_BULLETS: [string, string][] = [
 
 const MEMBERS: MemberCategory[] = [
   { count: "412", title: "יזמים", desc: "יזמי נדל״ן פרטיים ויזמים בחברות, מקבוצות רכישה ועד מגדלים.", avatars: [12, 22, 33] },
-  { count: "386", title: "משקיעים", desc: "משקיעים פרטיים, משפחתיים ומוסדיים — בארץ ובחו״ל.", avatars: [15, 44, 55] },
+  { count: "386", title: "משקיעים", desc: "משקיעים פרטיים, משפחתיים ומוסדיים - בארץ ובחו״ל.", avatars: [15, 44, 55] },
   { count: "118", title: "שמאי מקרקעין", desc: "שמאים מובילים בענף, שמלווים עסקאות, פרויקטים ובדיקות נאותות.", avatars: [8, 18, 28] },
   { count: "294", title: "עורכי דין", desc: "משרדי עו״ד בנדל״ן, ליווי עסקאות, התחדשות עירונית ומיסוי.", avatars: [5, 25, 45] },
   { count: "208", title: "קבלנים ומבצעים", desc: "חברות ביצוע, קבלני שלד וגמר, ספקי תשתיות ושירותי בנייה.", avatars: [14, 34, 54] },
@@ -78,7 +78,7 @@ const NADLANISTIM: Nadlanist[] = [
 ];
 
 const JOB_OFFERS: JobOffer[] = [
-  { tag: "קריירה · משרת ניהול", title: "סמנכ״ל/ית פיתוח עסקי", company: "קרן השקעות נדל״ן", location: "תל אביב", desc: "הזדמנות נדירה להשתלב בהנהלת קרן השקעות נדל״ן בצמיחה — איתור, ייזום וניהול עסקאות קרקע ברחבי הארץ.", img: "1556157382-97eda2d62296" },
+  { tag: "קריירה · משרת ניהול", title: "סמנכ״ל/ית פיתוח עסקי", company: "קרן השקעות נדל״ן", location: "תל אביב", desc: "הזדמנות נדירה להשתלב בהנהלת קרן השקעות נדל״ן בצמיחה - איתור, ייזום וניהול עסקאות קרקע ברחבי הארץ.", img: "1556157382-97eda2d62296" },
   { tag: "קריירה · שמאות", title: "שמאי/ת מקרקעין בכיר/ה", company: "פירמת שמאות מובילה", location: "רמת גן", desc: "פירמת שמאות גדולה מגייסת שמאי/ת מקרקעין לליווי פיננסי של פרויקטים ועריכת דוחות אפס לגופים מוסדיים.", img: "1551836022-d5d88e9218df" },
   { tag: "קריירה · ניהול פרויקטים", title: "מנהל/ת פרויקטים בנדל״ן", company: "חברה יזמית מובילה", location: "אזור המרכז", desc: "לחברה יזמית מובילה באזור המרכז דרוש/ה מנהל/ת פרויקטים להובלת מיזמי פינוי בינוי ותמ״א 38 מקצה לקצה.", img: "1521119989659-a83eee488004" },
   { tag: "קריירה · שיווק ומכירות", title: "מנהל/ת שיווק ומכירות", company: "חברת שיווק נדל״ן מובילה", location: "הרצליה פיתוח", desc: "חברת שיווק נדל״ן מובילה מגייסת מנהל/ת שיווק ומכירות להובלת קמפיינים ומכירת פרויקטי יוקרה.", img: "1507003211169-0a1dd7228f2d" },
@@ -92,7 +92,7 @@ const COMMUNITIES = Array.from({ length: 10 }, (_, i) => ({
 
 const FEATURED_DETAILS: [string, string][] = [
   ["מיקום", "אקספו תל אביב, ביתן 1"],
-  ["שעות", "09:00 — 21:00"],
+  ["שעות", "09:00 - 21:00"],
   ["פאנלים", "3 מסלולים מקבילים"],
   ["משתתפים", "800"],
 ];
@@ -108,9 +108,9 @@ const SPONSORS_MAIN: Sponsor[] = [
 ];
 
 const PROJECTS: Project[] = [
-  { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", slug: "pinui-binui-givat-shmuel", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 — היום", partners: "3 שותפים" },
+  { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", slug: "pinui-binui-givat-shmuel", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 - היום", partners: "3 שותפים" },
   { img: "1486406146926-c627a92ad1ab", tag: "קרקע יזמית", slug: "mercantile-rosh-haayin", title: "מתחם מסחרי, ראש העין", desc: "קבוצת השקעה של 14 חברי קהילה. הון של 28M ש״ח.", period: "2023", partners: "14 שותפים" },
-  { img: "1448630360428-65456885c650", tag: "מגדל יוקרה", slug: "luxury-tower-ramat-gan", title: "מגדל הברזל, רמת גן", desc: "שותפות יזמית בין שני חברים. 32 קומות, מסחר ומגורים.", period: "2022 — 2025", partners: "2 שותפים" },
+  { img: "1448630360428-65456885c650", tag: "מגדל יוקרה", slug: "luxury-tower-ramat-gan", title: "מגדל הברזל, רמת גן", desc: "שותפות יזמית בין שני חברים. 32 קומות, מסחר ומגורים.", period: "2022 - 2025", partners: "2 שותפים" },
   { img: "1582407947304-fd86f028f716", tag: "קומבינציה", slug: "real-estate-debt-fund", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
 ];
 
@@ -122,22 +122,22 @@ const PODCASTS: { slug: string; title: string; desc: string; img: string }[] = [
 ];
 
 const SECONDARY_ARTICLES: ArticleItem[] = [
-  { cat: "רגולציה", title: "חוק התחדשות עירונית 2026 — מה צריך לדעת", desc: "כל מה שיזמים ובעלי דירות חייבים להבין לפני שנכנסים לפרויקט.", author: "עו״ד דניאל כהן", time: "9 דק׳" },
+  { cat: "רגולציה", title: "חוק התחדשות עירונית 2026 - מה צריך לדעת", desc: "כל מה שיזמים ובעלי דירות חייבים להבין לפני שנכנסים לפרויקט.", author: "עו״ד דניאל כהן", time: "9 דק׳" },
   { cat: "פרופטק", title: "5 פלטפורמות שמשנות את עולם המכרזים", desc: "הכלים הדיגיטליים שמקצרים את הדרך מהמכרז ועד הזכייה.", author: "שירה אלוני", time: "6 דק׳" },
-  { cat: "מימון", title: "קרנות חוב נדל״ן — איך לבחור נכון", desc: "מה ההבדל בין הקרנות, ואיך מזהים את הסיכון האמיתי.", author: "רן מימון", time: "11 דק׳" },
+  { cat: "מימון", title: "קרנות חוב נדל״ן - איך לבחור נכון", desc: "מה ההבדל בין הקרנות, ואיך מזהים את הסיכון האמיתי.", author: "רן מימון", time: "11 דק׳" },
 ];
 
 const EVENTS: EventItem[] = [
-  { day: "28", month: "מאי", tag: "ארוחת ערב סגורה", title: "שולחן עגול — יזמי התחדשות עירונית", desc: "20 יזמים. שולחן אחד. נושאים חמים בתעשייה. רק לחברי קהילה.", place: "מסעדת מסה, תל אביב", time: "20:00" },
-  { day: "04", month: "יוני", tag: "מאסטרקלאס", title: "קרנות חוב פרטיות — A to Z", desc: "שלוש שעות עומק עם מנהלי שלוש הקרנות המובילות בארץ.", place: "WeWork גינדי, ת״א", time: "09:30" },
-  { day: "14", month: "יוני", tag: "הכנס השנתי", accent: true, title: "כנס הנדלניסטים 2026", desc: "היום הגדול של הקהילה. 42 מרצים. 3 פאנלים. 800 משתתפים.", place: "אקספו תל אביב", time: "09:00 — 21:00" },
-  { day: "02", month: "יולי", tag: "סיור מקצועי", title: "סיור בפרויקטים החדשים בתל אביב", desc: "סיור מודרך עם היזמים — ארבעה מגדלים בלב העיר.", place: "נקודת מפגש — שרונה", time: "16:00" },
+  { day: "28", month: "מאי", tag: "ארוחת ערב סגורה", title: "שולחן עגול - יזמי התחדשות עירונית", desc: "20 יזמים. שולחן אחד. נושאים חמים בתעשייה. רק לחברי קהילה.", place: "מסעדת מסה, תל אביב", time: "20:00" },
+  { day: "04", month: "יוני", tag: "מאסטרקלאס", title: "קרנות חוב פרטיות - A to Z", desc: "שלוש שעות עומק עם מנהלי שלוש הקרנות המובילות בארץ.", place: "WeWork גינדי, ת״א", time: "09:30" },
+  { day: "14", month: "יוני", tag: "הכנס השנתי", accent: true, title: "כנס הנדלניסטים 2026", desc: "היום הגדול של הקהילה. 42 מרצים. 3 פאנלים. 800 משתתפים.", place: "אקספו תל אביב", time: "09:00 - 21:00" },
+  { day: "02", month: "יולי", tag: "סיור מקצועי", title: "סיור בפרויקטים החדשים בתל אביב", desc: "סיור מודרך עם היזמים - ארבעה מגדלים בלב העיר.", place: "נקודת מפגש - שרונה", time: "16:00" },
 ];
 
 const PAST_EVENTS = [
   { tag: "הכנס השנתי", title: "כנס הנדלניסטים 2025", desc: "יום שלם של פאנלים, עסקאות ונטוורקינג עם מיטב אנשי הענף.", place: "אקספו תל אביב", time: "מאי 2025" },
   { tag: "משלחת בינלאומית", title: "משלחת נדל״ן לדובאי", desc: "חמישה ימים, עשרים חברי קהילה, ושוק שמשנה את כללי המשחק.", place: "דובאי, איחוד האמירויות", time: "מרץ 2025" },
-  { tag: "ערב חברים", title: "חמש שנים לקהילה — ערב גאלה", desc: "חגגנו חמש שנים יחד עם כל מי שבנה את הקהילה מהיום הראשון.", place: "האנגר 11, נמל ת״א", time: "דצמבר 2024" },
+  { tag: "ערב חברים", title: "חמש שנים לקהילה - ערב גאלה", desc: "חגגנו חמש שנים יחד עם כל מי שבנה את הקהילה מהיום הראשון.", place: "האנגר 11, נמל ת״א", time: "דצמבר 2024" },
 ];
 
 const ROLE_OPTIONS = ["יזם / יזמית", "משקיע / משקיעה", "שמאי מקרקעין", "עו״ד", "קבלן", "מתווך / מתווכת", "אדריכל / אדריכלית", "חברת מימון", "פרופטק", "שיווק נדל״ן", "אחר"];
@@ -312,7 +312,7 @@ function MembersCarousel({ items }: { items: MemberCategory[] }) {
 
   // Three identical copies give a buffer on both sides so the loop is seamless:
   // we ride the middle copy and snap back by exactly one copy whenever a move
-  // crosses into a neighbour — invisibly, since every copy looks the same.
+  // crosses into a neighbour - invisibly, since every copy looks the same.
   const loop = [...items, ...items, ...items];
 
   // One-card step (card width + gap) and the width of a single copy.
@@ -333,7 +333,7 @@ function MembersCarousel({ items }: { items: MemberCategory[] }) {
   };
 
   // After each eased move settles, re-center into the middle copy without a
-  // transition — the jump is invisible because the copies are identical.
+  // transition - the jump is invisible because the copies are identical.
   const onTransitionEnd = () => {
     const { setLen } = measure();
     if (setLen === 0) return;
@@ -365,7 +365,7 @@ function MembersCarousel({ items }: { items: MemberCategory[] }) {
     };
   }, []);
 
-  // Gentle 5s auto-advance — eased via CSS transition, paused on hover.
+  // Gentle 5s auto-advance - eased via CSS transition, paused on hover.
   useEffect(() => {
     if (!enabled) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -693,7 +693,7 @@ export default function HomePageV6() {
           <button className="v6-nav__menu" aria-label="פתח תפריט" onClick={() => setDrawerOpen(true)}>
             <span /><span /><span />
           </button>
-          <a href="#top" className="v6-nav__logo" aria-label="הנדלניסטים — דף הבית">
+          <a href="#top" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
             <img src="/v6-assets/logo.png" alt="הנדלניסטים" />
           </a>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">
@@ -747,7 +747,7 @@ export default function HomePageV6() {
           </h1>
           <p className="v6-hero__sub">
             מקום אחד ליזמים, משקיעים, שמאים, עו״ד, קבלנים, אדריכלים<br />
-            ובעלי מקצוע — ליצור קשרים, ללמוד, להתפתח ולייצר הזדמנויות אמיתיות.
+            ובעלי מקצוע - ליצור קשרים, ללמוד, להתפתח ולייצר הזדמנויות אמיתיות.
           </p>
           <div className="v6-hero__cta">
             <a href="#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
@@ -818,7 +818,7 @@ export default function HomePageV6() {
                 <em>קהילה.</em>
               </h2>
               <p data-reveal>
-                הנדלניסטים היא קהילה מקצועית של מעל 3,400 אנשי נדל״ן בישראל —
+                הנדלניסטים היא קהילה מקצועית של מעל 3,400 אנשי נדל״ן בישראל -
                 אנשים שמייצרים יחד עסקאות, פרויקטים, ידע והזדמנויות.
               </p>
               <p data-reveal>
@@ -932,7 +932,7 @@ export default function HomePageV6() {
             </h2>
             <p className="v6-featured__desc" data-reveal>
               12 שעות של פאנלים, מאסטרקלאסים ונטוורקינג בלב תל אביב.
-              עם הדמויות המובילות בענף — יזמים, משקיעים, רגולטורים ומקבלי החלטות.
+              עם הדמויות המובילות בענף - יזמים, משקיעים, רגולטורים ומקבלי החלטות.
             </p>
             <div className="v6-featured__speakers" data-reveal>
               <div className="v6-featured__speakers-imgs">
@@ -1075,7 +1075,7 @@ export default function HomePageV6() {
               <div className="v6-article__body">
                 <div className="v6-article__cat">ניתוח שוק</div>
                 <h3>איפה נסגרות עכשיו עסקאות הקרקע הכי טובות?</h3>
-                <p>מיפוי של 18 חודשים אחרונים בשוק הקרקעות הפרטי — והאזורים שמתחתם הפעילות שקטה אבל הרווחיות גבוהה.</p>
+                <p>מיפוי של 18 חודשים אחרונים בשוק הקרקעות הפרטי - והאזורים שמתחתם הפעילות שקטה אבל הרווחיות גבוהה.</p>
                 <div className="v6-article__meta">
                   <span>אלון שמיר</span><span>·</span><span>14 דק׳ קריאה</span><span>·</span><span>מאי 2026</span>
                 </div>

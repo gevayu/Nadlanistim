@@ -1,4 +1,4 @@
-# Nadlanistim — V6 Design System
+# Nadlanistim - V6 Design System
 
 Reference for building **internal pages** that match the V6 homepage
 ([app/v6/page.tsx](page.tsx) + [app/v6/v6.css](v6.css)).
@@ -14,7 +14,7 @@ Dark, glassy, RTL, Hebrew-first. Everything is scoped under `.v6-root`.
   `padding-inline`, `inset-inline-start`) so things mirror correctly. Use physical
   `left`/`right` only for true visual corners (e.g. badge pinned bottom-left).
 - **Font:** `"Google Sans"` (self-hosted woff2, weights 400/500/600/700 + 600 italic),
-  fallback `"Heebo", system-ui`. **One font only** — no separate mono face; `--font-mono`
+  fallback `"Heebo", system-ui`. **One font only** - no separate mono face; `--font-mono`
   is aliased to the main stack, so numeric/eyebrow accents render in Google Sans too.
 - **Component CSS lives in `v6.css`**, grouped by section with `/* ===== Name ===== */`
   banners. Keep that convention.
@@ -42,15 +42,15 @@ Dark, glassy, RTL, Hebrew-first. Everything is scoped under `.v6-root`.
 |---|---|
 | `--violet` | `#8B5CF6` |
 | `--blue` | `#4F8DFB` |
-| `--cyan` | `#22D3EE` (primary accent — dots, links hover, tags) |
+| `--cyan` | `#22D3EE` (primary accent - dots, links hover, tags) |
 | `--pink` | `#F472B6` |
 
 `--cyan` is the signature accent (eyebrow dot, link hover, "Members Only" / tag pills).
 
 ### Gradients
-- `--grad-1` — `135deg violet→blue→cyan` (primary buttons, progress bars, dot).
-- `--grad-text` — white→soft-blue, for big light headings via background-clip.
-- `--grad-accent-text` — `#C4B5FD→#93C5FD→#67E8F9`, for `<em>` accent words in headings.
+- `--grad-1` - `135deg violet→blue→cyan` (primary buttons, progress bars, dot).
+- `--grad-text` - white→soft-blue, for big light headings via background-clip.
+- `--grad-accent-text` - `#C4B5FD→#93C5FD→#67E8F9`, for `<em>` accent words in headings.
 
 **Accent-word heading pattern** (used in almost every `<h2>`):
 ```jsx
@@ -87,7 +87,7 @@ Radii are pill (`999px`) for buttons/tags, `--r`/`--r-lg` for cards.
 
 ## 2. Layout primitives
 
-**Section + container** — the standard page rhythm:
+**Section + container** - the standard page rhythm:
 ```jsx
 <section className="v6-section">         {/* padding: var(--section-y) 0 */}
   <div className="v6-container">          {/* max 1360px, centered, gutter padding */}
@@ -102,7 +102,7 @@ Radii are pill (`999px`) for buttons/tags, `--r`/`--r-lg` for cards.
 
 ---
 
-## 3. Surfaces — `.v6-glass`
+## 3. Surfaces - `.v6-glass`
 
 The core surface. Translucent fill + blur + 1px gradient border (`::before`) +
 soft inner glow (`::after`). Children get `position:relative; z-index:2` automatically.
@@ -115,15 +115,15 @@ soft inner glow (`::after`). Children get `position:relative; z-index:2` automat
 
 ---
 
-## 4. Buttons — `.v6-btn`
+## 4. Buttons - `.v6-btn`
 
 ```jsx
 <a className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>טקסט</span><ArrowIcon/></a>
 <a className="v6-btn v6-btn--glass">טקסט</a>
 ```
 - Base: pill, `padding 14px 26px`, weight 500, gap 10, overflow hidden.
-- `--primary` — `--grad-1` fill, glow shadow, gradient shifts on hover + lift.
-- `--glass` — glass-strong fill, light border, lift on hover.
+- `--primary` - `--grad-1` fill, glow shadow, gradient shifts on hover + lift.
+- `--glass` - glass-strong fill, light border, lift on hover.
 - Modifiers: `--lg` (bigger), `--block` (full width).
 - SVG inside auto-animates `translateX(-4px)` on hover (RTL-correct: arrow points left).
 - Icon used: `ArrowIcon` (chevron-left). Carousels use `ChevronRight`/`ChevronLeft`.
@@ -132,12 +132,12 @@ soft inner glow (`::after`). Children get `position:relative; z-index:2` automat
 
 ## 5. Headings & labels
 
-**Eyebrow** (kicker above a heading) — cyan pulsing dot + label:
+**Eyebrow** (kicker above a heading) - cyan pulsing dot + label:
 ```jsx
 <span className="v6-eyebrow"><span className="v6-dot" />מי אנחנו</span>
 ```
 
-**Section head** — wrapper for eyebrow + h2 (+ optional sub):
+**Section head** - wrapper for eyebrow + h2 (+ optional sub):
 ```jsx
 <header className="v6-section-head" data-reveal>
   <span className="v6-eyebrow"><span className="v6-dot" />איזור</span>
@@ -146,17 +146,17 @@ soft inner glow (`::after`). Children get `position:relative; z-index:2` automat
 </header>
 ```
 Modifiers:
-- `--center` — centered, `margin-inline:auto`.
-- `--row` — flex space-between, heading on one side + a `.v6-link-arrow` on the other.
-- `--nowrap` — `max-width:none` + `h2 { white-space:nowrap }` (one-line title on desktop;
+- `--center` - centered, `margin-inline:auto`.
+- `--row` - flex space-between, heading on one side + a `.v6-link-arrow` on the other.
+- `--nowrap` - `max-width:none` + `h2 { white-space:nowrap }` (one-line title on desktop;
   reverts to wrap ≤760px).
 
 h2 scale: `clamp(40px, 5.5vw, 76px)`, line-height 1.02, letter-spacing -0.03em.
 
-**Link-arrow** ("see all" style): `.v6-link-arrow` — underlined inline link + chevron,
+**Link-arrow** ("see all" style): `.v6-link-arrow` - underlined inline link + chevron,
 hover turns cyan and widens gap. Wrap in `<span>` + `<ArrowIcon/>`.
 
-**Tag / "Members Only" pill** — cyan pill: `.v6-tag-members`. Generic pattern for any
+**Tag / "Members Only" pill** - cyan pill: `.v6-tag-members`. Generic pattern for any
 status pill: `padding 5px 12px; border-radius 999px; font 11px/700; letter-spacing .1em;
 color var(--cyan); background rgba(34,211,238,.12); border 1px rgba(34,211,238,.32)`.
 
@@ -194,7 +194,7 @@ border rgba(139,92,246,.25)`.
   shown). Primary CTA at the end.
 - **Mobile drawer** `.v6-drawer` slides from the right (`translateX(100%)→0`), dark blur
   panel, big `.v6-drawer__link` items. Nav links are driven by the shared `NAV_LINKS`
-  array — order in the array = right-to-left order in RTL.
+  array - order in the array = right-to-left order in RTL.
 
 ---
 
@@ -253,9 +253,9 @@ RTL note: "next" advances visually leftward; arrow icons are `ChevronRight` (pre
 
 ## 11. Responsive breakpoints
 
-- **Tablet `@media (max-width:1100px)`** — nav collapses to hamburger; multi-col grids
+- **Tablet `@media (max-width:1100px)`** - nav collapses to hamburger; multi-col grids
   drop to 2; side-by-side `--lg` cards stack full-width.
-- **Mobile `@media (max-width:760px)`** — most card grids become horizontal
+- **Mobile `@media (max-width:760px)`** - most card grids become horizontal
   scroll-snap rows (`display:flex; overflow-x:auto; scroll-snap-type:x mandatory;`
   hidden scrollbar; cards `flex: 0 0 ~76-86%`); fixed-height cards go `height:auto`;
   one-line headings revert to wrapping; gutters shrink.
@@ -274,11 +274,11 @@ if you include the same `<div className="v6-ambient">…</div>` block.
 
 ---
 
-## 12b. Site chrome (shared header/footer) — the standard
+## 12b. Site chrome (shared header/footer) - the standard
 
 The canonical, site-standard header & footer are shared components:
 [app/v6/SiteHeader.tsx](SiteHeader.tsx) (`v6-nav` + drawer) and
-[app/v6/SiteFooter.tsx](SiteFooter.tsx) (`v6-footer`). **Use these on every new page** —
+[app/v6/SiteFooter.tsx](SiteFooter.tsx) (`v6-footer`). **Use these on every new page** -
 do not re-build a nav/footer.
 
 Which routes use the V6 chrome is configured centrally in

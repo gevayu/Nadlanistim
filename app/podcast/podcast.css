@@ -1,4 +1,4 @@
-/* Podcast pages — scoped under .v6-root. */
+/* Podcast pages - scoped under .v6-root. */
 
 /* Archive grid */
 .pc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }

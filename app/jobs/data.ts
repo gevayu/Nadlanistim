@@ -1,4 +1,4 @@
-// Jobs board listings — one source for /jobs, /jobs-locked and /job.
+// Jobs board listings - one source for /jobs, /jobs-locked and /job.
 // `id` is the listing's public serial number: unique, never reused.
 
 export type JobKind = "offer" | "seek";

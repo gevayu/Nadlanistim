@@ -1,4 +1,4 @@
-/* Sub-communities page — scoped under .v6-root. */
+/* Sub-communities page - scoped under .v6-root. */
 .cm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .cm-card { padding: 30px 26px; border-radius: var(--r-lg); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; transition: transform .5s var(--t), background .4s var(--t); }
 .cm-card:hover { transform: translateY(-6px); background: var(--glass-bg-strong); }

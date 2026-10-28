@@ -105,7 +105,7 @@ export default function HomePageV2() {
       image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=600",
       imageAlt: "פרק פודקאסט",
       title: "פינוי בינוי: הכסף הגדול שכולם מפספסים",
-      description: "שרון אוחנה בשיחה עם נועם כרמי על למה רוב היזמים נכנסים לפינוי-בינוי מאוחר מדי — ואיך לשנות את זה.",
+      description: "שרון אוחנה בשיחה עם נועם כרמי על למה רוב היזמים נכנסים לפינוי-בינוי מאוחר מדי - ואיך לשנות את זה.",
     },
     {
       href: "#",
@@ -118,7 +118,7 @@ export default function HomePageV2() {
       href: "#",
       image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600",
       imageAlt: "פרק פודקאסט",
-      title: "ריבית, אינפלציה ונדל״ן — מה שמישהו צריך לומר",
+      title: "ריבית, אינפלציה ונדל״ן - מה שמישהו צריך לומר",
       description: "שרון אוחנה ונועם כרמי מנתחים את ההחלטות של בנק ישראל ומה הן אומרות למי שמחזיק נכסים.",
     },
   ];

@@ -1,4 +1,4 @@
-/* v5 — homepage styles, matched to reference spec. Scoped under .v5-root. */
+/* v5 - homepage styles, matched to reference spec. Scoped under .v5-root. */
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap");
 
 @font-face {
@@ -523,7 +523,7 @@
   .v5-stat.is-visible .v5-stat__bar > span { transform: scaleX(1) !important; }
 }
 
-/* ===== Responsive — Tablet ≤1100 ===== */
+/* ===== Responsive - Tablet ≤1100 ===== */
 @media (max-width: 1100px) {
   .v5-nav { top: 12px; }
   .v5-nav__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; }
@@ -553,7 +553,7 @@
   .v5-footer__top { grid-template-columns: 1fr; gap: 48px; }
 }
 
-/* ===== Responsive — Mobile ≤760 ===== */
+/* ===== Responsive - Mobile ≤760 ===== */
 @media (max-width: 760px) {
   .v5-root { --section-y: clamp(48px, 9vw, 72px); --gutter: 20px; }
 
