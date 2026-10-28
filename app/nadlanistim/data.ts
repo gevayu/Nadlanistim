@@ -1,6 +1,6 @@
 export type Nadlanist = {
   slug: string;
-  img: number;
+  img?: number; // placeholder avatar for local entries without a photo
   name: string;
   role: string;
   field: string;
@@ -8,7 +8,7 @@ export type Nadlanist = {
   quote: string;
   bio: string[];
   email: string;
-  photo?: string; // uploaded image (data URL); falls back to the placeholder avatar `img`
+  photo?: string; // WordPress featured image or an uploaded data URL; falls back to the placeholder avatar `img`
   phone?: string; // collected, never shown on the site
   linkedin?: string;
   instagram?: string;
@@ -21,6 +21,8 @@ export const PLACES = ["תל אביב", "מרכז", "צפון", "דרום", "י�
 
 export const avatarSrc = (n: Nadlanist, size = 200) => n.photo ?? `https://i.pravatar.cc/${size}?img=${n.img}`;
 
+// Fallback when the backend is unreachable; the live directory comes from WordPress (nadlanistim/wp.ts).
+// /my-account and the community members carousel still read this list.
 export const NADLANISTIM: Nadlanist[] = [
   {
     slug: "avi-cohen",

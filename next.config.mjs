@@ -15,6 +15,13 @@ const nextConfig = {
       { source: "/", destination: "/v6", permanent: false },
       // The single job page moved to /job/<serial> when listings came from WordPress.
       { source: "/job", destination: "/jobs", permanent: true },
+      // WordPress sends a nadlanist's "View" to /profile?as=<slug>; plain /profile stays the member's own page.
+      {
+        source: "/profile",
+        has: [{ type: "query", key: "as", value: "(?<slug>.+)" }],
+        destination: "/nadlanist/:slug",
+        permanent: false,
+      },
     ];
   },
 };

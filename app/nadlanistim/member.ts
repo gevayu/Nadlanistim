@@ -28,9 +28,9 @@ export function saveEdits(edits: MemberEdits) {
 const withEdits = (list: Nadlanist[], edits: MemberEdits | null) =>
   edits ? list.map((n) => (n.slug === CURRENT_MEMBER ? { ...n, ...edits } : n)) : list;
 
-/** The directory with the current member's saved edits applied (after mount, so SSR stays stable). */
-export function useNadlanistim(): Nadlanist[] {
-  const [list, setList] = useState(NADLANISTIM);
-  useEffect(() => setList(withEdits(NADLANISTIM, loadEdits())), []);
+/** `base` with the current member's saved edits applied (after mount, so SSR stays stable). */
+export function useNadlanistim(base: Nadlanist[] = NADLANISTIM): Nadlanist[] {
+  const [list, setList] = useState(base);
+  useEffect(() => setList(withEdits(base, loadEdits())), [base]);
   return list;
 }
