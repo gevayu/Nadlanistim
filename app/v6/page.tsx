@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import SponsorStrip from "./SponsorStrip";
+import { COMMUNITIES as COMMUNITY_DATA, communityLogo } from "../communities/data";
 import "./v6.css";
 
 const ArrowIcon = () => (
@@ -84,10 +85,12 @@ const JOB_OFFERS: JobOffer[] = [
   { tag: "קריירה · שיווק ומכירות", title: "מנהל/ת שיווק ומכירות", company: "חברת שיווק נדל״ן מובילה", location: "הרצליה פיתוח", desc: "חברת שיווק נדל״ן מובילה מגייסת מנהל/ת שיווק ומכירות להובלת קמפיינים ומכירת פרויקטי יוקרה.", img: "1507003211169-0a1dd7228f2d" },
 ];
 
-const COMMUNITIES = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  logo: "/community-badge.png",
-  label: "תת קהילה",
+// The communities carousel shows the real sub-communities, each linking to its own page.
+const COMMUNITIES = COMMUNITY_DATA.map((c) => ({
+  id: c.slug,
+  logo: communityLogo(c),
+  label: c.name,
+  href: `/community/${c.slug}`,
 }));
 
 const FEATURED_DETAILS: [string, string][] = [
@@ -552,7 +555,7 @@ function JobRotator({ jobs }: { jobs: JobOffer[] }) {
   );
 }
 
-function CommunitiesCarousel({ items }: { items: { id: number; logo: string; label: string }[] }) {
+function CommunitiesCarousel({ items }: { items: { id: string; logo: string; label: string; href: string }[] }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -637,10 +640,10 @@ function CommunitiesCarousel({ items }: { items: { id: number; logo: string; lab
           style={{ transform: `translate3d(${translate}px, 0, 0)`, transition: animate ? undefined : "none" }}
         >
           {rendered.map((c, i) => (
-            <div key={`${c.id}-${i}`} className="v6-comm">
+            <a key={`${c.id}-${i}`} href={c.href} className="v6-comm">
               <div className="v6-comm__logo"><img src={c.logo} alt="" /></div>
               <span className="v6-comm__label">{c.label}</span>
-            </div>
+            </a>
           ))}
         </div>
       </div>

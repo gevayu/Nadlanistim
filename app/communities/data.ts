@@ -9,7 +9,17 @@ export type Community = {
   about: string[];
   happenings: Happening[];
   gallery: string[];
+  logo?: string; // defaults to the shared community badge
+  whatsapp?: string; // the community's WhatsApp group invite link
 };
+
+// Until each community has its own logo, they all use the badge from the homepage.
+export const DEFAULT_LOGO = "/community-badge.png";
+// ponytail: no real invite links yet - this opens WhatsApp's landing page. Fill `whatsapp` per community.
+export const WHATSAPP_PLACEHOLDER = "https://chat.whatsapp.com/";
+
+export const communityLogo = (c: Community) => c.logo ?? DEFAULT_LOGO;
+export const communityWhatsapp = (c: Community) => c.whatsapp ?? WHATSAPP_PLACEHOLDER;
 
 const BASE_HAPPENINGS = (name: string): Happening[] => [
   { ic: "📅", t: "מפגש חודשי", d: `מפגש פיזי אחת לחודש של קהילת ${name} - הרצאה, דיון ונטוורקינג.` },

@@ -2,7 +2,7 @@
 
 import SiteShell from "../v6/SiteShell";
 import "./communities.css";
-import { COMMUNITY_LIST } from "./data";
+import { COMMUNITY_LIST, communityLogo } from "./data";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -23,7 +23,7 @@ export default function CommunitiesPage() {
           <div className="cm-grid">
             {COMMUNITY_LIST.map((c) => (
               <a key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
-                <div className="cm-card__logo"><img src="/community-badge.png" alt="" /></div>
+                <div className="cm-card__logo"><img src={communityLogo(c)} alt="" /></div>
                 <h3>{c.name}</h3>
                 <p>{c.tagline}</p>
                 <div className="cm-card__members">{c.members} חברים</div>

@@ -24,6 +24,13 @@
 .cs-hero h1 { font-size: clamp(32px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; }
 .v6-root .cs-hero p { margin: 16px auto 30px; max-width: 560px; font-size: clamp(16px, 1.5vw, 19px); color: var(--ink); font-weight: 300; line-height: 1.55; }
 
+/* Single community header: logo, name, subtitle, WhatsApp join */
+.cs1-head { max-width: 780px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.cs1-head__logo { width: 136px; height: 136px; border-radius: 50%; overflow: hidden; border: 1px solid var(--glass-border-strong); background: var(--glass-bg); margin-bottom: 24px; }
+.cs1-head__logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cs1-head h1 { font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; }
+.cs1-head__sub { margin: 14px 0 30px; font-size: clamp(17px, 1.5vw, 21px); color: var(--muted); font-weight: 300; line-height: 1.5; }
+
 .cs-about { max-width: 780px; margin: 0 auto; }
 .cs-title { font-size: clamp(23px, 2.5vw, 32px); font-weight: 700; letter-spacing: -0.02em; }
 .v6-root .cs-title { margin-bottom: 24px; }
