@@ -30,15 +30,15 @@ const FILTERS: { label: string; options: string[] }[] = [
 
 function EvCard({ e }: { e: Ev }) {
   return (
-    <article className="pg-imgcard v6-glass" data-reveal>
+    <a href="/event-recap" className="pg-imgcard v6-glass" data-reveal>
       <figure className="pg-imgcard__img"><img src={`https://images.unsplash.com/photo-${e.img}?w=800&q=80`} alt="" /></figure>
       <div className="pg-imgcard__body">
         <div className="pg-imgcard__meta">{e.date}</div>
         <h3>{e.title}</h3>
         <p className="pg-imgcard__desc">{e.desc}</p>
-        <a href="/event-recap" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>צפו במדיה</a>
+        <span className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>צפו במדיה</span>
       </div>
-    </article>
+    </a>
   );
 }
 
@@ -64,15 +64,15 @@ export default function EventsPage() {
 
           {/* Featured upcoming */}
           <h2 className="pg-subhead" data-reveal>האירוע הקרוב</h2>
-          <div className="pg-featured v6-glass" data-reveal>
+          <a href="/event" className="pg-featured v6-glass" data-reveal>
             <div className="pg-featured__img"><img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=1200&q=80" alt="" /></div>
             <div className="pg-featured__body">
               <div className="pg-featured__date">14 ביוני 2026 · אקספו תל אביב</div>
               <h3>כנס הנדלניסטים השנתי 2026</h3>
               <p>היום הגדול של הקהילה. 42 מרצים, 3 פאנלים, 800 משתתפים.</p>
-              <a href="/event" className="v6-btn v6-btn--primary" data-magnetic="" style={{ alignSelf: "flex-start" }}><span>לפרטים והרשמה</span><ArrowIcon /></a>
+              <span className="v6-btn v6-btn--primary" data-magnetic="" style={{ alignSelf: "flex-start" }}><span>לפרטים והרשמה</span><ArrowIcon /></span>
             </div>
-          </div>
+          </a>
         </div>
       </section>
 

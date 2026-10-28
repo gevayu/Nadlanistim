@@ -47,7 +47,7 @@ export default function JobsPage() {
 
           <div className="pg-grid">
             {JOBS.map((j) => (
-              <article key={j.title} className="pg-card v6-glass" data-reveal>
+              <a key={j.title} href="/job" className="pg-card v6-glass" data-reveal>
                 <h3 className="pg-card__title">{j.title}</h3>
                 <div className="pg-card__by">מפרסם: <b>{j.by}</b></div>
                 <div className="pg-card__rows">
@@ -57,11 +57,11 @@ export default function JobsPage() {
                 <p className="pg-card__desc">{j.desc}</p>
                 <div className="pg-card__foot">
                   <span className="pg-card__date">פורסם: {j.date}</span>
-                  <a href="/job" className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
+                  <span className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
                     <span>פרטים נוספים</span>
-                  </a>
+                  </span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
 

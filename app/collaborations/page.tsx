@@ -52,7 +52,7 @@ export default function CollaborationsPage() {
 
           <div className="pg-grid">
             {COLLABS.map((c) => (
-              <article key={c.title} className="pg-card v6-glass" data-reveal>
+              <a key={c.title} href={`/collaboration/${c.slug}`} className="pg-card v6-glass" data-reveal>
                 <figure className="pg-card__cover">
                   <img src={`https://images.unsplash.com/photo-${c.img}?w=640&q=80&auto=format&fit=crop`} alt="" loading="lazy" />
                 </figure>
@@ -65,11 +65,11 @@ export default function CollaborationsPage() {
                 <span className="pg-stage">שלב: {c.stage}</span>
                 <div className="pg-card__foot">
                   <span className="pg-card__date">פורסם ע״י {c.by}</span>
-                  <a href={`/collaboration/${c.slug}`} className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
+                  <span className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
                     <span>פרטים נוספים</span>
-                  </a>
+                  </span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
 

@@ -596,7 +596,8 @@
 .v6-contact__sent-msg { position: absolute; inset: 0; background: rgba(12,14,26,.96); backdrop-filter: blur(20px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; opacity: 0; pointer-events: none; transition: opacity .5s var(--t); text-align: center; z-index: 10; }
 .v6-contact__sent-msg strong { font-size: 28px; font-weight: 600; background: var(--grad-accent-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .v6-contact__sent-msg span { color: var(--muted); }
-.v6-contact__form.sent .v6-contact__sent-msg { opacity: 1; pointer-events: auto; }
+/* data attribute, not a class: a className change would wipe the reveal script's is-visible */
+.v6-contact__form[data-sent] .v6-contact__sent-msg { opacity: 1; pointer-events: auto; }
 
 /* ===== Footer ===== */
 .v6-footer { background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 100%); color: var(--muted); padding: 100px 0 40px; position: relative; border-top: 1px solid var(--line); z-index: 1; }

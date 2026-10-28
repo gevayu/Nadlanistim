@@ -114,7 +114,7 @@ export default function PostArchive() {
 
               <div className="pa-grid">
                 {POSTS.map((p) => (
-                  <article key={p.title} className="pa-card v6-glass" data-reveal>
+                  <a key={p.title} href="/post" className="pa-card v6-glass" data-reveal>
                     <figure className="pa-card__img">
                       <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
                       <span className="pa-card__type">{p.type}</span>
@@ -127,13 +127,13 @@ export default function PostArchive() {
                       </div>
                       <h3 className="pa-card__title">{p.title}</h3>
                       <p className="pa-card__excerpt">{p.excerpt}</p>
-                      <a href="#" className="pa-card__more"><span>קרא עוד</span><ArrowIcon /></a>
+                      <span className="pa-card__more"><span>קרא עוד</span><ArrowIcon /></span>
                       <div className="pa-card__meta">
                         <span>{p.author}</span><span className="pa-sep">·</span>
                         <span>{p.date}</span>
                       </div>
                     </div>
-                  </article>
+                  </a>
                 ))}
               </div>
             </div>

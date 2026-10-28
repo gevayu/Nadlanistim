@@ -98,14 +98,14 @@ export default function PostPage() {
           <h2 className="pg-subhead" data-reveal>עוד מבית הידע</h2>
           <div className="pg-grid">
             {RELATED.map((r) => (
-              <article key={r.title} className="pg-imgcard v6-glass" data-reveal>
+              <a key={r.title} href="/post" className="pg-imgcard v6-glass" data-reveal>
                 <figure className="pg-imgcard__img"><img src={`https://images.unsplash.com/photo-${r.img}?w=800&q=80`} alt="" /></figure>
                 <div className="pg-imgcard__body">
                   <div className="pg-imgcard__meta">{r.cat}</div>
                   <h3>{r.title}</h3>
-                  <a href="/post" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>קרא עוד</a>
+                  <span className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>קרא עוד</span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>

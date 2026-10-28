@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import confetti from "canvas-confetti";
 import SponsorStrip from "./SponsorStrip";
 import "./v6.css";
 
@@ -24,7 +25,7 @@ const ChevronLeft = () => (
 
 type MemberCategory = { count: string; title: string; desc: string; avatars: number[] };
 type JobOffer = { tag: string; title: string; company: string; location: string; desc: string; img: string };
-type Project = { img: string; tag: string; title: string; desc: string; period: string; partners: string };
+type Project = { slug: string; img: string; tag: string; title: string; desc: string; period: string; partners: string };
 type EventItem = { day: string; month: string; tag: string; accent?: boolean; title: string; desc: string; place: string; time: string };
 type ArticleItem = { cat: string; title: string; desc: string; author: string; time: string };
 
@@ -107,17 +108,17 @@ const SPONSORS_MAIN: Sponsor[] = [
 ];
 
 const PROJECTS: Project[] = [
-  { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 — היום", partners: "3 שותפים" },
-  { img: "1486406146926-c627a92ad1ab", tag: "קרקע יזמית", title: "מתחם מסחרי, ראש העין", desc: "קבוצת השקעה של 14 חברי קהילה. הון של 28M ש״ח.", period: "2023", partners: "14 שותפים" },
-  { img: "1448630360428-65456885c650", tag: "מגדל יוקרה", title: "מגדל הברזל, רמת גן", desc: "שותפות יזמית בין שני חברים. 32 קומות, מסחר ומגורים.", period: "2022 — 2025", partners: "2 שותפים" },
-  { img: "1582407947304-fd86f028f716", tag: "קומבינציה", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
+  { img: "1545324418-cc1a3fa10c00", tag: "התחדשות עירונית", slug: "pinui-binui-givat-shmuel", title: "פינוי‑בינוי, גבעת שמואל", desc: "שיתוף פעולה בין 3 יזמים שנפגשו בקהילה. 240 יחידות.", period: "2024 — היום", partners: "3 שותפים" },
+  { img: "1486406146926-c627a92ad1ab", tag: "קרקע יזמית", slug: "mercantile-rosh-haayin", title: "מתחם מסחרי, ראש העין", desc: "קבוצת השקעה של 14 חברי קהילה. הון של 28M ש״ח.", period: "2023", partners: "14 שותפים" },
+  { img: "1448630360428-65456885c650", tag: "מגדל יוקרה", slug: "luxury-tower-ramat-gan", title: "מגדל הברזל, רמת גן", desc: "שותפות יזמית בין שני חברים. 32 קומות, מסחר ומגורים.", period: "2022 — 2025", partners: "2 שותפים" },
+  { img: "1582407947304-fd86f028f716", tag: "קומבינציה", slug: "real-estate-debt-fund", title: "קרן חוב נדל״ן", desc: "קרן שהוקמה על ידי 4 חברי קהילה. 120M ש״ח גיוס ראשון.", period: "2024", partners: "4 שותפים" },
 ];
 
-const PODCASTS: { title: string; desc: string; img: string }[] = [
-  { img: "1589903308904-1010c2294adc", title: "ריבית, אינפלציה ונדל״ן – מה שמישהו צריך לומר", desc: "שרון אוחנה ונועם כרמי מנתחים את ההחלטות של בנק ישראל ומה הן אומרות למי שמחזיק נכסים." },
-  { img: "1590602847861-f357a9332bbc", title: "נדל״ן בדובאי: האמת מאחורי הבאז", desc: "שרון אוחנה ואלון בן-דוד מגיעים ישירות מדובאי עם תובנות שלא תשמעו בשום מקום אחר." },
-  { img: "1478737270239-2f02b77fc618", title: "פינוי בינוי: הכסף הגדול שכולם מפספסים", desc: "שרון אוחנה בשיחה עם נועם כרמי על למה רוב היזמים נכנסים לפינוי‑בינוי מאוחר מדי – ואיך עושים את זה נכון." },
-  { img: "1598488035139-bdbb2231ce04", title: "האם שוק הנדל״ן בישראל עומד לפני תיקון?", desc: "שרון אוחנה ואלון בן-דוד דנים בסיכונים ובהזדמנויות שמביאה עמה תקופת חוסר הוודאות." },
+const PODCASTS: { slug: string; title: string; desc: string; img: string }[] = [
+  { img: "1589903308904-1010c2294adc", slug: "interest-inflation-real-estate", title: "ריבית, אינפלציה ונדל״ן – מה שמישהו צריך לומר", desc: "שרון אוחנה ונועם כרמי מנתחים את ההחלטות של בנק ישראל ומה הן אומרות למי שמחזיק נכסים." },
+  { img: "1590602847861-f357a9332bbc", slug: "dubai-real-estate", title: "נדל״ן בדובאי: האמת מאחורי הבאז", desc: "שרון אוחנה ואלון בן-דוד מגיעים ישירות מדובאי עם תובנות שלא תשמעו בשום מקום אחר." },
+  { img: "1478737270239-2f02b77fc618", slug: "pinui-binui-money", title: "פינוי בינוי: הכסף הגדול שכולם מפספסים", desc: "שרון אוחנה בשיחה עם נועם כרמי על למה רוב היזמים נכנסים לפינוי‑בינוי מאוחר מדי – ואיך עושים את זה נכון." },
+  { img: "1598488035139-bdbb2231ce04", slug: "market-correction", title: "האם שוק הנדל״ן בישראל עומד לפני תיקון?", desc: "שרון אוחנה ואלון בן-דוד דנים בסיכונים ובהזדמנויות שמביאה עמה תקופת חוסר הוודאות." },
 ];
 
 const SECONDARY_ARTICLES: ArticleItem[] = [
@@ -890,7 +891,7 @@ export default function HomePageV6() {
           </header>
           <div className="v6-events__list">
             {EVENTS.slice(0, 3).map((e) => (
-              <article key={e.title} className="v6-event v6-glass" data-reveal>
+              <a key={e.title} href="/event" className="v6-event v6-glass" data-reveal>
                 <div className="v6-event__date">
                   <span className="v6-event__day">{e.day}</span>
                   <span className="v6-event__month">{e.month}</span>
@@ -903,11 +904,11 @@ export default function HomePageV6() {
                     <span>{e.place}</span><span>·</span><span>{e.time}</span>
                   </div>
                 </div>
-                <a href="#" className="v6-event__cta">
+                <span className="v6-event__cta">
                   <span>הירשמו</span>
                   <ArrowIcon />
-                </a>
-              </article>
+                </span>
+              </a>
             ))}
           </div>
         </div>
@@ -983,7 +984,7 @@ export default function HomePageV6() {
           </header>
           <div className="v6-projects__grid">
             {PROJECTS.map((p) => (
-              <article key={p.title} className="v6-project v6-glass" data-reveal>
+              <a key={p.title} href={`/collaboration/${p.slug}`} className="v6-project v6-glass" data-reveal>
                 <figure className="v6-project__img">
                   <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
                   <div className="v6-project__tag">{p.tag}</div>
@@ -996,7 +997,7 @@ export default function HomePageV6() {
                     <span>{p.period}</span><span>·</span><span>{p.partners}</span>
                   </div>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -1067,7 +1068,7 @@ export default function HomePageV6() {
             </a>
           </header>
           <div className="v6-articles__grid">
-            <article className="v6-article v6-article--feature v6-glass" data-reveal>
+            <a href="/post" className="v6-article v6-article--feature v6-glass" data-reveal>
               <figure className="v6-article__img">
                 <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=80" alt="" />
               </figure>
@@ -1079,16 +1080,16 @@ export default function HomePageV6() {
                   <span>אלון שמיר</span><span>·</span><span>14 דק׳ קריאה</span><span>·</span><span>מאי 2026</span>
                 </div>
               </div>
-            </article>
+            </a>
             {SECONDARY_ARTICLES.map((a) => (
-              <article key={a.title} className="v6-article v6-glass" data-reveal>
+              <a key={a.title} href="/post" className="v6-article v6-glass" data-reveal>
                 <div className="v6-article__cat">{a.cat}</div>
                 <h3>{a.title}</h3>
                 <p className="v6-article__excerpt">{a.desc}</p>
                 <div className="v6-article__meta">
                   <span>{a.author}</span><span>·</span><span>{a.time}</span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -1110,19 +1111,19 @@ export default function HomePageV6() {
           </header>
           <div className="v6-podcasts__grid">
             {PODCASTS.map((p) => (
-              <article key={p.title} className="v6-podcast v6-glass" data-reveal>
+              <a key={p.title} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
                 <figure className="v6-podcast__img">
                   <img src={`https://images.unsplash.com/photo-${p.img}?w=900&q=80`} alt="" />
                 </figure>
                 <div className="v6-podcast__body">
                   <h3>{p.title}</h3>
                   <p>{p.desc}</p>
-                  <a href="#" className="v6-link-arrow v6-podcast__cta">
+                  <span className="v6-link-arrow v6-podcast__cta">
                     <span>לשמיעה</span>
                     <ArrowIcon />
-                  </a>
+                  </span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -1143,7 +1144,7 @@ export default function HomePageV6() {
           </header>
           <div className="v6-events__list">
             {PAST_EVENTS.map((e) => (
-              <article key={e.title} className="v6-event v6-event--nodate v6-glass" data-reveal>
+              <a key={e.title} href="/event-recap" className="v6-event v6-event--nodate v6-glass" data-reveal>
                 <div className="v6-event__body">
                   <span className="v6-event__tag">{e.tag}</span>
                   <h3>{e.title}</h3>
@@ -1152,11 +1153,11 @@ export default function HomePageV6() {
                     <span>{e.place}</span><span>·</span><span>{e.time}</span>
                   </div>
                 </div>
-                <a href="#" className="v6-event__cta">
+                <span className="v6-event__cta">
                   <span>לתמונות</span>
                   <ArrowIcon />
-                </a>
-              </article>
+                </span>
+              </a>
             ))}
           </div>
         </div>
@@ -1210,11 +1211,19 @@ export default function HomePageV6() {
           </div>
 
           <form
-            className={`v6-contact__form v6-glass${sent ? " sent" : ""}`}
+            className="v6-contact__form v6-glass"
+            data-sent={sent || undefined}
             data-reveal
             onSubmit={(e) => {
               e.preventDefault();
               setSent(true);
+              confetti({
+                particleCount: 160,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ["#8B5CF6", "#22D3EE", "#F472B6", "#ffffff"],
+                disableForReducedMotion: true,
+              });
             }}
           >
             <h3>הרשמה לקהילה</h3>

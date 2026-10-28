@@ -35,13 +35,13 @@ export default function NadlanistimPage() {
 
           <div className="pg-grid">
             {NADLANISTIM.map((p) => (
-              <article key={p.slug} className="pg-person v6-glass" data-reveal>
+              <a key={p.slug} href={`/nadlanist/${p.slug}`} className="pg-person v6-glass" data-reveal>
                 <div className="pg-person__av"><img src={`https://i.pravatar.cc/200?img=${p.img}`} alt={p.name} /></div>
                 <div className="pg-person__name">{p.name}</div>
                 <div className="pg-person__role">{p.role}</div>
                 <p className="pg-person__q">״{p.quote}״</p>
-                <a href={`/nadlanist/${p.slug}`} className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>קרא עוד</a>
-              </article>
+                <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>קרא עוד</span>
+              </a>
             ))}
           </div>
 
