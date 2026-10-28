@@ -6,10 +6,10 @@ export type Community = {
   name: string;
   tagline: string;
   members: string;
-  cover: string;
+  cover: string; // Unsplash photo id (local entries) or a full image URL (WordPress)
   about: string[];
   happenings: Happening[];
-  gallery: string[];
+  gallery: string[]; // same as cover
   logo?: string; // defaults to the shared community badge
   whatsapp?: string; // the community's WhatsApp group invite link
 };
@@ -22,13 +22,17 @@ export const WHATSAPP_PLACEHOLDER = "https://chat.whatsapp.com/";
 export const communityLogo = (c: Community) => c.logo ?? DEFAULT_LOGO;
 export const communityWhatsapp = (c: Community) => c.whatsapp ?? WHATSAPP_PLACEHOLDER;
 
-const BASE_HAPPENINGS = (name: string): Happening[] => [
+export const imageSrc = (src: string, w = 900) =>
+  src.startsWith("http") ? src : `https://images.unsplash.com/photo-${src}?w=${w}&q=80&auto=format&fit=crop`;
+
+export const BASE_HAPPENINGS = (name: string): Happening[] => [
   { ic: "calendar", t: "מפגש חודשי", d: `מפגש פיזי אחת לחודש של קהילת ${name} - הרצאה, דיון ונטוורקינג.` },
   { ic: "chat", t: "קבוצת וואטסאפ פעילה", d: "שאלות, תשובות והזדמנויות שקורות בזמן אמת, כל יום." },
   { ic: "expert", t: "מומחים אורחים", d: "מפגשי עומק עם המובילים בתחום, רק לחברי הקהילה." },
   { ic: "deal", t: "שיתוף עסקאות", d: "חברי הקהילה חולקים עסקאות, שותפויות והזדמנויות ראשונים." },
 ];
 
+// Fallback when the backend is unreachable; the live list comes from WordPress (communities/wp.ts).
 export const COMMUNITIES: Community[] = [
   {
     slug: "young-entrepreneurs",

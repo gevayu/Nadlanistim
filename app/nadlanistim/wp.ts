@@ -1,5 +1,5 @@
 // Nadlanistim directory from WordPress (nad_nadlanist + its "פרטי נדלניסט/ית" ACF group).
-import { wpLines, wpQuery } from "../../lib/wp";
+import { byPublished, wpLines, wpQuery } from "../../lib/wp";
 import { NADLANISTIM, type Nadlanist } from "./data";
 
 type WpNadlanist = {
@@ -43,15 +43,12 @@ const toNadlanist = ({ slug, title, featuredImage, nadlanistFields: f }: WpNadla
   // Upgrade: add them to group_nad_nadlanist in the importer plugin and map them here.
 });
 
-// Oldest member first; posts seeded in one batch share a date, so the post ID breaks the tie.
-const byJoined = (a: WpNadlanist, b: WpNadlanist) => a.date.localeCompare(b.date) || a.databaseId - b.databaseId;
-
-/** The directory (youth team excluded). Falls back to the local copy if the backend is down. */
+/** The directory (youth team excluded), oldest member first. Falls back to the local copy if the backend is down. */
 export async function getNadlanistim(): Promise<Nadlanist[]> {
   const data = await wpQuery<{ nadlanists: { nodes: WpNadlanist[] } }>(QUERY);
   if (!data) return NADLANISTIM;
   return data.nadlanists.nodes
     .filter((n) => !n.cohorts.nodes.some((c) => c.name === YOUTH_COHORT))
-    .sort(byJoined)
+    .sort(byPublished)
     .map(toNadlanist);
 }

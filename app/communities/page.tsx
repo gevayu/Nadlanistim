@@ -1,8 +1,7 @@
-"use client";
-
 import SiteShell from "../v6/SiteShell";
 import "./communities.css";
-import { COMMUNITY_LIST, communityLogo } from "./data";
+import { communityLogo } from "./data";
+import { getCommunities } from "./wp";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -10,7 +9,8 @@ const ArrowIcon = () => (
   </svg>
 );
 
-export default function CommunitiesPage() {
+export default async function CommunitiesPage() {
+  const communities = await getCommunities();
   return (
     <SiteShell>
       <section className="v6-section">
@@ -21,7 +21,7 @@ export default function CommunitiesPage() {
           </div>
 
           <div className="cm-grid">
-            {COMMUNITY_LIST.map((c) => (
+            {communities.map((c) => (
               <a key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
                 <div className="cm-card__logo"><img src={communityLogo(c)} alt="" /></div>
                 <h3>{c.name}</h3>
