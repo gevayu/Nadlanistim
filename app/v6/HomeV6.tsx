@@ -5,6 +5,7 @@ import { celebrate } from "./confetti";
 import SponsorStrip from "./SponsorStrip";
 import { communityLogo, type Community } from "../communities/data";
 import type { Job } from "../jobs/data";
+import type { Nadlanist } from "../nadlanistim/data";
 import { eventHref, featuredEvent, isVolunteer, splitTitle, type EventItem } from "../events/data";
 import type { Deal, Sponsor } from "./wp";
 import type { Article } from "../post-archive/data";
@@ -29,7 +30,7 @@ const ChevronLeft = () => (
   </svg>
 );
 
-type MemberCategory = { count: string; title: string; desc: string; avatars: number[] };
+export type MemberCategory = { title: string; count: number; avatars: string[] };
 type JobOffer = { tag: string; title: string; company: string; location: string; desc: string; img: string; href?: string };
 
 const NAV_LINKS: [string, string][] = [
@@ -59,26 +60,7 @@ const ABOUT_BULLETS: [string, string][] = [
   ["04", "הזדמנויות עסקיות שמתחילות בקהילה"],
 ];
 
-const MEMBERS: MemberCategory[] = [
-  { count: "412", title: "יזמים", desc: "יזמי נדל״ן פרטיים ויזמים בחברות, מקבוצות רכישה ועד מגדלים.", avatars: [12, 22, 33] },
-  { count: "386", title: "משקיעים", desc: "משקיעים פרטיים, משפחתיים ומוסדיים - בארץ ובחו״ל.", avatars: [15, 44, 55] },
-  { count: "118", title: "שמאי מקרקעין", desc: "שמאים מובילים בענף, שמלווים עסקאות, פרויקטים ובדיקות נאותות.", avatars: [8, 18, 28] },
-  { count: "294", title: "עורכי דין", desc: "משרדי עו״ד בנדל״ן, ליווי עסקאות, התחדשות עירונית ומיסוי.", avatars: [5, 25, 45] },
-  { count: "208", title: "קבלנים ומבצעים", desc: "חברות ביצוע, קבלני שלד וגמר, ספקי תשתיות ושירותי בנייה.", avatars: [14, 34, 54] },
-  { count: "142", title: "אדריכלים ומתכננים", desc: "משרדי תכנון ובינוי ערים, אדריכלי פנים ועיצוב מבנים.", avatars: [2, 32, 52] },
-  { count: "94", title: "חברות מימון", desc: "בנקאים, יועצי משכנתאות, קרנות חוב והון פרטי.", avatars: [17, 37, 57] },
-  { count: "76", title: "פרופטק", desc: "סטארטאפים וחברות טכנולוגיה שמשנות את ענף הנדל״ן.", avatars: [11, 31, 51] },
-  { count: "163", title: "שיווק ופרסום נדל״ן", desc: "אנשי שיווק, מיתוג, דיגיטל ופרסום מהמובילים בענף.", avatars: [9, 29, 49] },
-];
 
-type Nadlanist = { img: string; quote: string; name: string; role: string };
-
-const NADLANISTIM: Nadlanist[] = [
-  { img: "1560250097-0b93528c311a", name: "איתי לבנון", role: "יזם, לבנון נדל״ן", quote: "״הכרתי את השותף שלי לפרויקט של 40 יחידות דיור בערב סוף שנה של הנדלניסטים. שש שעות של שיחות הפכו לשותפות של שלוש שנים.״" },
-  { img: "1573496359142-b8d87734a5a2", name: "אלון שמיר", role: "סמנכ״ל פיתוח עסקי, שיכון ובינוי", quote: "״הקהילה היא המקום הראשון שאני בודק כשמחפשים שותף לעסקה. שלוש מהעסקאות הגדולות שלי התחילו בשיחת מסדרון בכנס.״" },
-  { img: "1580489944761-15a19d654956", name: "ד״ר ענת רוזנברג", role: "שמאית מקרקעין, רוזנברג שמאות", quote: "״בתור שמאית, הנטוורקינג כאן שינה לי את העסק. אני מלווה היום פרויקטים שלא הייתי מגיעה אליהם בלי הקהילה.״" },
-  { img: "1507003211169-0a1dd7228f2d", name: "יואב פרידמן", role: "מנכ״ל, פרידמן השקעות נדל״ן", quote: "״גייסנו 120 מיליון ש״ח לקרן הראשונה שלנו כמעט כולם מתוך הקהילה. אנשים שסומכים עליך כי הם מכירים אותך באמת.״" },
-];
 
 
 // Homepage career card from a WordPress listing: first paragraph only, linking to the listing.
@@ -379,10 +361,9 @@ function MembersCarousel({ items }: { items: MemberCategory[] }) {
             <article key={`${m.title}-${i}`} className="v6-member v6-glass">
               <div className="v6-member__count">{m.count}</div>
               <h3>{m.title}</h3>
-              <p>{m.desc}</p>
               <div className="v6-member__avatars" aria-hidden>
                 {m.avatars.map((a) => (
-                  <span key={a} style={{ backgroundImage: `url(https://i.pravatar.cc/80?img=${a})` }} />
+                  <span key={a} style={{ backgroundImage: `url(${a})` }} />
                 ))}
               </div>
             </article>
@@ -423,12 +404,12 @@ function NadlanistCarousel({ people }: { people: Nadlanist[] }) {
       onMouseLeave={() => { pausedRef.current = false; }}
     >
       <figure className="v6-story__img v6-meet__img">
-        <img key={`meet-img-${i}`} src={`https://images.unsplash.com/photo-${p.img}?w=1000&q=80`} alt={p.name} />
+        {p.photo && <img key={`meet-img-${i}`} src={p.photo} alt={p.name} />}
       </figure>
       <div className="v6-story__body">
         <span className="v6-meet__eyebrow"><span className="v6-dot" />הכר את הנדלניסט</span>
         <div className="v6-meet__slide" key={`meet-${i}`}>
-          <blockquote>{p.quote}</blockquote>
+          <blockquote>״{p.quote}״</blockquote>
           <div className="v6-story__by">
             <div>
               <div className="v6-story__name">{p.name}</div>
@@ -437,7 +418,7 @@ function NadlanistCarousel({ people }: { people: Nadlanist[] }) {
           </div>
         </div>
         <div className="v6-cardfoot">
-          <a href="#" className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
+          <a href={`/nadlanist/${p.slug}`} className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
           <div className="v6-cardnav">
             <button type="button" className="v6-cardarrow" aria-label="הנדלניסט הקודם" onClick={() => setI((prev) => (prev - 1 + people.length) % people.length)}>
               <ChevronRight />
@@ -628,13 +609,16 @@ type HomeProps = {
   communities: Community[];
   jobs: Job[];
   events: EventItem[];
+  people: Nadlanist[]; // the nadlanistim directory
+  categories: MemberCategory[]; // "חברי הקהילה", largest field first
   articles: Article[]; // newest first
   episodes: Episode[]; // most recent episode first
   home: { deals: Deal[]; sponsors: Sponsor[] };
 };
 
-export default function HomePageV6({ communities, jobs, events, articles, episodes, home }: HomeProps) {
+export default function HomePageV6({ communities, jobs, events, people, categories, articles, episodes, home }: HomeProps) {
   const jobOffers = jobs.slice(0, 4).map(toJobOffer);
+  const quoted = people.filter((n) => n.quote);
   const { deals, sponsors } = home;
   const byDate = (a: EventItem, b: EventItem) => a.date.localeCompare(b.date);
   const upcoming = events.filter((e) => !e.past && !isVolunteer(e)).sort(byDate).slice(0, 3);
@@ -856,18 +840,20 @@ export default function HomePageV6({ communities, jobs, events, articles, episod
           <header className="v6-section-head" data-reveal>
             <span className="v6-eyebrow"><span className="v6-dot" />חברי הקהילה</span>
             <h2>הערך הוא <em>האנשים</em>.</h2>
-            <p className="v6-section-head__sub">עשרה עולמות מקצועיים. אלפי אנשי מקצוע. גג אחד.</p>
+            <p className="v6-section-head__sub">{categories.length} עולמות מקצועיים. {categories.reduce((n, c) => n + c.count, 0)} אנשי מקצוע. גג אחד.</p>
           </header>
-          <MembersCarousel items={MEMBERS} />
+          <MembersCarousel items={categories} />
         </div>
       </section>
 
-      {/* Meet the Nadlanist */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <NadlanistCarousel people={NADLANISTIM} />
-        </div>
-      </section>
+      {/* Meet the Nadlanist: quotes from the directory ("הכר את הנדלניסט") */}
+      {quoted.length > 0 && (
+        <section className="v6-section">
+          <div className="v6-container">
+            <NadlanistCarousel people={quoted} />
+          </div>
+        </section>
+      )}
 
       {/* Events (duplicate, above Stories) */}
       <section className="v6-section">
@@ -924,16 +910,6 @@ export default function HomePageV6({ communities, jobs, events, articles, episod
               {featuredMain}{featuredAccent && <><br /><em>{featuredAccent}</em></>}
             </h2>
             <p className="v6-featured__desc" data-reveal>{featured?.desc}</p>
-            <div className="v6-featured__speakers" data-reveal>
-              <div className="v6-featured__speakers-imgs">
-                {[12, 22, 32, 42, 52].map((n) => (
-                  <span key={n} style={{ backgroundImage: `url(https://i.pravatar.cc/120?img=${n})` }} />
-                ))}
-              </div>
-              <div className="v6-featured__speakers-text">
-                <strong>+42 מרצים</strong><br />מהמובילים בענף הנדל״ן הישראלי
-              </div>
-            </div>
             <div className="v6-featured__cta" data-reveal>
               <a href={featured?.cta || (featured ? eventHref(featured) : "/events")} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>הירשמו לכנס</span>
