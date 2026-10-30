@@ -12,6 +12,7 @@ export type Nadlanist = {
   linkedin?: string;
   instagram?: string;
   openToWork?: boolean; // green #OPENTOWORK ring around the avatar
+  communities?: string[]; // slugs of the communities the member ticked in /my-account
 };
 
 // Choices for the member form (/my-account, /nadlanist-new) and the directory filters.

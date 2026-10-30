@@ -143,6 +143,13 @@
 .ma-otw b { display: block; font-size: 15px; font-weight: 600; color: var(--ink); }
 .ma-otw small { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); }
 .ma-error { color: var(--pink); }
+.ma-comms { border: 0; padding: 0; margin: 0; min-width: 0; }
+.ma-comms legend { padding: 0; margin-bottom: 8px; font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.ma-comms__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+/* .ma-comms prefix: outranks the generic `.v6-field label` block style. */
+.ma-comms .ma-comm { display: flex; margin: 0; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r); background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; font-size: 14.5px; color: var(--ink-2); transition: border-color .3s var(--t), background .3s var(--t); }
+.ma-comms .ma-comm:has(input:checked) { border-color: rgba(34,211,238,.5); background: rgba(34,211,238,.08); color: var(--ink); }
+.ma-comms .ma-comm input { width: 17px; height: 17px; accent-color: var(--cyan); flex-shrink: 0; margin: 0; }
 @media (max-width: 640px) { .ma-photo { flex-direction: column; align-items: stretch; } .ma-photo__av { align-self: center; } }
 .pg-person__av img { width: 100%; height: 100%; object-fit: cover; }
 .pg-person__name { font-size: 18px; font-weight: 600; color: var(--ink); }

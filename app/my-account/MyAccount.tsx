@@ -37,7 +37,7 @@ function toSquareJpeg(file: File): Promise<string> {
 // Keeps a stored value selectable even if it isn't in the standard list (e.g. "הרצליה").
 const withCurrent = (list: string[], value: string) => (value && !list.includes(value) ? [value, ...list] : list);
 
-export default function MyAccount({ people }: { people: Nadlanist[] }) {
+export default function MyAccount({ people, communities }: { people: Nadlanist[]; communities: { slug: string; name: string }[] }) {
   const me = useNadlanistim(people).find((n) => n.slug === CURRENT_MEMBER)!;
   const [form, setForm] = useState<Nadlanist>(me);
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
@@ -49,6 +49,10 @@ export default function MyAccount({ people }: { people: Nadlanist[] }) {
     setForm((f) => ({ ...f, [key]: value }));
     setStatus("idle");
   };
+
+  const mine = form.communities ?? [];
+  const toggleCommunity = (slug: string, on: boolean) =>
+    set("communities", on ? [...mine, slug] : mine.filter((s) => s !== slug));
 
   // bio[0] is the intro next to the photo; the rest is "קצת עליי", one paragraph per blank-line block.
   const about = form.bio.slice(1).join("\n\n");
@@ -127,6 +131,20 @@ export default function MyAccount({ people }: { people: Nadlanist[] }) {
                   </select>
                 </div>
               </div>
+
+              {communities.length > 0 && (
+                <fieldset className="v6-field ma-comms">
+                  <legend>הקהילות שלי</legend>
+                  <div className="ma-comms__list">
+                    {communities.map((c) => (
+                      <label key={c.slug} className="ma-comm">
+                        <input type="checkbox" checked={mine.includes(c.slug)} onChange={(e) => toggleCommunity(c.slug, e.target.checked)} />
+                        <span>{c.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
 
               <div className="v6-field">
                 <label htmlFor="ma-quote">ציטוט אישי (מוצג בכרטיס)</label>
