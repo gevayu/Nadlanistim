@@ -1,6 +1,6 @@
 // Events from WordPress (nad_event + its eventFields ACF group).
 import { wpLines, wpQuery } from "../../lib/wp";
-import { featuredEvent, pickEvent, type EventItem, type FeatureIcon } from "./data";
+import { featuredEvent, pickEvent, type EventItem, type FaqItem, type FeatureIcon } from "./data";
 
 // "YYYY-MM-DD" in Israel, comparable with the ACF event date.
 const israelToday = () => new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Jerusalem" });
@@ -74,6 +74,17 @@ const EMOJI_ICON: Record<string, FeatureIcon> = { "✨": "sparkles", "🎯": "ta
 
 /** "a | b | c" lines -> [["a", "b", "c"], ...] */
 const cols = (s: string | null | undefined) => wpLines(s).map((l) => l.split("|").map((p) => p.trim()));
+/**
+ * FAQ lines are "question | answer" or "question? answer": everything after the first "|", else after the
+ * first question mark, is the answer. A line with nothing after it is a question without an answer.
+ */
+const faq = (s: string | null | undefined): FaqItem[] =>
+  wpLines(s).map((line) => {
+    const bar = line.indexOf("|");
+    if (bar >= 0) return { q: line.slice(0, bar).trim(), a: line.slice(bar + 1).trim() };
+    const mark = line.indexOf("?");
+    return mark >= 0 ? { q: line.slice(0, mark + 1).trim(), a: line.slice(mark + 1).trim() } : { q: line, a: "" };
+  });
 const urls = (g: Gallery) => g?.nodes.map((n) => n.sourceUrl) ?? [];
 // Editors type "#" as a placeholder link; that is no link at all.
 const link = (u: string | null | undefined) => (u && u !== "#" ? u : "");
@@ -109,7 +120,7 @@ const toEvent = ({ slug, title, featuredImage, eventTypes, eventFields: f }: WpE
         }
       : null,
     testimonials: cols(f?.testimonials).map(([q = "", by = ""]) => ({ q, by })),
-    faq: wpLines(f?.faq),
+    faq: faq(f?.faq),
     dressCode: f?.dressCode ?? "",
     entry: f?.entry ?? "",
     vibe: wpLines(f?.vibe),
@@ -118,7 +129,7 @@ const toEvent = ({ slug, title, featuredImage, eventTypes, eventFields: f }: WpE
     lineup: cols(f?.lineup).map(([name = "", role = ""], i) => ({ name, role, img: lineupPhotos[i] ?? "" })),
     partyGallery: urls(f?.partyGallery ?? null),
     partyQuotes: cols(f?.partyQuotes).map(([q = "", by = ""]) => ({ q, by })),
-    partyFaq: wpLines(f?.partyFaq),
+    partyFaq: faq(f?.partyFaq),
     recapGallery: urls(f?.recapGallery ?? null),
     takeaways: cols(f?.takeaways).map(([t = "", d = ""]) => ({ t, d })),
     video: link(f?.videoUrl),

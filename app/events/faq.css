@@ -1,0 +1,10 @@
+/* Event FAQ accordion (Faq.tsx), on /event and /event-party: the row is the <summary>, the answer opens under it. */
+/* details.ev-acc outweighs the pages' .ev-faq__item / .ep-faq__item row (display:flex), whichever file loads last. */
+details.ev-acc { display: block; padding: 0; }
+.ev-acc summary { display: flex; gap: 10px; align-items: center; padding: 18px 20px; cursor: pointer; list-style: none; border-radius: var(--r); }
+.ev-acc summary::-webkit-details-marker { display: none; }
+.ev-acc summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.ev-acc__q { flex: 1; }
+.ev-acc__chev { width: 18px; height: 18px; flex-shrink: 0; color: var(--muted); transition: transform .25s var(--t); }
+.ev-acc[open] .ev-acc__chev { transform: rotate(180deg); color: var(--cyan); }
+.ev-acc__a { margin: 0; padding: 0 20px 18px 20px; padding-inline-start: 45px; color: var(--ink-2); font-size: 15px; line-height: 1.65; }

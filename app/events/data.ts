@@ -1,6 +1,9 @@
 export type FeatureIcon = "sparkles" | "target" | "deal" | "gift" | "food";
 export type Quote = { q: string; by: string };
 
+/** One FAQ line: the question, and the answer when WordPress has one ("" = question only). */
+export type FaqItem = { q: string; a: string };
+
 export type EventItem = {
   slug: string;
   title: string;
@@ -20,7 +23,7 @@ export type EventItem = {
   features: { ic: FeatureIcon; t: string; d: string }[];
   speaker: { name: string; role: string; photo: string; bio: string; quote: string; link: string } | null;
   testimonials: Quote[];
-  faq: string[];
+  faq: FaqItem[];
   // /event-party
   dressCode: string;
   entry: string;
@@ -29,7 +32,7 @@ export type EventItem = {
   lineup: { name: string; role: string; img: string }[];
   partyGallery: string[];
   partyQuotes: Quote[];
-  partyFaq: string[];
+  partyFaq: FaqItem[];
   // /event-recap
   recapGallery: string[];
   takeaways: { t: string; d: string }[];

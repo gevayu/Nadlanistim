@@ -4,6 +4,7 @@ import { CalendarDays, MapPin, Shirt, Ticket } from "lucide-react";
 import SiteShell from "../v6/SiteShell";
 import { heDate } from "../events/data";
 import { getEvent } from "../events/wp";
+import Faq from "../events/Faq";
 import "./event-party.css";
 import { eventMetadata } from "../events/meta";
 
@@ -151,11 +152,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
         <section className="v6-section">
           <div className="v6-container">
             <h2 className="ep-section-title" data-reveal>שאלות לפני שיוצאים</h2>
-            <div className="ep-faq">
-              {ev.partyFaq.map((q) => (
-                <div key={q} className="ep-faq__item v6-glass" data-reveal><span className="ep-faq__q">?</span>{q}</div>
-              ))}
-            </div>
+            <Faq items={ev.partyFaq} kind="ep" />
           </div>
         </section>
       )}

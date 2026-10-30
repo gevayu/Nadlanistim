@@ -3,6 +3,7 @@ import { CalendarDays, Gift, Handshake, MapPin, Sparkles, Target, Users, Utensil
 import SiteShell from "../v6/SiteShell";
 import { heDate, splitTitle } from "../events/data";
 import { getEvent } from "../events/wp";
+import Faq from "../events/Faq";
 import "./event.css";
 import { eventMetadata } from "../events/meta";
 
@@ -143,11 +144,7 @@ export default async function EventPage({ searchParams }: { searchParams: Promis
         <section className="v6-section">
           <div className="v6-container">
             <h2 className="ev-section-title" data-reveal>שאלות נפוצות</h2>
-            <div className="ev-faq">
-              {ev.faq.map((q) => (
-                <div key={q} className="ev-faq__item v6-glass" data-reveal><span className="ev-faq__q">?</span>{q}</div>
-              ))}
-            </div>
+            <Faq items={ev.faq} kind="ev" />
           </div>
         </section>
       )}
