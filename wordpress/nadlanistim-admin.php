@@ -1209,13 +1209,15 @@ add_filter(
 	}
 );
 
+// login_head, late: WordPress prints its own login and RTL stylesheets on login_head, and this has to come after them.
 add_action(
-	'login_enqueue_scripts',
+	'login_head',
 	function () {
 		$front = function_exists( 'nadlanistim_auth_front' ) ? nadlanistim_auth_front() : '';
 		$logo  = $front ? '#login h1 a{background-image:url(' . esc_url( $front . '/v6-assets/logo.png' ) . ');}' : '';
 		echo '<style id="nad-login-ui">' . nad_admin_font_faces() . $logo . nad_login_css() . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput -- static CSS plus escaped values.
-	}
+	},
+	99
 );
 
 function nad_login_css() {
