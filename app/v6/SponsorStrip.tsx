@@ -28,7 +28,15 @@ export default function SponsorStrip({ slot = "top" }: { slot?: SponsorSlotName 
   }, [slot]);
 
   if (!sponsor) return null;
-  const body = (
+  const body = sponsor.banner ? (
+    <>
+      <span className="sp-strip__label">בחסות</span>
+      <picture className="sp-strip__banner">
+        <source media="(max-width: 760px)" srcSet={sponsor.banner.mobile} />
+        <img src={sponsor.banner.desktop} alt={sponsor.name} />
+      </picture>
+    </>
+  ) : (
     <>
       <span className="sp-strip__label">בחסות</span>
       {sponsor.logo ? <img src={sponsor.logo} alt={sponsor.name} className="sp-strip__logo" /> : <b className="sp-strip__name">{sponsor.name}</b>}
@@ -39,9 +47,9 @@ export default function SponsorStrip({ slot = "top" }: { slot?: SponsorSlotName 
     <section className="v6-section">
       <div className="v6-container">
         {sponsor.url ? (
-          <a href={sponsor.url} target="_blank" rel="noopener noreferrer sponsored" className="v6-sponsorstrip v6-glass sp-strip">{body}</a>
+          <a href={sponsor.url} target="_blank" rel="noopener noreferrer sponsored" className={`v6-sponsorstrip v6-glass sp-strip${sponsor.banner ? " sp-strip--banner" : ""}`}>{body}</a>
         ) : (
-          <div className="v6-sponsorstrip v6-glass sp-strip">{body}</div>
+          <div className={`v6-sponsorstrip v6-glass sp-strip${sponsor.banner ? " sp-strip--banner" : ""}`}>{body}</div>
         )}
       </div>
     </section>

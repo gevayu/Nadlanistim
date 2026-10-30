@@ -9,5 +9,11 @@ a.sp-strip:hover { background: var(--glass-bg-strong); border-color: var(--glass
 a.sp-strip:hover .sp-strip__logo { opacity: 1; }
 .sp-strip__name { font-size: clamp(20px, 2.2vw, 28px); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
 .sp-strip__text { max-width: 560px; font-size: clamp(14px, 1.3vw, 16px); color: var(--ink-2); line-height: 1.5; }
+/* Banner mode: the frame keeps the sizes the admin asks for (1920×320 desktop, 1080×540 mobile), so an image
+   of other proportions is cropped to fit instead of stretching the strip. */
+.sp-strip--banner { padding: 12px 12px 14px; gap: 10px; }
+.sp-strip__banner { display: block; width: 100%; }
+.v6-root .sp-strip__banner img { display: block; width: 100%; height: auto; aspect-ratio: 6 / 1; object-fit: cover; border-radius: calc(var(--r-lg, 24px) - 10px); }
+@media (max-width: 760px) { .v6-root .sp-strip__banner img { aspect-ratio: 2 / 1; } }
 @keyframes sp-strip-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .sp-strip { animation: none; } }
