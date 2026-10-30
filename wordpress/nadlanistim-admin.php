@@ -12,7 +12,7 @@
  *
  * Optional assets, used when present:
  *   wp-content/languages/he_IL.mo                         the admin loads in Hebrew for users who have the new UI
- *   wp-content/uploads/nadlanistim-admin/heebo-*.woff2    Heebo, self-hosted (hebrew + latin subsets)
+ *   wp-content/uploads/nadlanistim-admin/GoogleSans-*.woff2   Google Sans, self-hosted (the site's own files; Hebrew included)
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -1014,11 +1014,11 @@ function nad_admin_styles() {
 	$font_dir = WP_CONTENT_DIR . '/uploads/nadlanistim-admin/';
 	$font_url = content_url( 'uploads/nadlanistim-admin/' );
 	$faces    = '';
-	if ( file_exists( $font_dir . 'heebo-hebrew.woff2' ) ) {
-		$faces .= '@font-face{font-family:"Heebo";font-style:normal;font-weight:400 700;font-display:swap;src:url(' . esc_url( $font_url . 'heebo-hebrew.woff2' ) . ') format("woff2");unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;}';
-	}
-	if ( file_exists( $font_dir . 'heebo-latin.woff2' ) ) {
-		$faces .= '@font-face{font-family:"Heebo";font-style:normal;font-weight:400 700;font-display:swap;src:url(' . esc_url( $font_url . 'heebo-latin.woff2' ) . ') format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}';
+	// The site's font, in the weights the admin uses. The files carry Hebrew too, so nothing falls back.
+	foreach ( array( 400 => 'Regular', 500 => 'Medium', 600 => 'SemiBold', 700 => 'Bold' ) as $weight => $name ) {
+		if ( file_exists( $font_dir . 'GoogleSans-' . $name . '.woff2' ) ) {
+			$faces .= '@font-face{font-family:"Google Sans";font-style:normal;font-weight:' . $weight . ';font-display:swap;src:url(' . esc_url( $font_url . 'GoogleSans-' . $name . '.woff2' ) . ') format("woff2");}';
+		}
 	}
 	$heads = '';
 	if ( ! empty( $GLOBALS['nad_admin_menu_heads'] ) ) {
@@ -1032,14 +1032,15 @@ function nad_admin_styles() {
 function nad_admin_css() {
 	return <<<'CSS'
 body.nad-ui{
-	--nad-font:"Heebo",-apple-system,"Segoe UI",Arial,sans-serif;
+	--nad-font:"Google Sans",-apple-system,"Segoe UI",Arial,sans-serif;
 	--nad-ink:#14162B;--nad-ink-2:#565B73;--nad-line:#E3E5EE;--nad-bg:#F5F6FA;--nad-panel:#FFFFFF;
 	--nad-primary:#5B3FD6;--nad-primary-hover:#4C32BD;--nad-primary-soft:#EEEAFD;
 	--nad-nav:#0C0E1A;--nad-nav-2:#14172A;--nad-nav-ink:#C4CADC;--nad-nav-muted:#8A91AC;--nad-nav-current:#6D28D9;--nad-cyan:#22D3EE;
 	--wp-admin-theme-color:#5B3FD6;--wp-admin-theme-color--rgb:91,63,214;--wp-admin-theme-color-darker-10:#4C32BD;--wp-admin-theme-color-darker-10--rgb:76,50,189;--wp-admin-theme-color-darker-20:#3F2A9E;--wp-admin-theme-color-darker-20--rgb:63,42,158;
 	background:var(--nad-bg);color:var(--nad-ink);
 }
-body.nad-ui,body.nad-ui #wpadminbar .ab-item,body.nad-ui #wpadminbar .ab-label,body.nad-ui #adminmenu,body.nad-ui input,body.nad-ui select,body.nad-ui textarea,body.nad-ui button,body.nad-ui .wp-core-ui .button,body.nad-ui h1,body.nad-ui h2,body.nad-ui h3,body.nad-ui .acf-field,body.nad-ui .acf-label label{font-family:var(--nad-font);}
+/* One font everywhere; icon fonts and code keep their own. */
+body.nad-ui,body.nad-ui *:not(.dashicons):not([class*="dashicons"]):not(.ab-icon):not([class*="mce-ico"]):not(code):not(pre):not(kbd){font-family:var(--nad-font);}
 body.nad-ui #wpcontent,body.nad-ui #wpfooter{background:var(--nad-bg);}
 body.nad-ui a{color:var(--nad-primary-hover);}
 body.nad-ui a:hover{color:#3F2A9E;}

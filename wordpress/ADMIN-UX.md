@@ -80,7 +80,7 @@ Replaces the dashboard (`index.php` redirects; administrators reach the old one 
 ## Visual layer
 
 - Sidebar in the site's navy (`#0C0E1A`), current item on violet `#6D28D9` (white text 7:1). Content on a cool off-white `#F5F6FA`, white panels with a 1px border, ink `#14162B`, secondary text `#565B73` (6.9:1 on white). Primary actions `#5B3FD6`, the same violet the approval emails use.
-- Heebo for the whole admin, one family, weights 400 to 700, self-hosted from `wp-content/uploads/nadlanistim-admin/` (no CDN at runtime). Falls back to the system stack if the file is missing.
+- Google Sans for the whole admin (every element but icon fonts and code), weights 400 to 700, the site's own files self-hosted from `wp-content/uploads/nadlanistim-admin/` (no CDN at runtime). They include Hebrew, so nothing falls back; if the files are missing, the system font stack takes over.
 - Visible focus everywhere: 2px violet outline on light surfaces, cyan on the dark sidebar.
 - Hebrew admin: when the switch is on and the he_IL language pack is installed, the admin loads in Hebrew (RTL) for that user. Front end, REST and GraphQL are unaffected.
 
