@@ -92,3 +92,6 @@
 .lk-login { margin-top: 18px; text-align: center; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
 .lk-login a { display: inline-block; padding-block: 10px; color: var(--cyan); font-weight: 600; }
 .lk-login a:hover { text-decoration: underline; }
+
+/* Publisher placeholder for visitors without a membership (HiddenName.tsx). */
+.co-hidden-name { display: inline-block; filter: blur(5px); opacity: .7; user-select: none; pointer-events: none; }

@@ -1,6 +1,7 @@
 import SiteShell from "../../v6/SiteShell";
 import "../../collaborations/collaborations.css";
 import MembersLock from "../../collaborations/MembersLock";
+import HiddenName from "../../collaborations/HiddenName";
 import { getCollabs } from "../../collaborations/wp";
 import { getSession } from "../../../lib/auth";
 
@@ -65,7 +66,8 @@ export default async function CollaborationSinglePage({ params }: { params: Prom
                 <h1>{collab.title}</h1>
                 {(collab.by || collab.byRole) && (
                   <div className="pg-panel__by">
-                    פורסם על ידי {collab.by && <b>{collab.by}</b>}{collab.by && collab.byRole && " · "}{collab.byRole}
+                    {/* Who published it is for members too: a visitor gets a blurred placeholder, never the name. */}
+                    פורסם על ידי {locked ? <HiddenName /> : <>{collab.by && <b>{collab.by}</b>}{collab.by && collab.byRole && " · "}{collab.byRole}</>}
                   </div>
                 )}
               </div>

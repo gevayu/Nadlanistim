@@ -4,6 +4,7 @@ import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import SponsorStrip from "../v6/SponsorStrip";
 import "./collaborations.css";
+import HiddenName from "./HiddenName";
 import { collabRegion, collabTab, type Collab, type CollabTab } from "./data";
 
 const ArrowIcon = () => (
@@ -29,7 +30,7 @@ const FIELDS: Field[] = [
 // Options come from the open tab's listings, so a filter never offers a value no listing there has.
 const optionsOf = (collabs: Collab[], f: Field) => [...new Set(collabs.map(f.get).filter(Boolean))];
 
-export default function CollabBoard({ collabs, tabs }: { collabs: Collab[]; tabs: CollabTab[] }) {
+export default function CollabBoard({ collabs, tabs, locked }: { collabs: Collab[]; tabs: CollabTab[]; locked: boolean }) {
   const [tab, setTab] = useState(0);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const inTab = collabs.filter((c) => collabTab(c) === tabs[tab]?.key);
@@ -96,7 +97,7 @@ export default function CollabBoard({ collabs, tabs }: { collabs: Collab[]; tabs
                 )}
                 {c.stage && <span className="pg-stage">שלב: {c.stage}</span>}
                 <div className="pg-card__foot">
-                  <span className="pg-card__date">{c.by && `פורסם ע״י ${c.by}`}</span>
+                  <span className="pg-card__date">{locked ? <>פורסם ע״י <HiddenName /></> : c.by && `פורסם ע״י ${c.by}`}</span>
                   <span className="v6-btn v6-btn--primary" style={{ padding: "10px 18px", fontSize: 13.5 }}>
                     <span>פרטים נוספים</span>
                   </span>
