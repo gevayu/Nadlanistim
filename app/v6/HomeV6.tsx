@@ -342,17 +342,28 @@ function MembersCarousel({ items }: { items: MemberCategory[] }) {
             transition: animate ? undefined : "none",
           }}
         >
-          {rendered.map((m, i) => (
-            <article key={`${m.title}-${i}`} className="v6-member v6-glass">
-              <div className="v6-member__count">{m.count}</div>
-              <h3>{m.title}</h3>
-              <div className="v6-member__avatars" aria-hidden>
-                {m.avatars.map((a) => (
-                  <span key={a} style={{ backgroundImage: `url(${a})` }} />
-                ))}
-              </div>
-            </article>
-          ))}
+          {rendered.map((m, i) => {
+            // The loop renders three copies; only the middle one is reachable by keyboard and screen readers.
+            const copy = enabled && (i < items.length || i >= 2 * items.length);
+            return (
+              <a
+                key={`${m.title}-${i}`}
+                href={`/nadlanistim?field=${encodeURIComponent(m.title)}`}
+                className="v6-member v6-glass"
+                aria-label={`${m.title}: ${m.count} נדלניסטים במדריך`}
+                tabIndex={copy ? -1 : undefined}
+                aria-hidden={copy || undefined}
+              >
+                <div className="v6-member__count">{m.count}</div>
+                <h3>{m.title}</h3>
+                <div className="v6-member__avatars" aria-hidden>
+                  {m.avatars.map((a) => (
+                    <span key={a} style={{ backgroundImage: `url(${a})` }} />
+                  ))}
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
       <button

@@ -23,7 +23,7 @@ export type Nadlanist = {
 export const publicCard = ({ slug, name, role, field, place, quote, photo, openToWork }: Nadlanist): Nadlanist =>
   ({ slug, name, role, field, place, quote, photo, openToWork, bio: [], email: "" });
 
-// Choices for the member form (/my-account, /nadlanist-new) and the directory filters.
+// Choices for the member form (/my-account, /nadlanist-new). The directory filters list what members actually have.
 export const FIELDS = ["יזמות", "השקעות", "שיווק", "ייעוץ", "אדריכלות", "תיווך", "שמאות", "מימון", "פרופטק", "משפט"];
 export const PLACES = ["תל אביב", "מרכז", "צפון", "דרום", "ירושלים", "כל הארץ"];
 

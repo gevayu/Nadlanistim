@@ -379,7 +379,8 @@
 .v6-members__arrow svg { width: 22px; height: 22px; }
 .v6-members__arrow--prev { right: -14px; }
 .v6-members__arrow--next { left: -14px; }
-.v6-member { padding: 32px 28px; border-radius: var(--r); display: flex; flex-direction: column; gap: 14px; transition: transform .5s var(--t), background .5s var(--t); cursor: default; min-height: 240px; }
+.v6-member { padding: 32px 28px; border-radius: var(--r); display: flex; flex-direction: column; gap: 14px; transition: transform .5s var(--t), background .5s var(--t); cursor: pointer; min-height: 240px; }
+.v6-member:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 .v6-member:hover { transform: translateY(-6px); background: var(--glass-bg-strong); }
 .v6-member__count { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--cyan); letter-spacing: .06em; }
 .v6-member h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; }
