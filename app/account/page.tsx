@@ -1,11 +1,11 @@
 import SiteShell from "../v6/SiteShell";
 import "./account.css";
+import AccountHead from "./AccountHead";
 import { onBoard } from "../collaborations/data";
 import { getCollabs } from "../collaborations/wp";
 import { eventHref, isVolunteer } from "../events/data";
 import { getEvents } from "../events/wp";
 import { getJobs } from "../jobs/wp";
-import { CURRENT_MEMBER } from "../nadlanistim/data";
 import { getNadlanistim } from "../nadlanistim/wp";
 import { getEpisodes } from "../podcast/wp";
 
@@ -21,7 +21,6 @@ const dot = (...parts: string[]) => parts.filter(Boolean).join(" · ");
 
 export default async function AccountPage() {
   const [people, collabs, jobs, events, episodes] = await Promise.all([getNadlanistim(), getCollabs(), getJobs(), getEvents(), getEpisodes()]);
-  const me = people.find((n) => n.slug === CURRENT_MEMBER);
   const deals = collabs.filter(onBoard);
   const past = events.filter((e) => e.past && !isVolunteer(e)).sort((a, b) => b.date.localeCompare(a.date));
   const quick = [
@@ -36,15 +35,7 @@ export default async function AccountPage() {
       <section className="v6-section">
         <div className="v6-container">
           {/* Account header */}
-          <div className="ac-head v6-glass" data-reveal>
-            <div className="ac-head__av">{me?.photo && <img src={me.photo} alt="" />}</div>
-            <div>
-              <div className="ac-head__name">שלום, {me?.name} 👋</div>
-              {me?.role && <div className="ac-head__meta">{me.role}</div>}
-            </div>
-            <span className="ac-head__badge">MEMBERS ONLY ✓</span>
-            <a href="/my-account" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>עריכת הפרופיל שלי</a>
-          </div>
+          <AccountHead people={people} />
 
           {/* Quick access */}
           <div className="ac-quick">

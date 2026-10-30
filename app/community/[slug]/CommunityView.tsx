@@ -6,6 +6,8 @@ import SiteShell from "../../v6/SiteShell";
 import "../../communities/communities.css";
 import { communityLogo, type Community } from "../../communities/data";
 import type { Nadlanist } from "../../nadlanistim/data";
+import { useNadlanistim } from "../../nadlanistim/member";
+import OpenToWorkRing from "../../v6/OpenToWorkRing";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -18,7 +20,8 @@ const ChevIcon = () => (
   </svg>
 );
 
-function MembersCarousel({ people }: { people: Nadlanist[] }) {
+function MembersCarousel({ people: base }: { people: Nadlanist[] }) {
+  const people = useNadlanistim(base);
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: number) => {
     const el = ref.current;
@@ -31,7 +34,7 @@ function MembersCarousel({ people }: { people: Nadlanist[] }) {
       <div className="cs-mem-track" ref={ref}>
         {people.map((n) => (
           <a key={n.slug} href={`/nadlanist/${n.slug}`} className="cs-mem v6-glass">
-            <div className="cs-mem__av"><img src={n.photo} alt={n.name} /></div>
+            <div className="cs-mem__av"><img src={n.photo} alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
             <div className="cs-mem__name">{n.name}</div>
             <div className="cs-mem__role">{n.role}</div>
             <p className="cs-mem__quote">״{n.quote}״</p>

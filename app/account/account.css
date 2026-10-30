@@ -1,7 +1,7 @@
 /* Members-only account dashboard - scoped under .v6-root. */
 
 .ac-head { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; padding: 28px 32px; border-radius: var(--r-lg); }
-.ac-head__av { width: 74px; height: 74px; border-radius: 50%; overflow: hidden; border: 1px solid var(--glass-border-strong); flex-shrink: 0; }
+.ac-head__av { position: relative; width: 74px; height: 74px; border-radius: 50%; overflow: hidden; border: 1px solid var(--glass-border-strong); flex-shrink: 0; }
 .ac-head__av img { width: 100%; height: 100%; object-fit: cover; }
 .ac-head__name { font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; letter-spacing: -0.02em; }
 .ac-head__meta { font-size: 14px; color: var(--muted); margin-top: 4px; }

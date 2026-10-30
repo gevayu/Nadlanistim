@@ -5,7 +5,8 @@ import { celebrate } from "./confetti";
 import SponsorStrip from "./SponsorStrip";
 import { communityLogo, type Community } from "../communities/data";
 import type { Job } from "../jobs/data";
-import type { Nadlanist } from "../nadlanistim/data";
+import { CURRENT_MEMBER, type Nadlanist } from "../nadlanistim/data";
+import { useNadlanistim } from "../nadlanistim/member";
 import { eventHref, featuredEvent, isVolunteer, splitTitle, type EventItem } from "../events/data";
 import type { Deal, Sponsor } from "./wp";
 import type { Article } from "../post-archive/data";
@@ -405,6 +406,7 @@ function NadlanistCarousel({ people }: { people: Nadlanist[] }) {
     >
       <figure className="v6-story__img v6-meet__img">
         {p.photo && <img key={`meet-img-${i}`} src={p.photo} alt={p.name} />}
+        {p.openToWork && <span className="v6-meet__otw">#OPENTOWORK</span>}
       </figure>
       <div className="v6-story__body">
         <span className="v6-meet__eyebrow"><span className="v6-dot" />הכר את הנדלניסט</span>
@@ -618,7 +620,14 @@ type HomeProps = {
 
 export default function HomePageV6({ communities, jobs, events, people, categories, articles, episodes, home }: HomeProps) {
   const jobOffers = jobs.slice(0, 4).map(toJobOffer);
-  const quoted = people.filter((n) => n.quote);
+  // The signed-in member's /my-account edits (photo, Open to work...) live in this browser; show them here too.
+  const edited = useNadlanistim(people);
+  const quoted = edited.filter((n) => n.quote);
+  const wasPhoto = people.find((n) => n.slug === CURRENT_MEMBER)?.photo;
+  const nowPhoto = edited.find((n) => n.slug === CURRENT_MEMBER)?.photo;
+  const memberCats = wasPhoto && nowPhoto && wasPhoto !== nowPhoto
+    ? categories.map((c) => ({ ...c, avatars: c.avatars.map((a) => (a === wasPhoto ? nowPhoto : a)) }))
+    : categories;
   const { deals, sponsors } = home;
   const byDate = (a: EventItem, b: EventItem) => a.date.localeCompare(b.date);
   const upcoming = events.filter((e) => !e.past && !isVolunteer(e)).sort(byDate).slice(0, 3);
@@ -842,7 +851,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <h2>הערך הוא <em>האנשים</em>.</h2>
             <p className="v6-section-head__sub">{categories.length} עולמות מקצועיים. {categories.reduce((n, c) => n + c.count, 0)} אנשי מקצוע. גג אחד.</p>
           </header>
-          <MembersCarousel items={categories} />
+          <MembersCarousel items={memberCats} />
         </div>
       </section>
 

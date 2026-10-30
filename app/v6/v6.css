@@ -408,7 +408,8 @@
 .v6-meet { position: relative; grid-column: span 1; height: 440px; }
 .v6-meet__eyebrow { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 7px 14px; border-radius: 999px; background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.25); color: #C4B5FD; font-size: 12px; font-weight: 600; letter-spacing: .02em; }
 .v6-meet__slide { display: flex; flex-direction: column; gap: 24px; animation: v6-fade-up .6s var(--t); }
-.v6-meet__img { overflow: hidden; }
+.v6-meet__img { overflow: hidden; position: relative; }
+.v6-meet__otw { position: absolute; bottom: 16px; inset-inline-start: 16px; padding: 6px 12px; border-radius: 999px; background: #2E6B45; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; direction: ltr; }
 .v6-meet__img img { object-position: center center; transform: scale(1.06); transform-origin: center center; animation: v6-fade .8s var(--t); }
 
 /* ===== Shared card footer (nav + CTA) for rotating cards ===== */
