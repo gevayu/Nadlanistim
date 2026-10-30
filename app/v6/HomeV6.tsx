@@ -6,6 +6,7 @@ import { sendHomeContact } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import SponsorStrip from "./SponsorStrip";
 import SiteFooter from "./SiteFooter";
+import { useMembersHref } from "./SiteHeader";
 import type { Community } from "../communities/data";
 import type { Job } from "../jobs/data";
 import type { Nadlanist } from "../nadlanistim/data";
@@ -626,6 +627,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const [featuredMain, featuredAccent] = ((t) =>
     t.includes(" - ") ? splitTitle(t) : [t.slice(0, t.lastIndexOf(" ")), t.slice(t.lastIndexOf(" ") + 1)])(featured?.title ?? "");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const membersHref = useMembersHref();
   const contact = useFormSend(sendHomeContact);
   const sent = !!contact.state.ok;
   useEffect(() => {
@@ -667,7 +669,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {/* Nav */}
       <header className={`v6-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="v6-nav__inner v6-glass">
-          <button className="v6-nav__menu" aria-label="פתח תפריט" onClick={() => setDrawerOpen(true)}>
+          <button className="v6-nav__menu" aria-label="פתח תפריט" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
             <span /><span /><span />
           </button>
           <a href="#top" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
@@ -678,7 +680,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <a key={label} href={href}>{label}</a>
             ))}
           </nav>
-          <a href="#contact" className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
+          <a href={membersHref} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
             <span className="v6-nav__cta-long">Members Only</span>
             <span className="v6-nav__cta-short">Members</span>
             <ArrowIcon />
@@ -698,7 +700,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           {NAV_LINKS.map(([href, label]) => (
             <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
           ))}
-          <a href="#contact" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
+          <a href={membersHref} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
             <span>Members Only</span>
             <ArrowIcon />
           </a>

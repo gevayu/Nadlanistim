@@ -33,7 +33,7 @@ function useScrolled(threshold = 40) {
 
 // "Members" opens the personal area when signed in, else the login page. The httpOnly session cookie is
 // out of the browser's reach, so lib/auth.ts sets this readable flag next to it (SIGNED_IN_COOKIE).
-function useMembersHref() {
+export function useMembersHref() {
   const [href, setHref] = useState("/login");
   useEffect(() => {
     if (/(?:^|;\s*)nad_signed_in=1(?:;|$)/.test(document.cookie)) setHref("/account");
@@ -63,7 +63,7 @@ export default function SiteHeader() {
     <>
       <header className={`v6-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="v6-nav__inner v6-glass">
-          <button className="v6-nav__menu" aria-label="פתח תפריט" onClick={() => setDrawerOpen(true)}>
+          <button className="v6-nav__menu" aria-label="פתח תפריט" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
             <span /><span /><span />
           </button>
           <a href="/" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">

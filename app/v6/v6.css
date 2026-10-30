@@ -110,8 +110,8 @@
 /* ===== Glass ===== */
 .v6-glass {
   background: var(--glass-bg);
+  /* Unprefixed only: with a var() value the minifier keeps just one of the two, and it kept -webkit- (Safari only). */
   backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   position: relative;
   isolation: isolate;
@@ -151,7 +151,7 @@
 }
 .v6-btn--glass {
   background: var(--glass-bg-strong);
-  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   color: var(--ink); border-color: var(--glass-border-strong);
 }
 .v6-btn--glass:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.35); transform: translateY(-2px); }
@@ -292,7 +292,7 @@
 .v6-marquee {
   position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 0; overflow: hidden; z-index: 4;
   border-top: 1px solid var(--glass-border);
-  background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  background: var(--glass-bg); backdrop-filter: var(--glass-blur);
 }
 .v6-marquee__track { display: inline-flex; align-items: center; gap: 40px; white-space: nowrap; animation: v6-marquee 50s linear infinite; font-size: 15px; font-weight: 400; color: var(--ink-2); letter-spacing: .02em; }
 .v6-mq-item { display: inline-flex; align-items: center; gap: 40px; }
@@ -499,7 +499,7 @@
 .v6-sponsors__title { font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: .04em; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .v6-sponsors__logos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
 .v6-sponsors__logos--sm { grid-template-columns: repeat(8, 1fr); }
-.v6-sponsors__logo { padding: 28px 14px; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: var(--muted); border-radius: var(--r-sm); background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); text-align: center; letter-spacing: -0.01em; transition: all .4s var(--t); }
+.v6-sponsors__logo { padding: 28px 14px; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: var(--muted); border-radius: var(--r-sm); background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); text-align: center; letter-spacing: -0.01em; transition: all .4s var(--t); }
 .v6-sponsors__logos--sm .v6-sponsors__logo { padding: 22px 10px; font-size: 13px; }
 .v6-sponsors__logo:hover { color: var(--ink); background: var(--glass-bg-strong); border-color: var(--glass-border-strong); transform: translateY(-2px); }
 .v6-sponsors__img { height: 11px; width: auto; max-width: 70%; object-fit: contain; filter: brightness(0) invert(1); opacity: .6; transition: opacity .4s var(--t); }
@@ -696,6 +696,9 @@
   .v6-hero__title { font-size: clamp(36px, 11vw, 52px); margin-bottom: 24px; max-width: none; }
   .v6-root .v6-hero__sub { font-size: 15px; margin-bottom: 32px; line-height: 1.55; }
   .v6-hero__sub br { display: none; }
+  /* Long call-to-action labels wrap to a second line instead of being cut off at the pill's edges. */
+  .v6-btn { white-space: normal; text-align: center; line-height: 1.3; max-width: 100%; }
+  .v6-btn svg { flex-shrink: 0; }
   /* Both buttons side by side in one row, equal width. */
   .v6-hero__cta { flex-wrap: nowrap; gap: 10px; }
   .v6-hero__cta .v6-btn { flex: 1 1 0; min-width: 0; justify-content: center; white-space: nowrap; }

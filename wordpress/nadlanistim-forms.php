@@ -554,3 +554,35 @@ add_filter(
 	10,
 	3
 );
+
+/*
+ * The Headless plugin's older write routes (contact, job-save, collab-save, nadlanist-save) take anonymous
+ * POSTs with no limit, and two of them store an uploaded image. The site sends its forms through /forms/*
+ * now, so these answer only a request that carries the site's secret.
+ */
+add_filter(
+	'rest_pre_dispatch',
+	function ( $result, $server, $req ) {
+		$legacy = array( '/nadlanistim/v1/contact', '/nadlanistim/v1/job-save', '/nadlanistim/v1/collab-save', '/nadlanistim/v1/nadlanist-save' );
+		if ( null !== $result || 'POST' !== $req->get_method() || ! in_array( $req->get_route(), $legacy, true ) || nadlanistim_forms_from_site( $req ) ) {
+			return $result;
+		}
+		return nadlanistim_forms_error( 'הטופס הזה כבר לא פעיל. שלחו דרך האתר.', 410, 'nadlanistim_gone' );
+	},
+	10,
+	3
+);
+
+// wp/v2/users lists every author's login slug to anyone. The site reads people through GraphQL, so the
+// REST list stays for signed-in users (the block editor needs it).
+add_filter(
+	'rest_pre_dispatch',
+	function ( $result, $server, $req ) {
+		if ( null !== $result || is_user_logged_in() || 0 !== strpos( $req->get_route(), '/wp/v2/users' ) ) {
+			return $result;
+		}
+		return nadlanistim_forms_error( 'נדרשת התחברות.', 401, 'rest_forbidden' );
+	},
+	10,
+	3
+);
