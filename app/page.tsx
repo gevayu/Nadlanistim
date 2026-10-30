@@ -26,6 +26,7 @@ export default async function HomePage() {
   const [communities, jobs, events, people, youth, youthSettings, articles, episodes, home] = await Promise.all([
     getCommunities(), getJobs(), getEvents(), getNadlanistim(), getYouth(), getYouthSettings(), getArticles(), getEpisodes(), getHomeContent(),
   ]);
-  const categories = memberCategories([...people, ...youth]);
+  // The directory already holds the youth team, so they count once.
+  const categories = memberCategories(people);
   return <HomePageV6 communities={communities} jobs={jobs} events={events} people={people.map((p) => ({ ...publicCard(p), homepage: p.homepage }))} categories={categories} youth={{ count: youth.length, maxAge: youthSettings.maxAge }} articles={articles} episodes={episodes} home={home} />;
 }

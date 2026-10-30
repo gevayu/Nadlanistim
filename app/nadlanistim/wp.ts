@@ -33,8 +33,6 @@ const QUERY = `{ nadlanists(first: 100) { nodes {
   nadlanistExtra { linkedin instagram openToWork communities { nodes { slug } } }
 } } }`;
 
-// Members of this cohort belong to the youth team page, not the directory.
-const YOUTH_COHORT = "צעירים";
 // "שיוכים" term "הופעה בעמוד ראשי": editors tick it to put a member in the homepage carousel.
 const HOMEPAGE_COHORT = "homepage";
 
@@ -56,11 +54,10 @@ const toNadlanist = ({ slug, title, featuredImage, cohorts, nadlanistFields: f, 
   communities: x?.communities?.nodes.map((c) => c.slug) ?? [],
 });
 
-/** The directory (youth team excluded), oldest member first. */
+/** The directory: every nadlanist, the youth team included (they also have /youth), oldest member first. */
 export async function getNadlanistim(): Promise<Nadlanist[]> {
   const data = await wpQuery<{ nadlanists: { nodes: WpNadlanist[] } }>(QUERY);
   return data.nadlanists.nodes
-    .filter((n) => !n.cohorts.nodes.some((c) => c.name === YOUTH_COHORT))
     .sort(byPublished)
     .map(toNadlanist);
 }
