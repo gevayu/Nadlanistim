@@ -12,10 +12,10 @@ export default function NotFound() {
           <div className="pg-head" data-reveal>
             <h1>הדף הזה לא נמצא</h1>
             <p>ייתכן שהקישור ישן או שהתוכן הוסר.</p>
+            <p>
+              <a href="/" className="v6-btn v6-btn--primary v6-btn--lg">לעמוד הבית</a>
+            </p>
           </div>
-          <p>
-            <a href="/" className="v6-btn v6-btn--primary v6-btn--lg">לעמוד הבית</a>
-          </p>
         </div>
       </section>
     </SiteShell>
