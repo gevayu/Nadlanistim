@@ -1010,16 +1010,21 @@ function nad_admin_ui_field( $field, $parent ) {
 
 /* ─── Look ──────────────────────────────────────────────────────────────── */
 
-function nad_admin_styles() {
+/** The site's font, in the weights the admin uses. The files carry Hebrew too, so nothing falls back. */
+function nad_admin_font_faces() {
 	$font_dir = WP_CONTENT_DIR . '/uploads/nadlanistim-admin/';
 	$font_url = content_url( 'uploads/nadlanistim-admin/' );
 	$faces    = '';
-	// The site's font, in the weights the admin uses. The files carry Hebrew too, so nothing falls back.
 	foreach ( array( 400 => 'Regular', 500 => 'Medium', 600 => 'SemiBold', 700 => 'Bold' ) as $weight => $name ) {
 		if ( file_exists( $font_dir . 'GoogleSans-' . $name . '.woff2' ) ) {
 			$faces .= '@font-face{font-family:"Google Sans";font-style:normal;font-weight:' . $weight . ';font-display:swap;src:url(' . esc_url( $font_url . 'GoogleSans-' . $name . '.woff2' ) . ') format("woff2");}';
 		}
 	}
+	return $faces;
+}
+
+function nad_admin_styles() {
+	$faces = nad_admin_font_faces();
 	$heads = '';
 	if ( ! empty( $GLOBALS['nad_admin_menu_heads'] ) ) {
 		foreach ( $GLOBALS['nad_admin_menu_heads'] as $id => $title ) {
@@ -1171,5 +1176,101 @@ body.nad-ui .acf-field p.description{color:var(--nad-ink-2);}
 	body.nad-ui .wp-list-table .column-nad_detail{width:auto;}
 }
 @media (prefers-reduced-motion:reduce){body.nad-ui *{transition:none!important;}}
+CSS;
+}
+
+/* ─── Login and password screens (wp-login.php) ─────────────────────────── */
+// Members reach WordPress's own screens to choose a new password (the link in the reset email), and admins
+// log in here: both get the site's look, in Hebrew.
+
+function nad_on_login_screen() {
+	return isset( $_SERVER['SCRIPT_NAME'] ) && 'wp-login.php' === basename( sanitize_text_field( wp_unslash( $_SERVER['SCRIPT_NAME'] ) ) );
+}
+
+add_filter(
+	'determine_locale',
+	function ( $locale ) {
+		return ( 'he_IL' !== $locale && nad_on_login_screen() && file_exists( WP_LANG_DIR . '/he_IL.mo' ) ) ? 'he_IL' : $locale;
+	},
+	20
+);
+
+// The logo leads to the site, not to WordPress.org.
+add_filter(
+	'login_headerurl',
+	function () {
+		return function_exists( 'nadlanistim_auth_front' ) && nadlanistim_auth_front() ? nadlanistim_auth_front() : home_url( '/' );
+	}
+);
+add_filter(
+	'login_headertext',
+	function () {
+		return 'הנדלניסטים';
+	}
+);
+
+add_action(
+	'login_enqueue_scripts',
+	function () {
+		$front = function_exists( 'nadlanistim_auth_front' ) ? nadlanistim_auth_front() : '';
+		$logo  = $front ? '#login h1 a{background-image:url(' . esc_url( $front . '/v6-assets/logo.png' ) . ');}' : '';
+		echo '<style id="nad-login-ui">' . nad_admin_font_faces() . $logo . nad_login_css() . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput -- static CSS plus escaped values.
+	}
+);
+
+function nad_login_css() {
+	return <<<'CSS'
+body.login{
+	--ink:#F5F7FB;--ink-2:#C9CDDB;--muted:#8A91AC;--line:rgba(255,255,255,.14);--cyan:#22D3EE;
+	min-height:100vh;color:var(--ink);font-family:"Google Sans",-apple-system,"Segoe UI",Arial,sans-serif;
+	background:radial-gradient(circle at 12% 18%,rgba(139,92,246,.30),transparent 42%),radial-gradient(circle at 88% 82%,rgba(34,211,238,.18),transparent 45%),radial-gradient(circle at 70% 10%,rgba(79,141,251,.16),transparent 40%),#07080F;
+}
+body.login *:not(.dashicons):not([class*="dashicons"]){font-family:inherit;}
+#login{width:400px;max-width:calc(100vw - 32px);padding:7vh 0 32px;}
+#login h1 a{width:220px;height:72px;margin:0 auto 22px;background-size:contain;background-position:center;background-repeat:no-repeat;}
+.login form{margin-top:0;padding:28px 26px 30px;border-radius:24px;background:rgba(255,255,255,.045);border:1px solid var(--line);box-shadow:0 24px 64px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
+.login label,.login .description,.login .indicator-hint,.login p{color:var(--ink-2);font-size:14px;line-height:1.6;}
+.login .description,.login .indicator-hint{color:var(--muted);font-size:13px;}
+.login form .input,.login input[type=text],.login input[type=email],.login input[type=password]{
+	margin:6px 0 16px;padding:10px 14px;min-height:46px;font-size:16px;color:var(--ink);
+	background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:none;
+}
+.login form .input:focus,.login input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.22);outline:0;}
+.login .wp-pwd{margin-bottom:16px;}
+.login .wp-pwd input{margin-bottom:0;}
+.login .button.wp-hide-pw{color:var(--ink-2);background:transparent;border:0;box-shadow:none;height:46px;}
+.login .button.wp-hide-pw:focus{box-shadow:0 0 0 2px var(--cyan);}
+.wp-core-ui .button-primary{
+	min-height:46px;padding:0 26px;border:0;border-radius:999px;font-size:15px;font-weight:600;color:#fff;text-shadow:none;
+	background:linear-gradient(135deg,#8B5CF6 0%,#4F8DFB 60%,#22D3EE 100%);box-shadow:0 10px 26px rgba(79,141,251,.35);
+}
+.wp-core-ui .button-primary:hover,.wp-core-ui .button-primary:focus{background:linear-gradient(135deg,#7C4DEB 0%,#4380EE 60%,#1FC4DD 100%);color:#fff;box-shadow:0 12px 30px rgba(79,141,251,.5);}
+.wp-core-ui .button-primary:focus{outline:2px solid #FACC15;outline-offset:2px;}
+.login .button-secondary,.login .button.wp-generate-pw{
+	min-height:42px;padding:0 18px;border-radius:999px;font-size:14px;color:var(--ink);
+	background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);box-shadow:none;
+}
+.login .reset-pass-submit{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;}
+.login .reset-pass-submit .button{float:none;margin:0;}
+.login .submit .button-primary{float:none;width:100%;}
+.login .forgetmenot label{font-size:13px;}
+.login input[type=checkbox]{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.3);border-radius:4px;}
+#pass-strength-result{margin:0 0 16px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font-size:13px;}
+#pass-strength-result.short{background:rgba(248,113,113,.18);border-color:rgba(248,113,113,.5);}
+#pass-strength-result.bad{background:rgba(251,146,60,.18);border-color:rgba(251,146,60,.5);}
+#pass-strength-result.good{background:rgba(250,204,21,.16);border-color:rgba(250,204,21,.45);}
+#pass-strength-result.strong{background:rgba(74,222,128,.16);border-color:rgba(74,222,128,.5);}
+.login .pw-weak label{color:var(--ink-2);}
+.login .message,.login .notice,.login .success,.login #login_error{
+	margin:0 0 18px;padding:12px 16px;border-radius:14px;color:var(--ink);
+	background:rgba(255,255,255,.06);border:1px solid var(--line);border-inline-start:4px solid var(--cyan);box-shadow:none;
+}
+.login #login_error,.login .notice-error{border-inline-start-color:#F87171;}
+.login .message a,.login .notice a,.login #login_error a{color:var(--cyan);}
+.login #nav,.login #backtoblog{padding:0 6px;margin-top:16px;text-align:center;}
+.login #nav a,.login #backtoblog a{color:#9AA6C6;font-size:14px;}
+.login #nav a:hover,.login #backtoblog a:hover{color:var(--cyan);}
+.login .language-switcher,.login .privacy-policy-page-link{display:none;}
+.login *:focus-visible{outline:2px solid #FACC15;outline-offset:2px;}
 CSS;
 }
