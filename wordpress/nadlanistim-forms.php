@@ -586,3 +586,53 @@ add_filter(
 	10,
 	3
 );
+
+/*
+ * Every email the site sends reads right to left. Plain-text mail (WordPress's password reset and
+ * notices, the email check) becomes simple RTL HTML with clickable links; HTML mail without a direction
+ * gets one. The language itself comes from the site language (he_IL).
+ */
+add_filter(
+	'wp_mail',
+	function ( $atts ) {
+		$headers = is_array( $atts['headers'] ) ? $atts['headers'] : array_filter( explode( "\n", str_replace( "\r\n", "\n", (string) $atts['headers'] ) ) );
+		$type    = '';
+		foreach ( $headers as $h ) {
+			if ( 0 === stripos( trim( $h ), 'content-type:' ) ) {
+				$type = strtolower( trim( substr( trim( $h ), 13 ) ) );
+			}
+		}
+		if ( '' === $type ) {
+			// WooCommerce and others set the type through this filter while they send.
+			$type = strtolower( (string) apply_filters( 'wp_mail_content_type', 'text/plain' ) );
+		}
+		$message = (string) $atts['message'];
+		$style   = 'font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#111111;text-align:right';
+
+		if ( 0 === strpos( $type, 'text/html' ) ) {
+			if ( false === stripos( $message, 'dir="rtl"' ) && false === stripos( $message, "dir='rtl'" ) ) {
+				$message = preg_match( '/<body[^>]*>/i', $message )
+					? preg_replace( '/<body([^>]*)>/i', '<body$1 dir="rtl">', $message, 1 )
+					: '<div dir="rtl" style="' . $style . '">' . $message . '</div>';
+			}
+			$atts['message'] = $message;
+			return $atts;
+		}
+
+		// Plain text: WordPress wraps links in <...>; drop that, escape, keep the line breaks and make links clickable.
+		$text            = preg_replace( '/<(https?:[^>\s]+)>/', '$1', $message );
+		$atts['message'] = '<div dir="rtl" style="' . $style . '">' . make_clickable( nl2br( esc_html( $text ) ) ) . '</div>';
+		$headers         = array_values( array_filter( $headers, fn( $h ) => 0 !== stripos( trim( $h ), 'content-type:' ) ) );
+		$headers[]       = 'Content-Type: text/html; charset=UTF-8';
+		$atts['headers'] = $headers;
+		return $atts;
+	}
+);
+
+// WordPress signs its mail "WordPress"; the site signs as itself. A name set elsewhere (FluentSMTP, WooCommerce) stays.
+add_filter(
+	'wp_mail_from_name',
+	function ( $name ) {
+		return 'WordPress' === $name ? 'הנדלניסטים' : $name;
+	}
+);
