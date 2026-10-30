@@ -67,7 +67,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
 
       <SiteHeader />
 
-      <main style={{ paddingTop: "140px" }}>
+      <main style={{ paddingTop: "140px" }} id="main">
         <Breadcrumbs />
         <SponsorStrip />
 

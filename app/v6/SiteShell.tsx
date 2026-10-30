@@ -50,7 +50,7 @@ export default function SiteShell({ children, crumb }: { children: React.ReactNo
         <div className="v6-ambient__grain" />
       </div>
       <SiteHeader />
-      <main className="pg-wrap">
+      <main className="pg-wrap" id="main">
         <Breadcrumbs current={crumb} />
         <SponsorStrip />
         {children}

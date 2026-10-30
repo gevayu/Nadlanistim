@@ -30,6 +30,9 @@
 .co-clear:hover { color: var(--cyan); }
 
 @media (max-width: 620px) {
+  /* Filters fill the row in equal columns instead of centered pills of different widths. */
+  .co-selects { display: grid; grid-template-columns: 1fr 1fr; padding: 16px; }
+  .co-selects .pg-select { min-width: 0; width: 100%; }
   .co-fgroup { flex-direction: column; align-items: stretch; gap: 8px; }
   .co-fgroup__label { flex: none; }
 }
@@ -87,5 +90,5 @@
 .lk-single .lk-locked { min-height: 230px; margin-top: 0; }
 .lk-bar { display: block; height: 12px; border-radius: 6px; background: var(--ink-2); }
 .lk-login { margin-top: 18px; text-align: center; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
-.lk-login a { color: var(--cyan); font-weight: 600; }
+.lk-login a { display: inline-block; padding-block: 10px; color: var(--cyan); font-weight: 600; }
 .lk-login a:hover { text-decoration: underline; }

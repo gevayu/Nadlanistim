@@ -7,6 +7,6 @@
 .v6-root .au-error { background: rgba(244,114,182,.1); border: 1px solid rgba(244,114,182,.35); }
 .v6-root .au-note { background: rgba(34,211,238,.08); border: 1px solid rgba(34,211,238,.3); }
 .v6-root .au-links { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px; font-size: 14px; }
-.v6-root .au-links a { color: var(--cyan); }
+.v6-root .au-links a { display: inline-block; padding-block: 10px; color: var(--cyan); }
 .v6-root .au-links a:hover { text-decoration: underline; }
 .v6-root .pg-form button:disabled { opacity: .6; cursor: progress; }

@@ -61,6 +61,7 @@ export default function SiteHeader() {
 
   return (
     <>
+      <a href="#main" className="v6-skip">דלג לתוכן</a>
       <header className={`v6-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="v6-nav__inner v6-glass">
           <button className="v6-nav__menu" aria-label="פתח תפריט" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>

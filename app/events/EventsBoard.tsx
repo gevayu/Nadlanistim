@@ -94,7 +94,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
                 {f.options.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
             ))}
-            <button type="submit" className="v6-btn v6-btn--glass" style={{ padding: "11px 22px", fontSize: 13.5 }}>הצג</button>
+            <button type="submit" className="v6-btn v6-btn--primary" style={{ padding: "11px 22px", fontSize: 13.5 }}>הצג</button>
           </form>
 
           {nothing && <p className="pg-empty">לא נמצאו אירועים שמתאימים לסינון.</p>}

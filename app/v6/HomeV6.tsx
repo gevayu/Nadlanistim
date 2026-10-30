@@ -663,6 +663,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       </div>
 
       {/* Nav */}
+      <a href="#top" className="v6-skip">דלג לתוכן</a>
       <header className={`v6-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="v6-nav__inner v6-glass">
           <button className="v6-nav__menu" aria-label="פתח תפריט" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
@@ -1139,6 +1140,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       <section className="v6-section" id="stories">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
+            <span className="v6-eyebrow"><span className="v6-dot" />לוח דרושים</span>
             <h2>קריירה</h2>
           </header>
           <div className="v6-stories__grid">

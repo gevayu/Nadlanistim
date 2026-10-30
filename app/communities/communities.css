@@ -12,7 +12,7 @@
 @media (max-width: 640px) { .cm-grid { grid-template-columns: 1fr; } }
 
 /* ─── Single sub-community page ─── */
-.cs-back { display: inline-block; font-size: 14px; color: var(--muted); margin-bottom: 20px; transition: color .3s var(--t); }
+.cs-back { display: inline-block; padding-block: 10px; font-size: 14px; color: var(--muted); margin-bottom: 10px; transition: color .3s var(--t); }
 .cs-back:hover { color: var(--cyan); }
 
 .cs-hero { position: relative; border-radius: var(--r-lg); overflow: hidden; padding: clamp(52px, 8vw, 104px) clamp(24px, 4vw, 56px); text-align: center; }

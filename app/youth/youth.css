@@ -36,7 +36,7 @@
 .yt-member__more svg { width: 15px; height: 15px; }
 .yt-member:hover .yt-member__more { color: var(--cyan); }
 
-.yt-back { display: inline-block; font-size: 14px; color: var(--muted); margin-bottom: 20px; transition: color .3s var(--t); }
+.yt-back { display: inline-block; padding-block: 10px; font-size: 14px; color: var(--muted); margin-bottom: 10px; transition: color .3s var(--t); }
 .yt-back:hover { color: var(--cyan); }
 .yt-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 

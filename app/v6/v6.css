@@ -75,7 +75,9 @@
 
 .v6-root *, .v6-root *::before, .v6-root *::after { box-sizing: border-box; }
 .v6-root a { color: inherit; text-decoration: none; }
-.v6-root button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+.v6-root button { font-family: inherit; cursor: pointer; }
+/* A .v6-btn <button> keeps its pill look; the :where() leaves the reset's weight unchanged for every other button. */
+.v6-root button:where(:not(.v6-btn)) { border: 0; background: none; color: inherit; }
 .v6-root img { display: block; max-width: 100%; height: auto; }
 .v6-root h1, .v6-root h2, .v6-root h3, .v6-root h4, .v6-root h5 {
   margin: 0; font-weight: 700; letter-spacing: -0.015em; line-height: 1.1; color: var(--ink);
@@ -207,7 +209,8 @@
 .v6-nav__links a:hover { color: var(--ink); }
 .v6-nav__cta { padding: 11px 22px; font-size: 13.5px; }
 .v6-nav__cta-short { display: none; }
-.v6-nav__menu { display: none; flex-direction: column; gap: 4px; padding: 8px; color: var(--ink); }
+/* 44px square: big enough to hit with a thumb, the lines stay 22px. */
+.v6-nav__menu { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 44px; min-height: 44px; padding: 8px; color: var(--ink); }
 .v6-nav__menu span { display: block; width: 22px; height: 2px; background: currentColor; }
 
 /* ===== Mobile drawer ===== */
@@ -419,8 +422,10 @@
 .v6-cardarrow { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--ink); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); transition: all .35s var(--t); flex-shrink: 0; }
 .v6-cardarrow:hover { background: var(--glass-bg); border-color: var(--cyan); transform: scale(1.06); }
 .v6-cardarrow svg { width: 19px; height: 19px; }
-.v6-carddots { display: flex; gap: 8px; }
-.v6-carddot { width: 8px; height: 8px; border-radius: 999px; background: var(--line-2); border: none; padding: 0; cursor: pointer; transition: all .4s var(--t); }
+/* The dots stay 8px; each one is tappable across 24px around it (WCAG 2.2 target size). */
+.v6-carddots { display: flex; gap: 16px; }
+.v6-carddot { position: relative; width: 8px; height: 8px; border-radius: 999px; background: var(--line-2); border: none; padding: 0; cursor: pointer; transition: all .4s var(--t); }
+.v6-carddot::before { content: ""; position: absolute; inset: -8px; }
 .v6-carddot.is-active { width: 22px; background: var(--cyan); }
 
 /* ===== Job rotator (single, auto-changing) ===== */
@@ -429,7 +434,8 @@
 .v6-jobrot__img { position: relative; flex: 0 0 42%; margin: 0; border-radius: 0; overflow: hidden; }
 .v6-jobrot__img img { width: 100%; height: 100%; object-fit: cover; animation: v6-fade .8s var(--t); }
 .v6-jobrot__img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to left, transparent 45%, rgba(12,14,26,.5)); }
-.v6-jobrot__badge { position: absolute; top: 18px; inset-inline-start: 18px; z-index: 2; padding: 7px 14px; border-radius: 999px; background: rgba(34,211,238,.15); border: 1px solid rgba(34,211,238,.35); color: var(--cyan); font-size: 12px; font-weight: 600; }
+/* Dark backing so the label reads on any photo. */
+.v6-jobrot__badge { position: absolute; top: 18px; inset-inline-start: 18px; z-index: 2; padding: 7px 14px; border-radius: 999px; background: rgba(7,8,15,.72); border: 1px solid rgba(34,211,238,.45); color: var(--cyan); font-size: 12px; font-weight: 600; }
 .v6-jobrot__body { flex: 1; padding: clamp(28px, 3vw, 48px); display: flex; flex-direction: column; justify-content: center; gap: 24px; }
 .v6-jobrot__slide { display: flex; flex-direction: column; gap: 14px; animation: v6-fade-up .6s var(--t); }
 .v6-jobrot__tag { align-self: flex-start; padding: 6px 14px; background: rgba(139,92,246,.15); color: #C4B5FD; border-radius: 999px; font-size: 12px; font-weight: 500; border: 1px solid rgba(139,92,246,.25); }
@@ -743,6 +749,8 @@
   .v6-recos__grid { max-width: none; margin: 0 calc(var(--gutter) * -1); }
   .v6-recos__grid > * { flex: 0 0 72%; scroll-snap-align: start; }
   .v6-stories__grid > * { flex: 0 0 86%; scroll-snap-align: start; grid-column: auto; }
+  /* A single card (the job rotator) takes the full row instead of 86% pushed to one side. */
+  .v6-stories__grid > :only-child { flex-basis: 100%; }
   .v6-events__list > * { flex: 0 0 84%; scroll-snap-align: start; }
   .v6-members__grid > *, .v6-stories__grid > *, .v6-recos__grid > *, .v6-projects__grid > *, .v6-events__list > * { min-height: 0 !important; height: auto !important; align-self: stretch; overflow: visible !important; }
 
@@ -844,3 +852,11 @@
 @media (prefers-reduced-motion: reduce) {
   .v6-root *, .v6-root *::before, .v6-root *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
+
+/* ===== Skip link: first stop for keyboard users, hidden until focused ===== */
+.v6-skip {
+  position: fixed; top: 12px; inset-inline-start: 12px; z-index: 1000;
+  padding: 10px 18px; border-radius: 999px; background: var(--ink); color: #07080F;
+  font-size: 14px; font-weight: 600; transform: translateY(-160%); transition: transform .2s var(--t);
+}
+.v6-skip:focus { transform: none; outline: 2px solid var(--cyan); outline-offset: 2px; }
