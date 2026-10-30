@@ -1,0 +1,105 @@
+/* Accessibility menu (A11yWidget.tsx). Colours are spelled out: the widget also sits on the legacy /posts
+   pages, outside .v6-root and its variables. */
+
+.a11y { font-family: "Google Sans", Heebo, -apple-system, "Segoe UI", Arial, sans-serif; }
+
+.a11y__fab {
+  position: fixed; left: 16px; bottom: 16px; z-index: 9000;
+  width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .18);
+  display: grid; place-items: center; cursor: pointer; color: #fff;
+  background: linear-gradient(135deg, #8B5CF6 0%, #4F8DFB 50%, #22D3EE 100%);
+  box-shadow: 0 8px 24px rgba(79, 141, 251, .35);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.a11y__fab svg { width: 26px; height: 26px; }
+.a11y__fab:hover { transform: scale(1.06); box-shadow: 0 10px 30px rgba(79, 141, 251, .5); }
+.a11y__fab:focus-visible { outline: 3px solid #FACC15; outline-offset: 3px; }
+/* A dot shows that some setting is on. */
+.a11y__fab.is-active::after {
+  content: ""; position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%;
+  background: #22D3EE; border: 2px solid #07080F;
+}
+
+.a11y__panel {
+  position: fixed; left: 16px; bottom: 76px; z-index: 9000;
+  width: min(340px, calc(100vw - 32px)); max-height: calc(100vh - 100px); overflow-y: auto;
+  padding: 16px; border-radius: 18px; color: #F5F7FB; text-align: right;
+  background: #0C0E1A; border: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .55);
+  animation: a11y-in .2s ease both;
+}
+@keyframes a11y-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.a11y__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.a11y__head h2 { margin: 0; font-size: 18px; font-weight: 700; color: #F5F7FB; }
+.a11y__close {
+  width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  color: #F5F7FB; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12);
+}
+.a11y__close svg { width: 18px; height: 18px; }
+
+.a11y__size {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px; margin-bottom: 12px; border-radius: 12px;
+  background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .1);
+}
+.a11y__size span { flex: 1; font-size: 14px; font-weight: 500; }
+.a11y__size output { min-width: 46px; text-align: center; font-size: 14px; font-variant-numeric: tabular-nums; }
+.a11y__size button {
+  width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; cursor: pointer;
+  color: #F5F7FB; background: rgba(139, 92, 246, .2); border: 1px solid rgba(139, 92, 246, .45);
+}
+.a11y__size button svg { width: 20px; height: 20px; }
+.a11y__size button:disabled { opacity: .35; cursor: default; }
+
+.a11y__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.a11y__opt {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 76px; padding: 10px 8px; border-radius: 12px; cursor: pointer; text-align: center;
+  font: inherit; font-size: 13px; font-weight: 500; line-height: 1.3; color: #C9CDDB;
+  background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .1);
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.a11y__opt svg { width: 22px; height: 22px; }
+.a11y__opt:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.a11y__opt[aria-pressed="true"] { color: #fff; background: rgba(139, 92, 246, .28); border-color: #8B5CF6; }
+.a11y__opt[aria-pressed="true"]::after {
+  content: "✓"; position: absolute; top: 6px; left: 8px; font-size: 12px; font-weight: 700; color: #22D3EE;
+}
+
+.a11y__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; }
+.a11y__reset {
+  display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: 13px; font-weight: 600; color: #fff; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16);
+}
+.a11y__reset svg { width: 16px; height: 16px; }
+.a11y__reset:disabled { opacity: .4; cursor: default; }
+.a11y__foot a { font-size: 13px; font-weight: 500; color: #22D3EE; text-decoration: underline; text-underline-offset: 3px; padding-block: 10px; }
+
+.a11y button:focus-visible, .a11y a:focus-visible { outline: 3px solid #FACC15; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) { .a11y__panel { animation: none; } .a11y__fab { transition: none; } }
+@media print { .a11y { display: none; } }
+
+/* ===== What each setting does (classes and variables set on <html> by lib/a11y.ts) ===== */
+
+body { zoom: var(--a11y-zoom, 1); }
+
+/* Images and video keep their real colours when the page is inverted. */
+html.a11y-invert img, html.a11y-invert video, html.a11y-invert picture, html.a11y-invert iframe { filter: invert(1) hue-rotate(180deg); }
+
+html.a11y-links a { text-decoration: underline !important; text-underline-offset: 3px; outline: 2px dashed #FACC15 !important; outline-offset: 2px; }
+
+html.a11y-headings :is(h1, h2, h3, h4, h5, h6) { outline: 2px solid #22D3EE !important; outline-offset: 4px; }
+
+html.a11y-font body, html.a11y-font body *:not(svg):not(svg *) { font-family: Arial, "Helvetica Neue", sans-serif !important; letter-spacing: normal !important; }
+
+html.a11y-spacing body *:not(svg):not(svg *) { line-height: 1.8 !important; letter-spacing: .06em !important; word-spacing: .12em !important; }
+
+html.a11y-motion *, html.a11y-motion *::before, html.a11y-motion *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+html.a11y-motion [data-reveal], html.a11y-motion [data-parallax], html.a11y-motion [data-parallax] img { opacity: 1 !important; transform: none !important; }
+
+html.a11y-cursor, html.a11y-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M6 4l30 16-13 3-6 13z' fill='%23000' stroke='%23fff' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto !important;
+}
+
+html.a11y-focus :focus, html.a11y-focus :focus-visible { outline: 3px solid #FACC15 !important; outline-offset: 3px !important; box-shadow: 0 0 0 6px rgba(7, 8, 15, .7) !important; }

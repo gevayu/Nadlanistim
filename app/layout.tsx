@@ -6,7 +6,13 @@ import Footer from "@/components/Footer";
 import BentoMouseTracker from "@/components/BentoMouseTracker";
 import RevealObserver from "@/components/RevealObserver";
 import LayoutGate from "@/components/LayoutGate";
+import A11yWidget from "@/components/A11yWidget";
+import { A11Y_KEY, applyA11y } from "@/lib/a11y";
 import { OG_BASE, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+// Saved accessibility settings go on <html> before the first paint, so a visitor with large text or high
+// contrast never sees the page flash at the default size first.
+const A11Y_BOOT = `try{(${applyA11y.toString()})(JSON.parse(localStorage.getItem(${JSON.stringify(A11Y_KEY)})||"{}")||{})}catch(e){}`;
 
 const HOME_TITLE = `${SITE_NAME} | הקהילה המקצועית של ענף הנדל״ן בישראל`;
 const HOME_DESCRIPTION =
@@ -26,7 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="he" dir="rtl">
+    <html lang="he" dir="rtl" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: A11Y_BOOT }} />
+      </head>
       <body>
         <LayoutGate>
           <Background />
@@ -38,6 +47,7 @@ export default function RootLayout({
           <BentoMouseTracker />
         </LayoutGate>
         <RevealObserver />
+        <A11yWidget />
       </body>
     </html>
   );
