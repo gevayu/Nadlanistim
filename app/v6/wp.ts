@@ -6,7 +6,19 @@ export type Sponsor = { name: string; logo?: string; url?: string };
 export type Stat = { count: number; label: string; suffix: string };
 /** "יצירת קשר ורשתות" in "הגדרות אתר"; an empty field hides its button. */
 export type Contact = { email: string; whatsapp: string; instagram: string; tiktok: string };
-export type HomeSettings = { heroLines: string[]; heroSub: string; stats: Stat[]; marquee: string[]; contact: Contact };
+/** "עמוד הבית: תמונות ו"מי אנחנו"" in "הגדרות אתר" (mu-plugin nadlanistim-fields.php); empty parts are hidden. */
+export type HomeAbout = {
+  heroImage: string;
+  title: string[];
+  paragraphs: string[];
+  points: string[];
+  imageLarge: string;
+  imageSmall: string;
+  badgeNumber: number | null;
+  badgeText: string[];
+  featuredBg: string;
+};
+export type HomeSettings = { heroLines: string[]; heroSub: string; stats: Stat[]; marquee: string[]; contact: Contact; about: HomeAbout };
 
 type WpDeal = {
   databaseId: number;
@@ -35,8 +47,26 @@ type WpSettings = {
   tiktokUrl: string | null;
 };
 
+type Img = { node: { sourceUrl: string } } | null;
+type WpHome = {
+  homeHeroImage: Img;
+  homeAboutTitle: string | null;
+  homeAboutText: string | null;
+  homeAboutPoints: string | null;
+  homeAboutImageLarge: Img;
+  homeAboutImageSmall: Img;
+  homeAboutBadgeNumber: number | null;
+  homeAboutBadgeText: string | null;
+  homeFeaturedBg: Img;
+};
+
 const QUERY = `{
-  siteSettings { siteSettingsFields { marquee heroSub heroLines { line } stats { count label suffix } contactEmail whatsappUrl instagramUrl tiktokUrl } }
+  siteSettings { siteSettingsFields { marquee heroSub heroLines { line } stats { count label suffix } contactEmail whatsappUrl instagramUrl tiktokUrl }
+    homeContent {
+      homeHeroImage { node { sourceUrl } } homeAboutTitle homeAboutText homeAboutPoints
+      homeAboutImageLarge { node { sourceUrl } } homeAboutImageSmall { node { sourceUrl } }
+      homeAboutBadgeNumber homeAboutBadgeText homeFeaturedBg { node { sourceUrl } }
+    } }
   deals(first: 100) { nodes {
     databaseId date title
     featuredImage { node { sourceUrl(size: MEDIUM_LARGE) } }
@@ -66,30 +96,49 @@ const toSponsor = ({ title, sponsorFields: f }: WpSponsor): Sponsor => ({
   url: f?.websiteUrl || undefined,
 });
 
-const toSettings = (f: WpSettings | null): HomeSettings => ({
-  heroLines: (f?.heroLines ?? []).map((r) => r.line ?? "").filter(Boolean),
-  heroSub: f?.heroSub ?? "",
-  stats: (f?.stats ?? [])
-    .filter((s) => s.count != null && s.label)
-    .map((s) => ({ count: s.count!, label: s.label!, suffix: s.suffix ?? "" })),
-  marquee: wpLines(f?.marquee),
-  contact: {
-    email: f?.contactEmail?.trim() ?? "",
-    whatsapp: f?.whatsappUrl?.trim() ?? "",
-    instagram: f?.instagramUrl?.trim() ?? "",
-    tiktok: f?.tiktokUrl?.trim() ?? "",
-  },
+const img = (i: Img) => i?.node.sourceUrl ?? "";
+
+const toAbout = (h: WpHome | null, stats: Stat[]): HomeAbout => ({
+  heroImage: img(h?.homeHeroImage ?? null),
+  title: wpLines(h?.homeAboutTitle),
+  // "{מספר חברים}" is the first "מספרים" count, so the paragraph never disagrees with the stats strip.
+  paragraphs: wpLines(h?.homeAboutText).map((p) => p.replace("{מספר חברים}", stats[0] ? stats[0].count.toLocaleString("en-US") : "")),
+  points: wpLines(h?.homeAboutPoints),
+  imageLarge: img(h?.homeAboutImageLarge ?? null),
+  imageSmall: img(h?.homeAboutImageSmall ?? null),
+  badgeNumber: h?.homeAboutBadgeNumber ?? null,
+  badgeText: wpLines(h?.homeAboutBadgeText),
+  featuredBg: img(h?.homeFeaturedBg ?? null),
 });
+
+const toSettings = (f: WpSettings | null, h: WpHome | null): HomeSettings => {
+  const stats = (f?.stats ?? [])
+    .filter((s) => s.count != null && s.label)
+    .map((s) => ({ count: s.count!, label: s.label!, suffix: s.suffix ?? "" }));
+  return {
+    heroLines: (f?.heroLines ?? []).map((r) => r.line ?? "").filter(Boolean),
+    heroSub: f?.heroSub ?? "",
+    stats,
+    marquee: wpLines(f?.marquee),
+    contact: {
+      email: f?.contactEmail?.trim() ?? "",
+      whatsapp: f?.whatsappUrl?.trim() ?? "",
+      instagram: f?.instagramUrl?.trim() ?? "",
+      tiktok: f?.tiktokUrl?.trim() ?? "",
+    },
+    about: toAbout(h, stats),
+  };
+};
 
 /** The home fields of "הגדרות אתר", deals, and the "main" tier partners (event-tier partners belong to event pages). */
 export async function getHomeContent(): Promise<{ settings: HomeSettings; deals: Deal[]; sponsors: Sponsor[] }> {
   const data = await wpQuery<{
-    siteSettings: { siteSettingsFields: WpSettings | null } | null;
+    siteSettings: { siteSettingsFields: WpSettings | null; homeContent: WpHome | null } | null;
     deals: { nodes: WpDeal[] };
     sponsors: { nodes: WpSponsor[] };
   }>(QUERY);
   return {
-    settings: toSettings(data.siteSettings?.siteSettingsFields ?? null),
+    settings: toSettings(data.siteSettings?.siteSettingsFields ?? null, data.siteSettings?.homeContent ?? null),
     deals: data.deals.nodes.sort(byPublished).map(toDeal),
     sponsors: data.sponsors.nodes
       .filter((s) => s.sponsorFields?.tier?.includes("main"))

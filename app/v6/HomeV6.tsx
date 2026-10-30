@@ -51,13 +51,6 @@ const NAV_LINKS: [string, string][] = [
 // Stat bars step down card by card; a visual rhythm, not a measure of the number above them.
 const STAT_BAR_WIDTHS = ["96%", "78%", "62%", "46%"];
 
-const ABOUT_BULLETS: [string, string][] = [
-  ["01", "חיבורים ישירים בין אנשי מקצוע"],
-  ["02", "אירועי נטוורקינג פרימיום"],
-  ["03", "למידה ושיתוף ידע ברמה הגבוהה בענף"],
-  ["04", "הזדמנויות עסקיות שמתחילות בקהילה"],
-];
-
 
 
 
@@ -615,6 +608,9 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const quoted = people.filter((n) => n.homepage && n.quote);
   const memberCats = categories;
   const { settings, deals, sponsors } = home;
+  // "הגדרות אתר" → "עמוד הבית: תמונות ו"מי אנחנו"". Each part shows only when its field is filled.
+  const about = settings.about;
+  const hasAbout = about.title.length > 0 || about.paragraphs.length > 0 || about.points.length > 0 || !!about.imageLarge || !!about.imageSmall;
   const c = settings.contact;
   const channels = [c.whatsapp, c.instagram, c.tiktok, c.email].filter(Boolean);
   const byDate = (a: EventItem, b: EventItem) => a.date.localeCompare(b.date);
@@ -710,10 +706,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {/* Hero */}
       <section className="v6-hero" id="top">
         <div className="v6-hero__media" data-parallax="0.3">
-          <img
-            src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=2400&q=80"
-            alt=""
-          />
+          {about.heroImage && <img src={about.heroImage} alt="" />}
           <div className="v6-hero__veil" />
         </div>
         <div className="v6-hero__glow" aria-hidden />
@@ -784,45 +777,56 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       </section>}
 
       {/* About */}
+      {hasAbout && (
       <section className="v6-section" id="about">
         <div className="v6-container">
           <div className="v6-about__grid">
             <div className="v6-about__text">
               <span className="v6-eyebrow" data-reveal><span className="v6-dot" />מי אנחנו</span>
-              <h2 data-reveal>
-                לא פיד.<br />
-                לא פורטל.<br />
-                <em>קהילה.</em>
-              </h2>
-              <p data-reveal>
-                הנדלניסטים היא קהילה מקצועית של מעל 3,400 אנשי נדל״ן בישראל -
-                אנשים שמייצרים יחד עסקאות, פרויקטים, ידע והזדמנויות.
-              </p>
-              <p data-reveal>
-                אנחנו לא עוד מקום לקרוא בו תוכן. אנחנו המקום שבו אנשי הנדל״ן
-                הכי טובים בישראל נפגשים, מכירים, ועושים עסקים.
-              </p>
-              <ul className="v6-about__list" data-reveal>
-                {ABOUT_BULLETS.map(([n, text]) => (
-                  <li key={n}><span>{n}</span>{text}</li>
-                ))}
-              </ul>
+              {about.title.length > 0 && (
+                <h2 data-reveal>
+                  {about.title.map((line, i) => (
+                    <Fragment key={i}>
+                      {i === about.title.length - 1 ? <em>{line}</em> : <>{line}<br /></>}
+                    </Fragment>
+                  ))}
+                </h2>
+              )}
+              {about.paragraphs.map((p, i) => (
+                <p key={i} data-reveal>{p}</p>
+              ))}
+              {about.points.length > 0 && (
+                <ul className="v6-about__list" data-reveal>
+                  {about.points.map((text, i) => (
+                    <li key={i}><span>{String(i + 1).padStart(2, "0")}</span>{text}</li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div className="v6-about__media" data-reveal>
-              <figure className="v6-about__img v6-about__img--lg" data-parallax="0.1">
-                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80" alt="" />
-              </figure>
-              <figure className="v6-about__img v6-about__img--sm" data-parallax="0.2">
-                <img src="https://images.unsplash.com/photo-1559223607-a43c990c692c?w=900&q=80" alt="" />
-              </figure>
-              <div className="v6-about__badge v6-glass">
-                <div className="v6-about__badge-num">7</div>
-                <div className="v6-about__badge-text">שנים<br />של קהילה</div>
-              </div>
+              {about.imageLarge && (
+                <figure className="v6-about__img v6-about__img--lg" data-parallax="0.1">
+                  <img src={about.imageLarge} alt="" />
+                </figure>
+              )}
+              {about.imageSmall && (
+                <figure className="v6-about__img v6-about__img--sm" data-parallax="0.2">
+                  <img src={about.imageSmall} alt="" />
+                </figure>
+              )}
+              {about.badgeNumber != null && (
+                <div className="v6-about__badge v6-glass">
+                  <div className="v6-about__badge-num">{about.badgeNumber}</div>
+                  <div className="v6-about__badge-text">
+                    {about.badgeText.map((line, i) => <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>)}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
+      )}
 
       {/* Communities */}
       <section className="v6-section" id="communities">
@@ -899,7 +903,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {featured && (
       <section className="v6-featured" id="featured">
         <div className="v6-featured__bg" data-parallax="0.25">
-          <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=2400&q=80" alt="" />
+          {about.featuredBg && <img src={about.featuredBg} alt="" />}
         </div>
         <div className="v6-container v6-featured__grid">
           <div className="v6-featured__text">
