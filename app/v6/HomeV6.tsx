@@ -854,6 +854,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       )}
 
       {/* Events (duplicate, above Stories) */}
+      {upcoming.length > 0 && (
       <section className="v6-section">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--row" data-reveal>
@@ -890,8 +891,10 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </div>
         </div>
       </section>
+      )}
 
       {/* Featured event */}
+      {featured && (
       <section className="v6-featured" id="featured">
         <div className="v6-featured__bg" data-parallax="0.25">
           <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=2400&q=80" alt="" />
@@ -933,6 +936,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </aside>
         </div>
       </section>
+      )}
 
       {/* Deal room (Projects) */}
       <section className="v6-section" id="dealroom">

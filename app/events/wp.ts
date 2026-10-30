@@ -2,6 +2,9 @@
 import { wpLines, wpQuery } from "../../lib/wp";
 import { featuredEvent, pickEvent, type EventItem, type FeatureIcon } from "./data";
 
+// "YYYY-MM-DD" in Israel, comparable with the ACF event date.
+const israelToday = () => new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Jerusalem" });
+
 type Img = { node: { sourceUrl: string } } | null;
 type Gallery = { nodes: { sourceUrl: string }[] } | null;
 
@@ -89,7 +92,8 @@ const toEvent = ({ slug, title, featuredImage, eventTypes, eventFields: f }: WpE
     desc: f?.description ?? "",
     cta: link(f?.ctaUrl),
     accent: !!f?.isAccent,
-    past: !!f?.isPast,
+    // Past when WordPress says so, or once the event day is over (Israel time), so an editor never has to flip it.
+    past: !!f?.isPast || (!!f?.eventDate && f.eventDate.slice(0, 10) < israelToday()),
     price: f?.price ?? "",
     audience: f?.audience ?? "",
     agenda: cols(f?.agenda).map(([time = "", what = ""]) => ({ time, what })),
