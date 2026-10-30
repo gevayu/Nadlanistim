@@ -228,6 +228,29 @@ add_action(
 						'instructions' => 'משפט קצר ליד הלוגו. לא חובה.',
 						'wrapper'      => array( 'width' => '40' ),
 					),
+					// A banner replaces the logo and text line; the strip keeps the sponsor's link.
+					array(
+						'key'           => 'field_nad_sp_' . $key . '_banner_desktop',
+						'label'         => 'באנר לדסקטופ',
+						'name'          => 'banner_desktop',
+						'type'          => 'image',
+						'return_format' => 'url',
+						'preview_size'  => 'medium',
+						'mime_types'    => 'jpg,jpeg,png,webp,gif',
+						'instructions'  => '1920×320 פיקסלים. כשיש באנר, הוא מוצג במקום הלוגו והטקסט.',
+						'wrapper'       => array( 'width' => '50' ),
+					),
+					array(
+						'key'           => 'field_nad_sp_' . $key . '_banner_mobile',
+						'label'         => 'באנר למובייל',
+						'name'          => 'banner_mobile',
+						'type'          => 'image',
+						'return_format' => 'url',
+						'preview_size'  => 'medium',
+						'mime_types'    => 'jpg,jpeg,png,webp,gif',
+						'instructions'  => '1080×540 פיקסלים. בלי באנר למובייל, הטלפון מציג את באנר הדסקטופ.',
+						'wrapper'       => array( 'width' => '50' ),
+					),
 				),
 			);
 		};
