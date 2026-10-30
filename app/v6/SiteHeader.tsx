@@ -17,7 +17,7 @@ const NAV_LINKS: [string, string][] = [
   ["/#podcast", "פודקאסט"],
   ["/#dealroom", "חדר העסקאות"],
   ["/#stories", "קריירה"],
-  ["/#contact", "צרו קשר"],
+  ["/contact", "צרו קשר"],
 ];
 
 function useScrolled(threshold = 40) {
@@ -31,20 +31,21 @@ function useScrolled(threshold = 40) {
   return scrolled;
 }
 
-// "Members" opens the personal area when signed in, else the login page. The httpOnly session cookie is
-// out of the browser's reach, so lib/auth.ts sets this readable flag next to it (SIGNED_IN_COOKIE).
-export function useMembersHref() {
-  const [href, setHref] = useState("/login");
+// The members button: "Members Only" to the login page, or "החשבון שלי" to the personal area once signed in.
+// The httpOnly session cookie is out of the browser's reach, so lib/auth.ts sets this readable flag next to it
+// (SIGNED_IN_COOKIE).
+export function useMembersLink() {
+  const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
-    if (/(?:^|;\s*)nad_signed_in=1(?:;|$)/.test(document.cookie)) setHref("/account");
+    setSignedIn(/(?:^|;\s*)nad_signed_in=1(?:;|$)/.test(document.cookie));
   }, []);
-  return href;
+  return { href: signedIn ? "/account" : "/login", long: signedIn ? "החשבון שלי" : "Members Only", short: signedIn ? "החשבון שלי" : "Members" };
 }
 
 export default function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const scrolled = useScrolled();
-  const membersHref = useMembersHref();
+  const members = useMembersLink();
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
@@ -75,9 +76,9 @@ export default function SiteHeader() {
               <a key={label} href={href}>{label}</a>
             ))}
           </nav>
-          <a href={membersHref} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
-            <span className="v6-nav__cta-long">Members Only</span>
-            <span className="v6-nav__cta-short">Members</span>
+          <a href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
+            <span className="v6-nav__cta-long">{members.long}</span>
+            <span className="v6-nav__cta-short">{members.short}</span>
             <ArrowIcon />
           </a>
         </div>
@@ -94,8 +95,8 @@ export default function SiteHeader() {
           {NAV_LINKS.map(([href, label]) => (
             <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
           ))}
-          <a href={membersHref} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
-            <span>Members Only</span>
+          <a href={members.href} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
+            <span>{members.long}</span>
             <ArrowIcon />
           </a>
         </div>

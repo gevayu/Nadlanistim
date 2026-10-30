@@ -4,9 +4,10 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { celebrate } from "./confetti";
 import { sendHomeContact } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
+import { ROLE_OPTIONS } from "../forms/options";
 import SponsorStrip from "./SponsorStrip";
 import SiteFooter from "./SiteFooter";
-import { useMembersHref } from "./SiteHeader";
+import { useMembersLink } from "./SiteHeader";
 import type { Community } from "../communities/data";
 import type { Job } from "../jobs/data";
 import type { Nadlanist } from "../nadlanistim/data";
@@ -45,7 +46,7 @@ const NAV_LINKS: [string, string][] = [
   ["#podcast", "פודקאסט"],
   ["#dealroom", "חדר העסקאות"],
   ["#stories", "קריירה"],
-  ["#contact", "צרו קשר"],
+  ["/contact", "צרו קשר"],
 ];
 
 // Stat bars step down card by card; a visual rhythm, not a measure of the number above them.
@@ -86,7 +87,6 @@ const carouselItems = (communities: Community[]) =>
 
 
 
-const ROLE_OPTIONS = ["יזם / יזמית", "משקיע / משקיעה", "שמאי מקרקעין", "עו״ד", "קבלן", "מתווך / מתווכת", "אדריכל / אדריכלית", "חברת מימון", "פרופטק", "שיווק נדל״ן", "אחר"];
 
 
 function useScrolled(threshold = 40) {
@@ -634,7 +634,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const [featuredMain, featuredAccent] = ((t) =>
     t.includes(" - ") ? splitTitle(t) : [t.slice(0, t.lastIndexOf(" ")), t.slice(t.lastIndexOf(" ") + 1)])(featured?.title ?? "");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const membersHref = useMembersHref();
+  const members = useMembersLink();
   const contact = useFormSend(sendHomeContact);
   const sent = !!contact.state.ok;
   useEffect(() => {
@@ -688,9 +688,9 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <a key={label} href={href}>{label}</a>
             ))}
           </nav>
-          <a href={membersHref} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
-            <span className="v6-nav__cta-long">Members Only</span>
-            <span className="v6-nav__cta-short">Members</span>
+          <a href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
+            <span className="v6-nav__cta-long">{members.long}</span>
+            <span className="v6-nav__cta-short">{members.short}</span>
             <ArrowIcon />
           </a>
         </div>
@@ -708,8 +708,8 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           {NAV_LINKS.map(([href, label]) => (
             <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
           ))}
-          <a href={membersHref} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
-            <span>Members Only</span>
+          <a href={members.href} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
+            <span>{members.long}</span>
             <ArrowIcon />
           </a>
         </div>

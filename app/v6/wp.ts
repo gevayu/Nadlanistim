@@ -146,3 +146,17 @@ export async function getHomeContent(): Promise<{ settings: HomeSettings; deals:
       .map(toSponsor),
   };
 }
+
+/** Just "יצירת קשר ורשתות" from "הגדרות אתר", for pages that need the channels and nothing else (/contact). */
+export async function getContact(): Promise<Contact> {
+  const data = await wpQuery<{
+    siteSettings: { siteSettingsFields: Pick<WpSettings, "contactEmail" | "whatsappUrl" | "instagramUrl" | "tiktokUrl"> | null } | null;
+  }>(`{ siteSettings { siteSettingsFields { contactEmail whatsappUrl instagramUrl tiktokUrl } } }`);
+  const f = data.siteSettings?.siteSettingsFields;
+  return {
+    email: f?.contactEmail?.trim() ?? "",
+    whatsapp: f?.whatsappUrl?.trim() ?? "",
+    instagram: f?.instagramUrl?.trim() ?? "",
+    tiktok: f?.tiktokUrl?.trim() ?? "",
+  };
+}
