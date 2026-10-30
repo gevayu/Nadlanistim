@@ -194,3 +194,15 @@ add_action(
 	},
 	99
 );
+
+// The Importer plugin labels the "building" stage "תכנון והקמה", too close to "תכנון והיתרים".
+// Relabelled here so a plugin update cannot bring the old name back; the stored value stays "building".
+add_filter(
+	'acf/load_field/key=field_nad_col_stage',
+	function ( $field ) {
+		if ( isset( $field['choices']['building'] ) ) {
+			$field['choices']['building'] = 'בנייה';
+		}
+		return $field;
+	}
+);

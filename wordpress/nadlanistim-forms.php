@@ -57,7 +57,7 @@ function nadlanistim_forms_specs() {
 			'fixed'     => array( 'board_tab' => 'looking', 'published_date' => current_time( 'Ymd' ) ),
 			'fields'    => array(
 				'title'       => array( 'label' => 'כותרת', 'type' => 'text', 'required' => true, 'post' => true ),
-				'type'        => array( 'label' => 'סוג שיתוף הפעולה', 'type' => 'select', 'required' => true, 'acf' => 'type', 'options' => nadlanistim_forms_same( array( 'קרקע', 'בנייה', 'שיפוצים', 'השקעות', 'טכנולוגיה' ) ) ),
+				'type'        => array( 'label' => 'סוג שיתוף הפעולה', 'type' => 'select', 'required' => true, 'acf' => 'type', 'options' => nadlanistim_forms_same( array( 'התחדשות עירונית', 'קרקע', 'בנייה', 'שיפוצים', 'השקעות', 'טכנולוגיה' ) ) ),
 				'role'        => array(
 					'label'    => 'תפקיד נדרש',
 					'type'     => 'select',
@@ -65,7 +65,7 @@ function nadlanistim_forms_specs() {
 					'acf'      => 'looking',
 					'options'  => array( 'שותף פיננסי' => 'financial', 'שותף מקצועי' => 'profession', 'שותף לעסקת יזמות' => '', 'קבלן' => 'contractor', 'יועץ' => 'proptech' ),
 				),
-				'area'        => array( 'label' => 'אזור', 'type' => 'select', 'required' => true, 'acf' => 'place', 'options' => nadlanistim_forms_same( array( 'צפון', 'מרכז', 'דרום', 'ירושלים', 'כל הארץ' ) ) ),
+				'area'        => array( 'label' => 'אזור', 'type' => 'select', 'required' => true, 'acf' => 'place', 'options' => nadlanistim_forms_same( array( 'צפון', 'שרון', 'מרכז', 'דרום', 'ירושלים', 'כל הארץ' ) ) ),
 				'invest'      => array(
 					'label'    => 'רמת השקעה',
 					'type'     => 'select',
