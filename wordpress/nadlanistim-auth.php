@@ -60,7 +60,32 @@ function nadlanistim_auth_user( WP_REST_Request $req ) {
 	if ( ! $user ) {
 		return null;
 	}
-	return hash_equals( nadlanistim_auth_sign( $user->ID, $expires, $user->user_pass ), $m[3] ) ? $user : null;
+	if ( ! hash_equals( nadlanistim_auth_sign( $user->ID, $expires, $user->user_pass ), $m[3] ) ) {
+		return null;
+	}
+	return nadlanistim_auth_blocked( $user ) ? null : $user;
+}
+
+/**
+ * Why a member may not sign in yet, or null when they may. Two conditions, both needed: the managers
+ * approved the application ("✓ אישור חבר" in Users clears nad_pending; nad_status "cancelled" shuts the
+ * account) and the membership is paid (a completed order, see nadlanistim_auth_member_until).
+ * Staff (anyone who can edit posts) are never blocked.
+ */
+function nadlanistim_auth_blocked( WP_User $user ) {
+	if ( user_can( $user, 'edit_posts' ) ) {
+		return null;
+	}
+	if ( 'cancelled' === get_user_meta( $user->ID, 'nad_status', true ) ) {
+		return nadlanistim_auth_error( 'cancelled', 'החשבון הזה אינו פעיל. לפרטים כתבו לנו בעמוד צור קשר.', 403 );
+	}
+	if ( get_user_meta( $user->ID, 'nad_pending', true ) ) {
+		return nadlanistim_auth_error( 'pending', 'הבקשה שלכם ממתינה לאישור מנהלי הקהילה. כשהיא תאושר, נשלח לכם מייל.', 403 );
+	}
+	if ( nadlanistim_auth_member_until( $user->user_email ) <= time() ) {
+		return nadlanistim_auth_error( 'unpaid', 'הכניסה פתוחה לחברים עם חברות בתוקף. אחרי התשלום על החברות אפשר יהיה להיכנס.', 403 );
+	}
+	return null;
 }
 
 /* ─── Email verification ────────────────────────────────────────────────── */
@@ -357,6 +382,10 @@ function nadlanistim_auth_login( WP_REST_Request $req ) {
 	$user     = ( is_email( $email ) && '' !== $password && strlen( $password ) <= 200 ) ? wp_authenticate( $email, $password ) : null;
 	if ( ! $user instanceof WP_User ) {
 		return nadlanistim_auth_error( 'bad_login', 'האימייל או הסיסמה לא נכונים.', 401 );
+	}
+	$blocked = nadlanistim_auth_blocked( $user );
+	if ( $blocked ) {
+		return $blocked;
 	}
 	if ( ! nadlanistim_auth_verified( $user ) ) {
 		nadlanistim_auth_send_verify( $user );
