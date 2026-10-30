@@ -8,7 +8,7 @@ export type AuthFormState = {
   /** Forgot-password: the request went through (shown whether or not the email has an account). */
   sent?: boolean;
   /** What the visitor typed (never the password), so a failed submit doesn't wipe the form. */
-  values?: { email?: string; name?: string };
+  values?: { email?: string };
 };
 
 type TokenReply = { token: string; expires: number };
@@ -24,17 +24,6 @@ export async function login(_prev: AuthFormState, form: FormData): Promise<AuthF
   if (!res.ok) return { error: res.error, values: { email } };
   await startSession(res.data.token, res.data.expires);
   redirect(safeNext(form.get("next")));
-}
-
-export async function register(_prev: AuthFormState, form: FormData): Promise<AuthFormState> {
-  const values = { email: field(form, "email"), name: field(form, "name") };
-  const password = String(form.get("password") ?? "");
-  if (password.length < 8) return { error: "הסיסמה צריכה להיות באורך 8 תווים לפחות.", values };
-
-  const res = await authApi<TokenReply>("register", { method: "POST", body: { ...values, password } });
-  if (!res.ok) return { error: res.error, values };
-  await startSession(res.data.token, res.data.expires);
-  redirect("/account");
 }
 
 export async function forgotPassword(_prev: AuthFormState, form: FormData): Promise<AuthFormState> {

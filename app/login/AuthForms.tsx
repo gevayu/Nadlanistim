@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { forgotPassword, login, register, type AuthFormState } from "./actions";
+import { forgotPassword, login, type AuthFormState } from "./actions";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -36,35 +36,9 @@ export function LoginForm({ next, notice }: { next: string; notice?: string }) {
       <Submit pending={pending} label="כניסה" busy="נכנסים…" />
       <div className="au-links">
         <a href="/forgot-password">שכחתם סיסמה?</a>
-        <a href="/register">אין לכם חשבון? להרשמה</a>
       </div>
-    </form>
-  );
-}
-
-export function RegisterForm() {
-  const [state, action, pending] = useActionState<AuthFormState, FormData>(register, {});
-  return (
-    <form className="pg-form" action={action}>
-      <div className="v6-field">
-        <label htmlFor="au-name">שם מלא</label>
-        <input id="au-name" name="name" type="text" required maxLength={100} autoComplete="name" defaultValue={state.values?.name} />
-      </div>
-      <div className="v6-field">
-        <label htmlFor="au-email">אימייל</label>
-        <input id="au-email" name="email" type="email" required autoComplete="email" placeholder="you@email.com" defaultValue={state.values?.email} />
-        <small className="au-hint">אותו אימייל שאיתו שילמתם על החברות.</small>
-      </div>
-      <div className="v6-field">
-        <label htmlFor="au-pass">סיסמה</label>
-        <input id="au-pass" name="password" type="password" required minLength={8} autoComplete="new-password" />
-        <small className="au-hint">8 תווים לפחות.</small>
-      </div>
-      <FormError text={state.error} />
-      <Submit pending={pending} label="פתיחת חשבון" busy="פותחים חשבון…" />
-      <div className="au-links">
-        <a href="/login">כבר יש לכם חשבון? לכניסה</a>
-      </div>
+      {/* New members start at the join page; it opens their user, and "שכחתם סיסמה?" sets the password. */}
+      <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg v6-btn--block au-join">אין לכם חשבון? להרשמה</a>
     </form>
   );
 }

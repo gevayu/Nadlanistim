@@ -30,7 +30,6 @@ const PAGES: Record<string, Crumb> = {
   "/checkout": { label: "תשלום" },
   "/thank-you": { label: "תודה" },
   "/login": { label: "כניסה לחברים" },
-  "/register": { label: "פתיחת חשבון", parent: "/login" },
   "/forgot-password": { label: "איפוס סיסמה", parent: "/login" },
 };
 

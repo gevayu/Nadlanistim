@@ -9,4 +9,5 @@
 .v6-root .au-links { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px; font-size: 14px; }
 .v6-root .au-links a { display: inline-block; padding-block: 10px; color: var(--cyan); }
 .v6-root .au-links a:hover { text-decoration: underline; }
+.v6-root .au-join { margin-top: 6px; }
 .v6-root .pg-form button:disabled { opacity: .6; cursor: progress; }

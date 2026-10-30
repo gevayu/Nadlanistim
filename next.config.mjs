@@ -18,6 +18,8 @@ const nextConfig = {
       { source: "/jobs-locked", destination: "/jobs", permanent: true },
       // The single job page moved to /job/<serial> when listings came from WordPress.
       { source: "/job", destination: "/jobs", permanent: true },
+      // Accounts are no longer opened on their own: new members go through the join page.
+      { source: "/register", destination: "/join", permanent: true },
       // /posts never had a list page (only the legacy /posts/<slug> articles); the knowledge base is the list.
       { source: "/posts", destination: "/post-archive", permanent: true },
       // WordPress sends a nadlanist's "View" to /profile?as=<slug>; plain /profile stays the member's own page.
