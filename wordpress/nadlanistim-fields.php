@@ -108,6 +108,83 @@ add_action(
 			)
 		);
 
+		// "הגדרות אתר" → the homepage's images and "מי אנחנו" block. An empty field hides its part on the site.
+		$image = function ( $name, $label, $instructions, $width = '50' ) {
+			return array(
+				'key'           => 'field_nad_' . $name,
+				'label'         => $label,
+				'name'          => $name,
+				'type'          => 'image',
+				'return_format' => 'url',
+				'preview_size'  => 'medium',
+				'instructions'  => $instructions,
+				'wrapper'       => array( 'width' => $width ),
+			);
+		};
+		acf_add_local_field_group(
+			array(
+				'key'                => 'group_nad_settings_home',
+				'title'              => 'עמוד הבית: תמונות ו"מי אנחנו"',
+				'fields'             => array(
+					$image( 'home_hero_image', 'תמונת רקע להירו', 'התמונה הגדולה בראש עמוד הבית. רוחב 2400 פיקסלים לפחות.', '100' ),
+					array(
+						'key'          => 'field_nad_home_about_title',
+						'label'        => 'כותרת "מי אנחנו"',
+						'name'         => 'home_about_title',
+						'type'         => 'textarea',
+						'rows'         => 3,
+						'new_lines'    => '',
+						'instructions' => 'שורה לכל שורה בכותרת. השורה האחרונה מודגשת בצבע.',
+						'wrapper'      => array( 'width' => '40' ),
+					),
+					array(
+						'key'          => 'field_nad_home_about_text',
+						'label'        => 'פסקאות',
+						'name'         => 'home_about_text',
+						'type'         => 'textarea',
+						'rows'         => 4,
+						'new_lines'    => '',
+						'instructions' => 'פסקה בכל שורה. {מספר חברים} מוחלף במספר הראשון מ"מספרים" למעלה, כך שהוא תמיד תואם.',
+						'wrapper'      => array( 'width' => '60' ),
+					),
+					array(
+						'key'          => 'field_nad_home_about_points',
+						'label'        => 'נקודות',
+						'name'         => 'home_about_points',
+						'type'         => 'textarea',
+						'rows'         => 4,
+						'new_lines'    => '',
+						'instructions' => 'נקודה בכל שורה. המספור (01, 02...) נוסף לבד.',
+					),
+					$image( 'home_about_image_large', 'תמונה גדולה', 'התמונה הראשית ליד "מי אנחנו".' ),
+					$image( 'home_about_image_small', 'תמונה קטנה', 'התמונה הקטנה שעולה על הגדולה.' ),
+					array(
+						'key'          => 'field_nad_home_about_badge_number',
+						'label'        => 'תג: מספר',
+						'name'         => 'home_about_badge_number',
+						'type'         => 'number',
+						'min'          => 0,
+						'instructions' => 'המספר הגדול בתג שעל התמונות. ריק = בלי תג.',
+						'wrapper'      => array( 'width' => '30' ),
+					),
+					array(
+						'key'          => 'field_nad_home_about_badge_text',
+						'label'        => 'תג: טקסט',
+						'name'         => 'home_about_badge_text',
+						'type'         => 'textarea',
+						'rows'         => 2,
+						'new_lines'    => '',
+						'instructions' => 'מתחת למספר. שורה לכל שורה, למשל "שנים" ואז "של קהילה".',
+						'wrapper'      => array( 'width' => '70' ),
+					),
+					$image( 'home_featured_bg', 'רקע "האירוע המרכזי"', 'תמונת הרקע של האירוע המוצג בעמוד הבית.', '100' ),
+				),
+				'location'           => array( array( array( 'param' => 'options_page', 'operator' => '==', 'value' => 'nadlanistim-settings' ) ) ),
+				'show_in_graphql'    => 1,
+				'graphql_field_name' => 'homeContent',
+			)
+		);
+
 		// "הגדרות אתר" → "חסויות": the sponsor strips. Name, logo and link come from the chosen
 		// "נותני חסות" post, so a logo is kept in one place; the slot adds its own line and an on/off switch.
 		// The page itself is registered at priority 99 (below), after the Importer's parent page.
