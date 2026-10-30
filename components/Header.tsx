@@ -9,7 +9,7 @@ import { usesV6Chrome } from "@/lib/site-chrome";
 export default function Header() {
   const pathname = usePathname();
   if (usesV6Chrome(pathname)) return null;
-  const isHome = pathname === "/" || pathname === "/v2" || pathname === "/v3" || pathname === "/v4";
+  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [hideLogo, setHideLogo] = useState(isHome);
 

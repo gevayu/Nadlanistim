@@ -9,16 +9,16 @@
 //   2. In the page, render <SiteHeader /> at the top and <SiteFooter /> at the
 //      bottom (wrap content in `.v6-root`). See app/post-archive/page.tsx.
 //
-// Legacy pages (/, /v2–/v4, /posts/*) keep the existing global chrome.
+// Legacy pages (/posts/*) keep the existing global chrome.
 // /jobs/<slug> only forwards a WordPress link to /job/<serial>.
 
-// Prefix routes - these and their subpaths use V6 chrome (version sites +
-// dynamic detail routes). Matched as exact OR `route + "/..."`, so "/collaboration"
+// Prefix routes - these and their subpaths use V6 chrome (dynamic detail routes). Matched as exact OR `route + "/..."`, so "/collaboration"
 // covers "/collaboration/[slug]" but NOT "/collaborations" or "/collaboration-new".
-const V6_PREFIX_ROUTES = ["/v5", "/v6", "/collaboration", "/nadlanist", "/podcast", "/community", "/youth", "/job", "/article"];
+const V6_PREFIX_ROUTES = ["/collaboration", "/nadlanist", "/podcast", "/community", "/youth", "/job", "/article"];
 
 // Standalone V6-design internal pages - matched exactly.
 export const V6_EXACT_ROUTES = [
+  "/",
   "/post-archive",
   "/post",
   "/job",
@@ -42,6 +42,12 @@ export const V6_EXACT_ROUTES = [
   "/my-account",
   "/checkout",
   "/thank-you",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/terms",
+  "/privacy",
+  "/accessibility",
 ];
 
 export function usesV6Chrome(pathname: string | null | undefined): boolean {

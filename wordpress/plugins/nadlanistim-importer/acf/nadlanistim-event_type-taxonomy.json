@@ -1,0 +1,61 @@
+[
+    {
+        "ID": 91,
+        "key": "taxonomy_nad_event_type",
+        "title": "סוגי אירועים",
+        "menu_order": 0,
+        "active": true,
+        "taxonomy": "nad_event_type",
+        "object_type": [
+            "nad_event"
+        ],
+        "advanced_configuration": 0,
+        "import_source": "",
+        "import_date": "",
+        "labels": {
+            "name": "סוגי אירועים",
+            "singular_name": "סוג אירוע"
+        },
+        "description": "",
+        "capabilities": {
+            "manage_terms": "manage_categories",
+            "edit_terms": "manage_categories",
+            "delete_terms": "manage_categories",
+            "assign_terms": "edit_posts"
+        },
+        "public": true,
+        "publicly_queryable": true,
+        "hierarchical": false,
+        "show_ui": true,
+        "show_in_menu": true,
+        "show_in_nav_menus": true,
+        "show_in_rest": true,
+        "rest_base": "",
+        "rest_namespace": "wp/v2",
+        "rest_controller_class": "WP_REST_Terms_Controller",
+        "show_tagcloud": true,
+        "show_in_quick_edit": true,
+        "show_admin_column": true,
+        "rewrite": {
+            "permalink_rewrite": "taxonomy_key",
+            "slug": "",
+            "with_front": true,
+            "rewrite_hierarchical": false
+        },
+        "query_var": "taxonomy_key",
+        "query_var_name": "",
+        "default_term": {
+            "default_term_enabled": false,
+            "default_term_name": "",
+            "default_term_slug": "",
+            "default_term_description": ""
+        },
+        "sort": null,
+        "meta_box": "default",
+        "meta_box_cb": "",
+        "meta_box_sanitize_cb": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "_valid": true
+    }
+]

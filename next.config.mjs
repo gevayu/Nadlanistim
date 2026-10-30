@@ -8,11 +8,14 @@ const nextConfig = {
       },
     ],
   },
-  // The live homepage is the V6 design. Temporary (307) so "/" can later serve V6 directly.
-  // Browsers keep the #fragment, so "/#contact" lands on "/v6#contact".
   async redirects() {
     return [
-      { source: "/", destination: "/v6", permanent: false },
+      // The V6 homepage now renders at "/" (app/page.tsx). Old /v6 links keep working.
+      { source: "/v6", destination: "/", permanent: true },
+      // Mock-ups of the locked state from before login existed. The real pages now lock themselves
+      // for non-members (collaboration and nadlanist pages); the jobs board stays open to all.
+      { source: "/collaborations-locked", destination: "/collaborations", permanent: true },
+      { source: "/jobs-locked", destination: "/jobs", permanent: true },
       // The single job page moved to /job/<serial> when listings came from WordPress.
       { source: "/job", destination: "/jobs", permanent: true },
       // WordPress sends a nadlanist's "View" to /profile?as=<slug>; plain /profile stays the member's own page.

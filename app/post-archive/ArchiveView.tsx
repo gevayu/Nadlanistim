@@ -126,14 +126,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
           </div>
         </section>
 
-        {/* Sponsorship strip */}
-        <section className="v6-section">
-          <div className="v6-container">
-            <div className="v6-sponsorstrip v6-glass" data-reveal>
-              <span className="v6-sponsorstrip__title">Sponsorship#2</span>
-            </div>
-          </div>
-        </section>
+      <SponsorStrip slot="events" />
       </main>
 
       <SiteFooter />

@@ -32,3 +32,7 @@
 
 @media (max-width: 1100px) { .ac-quick { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .ac-quick { grid-template-columns: 1fr; } .ac-head__badge { margin-inline-start: 0; } }
+
+/* Logout: a quiet text button at the end of the header */
+.ac-logout { background: none; border: 0; padding: 6px 4px; font: inherit; font-size: 13.5px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.ac-logout:hover { color: var(--ink); }

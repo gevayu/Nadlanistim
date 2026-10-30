@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
+import SponsorStrip from "../v6/SponsorStrip";
 import "./collaborations.css";
-import { COLLAB_TABS, collabRegion, collabTab, type Collab } from "./data";
+import { collabRegion, collabTab, type Collab, type CollabTab } from "./data";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -16,27 +17,25 @@ type Filters = Record<FilterKey, string>; // "" = no filter
 
 const NO_FILTERS: Filters = { type: "", looking: "", region: "", invest: "" };
 
-type Field = { key: FilterKey; label: string; get: (c: Collab) => string; always?: string[] };
+type Field = { key: FilterKey; label: string; get: (c: Collab) => string };
 
 const FIELDS: Field[] = [
   { key: "type", label: "סוג", get: (c) => c.type },
-  // "שותף לעסקת יזמות" is a role on the publish form, so it stays on offer before any listing uses it.
-  { key: "looking", label: "תפקיד נדרש", get: (c) => c.looking, always: ["שותף לעסקת יזמות"] },
+  { key: "looking", label: "תפקיד נדרש", get: (c) => c.looking },
   { key: "region", label: "אזור", get: collabRegion },
   { key: "invest", label: "רמת השקעה", get: (c) => c.invest },
 ];
 
-// Options come from the listings themselves, so a filter (bar `always`) never offers a value no listing has.
-const optionsOf = (collabs: Collab[], f: Field) => [...new Set([...collabs.map(f.get), ...(f.always ?? [])].filter(Boolean))];
+// Options come from the open tab's listings, so a filter never offers a value no listing there has.
+const optionsOf = (collabs: Collab[], f: Field) => [...new Set(collabs.map(f.get).filter(Boolean))];
 
-const TABS = Object.entries(COLLAB_TABS);
-
-export default function CollabBoard({ collabs }: { collabs: Collab[] }) {
+export default function CollabBoard({ collabs, tabs }: { collabs: Collab[]; tabs: CollabTab[] }) {
   const [tab, setTab] = useState(0);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
-  const shown = collabs.filter(
-    (c) => collabTab(c) === TABS[tab][0] && FIELDS.every((f) => !filters[f.key] || f.get(c) === filters[f.key])
-  );
+  const inTab = collabs.filter((c) => collabTab(c) === tabs[tab]?.key);
+  const shown = inTab.filter((c) => FIELDS.every((f) => !filters[f.key] || f.get(c) === filters[f.key]));
+  // A filter with nothing to choose from is hidden.
+  const selects = FIELDS.map((f) => ({ ...f, options: optionsOf(inTab, f) })).filter((f) => f.options.length > 0);
 
   return (
     <SiteShell>
@@ -51,13 +50,18 @@ export default function CollabBoard({ collabs }: { collabs: Collab[] }) {
           {/* Refined controls panel */}
           <div className="co-controls v6-glass" data-reveal>
             <div className="co-tabs">
-              {TABS.map(([key, label], i) => (
-                <button key={key} type="button" className={`co-tab${i === tab ? " is-active" : ""}`} onClick={() => setTab(i)}>{label}</button>
+              {tabs.map(({ key, label }, i) => (
+                <button
+                  key={key}
+                  type="button"
+                  className={`co-tab${i === tab ? " is-active" : ""}`}
+                  onClick={() => { setTab(i); setFilters(NO_FILTERS); }}
+                >{label}</button>
               ))}
             </div>
 
             <div className="co-selects">
-              {FIELDS.map((f) => (
+              {selects.map((f) => (
                 <select
                   key={f.key}
                   className="pg-select"
@@ -66,7 +70,7 @@ export default function CollabBoard({ collabs }: { collabs: Collab[] }) {
                   onChange={(e) => setFilters({ ...filters, [f.key]: e.target.value })}
                 >
                   <option value="">{f.label}</option>
-                  {optionsOf(collabs, f).map((o) => <option key={o}>{o}</option>)}
+                  {f.options.map((o) => <option key={o}>{o}</option>)}
                 </select>
               ))}
             </div>
@@ -111,13 +115,7 @@ export default function CollabBoard({ collabs }: { collabs: Collab[] }) {
         </div>
       </section>
 
-      <section className="v6-section">
-        <div className="v6-container">
-          <div className="v6-sponsorstrip v6-glass" data-reveal>
-            <span className="v6-sponsorstrip__title">Sponsorship#2</span>
-          </div>
-        </div>
-      </section>
+      <SponsorStrip slot="events" />
     </SiteShell>
   );
 }

@@ -4,9 +4,8 @@ import { useRef } from "react";
 import { CalendarDays, GraduationCap, Handshake, MessageCircle } from "lucide-react";
 import SiteShell from "../../v6/SiteShell";
 import "../../communities/communities.css";
-import { communityLogo, type Community } from "../../communities/data";
+import type { Community } from "../../communities/data";
 import type { Nadlanist } from "../../nadlanistim/data";
-import { useNadlanistim } from "../../nadlanistim/member";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 
 const ArrowIcon = () => (
@@ -20,8 +19,7 @@ const ChevIcon = () => (
   </svg>
 );
 
-function MembersCarousel({ people: base }: { people: Nadlanist[] }) {
-  const people = useNadlanistim(base);
+function MembersCarousel({ people }: { people: Nadlanist[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: number) => {
     const el = ref.current;
@@ -178,7 +176,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <div className="cm-grid">
               {others.map((o) => (
                 <a key={o.slug} href={`/community/${o.slug}`} className="cm-card v6-glass" data-reveal>
-                  <div className="cm-card__logo"><img src={communityLogo(o)} alt="" /></div>
+                  {o.logo && <div className="cm-card__logo"><img src={o.logo} alt="" /></div>}
                   <h3>{o.name}</h3>
                   <p>{o.tagline}</p>
                   {o.members && <div className="cm-card__members">{o.members} חברים</div>}

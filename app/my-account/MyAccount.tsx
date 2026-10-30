@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useTransition } from "react";
 import SiteShell from "../v6/SiteShell";
 import OpenToWorkRing from "../v6/OpenToWorkRing";
 import { FIELDS, PLACES, type Nadlanist } from "../nadlanistim/data";
-import { CURRENT_MEMBER, saveEdits, useNadlanistim } from "../nadlanistim/member";
+import { logout } from "../login/actions";
+import { saveProfile, type SaveResult } from "./actions";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,7 +18,7 @@ const UploadIcon = () => (
   </svg>
 );
 
-// Shrinks an uploaded photo to a 400px square JPEG so it fits in browser storage.
+// Shrinks an uploaded photo to a 400px square JPEG before it goes to WordPress.
 function toSquareJpeg(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -37,17 +38,26 @@ function toSquareJpeg(file: File): Promise<string> {
 // Keeps a stored value selectable even if it isn't in the standard list (e.g. "הרצליה").
 const withCurrent = (list: string[], value: string) => (value && !list.includes(value) ? [value, ...list] : list);
 
-export default function MyAccount({ people, communities }: { people: Nadlanist[]; communities: { slug: string; name: string }[] }) {
-  const me = useNadlanistim(people).find((n) => n.slug === CURRENT_MEMBER)!;
-  const [form, setForm] = useState<Nadlanist>(me);
-  const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
+type Props = {
+  me: Nadlanist; // the member's nadlanist post as WordPress has it, or a blank form
+  status: string | null; // that post's status: "publish", "draft"... null = no profile yet
+  verified: boolean;
+  communities: { slug: string; name: string }[];
+};
 
-  // useNadlanistim applies saved edits after mount; pick them up once they arrive.
-  useEffect(() => setForm(me), [me]);
+// An empty select shows this until the member picks.
+const pick = (label: string, value: string) => !value && <option value="" disabled>{label}</option>;
+
+export default function MyAccount({ me, status: postStatus, verified, communities }: Props) {
+  const [form, setForm] = useState<Nadlanist>(me);
+  // A newly picked photo (data URL), sent once with the next save.
+  const [newPhoto, setNewPhoto] = useState<string>();
+  const [result, setResult] = useState<SaveResult | null>(null);
+  const [saving, startSaving] = useTransition();
 
   const set = <K extends keyof Nadlanist>(key: K, value: Nadlanist[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
-    setStatus("idle");
+    setResult(null);
   };
 
   const mine = form.communities ?? [];
@@ -61,22 +71,27 @@ export default function MyAccount({ people, communities }: { people: Nadlanist[]
   const onPhoto = async (file?: File) => {
     if (!file) return;
     try {
-      set("photo", await toSquareJpeg(file));
+      setNewPhoto(await toSquareJpeg(file));
+      setResult(null);
     } catch {
-      setStatus("error");
+      setResult({ ok: false, error: "לא הצלחנו לקרוא את התמונה. נסו קובץ JPG או PNG אחר." });
     }
   };
 
   const onSave = (e: React.FormEvent) => {
     e.preventDefault();
-    const { slug, ...edits } = form; // eslint-disable-line @typescript-eslint/no-unused-vars
-    try {
-      saveEdits(edits);
-      setStatus("saved");
-    } catch {
-      setStatus("error");
-    }
+    startSaving(async () => {
+      const res = await saveProfile(form, newPhoto).catch((): SaveResult => ({ ok: false, error: "לא הצלחנו לשמור. נסו שוב." }));
+      if (res.ok) {
+        // Shown from here on as the saved photo; not sent again.
+        if (newPhoto) setForm((f) => ({ ...f, photo: newPhoto }));
+        setNewPhoto(undefined);
+      }
+      setResult(res);
+    });
   };
+
+  const photo = newPhoto ?? form.photo;
 
   return (
     <SiteShell>
@@ -87,11 +102,19 @@ export default function MyAccount({ people, communities }: { people: Nadlanist[]
             <p>הפרטים כאן מופיעים בכרטיס שלך במדריך ״הכר את הנדלניסט״ ובעמוד הפרופיל שלך.</p>
           </div>
 
+          {!verified ? (
+            <div className="pg-sent ma-note" data-reveal>
+              שלחנו קישור לאימות אל <bdi>{me.email}</bdi>. אפשר לשמור את הפרופיל אחרי שתאשרו את האימייל.
+            </div>
+          ) : postStatus && postStatus !== "publish" && !result?.ok && (
+            <div className="pg-sent ma-note" data-reveal>הפרופיל שלך ממתין לאישור מנהל האתר. אחרי האישור הוא יופיע במדריך.</div>
+          )}
+
           <article className="pg-panel v6-glass" style={{ maxWidth: 760 }} data-reveal>
             <form className="pg-form" onSubmit={onSave}>
               <div className="ma-photo">
                 <div className="pg-person__av ma-photo__av">
-                  <img src={form.photo} alt={form.name} />
+                  {photo && <img src={photo} alt={form.name} />}
                   {form.openToWork && <OpenToWorkRing />}
                 </div>
                 <div className="v6-field" style={{ flex: 1 }}>
@@ -121,12 +144,14 @@ export default function MyAccount({ people, communities }: { people: Nadlanist[]
                 <div className="v6-field">
                   <label htmlFor="ma-field">תחום עיסוק</label>
                   <select id="ma-field" required value={form.field} onChange={(e) => set("field", e.target.value)}>
+                    {pick("בחרו תחום", form.field)}
                     {withCurrent(FIELDS, form.field).map((o) => <option key={o}>{o}</option>)}
                   </select>
                 </div>
                 <div className="v6-field">
                   <label htmlFor="ma-place">מיקום</label>
                   <select id="ma-place" required value={form.place} onChange={(e) => set("place", e.target.value)}>
+                    {pick("בחרו מיקום", form.place)}
                     {withCurrent(PLACES, form.place).map((o) => <option key={o}>{o}</option>)}
                   </select>
                 </div>
@@ -162,7 +187,8 @@ export default function MyAccount({ people, communities }: { people: Nadlanist[]
               <div className="pg-formgrid">
                 <div className="v6-field">
                   <label htmlFor="ma-email">אימייל</label>
-                  <input id="ma-email" type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} />
+                  <input id="ma-email" type="email" value={form.email} readOnly aria-describedby="ma-email-hint" />
+                  <small id="ma-email-hint" className="ma-hint">האימייל של החשבון. דרכו החשבון מחובר לפרופיל.</small>
                 </div>
                 <div className="v6-field">
                   <label htmlFor="ma-phone">טלפון (לא מוצג באתר)</label>
@@ -178,17 +204,22 @@ export default function MyAccount({ people, communities }: { people: Nadlanist[]
                 </div>
               </div>
 
-              {status === "saved" && (
-                <div className="pg-sent">
-                  נשמר. ✓ <a href={`/nadlanist/${CURRENT_MEMBER}`}>לפרופיל שלך</a> · <a href="/nadlanistim">למדריך</a>
+              {result?.ok && (result.status === "publish" && result.slug ? (
+                <div className="pg-sent" role="status">
+                  נשמר. ✓ <a href={`/nadlanist/${result.slug}`}>לפרופיל שלך</a> · <a href="/nadlanistim">למדריך</a>
                 </div>
-              )}
-              {status === "error" && <div className="pg-sent ma-error">לא הצלחנו לשמור. נסו שוב או העלו תמונה קטנה יותר.</div>}
+              ) : (
+                <div className="pg-sent" role="status">נשמר. ✓ הפרופיל ממתין לאישור מנהל האתר, ואחרי האישור יופיע במדריך.</div>
+              ))}
+              {result && !result.ok && <div className="pg-sent ma-error" role="alert">{result.error}</div>}
 
-              <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" data-magnetic="">
-                <span>שמירת הפרטים</span>
+              <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={saving || !verified} data-magnetic="">
+                <span>{saving ? "שומרים…" : "שמירת הפרטים"}</span>
                 <ArrowIcon />
               </button>
+            </form>
+            <form action={logout} className="ma-logout">
+              <button type="submit">התנתקות מהחשבון</button>
             </form>
           </article>
         </div>

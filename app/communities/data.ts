@@ -13,7 +13,3 @@ export type Community = {
   logo?: string;
   whatsapp?: string; // the community's WhatsApp group invite link
 };
-
-// A community without a logo in WordPress shows the shared badge from the homepage (Yuval's call).
-export const DEFAULT_LOGO = "/community-badge.png";
-export const communityLogo = (c: Community) => c.logo || DEFAULT_LOGO;

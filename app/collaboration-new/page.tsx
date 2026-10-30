@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import "../collaborations/collaborations.css";
+import { sendCollab } from "../forms/actions";
+import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -24,7 +25,8 @@ const SELECTS: { id: string; label: string; options: string[] }[] = [
 ];
 
 export default function CollaborationNewPage() {
-  const [sent, setSent] = useState(false);
+  const { state, pending, onSubmit } = useFormSend(sendCollab);
+  const sent = !!state.ok;
 
   return (
     <SiteShell>
@@ -39,17 +41,18 @@ export default function CollaborationNewPage() {
             {sent ? (
               <div className="pg-sent">שיתוף הפעולה נשלח לאישור. ✓ הוא יעלה ללוח תוך 24 שעות.</div>
             ) : (
-              <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+              <form className="pg-form" onSubmit={onSubmit}>
+                <Honeypot />
                 <div className="v6-field">
                   <label htmlFor="n-title">כותרת הפרויקט / הרעיון</label>
-                  <input id="n-title" type="text" required placeholder="לדוגמה: פינוי־בינוי, גבעת שמואל" />
+                  <input id="n-title" name="title" type="text" required placeholder="לדוגמה: פינוי-בינוי, גבעת שמואל" />
                 </div>
 
                 <div className="co-formgrid">
                   {SELECTS.map((s) => (
                     <div className="v6-field" key={s.id}>
                       <label htmlFor={`n-${s.id}`}>{s.label}</label>
-                      <select id={`n-${s.id}`} required defaultValue="">
+                      <select id={`n-${s.id}`} name={s.id} required defaultValue="">
                         <option value="" disabled>{s.options[0]}</option>
                         {s.options.slice(1).map((o) => <option key={o}>{o}</option>)}
                       </select>
@@ -59,7 +62,7 @@ export default function CollaborationNewPage() {
 
                 <div className="v6-field">
                   <label htmlFor="n-desc">תיאור מפורט</label>
-                  <textarea id="n-desc" required placeholder="ספרו על הפרויקט, מה כבר קיים, ומה אתם מחפשים מהשותף/ה…" />
+                  <textarea id="n-desc" name="description" required placeholder="ספרו על הפרויקט, מה כבר קיים, ומה אתם מחפשים מהשותף/ה…" />
                 </div>
 
                 <div className="v6-field co-full">
@@ -73,15 +76,15 @@ export default function CollaborationNewPage() {
                 <div className="co-formgrid">
                   <div className="v6-field">
                     <label htmlFor="n-name">שם מלא</label>
-                    <input id="n-name" type="text" required placeholder="ישראלה ישראלי" />
+                    <input id="n-name" name="name" type="text" required placeholder="ישראלה ישראלי" />
                   </div>
                   <div className="v6-field">
                     <label htmlFor="n-phone">טלפון</label>
-                    <input id="n-phone" type="tel" required placeholder="050-0000000" />
+                    <input id="n-phone" name="phone" type="tel" required placeholder="050-0000000" />
                   </div>
                   <div className="v6-field co-full">
                     <label htmlFor="n-email">אימייל</label>
-                    <input id="n-email" type="email" required placeholder="you@email.com" />
+                    <input id="n-email" name="email" type="email" required placeholder="you@email.com" />
                   </div>
                 </div>
 
@@ -90,8 +93,9 @@ export default function CollaborationNewPage() {
                   <span>מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.</span>
                 </label>
 
-                <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" data-magnetic="">
-                  <span>פרסם שיתוף פעולה</span>
+                <FormError error={state.error} />
+                <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={pending} data-magnetic="">
+                  <span>{pending ? "שולחים…" : "פרסם שיתוף פעולה"}</span>
                   <ArrowIcon />
                 </button>
               </form>

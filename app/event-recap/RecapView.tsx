@@ -3,6 +3,8 @@
 import SiteShell from "../v6/SiteShell";
 import { eventHref, heDate, metaLine, type EventItem } from "../events/data";
 import "./event-recap.css";
+import { sendRecap } from "../forms/actions";
+import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,6 +19,7 @@ const DownloadIcon = () => (
 // Every block below renders only when WordPress has data for it.
 export default function RecapView({ ev, next }: { ev: EventItem; next?: EventItem }) {
   const deck = ev.downloads[0];
+  const recap = useFormSend(sendRecap);
   return (
     <SiteShell crumb={ev.title}>
       {/* Hero */}
@@ -119,10 +122,17 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
                 <a key={d.name} href={d.url} className="rc-dl v6-glass" data-reveal><DownloadIcon />{d.name}</a>
               ))}
             </div>
-            <form className="rc-email" data-reveal onSubmit={(e) => e.preventDefault()}>
-              <input type="email" required placeholder="כתובת אימייל" aria-label="כתובת אימייל" />
-              <button type="submit" className="v6-btn v6-btn--primary">שלחו לי את החומרים</button>
-            </form>
+            {recap.state.ok ? (
+              <div className="pg-sent" data-reveal>שלחנו את החומרים למייל שלכם.</div>
+            ) : (
+              <form className="rc-email" data-reveal onSubmit={recap.onSubmit}>
+                <Honeypot />
+                <input type="hidden" name="event" value={ev.slug} />
+                <input type="email" name="email" required placeholder="כתובת אימייל" aria-label="כתובת אימייל" />
+                <button type="submit" className="v6-btn v6-btn--primary" disabled={recap.pending}>{recap.pending ? "שולחים…" : "שלחו לי את החומרים"}</button>
+              </form>
+            )}
+            <FormError error={recap.state.error} />
           </div>
         </section>
       )}

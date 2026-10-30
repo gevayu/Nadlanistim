@@ -1,9 +1,12 @@
 const FOOTER_COLS: { h: string; links: [string, string][] }[] = [
-  { h: "קהילה", links: [["/#about", "אודות"], ["/#members", "חברי הקהילה"], ["/#stories", "סיפורי הצלחה"]] },
-  { h: "אירועים", links: [["/#events", "קרובים"], ["/#featured", "הכנס השנתי"], ["#", "ארכיון אירועים"]] },
+  { h: "קהילה", links: [["/#about", "אודות"], ["/#members", "חברי הקהילה"]] },
+  { h: "אירועים", links: [["/#events", "קרובים"], ["/#featured", "הכנס השנתי"], ["/events", "ארכיון אירועים"]] },
   { h: "תוכן", links: [["/#articles", "כתבות"], ["/post-archive", "בית הידע"], ["/#podcast", "פודקאסט"]] },
-  { h: "צרו קשר", links: [["/#contact", "הצטרפות"], ["mailto:hello@nadlanistim.co.il", "אימייל"], ["#", "וואטסאפ"]] },
+  { h: "צרו קשר", links: [["/#contact", "הצטרפות"], ["mailto:hello@nadlanistim.co.il", "אימייל"]] },
 ];
+
+// Legal pages, each a WordPress page rendered by app/(legal).
+const LEGAL_LINKS: [string, string][] = [["/terms", "תנאי שימוש"], ["/privacy", "פרטיות"], ["/accessibility", "הצהרת נגישות"]];
 
 export default function SiteFooter() {
   return (
@@ -30,8 +33,9 @@ export default function SiteFooter() {
         <div className="v6-footer__bottom">
           <span>© 2026 הנדלניסטים. כל הזכויות שמורות.</span>
           <span className="v6-footer__legal">
-            <a href="#">תנאי שימוש</a>
-            <a href="#">פרטיות</a>
+            {LEGAL_LINKS.map(([href, label]) => (
+              <a key={href} href={href}>{label}</a>
+            ))}
           </span>
         </div>
       </div>

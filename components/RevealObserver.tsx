@@ -7,7 +7,8 @@ export default function RevealObserver() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.startsWith("/v5") || pathname.startsWith("/v6")) return;
+    // The V6 homepage runs its own reveal animations.
+    if (pathname === "/") return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

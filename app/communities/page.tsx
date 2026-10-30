@@ -1,6 +1,5 @@
 import SiteShell from "../v6/SiteShell";
 import "./communities.css";
-import { communityLogo } from "./data";
 import { getCommunities } from "./wp";
 
 const ArrowIcon = () => (
@@ -23,7 +22,7 @@ export default async function CommunitiesPage() {
           <div className="cm-grid">
             {communities.map((c) => (
               <a key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
-                <div className="cm-card__logo"><img src={communityLogo(c)} alt="" /></div>
+                {c.logo && <div className="cm-card__logo"><img src={c.logo} alt="" /></div>}
                 <h3>{c.name}</h3>
                 <p>{c.tagline}</p>
                 {c.members && <div className="cm-card__members">{c.members} חברים</div>}

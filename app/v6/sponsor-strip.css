@@ -1,0 +1,13 @@
+/* Sponsor strip content (SponsorStrip.tsx) on top of .v6-sponsorstrip. It loads after the page,
+   so it fades in itself instead of using [data-reveal], which SiteShell scans only once on mount. */
+.sp-strip { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; color: inherit; text-decoration: none; animation: sp-strip-in .8s var(--t, ease) both; transition: background .4s var(--t, ease), border-color .4s var(--t, ease); }
+a.sp-strip:hover { background: var(--glass-bg-strong); border-color: var(--glass-border-strong); }
+.sp-strip__label { font-size: 12px; font-weight: 500; letter-spacing: .08em; color: var(--muted); }
+/* .v6-root img sets height: auto, so the logo box needs the extra class to win. Logos come in any
+   shape (PWC's SVG is a wide wordmark), so they are fitted into a fixed box instead of a fixed height. */
+.v6-root .sp-strip__logo { height: 64px; width: min(280px, 70%); object-fit: contain; filter: brightness(0) invert(1); opacity: .85; transition: opacity .4s var(--t, ease); }
+a.sp-strip:hover .sp-strip__logo { opacity: 1; }
+.sp-strip__name { font-size: clamp(20px, 2.2vw, 28px); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.sp-strip__text { max-width: 560px; font-size: clamp(14px, 1.3vw, 16px); color: var(--ink-2); line-height: 1.5; }
+@keyframes sp-strip-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sp-strip { animation: none; } }

@@ -1,6 +1,7 @@
 import YouthTeam from "./YouthTeam";
-import { getYouth } from "./wp";
+import { getYouth, getYouthSettings } from "./wp";
 
 export default async function YouthPage() {
-  return <YouthTeam members={await getYouth()} />;
+  const [members, settings] = await Promise.all([getYouth(), getYouthSettings()]);
+  return <YouthTeam members={members} settings={settings} />;
 }

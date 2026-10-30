@@ -31,9 +31,20 @@ function useScrolled(threshold = 40) {
   return scrolled;
 }
 
+// "Members" opens the personal area when signed in, else the login page. The httpOnly session cookie is
+// out of the browser's reach, so lib/auth.ts sets this readable flag next to it (SIGNED_IN_COOKIE).
+function useMembersHref() {
+  const [href, setHref] = useState("/login");
+  useEffect(() => {
+    if (/(?:^|;\s*)nad_signed_in=1(?:;|$)/.test(document.cookie)) setHref("/account");
+  }, []);
+  return href;
+}
+
 export default function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const scrolled = useScrolled();
+  const membersHref = useMembersHref();
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
@@ -63,7 +74,7 @@ export default function SiteHeader() {
               <a key={label} href={href}>{label}</a>
             ))}
           </nav>
-          <a href="/#contact" className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
+          <a href={membersHref} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
             <span className="v6-nav__cta-long">Members Only</span>
             <span className="v6-nav__cta-short">Members</span>
             <ArrowIcon />
@@ -82,7 +93,7 @@ export default function SiteHeader() {
           {NAV_LINKS.map(([href, label]) => (
             <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
           ))}
-          <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
+          <a href={membersHref} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
             <span>Members Only</span>
             <ArrowIcon />
           </a>

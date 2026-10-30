@@ -1,12 +1,12 @@
 import SiteShell from "../v6/SiteShell";
 import "./account.css";
 import AccountHead from "./AccountHead";
+import { requireSession } from "../../lib/auth";
 import { onBoard } from "../collaborations/data";
 import { getCollabs } from "../collaborations/wp";
 import { eventHref, isVolunteer } from "../events/data";
 import { getEvents } from "../events/wp";
 import { getJobs } from "../jobs/wp";
-import { getNadlanistim } from "../nadlanistim/wp";
 import { getEpisodes } from "../podcast/wp";
 
 const ChevronIcon = () => (
@@ -20,7 +20,7 @@ const monthYear = (iso: string) => new Intl.DateTimeFormat("he-IL", { month: "lo
 const dot = (...parts: string[]) => parts.filter(Boolean).join(" · ");
 
 export default async function AccountPage() {
-  const [people, collabs, jobs, events, episodes] = await Promise.all([getNadlanistim(), getCollabs(), getJobs(), getEvents(), getEpisodes()]);
+  const [session, collabs, jobs, events, episodes] = await Promise.all([requireSession("/account"), getCollabs(), getJobs(), getEvents(), getEpisodes()]);
   const deals = collabs.filter(onBoard);
   const past = events.filter((e) => e.past && !isVolunteer(e)).sort((a, b) => b.date.localeCompare(a.date));
   const quick = [
@@ -35,7 +35,7 @@ export default async function AccountPage() {
       <section className="v6-section">
         <div className="v6-container">
           {/* Account header */}
-          <AccountHead people={people} />
+          <AccountHead session={session} />
 
           {/* Quick access */}
           <div className="ac-quick">

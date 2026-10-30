@@ -1,7 +1,7 @@
 # Nadlanistim - V6 Design System
 
 Reference for building **internal pages** that match the V6 homepage
-([app/v6/page.tsx](page.tsx) + [app/v6/v6.css](v6.css)).
+([app/page.tsx](../page.tsx) → [app/v6/HomeV6.tsx](HomeV6.tsx) + [app/v6/v6.css](v6.css)).
 Dark, glassy, RTL, Hebrew-first. Everything is scoped under `.v6-root`.
 
 ---
@@ -284,8 +284,7 @@ do not re-build a nav/footer.
 Which routes use the V6 chrome is configured centrally in
 [lib/site-chrome.ts](../../lib/site-chrome.ts) → `V6_CHROME_ROUTES`. On those routes the
 **legacy** global chrome (`components/Header`, `components/Footer`, `Background`) is hidden,
-so the page renders V6 chrome instead. Legacy pages (`/`, `/v2`–`/v4`, `/posts/*`,
-`/jobs/*`) keep the old global chrome.
+so the page renders V6 chrome instead. Legacy pages (`/posts/*`) keep the old global chrome.
 
 **To add a new internal page:**
 1. Add its route prefix to `V6_CHROME_ROUTES` in `lib/site-chrome.ts`.
@@ -294,8 +293,8 @@ so the page renders V6 chrome instead. Legacy pages (`/`, `/v2`–`/v4`, `/posts
    (clearance for the fixed nav), then `<SiteFooter />`. See
    [app/post-archive/page.tsx](../post-archive/page.tsx).
 
-The `/v6` and `/v5` homepages render their own inline nav/footer (kept as-is) and are also
-in `V6_CHROME_ROUTES` so the legacy chrome stays hidden.
+The homepage (`/`, served from `app/page.tsx`; `/v6` redirects there) renders its own inline nav/footer
+and is also listed in `lib/site-chrome.ts` so the legacy chrome stays hidden.
 
 ## 13. Checklist for a new internal page
 

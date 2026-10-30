@@ -20,7 +20,6 @@ const PAGES: Record<string, Crumb> = {
   "/collaboration-new": { label: "פרסום שיתוף פעולה", parent: "/collaborations" },
   "/nadlanistim": { label: "הכר את הנדלניסט" },
   "/nadlanist-new": { label: "הצטרפות למדריך", parent: "/nadlanistim" },
-  "/profile": { label: "אבי כהן", parent: "/nadlanistim" },
   "/communities": { label: "קהילות" },
   "/podcast": { label: "פודקאסט" },
   "/youth": { label: "נבחרת הצעירים" },
@@ -30,6 +29,9 @@ const PAGES: Record<string, Crumb> = {
   "/my-account": { label: "החשבון שלי", parent: "/account" },
   "/checkout": { label: "תשלום" },
   "/thank-you": { label: "תודה" },
+  "/login": { label: "כניסה לחברים" },
+  "/register": { label: "פתיחת חשבון", parent: "/login" },
+  "/forgot-password": { label: "איפוס סיסמה", parent: "/login" },
 };
 
 // Detail pages: /<section>/<slug> -> its list page. The item's name comes from WordPress via the page (SiteShell `crumb`).

@@ -28,7 +28,6 @@ type WpArticle = {
     titleMain: string | null;
     titleAccent: string | null;
     excerpt: string | null;
-    readMinutes: number | null;
     isFeatured: boolean | null;
     contentType: string[] | null;
     authorName: string | null;
@@ -54,7 +53,7 @@ const QUERY = `{ articles(first: 100) { nodes {
     ... on ArticleBodyBodyImageLayout { caption image { node { sourceUrl(size: LARGE) } } }
   } }
   articleFields {
-    titleMain titleAccent excerpt readMinutes isFeatured contentType
+    titleMain titleAccent excerpt isFeatured contentType
     authorName authorFirm authorSpecialty authorBio
     authorAvatar { node { sourceUrl(size: THUMBNAIL) } }
   }
@@ -72,10 +71,21 @@ const toBlock = (b: WpBlock): Block | null => {
   }
 };
 
-// Reading time when the editor left it empty: ~200 words a minute.
+// Silent reading speed for Hebrew: Brysbaert (2019, J. Memory & Language) averages 224 wpm over five
+// Hebrew studies (English non-fiction: 238). Hebrew packs prefixes into words, so fewer words carry the
+// same text. Rounded down to 220 because these are professional articles full of figures and terms.
+const WORDS_PER_MINUTE = 220;
+
+/** Reading time from the article's own text: every word in the body, rounded up, at least a minute. */
 const minutesToRead = (blocks: Block[], html: string) => {
-  const text = blocks.map((b) => (b.kind === "list" ? b.items.join(" ") : b.kind === "img" ? "" : b.text)).join(" ") + html.replace(/<[^>]+>/g, " ");
-  return Math.max(1, Math.round(text.split(/\s+/).filter(Boolean).length / 200));
+  const text = blocks
+    .map((b) => (b.kind === "list" ? b.items.join(" ") : b.kind === "img" ? b.caption : b.kind === "h2" ? `${b.text} ${b.accent ?? ""}` : b.text))
+    .concat(html)
+    .join(" ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[#\w]+;/g, " ");
+  const words = text.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
 };
 
 const toArticle = ({ date, slug, title, content, featuredImage, articleCategories, articleTags, articleBody, articleFields: f }: WpArticle): Article => {
@@ -90,7 +100,7 @@ const toArticle = ({ date, slug, title, content, featuredImage, articleCategorie
     type: f?.contentType?.[0] ?? "",
     cats: articleCategories.nodes.map((n) => n.name),
     tags: articleTags.nodes.map((n) => n.name),
-    minutes: f?.readMinutes || minutesToRead(body, html ?? ""),
+    minutes: minutesToRead(body, html ?? ""),
     excerpt: f?.excerpt ?? "",
     author: {
       name: f?.authorName ?? "",

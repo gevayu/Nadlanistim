@@ -19,6 +19,8 @@ export type Product = {
   note: string;
   /** Description, one item per line, as plain text. */
   features: string[];
+  /** Billing period, the product's "תקופת חיוב" attribute term ("חודש" / "שנה"); empty when not set. */
+  period: string;
   /** Tagged `featured` in WooCommerce. */
   featured: boolean;
   soldIndividually: boolean;
@@ -54,6 +56,7 @@ type StoreProduct = {
   prices: { price: string; currency_minor_unit: number };
   images: { src: string }[];
   tags: { slug: string }[];
+  attributes: { taxonomy: string | null; terms: { name: string }[] }[];
   sold_individually: boolean;
   is_purchasable: boolean;
   is_in_stock: boolean;
@@ -86,6 +89,7 @@ const toProduct = (p: StoreProduct): Product => ({
   image: p.images[0]?.src,
   note: plainText(p.short_description),
   features: p.description.split(/<br\s*\/?>|<\/p>|\n/i).map(plainText).filter(Boolean),
+  period: plainText(p.attributes.find((a) => a.taxonomy === "pa_billing_period")?.terms[0]?.name ?? ""),
   featured: p.tags.some((t) => t.slug === "featured"),
   soldIndividually: p.sold_individually,
   purchasable: p.is_purchasable && p.is_in_stock,

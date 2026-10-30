@@ -2,7 +2,6 @@
 
 import SiteShell from "../v6/SiteShell";
 import { type Nadlanist } from "./data";
-import { useNadlanistim } from "./member";
 import OpenToWorkRing from "../v6/OpenToWorkRing";
 
 const ArrowIcon = () => (
@@ -16,8 +15,7 @@ const FILTERS: { label: string; options: string[] }[] = [
   { label: "פילטר לפי תחום עיסוק", options: ["כל התחומים", "יזמות", "שיווק", "ייעוץ", "אדריכלות", "תיווך", "שמאות"] },
 ];
 
-export default function Directory({ people: base }: { people: Nadlanist[] }) {
-  const people = useNadlanistim(base);
+export default function Directory({ people }: { people: Nadlanist[] }) {
 
   return (
     <SiteShell>

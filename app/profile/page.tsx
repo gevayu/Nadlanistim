@@ -1,8 +1,10 @@
-import Profile from "../nadlanist/[slug]/Profile";
-import { CURRENT_MEMBER } from "../nadlanistim/data";
-import { getNadlanistim } from "../nadlanistim/wp";
+import { redirect } from "next/navigation";
+import { getSession } from "../../lib/auth";
 
-// The signed-in member's own profile: the same view as /nadlanist/<slug>, with their /my-account edits.
+// "My profile": the signed-in member's published nadlanist page. No published profile yet: the edit form.
 export default async function ProfilePage() {
-  return <Profile people={await getNadlanistim()} slug={CURRENT_MEMBER} />;
+  const session = await getSession();
+  if (!session) redirect("/login?next=/profile");
+  const own = session.nadlanist;
+  redirect(own?.status === "publish" && own.slug ? `/nadlanist/${own.slug}` : "/my-account");
 }

@@ -2,7 +2,7 @@ export type Collab = {
   slug: string;
   title: string;
   looking: string;
-  type: string;
+  type: string; // WordPress "סוג" term (nad_collab_type); the ACF text field until a term is set
   place: string;
   invest: string;
   stage: string;
@@ -11,7 +11,7 @@ export type Collab = {
   date: string;
   img: string; // WordPress featured image URL ("" = none); Unsplash photo id in the /account copy below
   tab?: string; // board tab key; unset counts as "looking"
-  region?: string; // WordPress "אזור" term; otherwise read off the end of `place`
+  region?: string; // WordPress "אזור" term (nad_region)
   description: string[];
   lookingList: string[];
   tags: string[];
@@ -19,37 +19,19 @@ export type Collab = {
   phone: string;
 };
 
-// WordPress select values -> the labels the site shows.
-// The board shows only these tabs. WordPress also has "success" posts; the success-stories tab
-// was removed from the site on purpose, so they stay off the board (their own page still works).
-export const COLLAB_TABS: Record<string, string> = {
-  looking: "מחפש שותף",
-  active: "פרויקטים פעילים",
-};
-export const COLLAB_LOOKING: Record<string, string> = {
-  financial: "שותף פיננסי",
-  profession: "שותף מקצועי",
-  contractor: "קבלן מבצע",
-  proptech: "יועץ פרופטק",
-  land: "שותף לקרקע",
-  investor: "משקיע שותף",
-};
-export const COLLAB_INVEST: Record<string, string> = {
-  "100k": "עד 100K",
-  "500k": "עד 500K",
-  "1m": "מיליון ₪ ומעלה",
-  none: "ללא השקעה כספית",
-};
-export const COLLAB_STAGES: Record<string, string> = {
-  idea: "רעיון ראשוני",
-  permits: "תכנון והיתרים",
-  building: "תכנון והקמה",
-  exec: "ביצוע",
-  advanced: "מוצר מתקדם",
-};
+/**
+ * Board tab keys (WordPress "board_tab" values), in board order. The tab names come from WordPress.
+ * WordPress also has "success" posts; the success-stories tab was removed from the site on purpose,
+ * so they stay off the board (their own page still works).
+ */
+export const BOARD_TABS = ["looking", "active"];
+
+/** A board tab: its WordPress key and the name WordPress gives it. */
+export type CollabTab = { key: string; label: string };
 
 export const collabTab = (c: Collab) => c.tab ?? "looking";
-/** On the board (and its locked teaser): only posts in one of COLLAB_TABS. */
-export const onBoard = (c: Collab) => collabTab(c) in COLLAB_TABS;
-// "גבעת שמואל, מרכז" -> "מרכז"
+/** On the board (and its locked teaser): only posts in one of BOARD_TABS. */
+export const onBoard = (c: Collab) => BOARD_TABS.includes(collabTab(c));
+// The WordPress "אזור" term. A post nobody has tagged yet (a fresh form submission) falls back to the
+// end of its place: "גבעת שמואל, מרכז" -> "מרכז".
 export const collabRegion = (c: Collab) => c.region ?? c.place.split(",").at(-1)!.trim();

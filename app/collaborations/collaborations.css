@@ -81,3 +81,11 @@
 .lk-capsule svg { width: 17px; height: 17px; color: var(--cyan); }
 .lk-capsule span { font-size: 13.5px; font-weight: 600; letter-spacing: .04em; color: var(--ink); }
 .lk-capsule b { font-size: 13.5px; font-weight: 700; color: #07080f; background: var(--grad-1); padding: 5px 13px; border-radius: 999px; }
+
+/* ─── Locked single page (/collaboration/<slug>, /nadlanist/<slug>) ─── */
+.lk-single { margin-top: 28px; }
+.lk-single .lk-locked { min-height: 230px; margin-top: 0; }
+.lk-bar { display: block; height: 12px; border-radius: 6px; background: var(--ink-2); }
+.lk-login { margin-top: 18px; text-align: center; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.lk-login a { color: var(--cyan); font-weight: 600; }
+.lk-login a:hover { text-decoration: underline; }

@@ -16,6 +16,11 @@ const PauseIcon = () => (<svg viewBox="0 0 24 24" fill="currentColor" aria-hidde
 // Joins the non-empty parts of a meta line.
 const dot = (...parts: (string | false)[]) => parts.filter(Boolean).join(" · ");
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+// "https://open.spotify.com/episode/<id>" (or show) -> Spotify's embeddable player for it, else "".
+const spotifyEmbed = (url?: string) => {
+  const m = url?.match(/^https:\/\/open\.spotify\.com\/(episode|show)\/([A-Za-z0-9]+)/);
+  return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}` : "";
+};
 
 // ponytail: play/pause and progress only; no seeking. Upgrade: make .pc-player__bar a keyboard-operable slider.
 export default function EpisodeView({ ep, others }: { ep?: Episode; others: Episode[] }) {
@@ -31,6 +36,9 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
   };
   const PlayPause = playing ? PauseIcon : PlayIcon;
   const playLabel = playing ? "השהה" : "נגן";
+  const spotify = spotifyEmbed(ep?.listen);
+  // A Spotify link gets Spotify's own player; the MP3 player is for episodes without one.
+  const mp3 = !spotify && ep?.audio;
 
   if (!ep) {
     return (
@@ -54,7 +62,7 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
             {ep.img && (
               <div className="pc-hero__cover">
                 <img src={ep.img} alt="" />
-                {ep.audio && <button className="pc-hero__play" aria-label={playLabel} onClick={toggle}><PlayPause /></button>}
+                {mp3 && <button className="pc-hero__play" aria-label={playLabel} onClick={toggle}><PlayPause /></button>}
               </div>
             )}
             <div>
@@ -64,12 +72,25 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
             </div>
           </div>
 
-          {/* Player: only when the episode has an MP3 */}
-          {ep.audio && (
+          {spotify && (
+            <iframe
+              className="pc-spotify"
+              data-reveal
+              src={spotify}
+              title={`${ep.title} ב-Spotify`}
+              height={152}
+              loading="lazy"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              style={{ width: "100%", border: 0, borderRadius: 12, marginTop: 24 }}
+            />
+          )}
+
+          {/* Player: only when the episode has an MP3 and no Spotify link */}
+          {mp3 && (
             <div className="pc-player v6-glass" data-reveal>
               <audio
                 ref={audio}
-                src={ep.audio}
+                src={mp3}
                 preload="metadata"
                 onLoadedMetadata={(e) => setLen(e.currentTarget.duration)}
                 onTimeUpdate={(e) => setPos(e.currentTarget.currentTime)}

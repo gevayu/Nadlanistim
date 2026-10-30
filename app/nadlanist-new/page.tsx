@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
+import { sendNadlanist } from "../forms/actions";
+import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -20,7 +21,8 @@ const SELECTS: { id: string; label: string; options: string[] }[] = [
 ];
 
 export default function NadlanistNewPage() {
-  const [sent, setSent] = useState(false);
+  const { state, pending, onSubmit } = useFormSend(sendNadlanist);
+  const sent = !!state.ok;
 
   return (
     <SiteShell>
@@ -35,7 +37,8 @@ export default function NadlanistNewPage() {
             {sent ? (
               <div className="pg-sent">הפרופיל נשלח לאישור. ✓ הוא יופיע במדריך הנדלניסטים תוך 48 שעות.</div>
             ) : (
-              <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+              <form className="pg-form" onSubmit={onSubmit}>
+                <Honeypot />
                 <div className="v6-field pg-full">
                   <label>תמונת פרופיל</label>
                   <label className="pg-upload" htmlFor="p-img"><UploadIcon /> גררו תמונה לכאן או לחצו להעלאה</label>
@@ -45,16 +48,16 @@ export default function NadlanistNewPage() {
                 <div className="pg-formgrid">
                   <div className="v6-field">
                     <label htmlFor="p-name">שם מלא</label>
-                    <input id="p-name" type="text" required placeholder="ישראלה ישראלי" />
+                    <input id="p-name" name="name" type="text" required placeholder="ישראלה ישראלי" />
                   </div>
                   <div className="v6-field">
                     <label htmlFor="p-role">תפקיד / כותרת</label>
-                    <input id="p-role" type="text" required placeholder="לדוגמה: יזם נדל״ן ומנטור" />
+                    <input id="p-role" name="role" type="text" required placeholder="לדוגמה: יזם נדל״ן ומנטור" />
                   </div>
                   {SELECTS.map((s) => (
                     <div className="v6-field" key={s.id}>
                       <label htmlFor={`p-${s.id}`}>{s.label}</label>
-                      <select id={`p-${s.id}`} required defaultValue="">
+                      <select id={`p-${s.id}`} name={s.id} required defaultValue="">
                         <option value="" disabled>{s.options[0]}</option>
                         {s.options.slice(1).map((o) => <option key={o}>{o}</option>)}
                       </select>
@@ -64,11 +67,11 @@ export default function NadlanistNewPage() {
 
                 <div className="v6-field">
                   <label htmlFor="p-quote">ציטוט אישי (מוצג בכרטיס)</label>
-                  <input id="p-quote" type="text" required placeholder="״מאמין בכוחה של קהילה לשינוי וצמיחה.״" />
+                  <input id="p-quote" name="quote" type="text" required placeholder="״מאמין בכוחה של קהילה לשינוי וצמיחה.״" />
                 </div>
                 <div className="v6-field">
                   <label htmlFor="p-bio">קצת עליי</label>
-                  <textarea id="p-bio" required placeholder="ספרו על עצמכם, על הניסיון ועל מה שאתם מביאים לקהילה…" />
+                  <textarea id="p-bio" name="bio" required placeholder="ספרו על עצמכם, על הניסיון ועל מה שאתם מביאים לקהילה…" />
                 </div>
 
                 <div className="pg-divider" style={{ margin: "8px 0" }} />
@@ -76,15 +79,15 @@ export default function NadlanistNewPage() {
                 <div className="pg-formgrid">
                   <div className="v6-field">
                     <label htmlFor="p-email">אימייל</label>
-                    <input id="p-email" type="email" required placeholder="you@email.com" />
+                    <input id="p-email" name="email" type="email" required placeholder="you@email.com" />
                   </div>
                   <div className="v6-field">
                     <label htmlFor="p-phone">טלפון</label>
-                    <input id="p-phone" type="tel" placeholder="050-0000000" />
+                    <input id="p-phone" name="phone" type="tel" placeholder="050-0000000" />
                   </div>
                   <div className="v6-field pg-full">
                     <label htmlFor="p-linkedin">לינקדאין (אופציונלי)</label>
-                    <input id="p-linkedin" type="url" placeholder="https://linkedin.com/in/…" />
+                    <input id="p-linkedin" name="linkedin" type="url" placeholder="https://linkedin.com/in/…" />
                   </div>
                 </div>
 
@@ -93,8 +96,9 @@ export default function NadlanistNewPage() {
                   <span>מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.</span>
                 </label>
 
-                <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" data-magnetic="">
-                  <span>הצטרפו למדריך</span>
+                <FormError error={state.error} />
+                <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={pending} data-magnetic="">
+                  <span>{pending ? "שולחים…" : "הצטרפו למדריך"}</span>
                   <ArrowIcon />
                 </button>
               </form>

@@ -1,11 +1,48 @@
-/** Sponsorship #1 strip - top of every V6 page (SiteShell, home, post-archive). */
-export default function SponsorStrip() {
+"use client";
+
+import { useEffect, useState } from "react";
+import type { SponsorSlot, SponsorSlotName, SponsorSlots } from "./sponsors";
+import "./sponsor-strip.css";
+
+// One request per page load, shared by every strip on the page.
+let slotsRequest: Promise<SponsorSlots | null> | null = null;
+const loadSlots = () =>
+  (slotsRequest ??= fetch("/api/sponsor-slots")
+    .then((r) => (r.ok ? (r.json() as Promise<SponsorSlots>) : null))
+    .catch(() => null));
+
+/**
+ * A sponsor strip from WordPress ("הגדרות אתר" → "חסויות"). "top" sits under the breadcrumbs on every
+ * inner page (SiteShell, home, post-archive); "events" is the lower strip on home, /events,
+ * /collaborations and /post-archive.
+ * Nothing renders while loading, or when the slot is off or empty.
+ */
+export default function SponsorStrip({ slot = "top" }: { slot?: SponsorSlotName }) {
+  const [sponsor, setSponsor] = useState<SponsorSlot | null>(null);
+  useEffect(() => {
+    let live = true;
+    loadSlots().then((s) => live && setSponsor(s?.[slot] ?? null));
+    return () => {
+      live = false;
+    };
+  }, [slot]);
+
+  if (!sponsor) return null;
+  const body = (
+    <>
+      <span className="sp-strip__label">בחסות</span>
+      {sponsor.logo ? <img src={sponsor.logo} alt={sponsor.name} className="sp-strip__logo" /> : <b className="sp-strip__name">{sponsor.name}</b>}
+      {sponsor.text && <span className="sp-strip__text">{sponsor.text}</span>}
+    </>
+  );
   return (
     <section className="v6-section">
       <div className="v6-container">
-        <div className="v6-sponsorstrip v6-glass" data-reveal>
-          <span className="v6-sponsorstrip__title">Sponsorship#1</span>
-        </div>
+        {sponsor.url ? (
+          <a href={sponsor.url} target="_blank" rel="noopener noreferrer sponsored" className="v6-sponsorstrip v6-glass sp-strip">{body}</a>
+        ) : (
+          <div className="v6-sponsorstrip v6-glass sp-strip">{body}</div>
+        )}
       </div>
     </section>
   );

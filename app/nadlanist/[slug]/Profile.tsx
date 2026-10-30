@@ -1,9 +1,8 @@
-"use client";
-
 import SiteShell from "../../v6/SiteShell";
 import "../../collaborations/collaborations.css";
+import MembersLock from "../../collaborations/MembersLock";
+import type { Session } from "../../../lib/auth";
 import { type Nadlanist } from "../../nadlanistim/data";
-import { useNadlanistim } from "../../nadlanistim/member";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 
 const ArrowIcon = () => (
@@ -15,9 +14,16 @@ const LinkedinIcon = () => (<svg viewBox="0 0 24 24" fill="currentColor" aria-hi
 const InstagramIcon = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>);
 const MailIcon = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>);
 
-export default function Profile({ people, slug }: { people: Nadlanist[]; slug: string }) {
-  const n = useNadlanistim(people).find((x) => x.slug === slug);
-
+/**
+ * A nadlanist's profile. `locked`: the visitor is not a paying member, so `n` holds the directory card only
+ * (see publicCard) and the bio and contact part shows as MembersLock.
+ */
+export default function Profile({ n, locked, session, communities = [] }: {
+  n?: Nadlanist;
+  locked: boolean;
+  session: Session | null;
+  communities?: { slug: string; name: string }[];
+}) {
   if (!n) {
     return (
       <SiteShell>
@@ -49,30 +55,51 @@ export default function Profile({ people, slug }: { people: Nadlanist[]; slug: s
               <div className="pg-profile2__text">
                 <h1>{n.name}</h1>
                 <div className="pg-profile2__role">{n.role}</div>
-                <p className="pg-profile2__intro">{n.bio[0]}</p>
+                {locked ? n.quote && <p className="pg-profile2__intro">״{n.quote}״</p> : <p className="pg-profile2__intro">{n.bio[0]}</p>}
               </div>
             </div>
 
-            <div className="pg-block">
-              <h2>קצת עליי</h2>
-              {n.bio.slice(1).map((p, i) => <p key={i}>{p}</p>)}
-            </div>
+            {locked ? (
+              <>
+                <div className="co-meta-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", maxWidth: 520, margin: "0 auto" }}>
+                  <div className="co-mi"><div className="co-mi__label">תחום עיסוק</div><div className="co-mi__val">{n.field}</div></div>
+                  <div className="co-mi"><div className="co-mi__label">מיקום</div><div className="co-mi__val">{n.place}</div></div>
+                </div>
+                <MembersLock session={session} next={`/nadlanist/${n.slug}`} />
+              </>
+            ) : (
+              <>
+                <div className="pg-block">
+                  <h2>קצת עליי</h2>
+                  {n.bio.slice(1).map((p, i) => <p key={i}>{p}</p>)}
+                </div>
 
-            <blockquote className="pg-quote2">״{n.quote}״</blockquote>
+                <blockquote className="pg-quote2">״{n.quote}״</blockquote>
 
-            <div className="co-meta-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", maxWidth: 520, margin: "0 auto" }}>
-              <div className="co-mi"><div className="co-mi__label">תחום עיסוק</div><div className="co-mi__val">{n.field}</div></div>
-              <div className="co-mi"><div className="co-mi__label">מיקום</div><div className="co-mi__val">{n.place}</div></div>
-            </div>
+                <div className="co-meta-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", maxWidth: 520, margin: "0 auto" }}>
+                  <div className="co-mi"><div className="co-mi__label">תחום עיסוק</div><div className="co-mi__val">{n.field}</div></div>
+                  <div className="co-mi"><div className="co-mi__label">מיקום</div><div className="co-mi__val">{n.place}</div></div>
+                </div>
 
-            <div className="pg-social-wrap" style={{ marginTop: 32 }}>
-              <div className="pg-social-head">צרו קשר</div>
-              <div className="pg-social">
-                {n.linkedin && <a href={n.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon /></a>}
-                {n.instagram && <a href={n.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>}
-                <a href={`mailto:${n.email}`} aria-label="אימייל"><MailIcon /></a>
-              </div>
-            </div>
+                {communities.length > 0 && (
+                  <div className="pg-block" style={{ marginTop: 32 }}>
+                    <h2>הקהילות שלי</h2>
+                    <div className="pg-tags">
+                      {communities.map((c) => <a key={c.slug} href={`/community/${c.slug}`} className="pg-tag">{c.name}</a>)}
+                    </div>
+                  </div>
+                )}
+
+                <div className="pg-social-wrap" style={{ marginTop: 32 }}>
+                  <div className="pg-social-head">צרו קשר</div>
+                  <div className="pg-social">
+                    {n.linkedin && <a href={n.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon /></a>}
+                    {n.instagram && <a href={n.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>}
+                    {n.email && <a href={`mailto:${n.email}`} aria-label="אימייל"><MailIcon /></a>}
+                  </div>
+                </div>
+              </>
+            )}
 
             <div className="pg-divider" />
             <div className="pg-actions" style={{ justifyContent: "center" }}>

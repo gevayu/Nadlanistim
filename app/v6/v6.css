@@ -696,9 +696,14 @@
   .v6-hero__title { font-size: clamp(36px, 11vw, 52px); margin-bottom: 24px; max-width: none; }
   .v6-root .v6-hero__sub { font-size: 15px; margin-bottom: 32px; line-height: 1.55; }
   .v6-hero__sub br { display: none; }
-  .v6-hero__cta { flex-direction: column; align-items: stretch; gap: 10px; }
-  .v6-hero__cta .v6-btn { width: 100%; }
-  .v6-hero__cta .v6-btn--lg { padding: 15px 24px; font-size: 14.5px; }
+  /* Both buttons side by side in one row, equal width. */
+  .v6-hero__cta { flex-wrap: nowrap; gap: 10px; }
+  .v6-hero__cta .v6-btn { flex: 1 1 0; min-width: 0; justify-content: center; white-space: nowrap; }
+  .v6-hero__cta .v6-btn--lg { padding: 14px 12px; font-size: 14px; gap: 6px; }
+  @media (max-width: 360px) {
+    .v6-hero__cta .v6-btn--lg { padding: 13px 6px; font-size: 13px; }
+    .v6-hero__cta .v6-btn svg { display: none; }
+  }
   .v6-hero__bottom { display: none; }
   .v6-hero__eyebrow { font-size: 11.5px; padding: 7px 14px; margin-bottom: 24px; }
   .v6-marquee { padding: 12px 0; }

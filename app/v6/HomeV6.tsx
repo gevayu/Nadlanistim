@@ -2,13 +2,15 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { celebrate } from "./confetti";
+import { sendHomeContact } from "../forms/actions";
+import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import SponsorStrip from "./SponsorStrip";
-import { communityLogo, type Community } from "../communities/data";
+import SiteFooter from "./SiteFooter";
+import type { Community } from "../communities/data";
 import type { Job } from "../jobs/data";
-import { CURRENT_MEMBER, type Nadlanist } from "../nadlanistim/data";
-import { useNadlanistim } from "../nadlanistim/member";
+import type { Nadlanist } from "../nadlanistim/data";
 import { eventHref, featuredEvent, isVolunteer, splitTitle, type EventItem } from "../events/data";
-import type { Deal, Sponsor } from "./wp";
+import type { Deal, HomeSettings, Sponsor } from "./wp";
 import type { Article } from "../post-archive/data";
 import type { Episode } from "../podcast/data";
 import "./v6.css";
@@ -45,14 +47,8 @@ const NAV_LINKS: [string, string][] = [
   ["#contact", "צרו קשר"],
 ];
 
-const MARQUEE = ["יזמים", "משקיעים", "שמאים", "עורכי דין", "קבלנים", "אדריכלים", "חברות מימון", "פרופטק", "שיווק נדל״ן"];
-
-const STATS = [
-  { count: 3400, label: "חברי קהילה פעילים", suffix: "+", width: "96%" },
-  { count: 120, label: "אירועים מקצועיים בשנה", suffix: "", width: "78%" },
-  { count: 640, label: "שיתופי פעולה שנוצרו", suffix: "+", width: "62%" },
-  { count: 280, label: "פרויקטים שנוצרו דרך הקהילה", suffix: "+", width: "46%" },
-];
+// Stat bars step down card by card; a visual rhythm, not a measure of the number above them.
+const STAT_BAR_WIDTHS = ["96%", "78%", "62%", "46%"];
 
 const ABOUT_BULLETS: [string, string][] = [
   ["01", "חיבורים ישירים בין אנשי מקצוע"],
@@ -84,7 +80,7 @@ const heMonthYear = (iso: string) => `${heMonth(iso)} ${iso.slice(0, 4)}`;
 const carouselItems = (communities: Community[]) =>
   communities.map((c) => ({
     id: c.slug,
-    logo: communityLogo(c),
+    logo: c.logo ?? "",
     label: c.name,
     href: `/community/${c.slug}`,
   }));
@@ -98,12 +94,6 @@ const carouselItems = (communities: Community[]) =>
 
 const ROLE_OPTIONS = ["יזם / יזמית", "משקיע / משקיעה", "שמאי מקרקעין", "עו״ד", "קבלן", "מתווך / מתווכת", "אדריכל / אדריכלית", "חברת מימון", "פרופטק", "שיווק נדל״ן", "אחר"];
 
-const FOOTER_COLS: { h: string; links: [string, string][] }[] = [
-  { h: "קהילה", links: [["#about", "אודות"], ["#members", "חברי הקהילה"], ["#stories", "סיפורי הצלחה"]] },
-  { h: "אירועים", links: [["#events", "קרובים"], ["#featured", "הכנס השנתי"], ["#", "ארכיון אירועים"]] },
-  { h: "תוכן", links: [["#articles", "כתבות"], ["#", "ניוזלטר"], ["#", "פודקאסט"]] },
-  { h: "צרו קשר", links: [["#contact", "הצטרפות"], ["mailto:hello@nadlanistim.co.il", "אימייל"], ["#", "וואטסאפ"]] },
-];
 
 function useScrolled(threshold = 40) {
   const [scrolled, setScrolled] = useState(false);
@@ -594,7 +584,7 @@ function CommunitiesCarousel({ items }: { items: { id: string; logo: string; lab
         >
           {rendered.map((c, i) => (
             <a key={`${c.id}-${i}`} href={c.href} className="v6-comm">
-              <div className="v6-comm__logo"><img src={c.logo} alt="" /></div>
+              <div className="v6-comm__logo">{c.logo && <img src={c.logo} alt="" />}</div>
               <span className="v6-comm__label">{c.label}</span>
             </a>
           ))}
@@ -613,22 +603,19 @@ type HomeProps = {
   events: EventItem[];
   people: Nadlanist[]; // the nadlanistim directory
   categories: MemberCategory[]; // "חברי הקהילה", largest field first
+  youth: { count: number; maxAge: number | null }; // banner for the youth team page
   articles: Article[]; // newest first
   episodes: Episode[]; // most recent episode first
-  home: { deals: Deal[]; sponsors: Sponsor[] };
+  home: { settings: HomeSettings; deals: Deal[]; sponsors: Sponsor[] };
 };
 
-export default function HomePageV6({ communities, jobs, events, people, categories, articles, episodes, home }: HomeProps) {
+export default function HomePageV6({ communities, jobs, events, people, categories, youth, articles, episodes, home }: HomeProps) {
   const jobOffers = jobs.slice(0, 4).map(toJobOffer);
-  // The signed-in member's /my-account edits (photo, Open to work...) live in this browser; show them here too.
-  const edited = useNadlanistim(people);
-  const quoted = edited.filter((n) => n.quote);
-  const wasPhoto = people.find((n) => n.slug === CURRENT_MEMBER)?.photo;
-  const nowPhoto = edited.find((n) => n.slug === CURRENT_MEMBER)?.photo;
-  const memberCats = wasPhoto && nowPhoto && wasPhoto !== nowPhoto
-    ? categories.map((c) => ({ ...c, avatars: c.avatars.map((a) => (a === wasPhoto ? nowPhoto : a)) }))
-    : categories;
-  const { deals, sponsors } = home;
+  const quoted = people.filter((n) => n.homepage && n.quote);
+  const memberCats = categories;
+  const { settings, deals, sponsors } = home;
+  const c = settings.contact;
+  const channels = [c.whatsapp, c.instagram, c.tiktok, c.email].filter(Boolean);
   const byDate = (a: EventItem, b: EventItem) => a.date.localeCompare(b.date);
   const upcoming = events.filter((e) => !e.past && !isVolunteer(e)).sort(byDate).slice(0, 3);
   const past = events.filter((e) => e.past && !isVolunteer(e)).sort(byDate).reverse().slice(0, 3);
@@ -639,7 +626,11 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const [featuredMain, featuredAccent] = ((t) =>
     t.includes(" - ") ? splitTitle(t) : [t.slice(0, t.lastIndexOf(" ")), t.slice(t.lastIndexOf(" ") + 1)])(featured?.title ?? "");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [sent, setSent] = useState(false);
+  const contact = useFormSend(sendHomeContact);
+  const sent = !!contact.state.ok;
+  useEffect(() => {
+    if (sent) celebrate();
+  }, [sent]);
   const scrolled = useScrolled();
   useHeroIntro();
   useRevealOnScroll();
@@ -726,15 +717,13 @@ export default function HomePageV6({ communities, jobs, events, people, categori
         <div className="v6-hero__glow" aria-hidden />
 
         <div className="v6-hero__content">
+          {/* "הגדרות אתר" → כותרת ראשית: one line per row; the last row gets the highlight. */}
           <h1 className="v6-hero__title">
-            <span className="v6-line"><span>הקהילה</span></span>
-            <span className="v6-line"><span>שמחברת את עולם</span></span>
-            <span className="v6-line"><span><em>הנדל״ן בישראל</em></span></span>
+            {settings.heroLines.map((line, i) => (
+              <span key={i} className="v6-line"><span>{i === settings.heroLines.length - 1 ? <em>{line}</em> : line}</span></span>
+            ))}
           </h1>
-          <p className="v6-hero__sub">
-            מקום אחד ליזמים, משקיעים, שמאים, עו״ד, קבלנים, אדריכלים<br />
-            ובעלי מקצוע - ליצור קשרים, ללמוד, להתפתח ולייצר הזדמנויות אמיתיות.
-          </p>
+          {settings.heroSub && <p className="v6-hero__sub">{settings.heroSub}</p>}
           <div className="v6-hero__cta">
             <a href="#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>הצטרפו לקהילה</span>
@@ -757,40 +746,40 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </div>
         </div>
 
-        <div className="v6-marquee" aria-hidden>
+        {settings.marquee.length > 0 && <div className="v6-marquee" aria-hidden>
           <div className="v6-marquee__track">
-            {[...MARQUEE, ...MARQUEE].map((term, i) => (
+            {[...settings.marquee, ...settings.marquee].map((term, i) => (
               <Fragment key={i}>
                 <span>{term}</span>
                 <span className="v6-diamond">◆</span>
               </Fragment>
             ))}
           </div>
-        </div>
+        </div>}
       </section>
 
       <SponsorStrip />
 
       {/* Stats */}
-      <section className="v6-section">
+      {settings.stats.length > 0 && <section className="v6-section">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--stats" data-reveal>
             <span className="v6-eyebrow"><span className="v6-dot" />הקהילה במספרים</span>
             <h2>קהילה גדולה. <em>השפעה אמיתית.</em></h2>
           </header>
           <div className="v6-stats__grid">
-            {STATS.map((s) => (
+            {settings.stats.map((s, i) => (
               <div key={s.label} className="v6-stat v6-glass" data-reveal>
                 <div className="v6-stat__num" data-count={s.count} data-suffix={s.suffix}>0{s.suffix}</div>
                 <div className="v6-stat__label">{s.label}</div>
                 <div className="v6-stat__bar">
-                  <span style={{ ["--w" as never]: s.width } as React.CSSProperties} />
+                  <span style={{ ["--w" as never]: STAT_BAR_WIDTHS[i % STAT_BAR_WIDTHS.length] } as React.CSSProperties} />
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* About */}
       <section className="v6-section" id="about">
@@ -954,16 +943,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <h2>חדר <em>עסקאות.</em> <span className="v6-tag-members">Members Only</span></h2>
               <p className="v6-section-head__sub">פרויקטים, עסקאות ושיתופי פעולה שנולדו בתוך הקהילה.</p>
             </div>
-            <a href="#" className="v6-link-arrow">
+            <a href="/collaborations" className="v6-link-arrow">
               <span>כל ההצעות</span>
               <ArrowIcon />
             </a>
           </header>
           <div className="v6-projects__grid">
-            {/* ponytail: a WordPress deal has no link field, so its card opens the collaborations board.
-                Upgrade: add a collaboration link to group_nad_deal and use it here. */}
             {deals.map((p) => (
-              <a key={p.title} href="/collaborations" className="v6-project v6-glass" data-reveal>
+              <a key={p.title} href={p.href} className="v6-project v6-glass" data-reveal>
                 <figure className="v6-project__img">
                   {p.img && <img src={p.img} alt="" />}
                   <div className="v6-project__tag">{p.tag}</div>
@@ -982,14 +969,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
         </div>
       </section>
 
-      {/* Sponsorship strip */}
-      <section className="v6-section">
-        <div className="v6-container">
-          <div className="v6-sponsorstrip v6-sponsorstrip--sm v6-glass" data-reveal>
-            <span className="v6-sponsorstrip__title">Sponsorship#2</span>
-          </div>
-        </div>
-      </section>
+      <SponsorStrip slot="events" />
 
       {/* Sponsors */}
       <section className="v6-section">
@@ -1024,7 +1004,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <img src="/group-people-new-year-s-party.jpg" alt="" />
             </div>
             <div className="v6-youth__content">
-              <p>25 נדלניסטים ונדלניסטיות מתחת לגיל 45 שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
+              <p>{youth.count} נדלניסטים ונדלניסטיות{youth.maxAge ? ` מתחת לגיל ${youth.maxAge}` : ""} שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
               <a href="/youth" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>צפו בפרויקט המיוחד</span>
                 <ArrowIcon />
@@ -1172,54 +1152,51 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               השאירו פרטים ואנחנו נחזור אליכם תוך 24 שעות עם פרטים על
               תהליך ההצטרפות, החברות והאירועים הקרובים.
             </p>
-            <div className="v6-contact__channels" data-reveal>
-              <a href="#" className="v6-contact__channel v6-glass" data-magnetic="">
+            {channels.length > 0 && <div className="v6-contact__channels" data-reveal>
+              {c.whatsapp && <a href={c.whatsapp} target="_blank" rel="noopener noreferrer" className="v6-contact__channel v6-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4l-2.6-1.3a.8.8 0 0 0-.9.1l-1.2 1.2c-1.9-.9-3.4-2.4-4.3-4.3l1.2-1.2a.8.8 0 0 0 .1-.9L8.5 5.4a.8.8 0 0 0-.9-.4l-2.3.6a.8.8 0 0 0-.6.8c0 5.9 4.8 10.7 10.7 10.7a.8.8 0 0 0 .8-.6l.6-2.3a.8.8 0 0 0-.4-.9z" /></svg>
                 <span>וואטסאפ</span>
-              </a>
-              <a href="#" className="v6-contact__channel v6-glass" data-magnetic="">
+              </a>}
+              {c.instagram && <a href={c.instagram} target="_blank" rel="noopener noreferrer" className="v6-contact__channel v6-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
                 <span>אינסטגרם</span>
-              </a>
-              <a href="#" className="v6-contact__channel v6-glass" data-magnetic="">
+              </a>}
+              {c.tiktok && <a href={c.tiktok} target="_blank" rel="noopener noreferrer" className="v6-contact__channel v6-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3a5 5 0 0 0 4 4.2v3a8 8 0 0 1-4-1.2v5.6a6 6 0 1 1-6-6c.34 0 .67.03 1 .08v3.18a3 3 0 1 0 2 2.82V3h3z" /></svg>
                 <span>טיקטוק</span>
-              </a>
-              <a href="mailto:hello@nadlanistim.co.il" className="v6-contact__channel v6-glass" data-magnetic="">
+              </a>}
+              {c.email && <a href={`mailto:${c.email}`} className="v6-contact__channel v6-glass" data-magnetic="">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
                 <span>אימייל</span>
-              </a>
-            </div>
+              </a>}
+            </div>}
           </div>
 
           <form
             className="v6-contact__form v6-glass"
             data-sent={sent || undefined}
             data-reveal
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-              celebrate();
-            }}
+            onSubmit={contact.onSubmit}
           >
             <h3>הרשמה לקהילה</h3>
+            <Honeypot />
             <div className="v6-field">
               <label htmlFor="f-name">שם מלא</label>
-              <input id="f-name" type="text" required placeholder="ישראלה ישראלי" />
+              <input id="f-name" name="name" type="text" required placeholder="ישראלה ישראלי" />
             </div>
             <div className="v6-field-row">
               <div className="v6-field">
                 <label htmlFor="f-phone">טלפון</label>
-                <input id="f-phone" type="tel" required placeholder="050-0000000" />
+                <input id="f-phone" name="phone" type="tel" required placeholder="050-0000000" />
               </div>
               <div className="v6-field">
                 <label htmlFor="f-email">אימייל</label>
-                <input id="f-email" type="email" required placeholder="you@company.com" />
+                <input id="f-email" name="email" type="email" required placeholder="you@company.com" />
               </div>
             </div>
             <div className="v6-field">
               <label htmlFor="f-role">תחום עיסוק</label>
-              <select id="f-role" required defaultValue="">
+              <select id="f-role" name="field" required defaultValue="">
                 <option value="">בחרו תחום…</option>
                 {ROLE_OPTIONS.map((o) => <option key={o}>{o}</option>)}
               </select>
@@ -1228,8 +1205,9 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <input id="f-consent" type="checkbox" required />
               <span>מוסכמים עלי מדיניות הפרטיות של האתר וקבלת דיוורים מהקהילה.</span>
             </label>
-            <button type="submit" className="v6-btn v6-btn--primary v6-btn--block v6-btn--lg" data-magnetic="">
-              <span>שליחת בקשה</span>
+            <FormError error={contact.state.error} />
+            <button type="submit" className="v6-btn v6-btn--primary v6-btn--block v6-btn--lg" disabled={contact.pending} data-magnetic="">
+              <span>{contact.pending ? "שולחים…" : "שליחת בקשה"}</span>
               <ArrowIcon />
             </button>
             <div className="v6-contact__sent-msg">
@@ -1240,36 +1218,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="v6-footer">
-        <div className="v6-container">
-          <div className="v6-footer__top">
-            <div className="v6-footer__brand">
-              <div className="v6-footer__logo">
-                <img src="/v6-assets/logo.png" alt="הנדלניסטים" />
-              </div>
-              <p>הקהילה המקצועית של ענף הנדל״ן בישראל.<br />קשרים. אירועים. הזדמנויות.</p>
-            </div>
-            <div className="v6-footer__cols">
-              {FOOTER_COLS.map((c) => (
-                <div key={c.h}>
-                  <h5>{c.h}</h5>
-                  {c.links.map(([href, label]) => (
-                    <a key={label} href={href}>{label}</a>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="v6-footer__bottom">
-            <span>© 2026 הנדלניסטים. כל הזכויות שמורות.</span>
-            <span className="v6-footer__legal">
-              <a href="#">תנאי שימוש</a>
-              <a href="#">פרטיות</a>
-            </span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

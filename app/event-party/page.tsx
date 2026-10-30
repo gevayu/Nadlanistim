@@ -5,6 +5,9 @@ import SiteShell from "../v6/SiteShell";
 import { heDate } from "../events/data";
 import { getEvent } from "../events/wp";
 import "./event-party.css";
+import { eventMetadata } from "../events/meta";
+
+export const generateMetadata = eventMetadata("/event-party");
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>

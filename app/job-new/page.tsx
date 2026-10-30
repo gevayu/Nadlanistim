@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import { JOB_KINDS, type JobKind } from "../jobs/data";
+import { sendJob } from "../forms/actions";
+import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,7 +19,8 @@ const SELECTS: { id: string; label: string; options: string[] }[] = [
 ];
 
 export default function JobNewPage() {
-  const [sent, setSent] = useState(false);
+  const { state, pending, onSubmit } = useFormSend(sendJob);
+  const sent = !!state.ok;
   const [kind, setKind] = useState<JobKind>("offer");
   const seek = kind === "seek";
 
@@ -39,7 +42,8 @@ export default function JobNewPage() {
             {sent ? (
               <div className="pg-sent">{seek ? "המודעה" : "המשרה"} נשלחה לאישור. ✓ היא תעלה ללוח הדרושים תוך 24 שעות.</div>
             ) : (
-              <form className="pg-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+              <form className="pg-form" onSubmit={onSubmit}>
+                <Honeypot />
                 <fieldset className="pg-kind">
                   <legend>מה תרצו לפרסם?</legend>
                   {(Object.keys(JOB_KINDS) as JobKind[]).map((k) => (
@@ -52,14 +56,14 @@ export default function JobNewPage() {
 
                 <div className="v6-field">
                   <label htmlFor="j-title">{seek ? "כותרת המודעה" : "כותרת המשרה"}</label>
-                  <input id="j-title" type="text" required placeholder={seek ? "לדוגמה: מנהלת שיווק מחפשת משרה בחברת יזמות" : "לדוגמה: מנהל/ת פרויקטים בנדל״ן"} />
+                  <input id="j-title" name="title" type="text" required placeholder={seek ? "לדוגמה: מנהלת שיווק מחפשת משרה בחברת יזמות" : "לדוגמה: מנהל/ת פרויקטים בנדל״ן"} />
                 </div>
 
                 <div className="pg-formgrid">
                   {SELECTS.map((s) => (
                     <div className="v6-field" key={s.id}>
                       <label htmlFor={`j-${s.id}`}>{s.label}</label>
-                      <select id={`j-${s.id}`} required defaultValue="">
+                      <select id={`j-${s.id}`} name={s.id} required defaultValue="">
                         <option value="" disabled>{s.options[0]}</option>
                         {s.options.slice(1).map((o) => <option key={o}>{o}</option>)}
                       </select>
@@ -69,15 +73,15 @@ export default function JobNewPage() {
 
                 <div className="v6-field">
                   <label htmlFor="j-desc">{seek ? "ספרו על עצמכם" : "תיאור המשרה"}</label>
-                  <textarea id="j-desc" required placeholder={seek ? "ניסיון, תחומי מומחיות ואיזה תפקיד אתם מחפשים…" : "פרטו על התפקיד, האחריות ומה מחפשים…"} />
+                  <textarea id="j-desc" name="description" required placeholder={seek ? "ניסיון, תחומי מומחיות ואיזה תפקיד אתם מחפשים…" : "פרטו על התפקיד, האחריות ומה מחפשים…"} />
                 </div>
                 <div className="v6-field">
                   <label htmlFor="j-req">{seek ? "כישורים עיקריים" : "דרישות עיקריות"}</label>
-                  <textarea id="j-req" placeholder="דרישה אחת בכל שורה…" />
+                  <textarea id="j-req" name="requirements" placeholder="דרישה אחת בכל שורה…" />
                 </div>
                 <div className="v6-field">
                   <label htmlFor="j-tags">תגיות (מופרדות בפסיק)</label>
-                  <input id="j-tags" type="text" placeholder="ניסיון, תל אביב, משרה מלאה" />
+                  <input id="j-tags" name="tags" type="text" placeholder="ניסיון, תל אביב, משרה מלאה" />
                 </div>
 
                 <div className="pg-divider" style={{ margin: "8px 0" }} />
@@ -85,15 +89,15 @@ export default function JobNewPage() {
                 <div className="pg-formgrid">
                   <div className="v6-field">
                     <label htmlFor="j-name">שם / חברה</label>
-                    <input id="j-name" type="text" required placeholder="שם מלא או שם החברה" />
+                    <input id="j-name" name="name" type="text" required placeholder="שם מלא או שם החברה" />
                   </div>
                   <div className="v6-field">
                     <label htmlFor="j-phone">טלפון</label>
-                    <input id="j-phone" type="tel" required placeholder="050-0000000" />
+                    <input id="j-phone" name="phone" type="tel" required placeholder="050-0000000" />
                   </div>
                   <div className="v6-field pg-full">
                     <label htmlFor="j-email">אימייל ליצירת קשר</label>
-                    <input id="j-email" type="email" required placeholder="jobs@company.com" />
+                    <input id="j-email" name="email" type="email" required placeholder="jobs@company.com" />
                   </div>
                 </div>
 
@@ -102,8 +106,9 @@ export default function JobNewPage() {
                   <span>מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.</span>
                 </label>
 
-                <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" data-magnetic="">
-                  <span>{seek ? "פרסם חיפוש עבודה" : "פרסם משרה"}</span>
+                <FormError error={state.error} />
+                <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={pending} data-magnetic="">
+                  <span>{pending ? "שולחים…" : seek ? "פרסם חיפוש עבודה" : "פרסם משרה"}</span>
                   <ArrowIcon />
                 </button>
               </form>
