@@ -44,9 +44,6 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
                 <figure key={g} data-reveal><img src={g} alt="" /></figure>
               ))}
             </div>
-            <div className="rc-center-cta" data-reveal>
-              <a href="/#contact" className="v6-btn v6-btn--glass v6-btn--lg">רוצים לקבל את כל התמונות? הצטרפו לקהילה!</a>
-            </div>
           </div>
         </section>
       )}
