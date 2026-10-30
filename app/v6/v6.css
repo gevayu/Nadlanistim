@@ -854,9 +854,10 @@
 }
 
 /* ===== Skip link: first stop for keyboard users, hidden until focused ===== */
-.v6-skip {
+/* .v6-root a { color: inherit } would turn the text white on the light pill, so the rule carries .v6-root too. */
+.v6-skip, .v6-root .v6-skip {
   position: fixed; top: 12px; inset-inline-start: 12px; z-index: 1000;
   padding: 10px 18px; border-radius: 999px; background: var(--ink); color: #07080F;
   font-size: 14px; font-weight: 600; transform: translateY(-160%); transition: transform .2s var(--t);
 }
-.v6-skip:focus { transform: none; outline: 2px solid var(--cyan); outline-offset: 2px; }
+.v6-skip:focus, .v6-root .v6-skip:focus { transform: none; outline: 2px solid var(--cyan); outline-offset: 2px; }
