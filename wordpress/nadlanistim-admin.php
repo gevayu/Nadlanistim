@@ -1041,6 +1041,8 @@ body.nad-ui{
 }
 /* One font everywhere; icon fonts and code keep their own. */
 body.nad-ui,body.nad-ui *:not(.dashicons):not([class*="dashicons"]):not(.ab-icon):not([class*="mce-ico"]):not(code):not(pre):not(kbd){font-family:var(--nad-font);}
+/* The admin bar sets its own font with #wpadminbar *, so it needs an id-weight rule. */
+body.nad-ui #wpadminbar *:not(.dashicons):not([class*="dashicons"]):not(.ab-icon){font-family:var(--nad-font);}
 body.nad-ui #wpcontent,body.nad-ui #wpfooter{background:var(--nad-bg);}
 body.nad-ui a{color:var(--nad-primary-hover);}
 body.nad-ui a:hover{color:#3F2A9E;}
