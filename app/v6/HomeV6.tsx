@@ -617,7 +617,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const { settings, deals, sponsors } = home;
   // "הגדרות אתר" → "עמוד הבית: תמונות ו"מי אנחנו"". Each part shows only when its field is filled.
   const about = settings.about;
-  const heroMobile = about.heroSrcSet.split(",").map((s) => s.trim().split(" ")).find(([, w]) => w === "1536w")?.[0];
+  const heroMobile = about.heroSrcSet.split(",").map((s) => s.trim().split(" ")).find(([, w]) => w === "1024w")?.[0];
   const hasAbout = about.title.length > 0 || about.paragraphs.length > 0 || about.points.length > 0 || !!about.imageLarge || !!about.imageSmall;
   const c = settings.contact;
   const channels = [c.whatsapp, c.instagram, c.tiktok, c.email].filter(Boolean);
@@ -716,8 +716,8 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       <section className="v6-hero" id="top">
         <div className="v6-hero__media" data-parallax="0.3">
           {about.heroImage && (
-            // The hero is cropped to cover the screen, so a phone shows it about 1100px wide: the 1536px copy
-            // (a third of the original's weight) is enough under the dark veil. Wider screens choose from all sizes.
+            // The hero is cropped to cover the screen, so a phone shows it about 1100px wide. Under the 45% dark veil
+            // the 1024px copy (63KB, a sixth of the original) is enough there. Wider screens choose from all sizes.
             <picture>
               {heroMobile && <source media="(max-width: 760px)" srcSet={heroMobile} />}
               <img fetchPriority="high" src={about.heroImage} srcSet={about.heroSrcSet || undefined} sizes="100vw" alt="" />

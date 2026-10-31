@@ -43,7 +43,8 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
 
           {a.img && (
             <figure className="post-cover" data-reveal>
-              <img fetchPriority="high" src={a.img} alt="" />
+              {/* The cover is the largest thing on the page: fetched first, and a phone takes the copy its screen needs. */}
+              <img fetchPriority="high" src={a.img} srcSet={a.imgSrcSet} sizes="(max-width: 960px) 100vw, 960px" alt="" />
             </figure>
           )}
 

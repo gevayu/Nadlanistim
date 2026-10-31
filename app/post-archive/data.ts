@@ -15,6 +15,7 @@ export type Article = {
   titleMain: string; // the headline is titleMain + titleAccent, the accent highlighted
   titleAccent: string;
   img: string; // featured image URL, "" when none
+  imgSrcSet?: string; // WordPress's resized copies of it ("url 768w, ...")
   type: string; // מדריך / הסבר / מחקר / Case Study
   cats: string[];
   tags: string[];

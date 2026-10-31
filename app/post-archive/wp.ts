@@ -20,7 +20,7 @@ type WpArticle = {
   slug: string;
   title: string;
   content: string | null;
-  featuredImage: Img;
+  featuredImage: { node: { sourceUrl: string; srcSet: string | null } } | null;
   articleCategories: { nodes: { name: string }[] };
   articleTags: { nodes: { name: string }[] };
   articleBody: { body: WpBlock[] | null } | null;
@@ -41,7 +41,7 @@ type WpArticle = {
 // ponytail: heading `level` (always h2) and list `ordered` (never set) are ignored; the design has one style for each.
 const QUERY = `{ articles(first: 100) { nodes {
   databaseId date slug title content
-  featuredImage { node { sourceUrl(size: LARGE) } }
+  featuredImage { node { sourceUrl(size: LARGE) srcSet } }
   articleCategories { nodes { name } }
   articleTags { nodes { name } }
   articleBody { body {
@@ -97,6 +97,7 @@ const toArticle = ({ date, slug, title, content, featuredImage, articleCategorie
     titleMain: f?.titleMain ?? title,
     titleAccent: f?.titleAccent ?? "",
     img: featuredImage?.node.sourceUrl ?? "",
+    imgSrcSet: featuredImage?.node.srcSet ?? undefined,
     type: f?.contentType?.[0] ?? "",
     cats: articleCategories.nodes.map((n) => n.name),
     tags: articleTags.nodes.map((n) => n.name),
