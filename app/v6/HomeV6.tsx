@@ -674,7 +674,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <span /><span /><span />
           </button>
           <a href="#top" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
-            <img src="/v6-assets/logo.png" alt="הנדלניסטים" />
+            <img src="/v6-assets/logo-360.png" width={360} height={114} alt="הנדלניסטים" />
           </a>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">
             {NAV_LINKS.map(([href, label]) => (

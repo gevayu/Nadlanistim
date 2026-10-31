@@ -15,7 +15,7 @@ export default function SiteFooter() {
         <div className="v6-footer__top">
           <div className="v6-footer__brand">
             <div className="v6-footer__logo">
-              <img loading="lazy" src="/v6-assets/logo.png" alt="הנדלניסטים" />
+              <img loading="lazy" src="/v6-assets/logo-360.png" width={360} height={114} alt="הנדלניסטים" />
             </div>
             <p>הקהילה המקצועית של ענף הנדל״ן בישראל.<br />קשרים. אירועים. הזדמנויות.</p>
           </div>

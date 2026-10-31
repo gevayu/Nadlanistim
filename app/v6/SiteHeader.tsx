@@ -70,7 +70,7 @@ export default function SiteHeader() {
             <span /><span /><span />
           </button>
           <a href="/" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
-            <img src="/v6-assets/logo.png" alt="הנדלניסטים" />
+            <img src="/v6-assets/logo-360.png" width={360} height={114} alt="הנדלניסטים" />
           </a>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">
             {NAV_LINKS.map(([href, label]) => (

@@ -11,13 +11,13 @@ import { getHomeContent } from "./v6/wp";
 import { JsonLd, homeLd } from "@/lib/jsonld";
 
 // "חברי הקהילה": one card per professional field, counting every member (directory and youth team).
-function memberCategories(members: { field: string; photo?: string }[]): MemberCategory[] {
+function memberCategories(members: { field: string; photo?: string; thumb?: string }[]): MemberCategory[] {
   const byField = new Map<string, { count: number; avatars: string[] }>();
   for (const m of members) {
     if (!m.field) continue;
     const c = byField.get(m.field) ?? { count: 0, avatars: [] };
     c.count++;
-    if (m.photo && c.avatars.length < 3) c.avatars.push(m.photo);
+    if (m.photo && c.avatars.length < 3) c.avatars.push(m.thumb || m.photo);
     byField.set(m.field, c);
   }
   return [...byField].map(([title, c]) => ({ title, ...c })).sort((a, b) => b.count - a.count);

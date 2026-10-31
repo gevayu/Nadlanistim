@@ -8,6 +8,7 @@ export type Nadlanist = {
   bio: string[];
   email: string;
   photo?: string; // WordPress featured image, or a data URL uploaded in /profile
+  thumb?: string; // the same photo at 150px, for small avatars
   phone?: string; // shown to members only, on the profile page (call and WhatsApp); publicCard leaves it out
   linkedin?: string;
   instagram?: string;

@@ -7,7 +7,7 @@ type WpNadlanist = {
   date: string;
   slug: string;
   title: string;
-  featuredImage: { node: { sourceUrl: string } } | null;
+  featuredImage: { node: { sourceUrl: string; thumb: string | null } } | null;
   cohorts: { nodes: { name: string; slug: string }[] };
   nadlanistFields: {
     role: string | null;
@@ -28,7 +28,7 @@ type WpNadlanist = {
 
 const QUERY = `{ nadlanists(first: 100) { nodes {
   databaseId date slug title
-  featuredImage { node { sourceUrl(size: MEDIUM_LARGE) } }
+  featuredImage { node { sourceUrl(size: MEDIUM_LARGE) thumb: sourceUrl(size: THUMBNAIL) } }
   cohorts { nodes { name slug } }
   nadlanistFields { role field place quote bio email }
   nadlanistExtra { linkedin instagram openToWork phone communities { nodes { slug } } }
@@ -41,6 +41,7 @@ const toNadlanist = ({ slug, title, featuredImage, cohorts, nadlanistFields: f, 
   slug,
   name: title,
   photo: featuredImage?.node.sourceUrl,
+  thumb: featuredImage?.node.thumb ?? undefined,
   role: f?.role ?? "",
   field: f?.field?.[0] ?? "",
   place: f?.place ?? "",

@@ -66,7 +66,7 @@ const QUERY = `{
   siteSettings { siteSettingsFields { marquee heroSub heroLines { line } stats { count label suffix } contactEmail whatsappUrl instagramUrl tiktokUrl }
     homeContent {
       homeHeroImage { node { sourceUrl srcSet } } homeAboutTitle homeAboutText homeAboutPoints
-      homeAboutImageLarge { node { sourceUrl } } homeAboutImageSmall { node { sourceUrl } }
+      homeAboutImageLarge { node { sourceUrl(size: LARGE) } } homeAboutImageSmall { node { sourceUrl(size: MEDIUM_LARGE) } }
       homeAboutBadgeNumber homeAboutBadgeText homeFeaturedBg { node { sourceUrl } }
     } }
   deals(first: 100) { nodes {
