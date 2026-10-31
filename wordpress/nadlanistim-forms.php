@@ -66,7 +66,7 @@ function nadlanistim_forms_specs() {
 					'acf'      => 'looking',
 					'options'  => array( 'שותף פיננסי' => 'financial', 'שותף מקצועי' => 'profession', 'שותף לעסקת יזמות' => 'developer', 'קבלן' => 'contractor', 'יועץ' => 'proptech', 'שותף לקרקע' => 'land', 'משקיע שותף' => 'investor' ),
 				),
-				'area'        => array( 'label' => 'אזור', 'type' => 'select', 'required' => true, 'acf' => 'place', 'options' => nadlanistim_forms_same( array( 'צפון', 'שרון', 'מרכז', 'דרום', 'ירושלים', 'כל הארץ' ) ) ),
+				'area'        => array( 'label' => 'אזור', 'type' => 'select', 'required' => true, 'acf' => 'place', 'options' => nadlanistim_forms_same( array( 'צפון', 'שרון', 'מרכז', 'דרום', 'ירושלים', 'כל הארץ', 'מרחוק' ) ) ),
 				'invest'      => array(
 					'label'    => 'רמת השקעה',
 					'type'     => 'select',
@@ -306,6 +306,11 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 	// Only valid submissions count toward the limit.
 	$hits['n']++;
 	set_transient( $limit_key, $hits, max( 1, $hits['until'] - time() ) );
+
+	if ( isset( $values['consent'] ) && '1' === $values['consent'] ) {
+		$source = 'contact' === $form ? $values['source'] : $form;
+		nadlanistim_consent_record( $values['email'], $values['name'], $source, nadlanistim_forms_ip( $req ) );
+	}
 
 	// What the manager reads: the visitor's own wording for each filled field.
 	$rows  = array();
@@ -571,9 +576,13 @@ add_filter(
 			),
 			'strlen'
 		);
-		// The site's consent box (privacy policy and community newsletters), dated on the new account.
-		if ( $user && '1' === $p( 'consent' ) ) {
-			update_user_meta( $user->ID, 'nad_consent_at', current_time( 'mysql' ) );
+		// The site's consent box, dated on the new account and kept in the consent records.
+		if ( '1' === $p( 'consent' ) ) {
+			if ( $user ) {
+				update_user_meta( $user->ID, 'nad_consent_at', current_time( 'mysql' ) );
+			}
+			$ip = nadlanistim_forms_from_site( $req ) ? nadlanistim_forms_ip( $req ) : ( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
+			nadlanistim_consent_record( $p( 'email' ), $p( 'name' ), 'join', $ip );
 		}
 		$blocks = $user ? array( '<p>' . nadlanistim_forms_button( admin_url( 'user-edit.php?user_id=' . $user->ID ), 'לפרטי המשתמש', false ) . '</p>' ) : array();
 		$blocks[] = nadlanistim_forms_note( 'המשתמש נפתח במצב ממתין. תשובה למייל הזה תגיע ישירות למבקש.' );
@@ -704,4 +713,141 @@ add_filter(
 	function ( $name ) {
 		return 'WordPress' === $name ? 'הנדלניסטים' : $name;
 	}
+);
+
+/* ─── Consent records ──────────────────────────────────────────────────── */
+// Every ticked consent box becomes a record: who, from which form, the exact wording, IP and time (UTC). Under the
+// anti-spam rule (חוק התקשורת, סעיף 30א) only the home page sign-up asks for newsletters, so only it counts as consent
+// to marketing mail; the other boxes are the privacy policy and publishing terms. Records are never edited: a
+// withdrawal is a new record. Admins read them under "הסכמות".
+
+/** Each form's box, word for word as the site shows it. Kept here so a record never depends on what a browser sent. */
+function nadlanistim_consent_texts() {
+	return array(
+		'home'      => array( 'מוסכמים עלי מדיניות הפרטיות של האתר וקבלת דיוורים מהקהילה.', true ),
+		'join'      => array( 'קראתי ואני מסכים/ה לתקנון הקהילה ולמדיניות הפרטיות.', false ),
+		'job'       => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
+		'collab'    => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
+		'nadlanist' => array( 'מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.', false ),
+		'withdraw'  => array( 'ביטול ההסכמה לקבלת דיוורים, מהקישור במייל.', false ),
+	);
+}
+
+add_action(
+	'init',
+	function () {
+		register_post_type(
+			'nad_consent',
+			array(
+				'label'        => 'הסכמות',
+				'labels'       => array( 'name' => 'הסכמות', 'singular_name' => 'הסכמה' ),
+				'public'       => false,
+				'show_ui'      => true,
+				'menu_icon'    => 'dashicons-yes-alt',
+				'supports'     => array( 'title' ),
+				// Read-only in the admin: the site writes records, nobody edits or deletes them by hand.
+				'capabilities' => array( 'create_posts' => 'do_not_allow', 'edit_post' => 'do_not_allow', 'delete_post' => 'do_not_allow' ),
+				'map_meta_cap' => true,
+			)
+		);
+	}
+);
+
+function nadlanistim_consent_record( $email, $name, $source, $ip ) {
+	$texts = nadlanistim_consent_texts();
+	$email = strtolower( sanitize_email( $email ) );
+	if ( ! is_email( $email ) || ! isset( $texts[ $source ] ) ) {
+		return;
+	}
+	wp_insert_post(
+		array(
+			'post_type'   => 'nad_consent',
+			'post_status' => 'private',
+			'post_title'  => $email,
+			'meta_input'  => array(
+				'email'     => $email,
+				'name'      => sanitize_text_field( $name ),
+				'source'    => $source,
+				'text'      => $texts[ $source ][0],
+				'marketing' => 'withdraw' === $source ? 'no' : ( $texts[ $source ][1] ? 'yes' : '' ),
+				'ip'        => sanitize_text_field( $ip ),
+				'at_utc'    => gmdate( 'Y-m-d H:i:s' ),
+			),
+		)
+	);
+}
+
+/** True when the latest newsletter answer on record for this address is yes. Check it before any newsletter goes out. */
+function nadlanistim_consent_allows_marketing( $email ) {
+	$last = get_posts(
+		array(
+			'post_type'   => 'nad_consent',
+			'post_status' => 'private',
+			'numberposts' => 1,
+			'meta_query'  => array(
+				array( 'key' => 'email', 'value' => strtolower( sanitize_email( $email ) ) ),
+				array( 'key' => 'marketing', 'value' => array( 'yes', 'no' ), 'compare' => 'IN' ),
+			),
+		)
+	);
+	return $last && 'yes' === get_post_meta( $last[0]->ID, 'marketing', true );
+}
+
+function nadlanistim_consent_unsub_key( $email ) {
+	return hash_hmac( 'sha256', 'unsub|' . $email, wp_salt( 'auth' ) );
+}
+
+/** The opt-out link every newsletter must carry. Signed, so nobody can unsubscribe someone else. */
+function nadlanistim_consent_unsubscribe_url( $email ) {
+	$email = strtolower( sanitize_email( $email ) );
+	return add_query_arg( array( 'nad_unsubscribe' => rawurlencode( $email ), 'k' => nadlanistim_consent_unsub_key( $email ) ), home_url( '/' ) );
+}
+
+add_action(
+	'init',
+	function () {
+		// phpcs:disable WordPress.Security.NonceVerification -- a signed link from an email, see above.
+		if ( ! isset( $_GET['nad_unsubscribe'], $_GET['k'] ) ) {
+			return;
+		}
+		$email = strtolower( sanitize_email( rawurldecode( wp_unslash( $_GET['nad_unsubscribe'] ) ) ) );
+		$ok    = is_email( $email ) && hash_equals( nadlanistim_consent_unsub_key( $email ), (string) wp_unslash( $_GET['k'] ) );
+		// phpcs:enable
+		if ( $ok ) {
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+			nadlanistim_consent_record( $email, '', 'withdraw', $ip );
+		}
+		wp_die(
+			$ok ? 'הכתובת ' . esc_html( $email ) . ' הוסרה מרשימת הדיוור של הנדלניסטים. לא יישלחו אליה עוד דיוורים.' : 'הקישור לא תקין. כתבו לנו מעמוד צור קשר באתר ונסיר אתכם ידנית.',
+			$ok ? 'הוסרתם מהדיוור' : 'הקישור לא תקין',
+			array( 'response' => $ok ? 200 : 400, 'text_direction' => 'rtl' )
+		);
+	},
+	1
+);
+
+// The records list: who, from which form, what they agreed to, when and from which IP.
+add_filter(
+	'manage_nad_consent_posts_columns',
+	function () {
+		return array( 'title' => 'אימייל', 'nad_name' => 'שם', 'nad_source' => 'טופס', 'nad_marketing' => 'דיוור', 'nad_text' => 'נוסח', 'nad_ip' => 'IP', 'nad_at' => 'מתי (UTC)' );
+	}
+);
+add_action(
+	'manage_nad_consent_posts_custom_column',
+	function ( $column, $post_id ) {
+		$names = array( 'home' => 'הרשמה בעמוד הבית', 'join' => 'הצטרפות', 'job' => 'פרסום משרה', 'collab' => 'שיתוף פעולה', 'nadlanist' => 'מדריך', 'withdraw' => 'ביטול מהמייל' );
+		$meta  = array( 'nad_name' => 'name', 'nad_text' => 'text', 'nad_ip' => 'ip', 'nad_at' => 'at_utc' );
+		if ( isset( $meta[ $column ] ) ) {
+			echo esc_html( get_post_meta( $post_id, $meta[ $column ], true ) );
+		} elseif ( 'nad_source' === $column ) {
+			$s = get_post_meta( $post_id, 'source', true );
+			echo esc_html( isset( $names[ $s ] ) ? $names[ $s ] : $s );
+		} elseif ( 'nad_marketing' === $column ) {
+			$m = get_post_meta( $post_id, 'marketing', true );
+			echo esc_html( 'yes' === $m ? 'כן' : ( 'no' === $m ? 'בוטל' : '' ) );
+		}
+	},
+	10,
+	2
 );
