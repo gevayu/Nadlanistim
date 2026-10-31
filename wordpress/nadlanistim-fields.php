@@ -306,3 +306,148 @@ add_filter(
 		return $field;
 	}
 );
+
+// "חומת תשלום": for each members' area, what a visitor without a paying membership gets. The site reads it
+// through GraphQL (lib/paywall.ts); a paying member always sees everything. Defaults match what the site did before.
+add_action(
+	'acf/init',
+	function () {
+		if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+			return;
+		}
+		$open     = 'פתוח לכולם';
+		$blur     = 'אורחים רואים מטושטש';
+		$redirect = 'חברים בלבד, אורחים מועברים';
+		$area     = function ( $key, $title, $where, $buttons, $guest, $can_blur, $default ) use ( $open, $blur, $redirect ) {
+			$choices = $can_blur ? array( 'open' => $open, 'blur' => $blur, 'redirect' => $redirect ) : array( 'open' => $open, 'redirect' => $redirect );
+			return array(
+				'key'        => 'field_nad_pw_' . $key,
+				'label'      => $title,
+				'name'       => $key,
+				'type'       => 'group',
+				'layout'     => 'block',
+				'sub_fields' => array(
+					array(
+						'key'     => 'field_nad_pw_' . $key . '_about',
+						'label'   => '',
+						'name'    => '',
+						'type'    => 'message',
+						'message' => '<span class="nad-pw-where" dir="ltr">' . esc_html( $where ) . '</span> · ' . esc_html( $buttons ) . ( $guest ? '<br><span class="nad-pw-guest">' . esc_html( $guest ) . '</span>' : '' ),
+					),
+					array(
+						'key'           => 'field_nad_pw_' . $key . '_access',
+						'label'         => 'מי שאינו חבר משלם',
+						'name'          => 'access',
+						'type'          => 'button_group',
+						'choices'       => $choices,
+						'default_value' => $default,
+						'layout'        => 'horizontal',
+						'wrapper'       => array( 'width' => '55' ),
+					),
+					array(
+						'key'               => 'field_nad_pw_' . $key . '_to',
+						'label'             => 'מועבר אל',
+						'name'              => 'to',
+						'type'              => 'radio',
+						'choices'           => array( 'join' => 'עמוד ההצטרפות', 'login' => 'עמוד ההתחברות', 'custom' => 'קישור אחר' ),
+						'default_value'     => 'join',
+						'layout'            => 'horizontal',
+						'wrapper'           => array( 'width' => '45' ),
+						'conditional_logic' => array( array( array( 'field' => 'field_nad_pw_' . $key . '_access', 'operator' => '==', 'value' => 'redirect' ) ) ),
+					),
+					array(
+						'key'               => 'field_nad_pw_' . $key . '_custom',
+						'label'             => 'הקישור',
+						'name'              => 'custom_url',
+						'type'              => 'url',
+						'placeholder'       => 'https://',
+						'conditional_logic' => array(
+							array(
+								array( 'field' => 'field_nad_pw_' . $key . '_access', 'operator' => '==', 'value' => 'redirect' ),
+								array( 'field' => 'field_nad_pw_' . $key . '_to', 'operator' => '==', 'value' => 'custom' ),
+							),
+						),
+					),
+				),
+			);
+		};
+		acf_add_local_field_group(
+			array(
+				'key'                => 'group_nad_paywall',
+				'title'              => 'מי רואה מה',
+				'fields'             => array(
+					array(
+						'key'     => 'field_nad_pw_intro',
+						'label'   => '',
+						'name'    => '',
+						'type'    => 'message',
+						'message' => 'לכל אזור באתר בוחרים מה מקבל מי שאינו חבר משלם: רואה הכל, רואה מטושטש, או מועבר לעמוד אחר. חבר מחובר עם חברות פעילה רואה תמיד הכל. השינוי עולה לאתר מיד עם השמירה.',
+					),
+					$area( 'job_new', 'פרסום משרה', '/job-new', 'הכפתור "פרסם משרה פתוחה" בלוח הדרושים', '', false, 'redirect' ),
+					$area( 'jobs_board', 'לוח הדרושים', '/jobs', 'התפריט "קריירה" ועמוד הבית', '', false, 'open' ),
+					$area( 'collab_new', 'פרסום שיתוף פעולה', '/collaboration-new', 'הכפתור "פרסם שיתוף פעולה" בלוח שיתופי הפעולה', '', false, 'open' ),
+					$area( 'collab_board', 'לוח שיתופי הפעולה', '/collaborations', 'התפריט "חדר העסקאות"', 'מטושטש: הכרטיסים גלויים, שם המפרסם והחברה מוסתרים.', true, 'blur' ),
+					$area( 'collab_page', 'עמוד שיתוף פעולה', '/collaboration/...', 'הכרטיסים בלוח שיתופי הפעולה', 'מטושטש: רואים את מה שבכרטיס, והפרטים, אנשי הקשר ושם המפרסם מוסתרים.', true, 'blur' ),
+					$area( 'nadlanist_page', 'עמוד נדלניסט', '/nadlanist/...', 'הכרטיסים ב"הכר את הנדלניסט" ובעמוד הבית', 'מטושטש: רואים את הכרטיס מהמדריך, ושאר הפרופיל מוסתר.', true, 'blur' ),
+					$area( 'nadlanist_new', 'הצטרפות למדריך ולנבחרת', '/nadlanist-new', 'הכפתורים "הצטרף למדריך" ו"הגישו מועמדות" לנבחרת הצעירים', '', false, 'redirect' ),
+					array(
+						'key'           => 'field_nad_pw_join_to',
+						'label'         => 'כל כפתורי "הצטרפו לקהילה" מובילים אל',
+						'name'          => 'join_to',
+						'type'          => 'radio',
+						'choices'       => array( 'join' => 'עמוד ההצטרפות באתר', 'custom' => 'קישור אחר' ),
+						'default_value' => 'join',
+						'layout'        => 'horizontal',
+						'instructions'  => 'גם "עמוד ההצטרפות" שנבחר באזורים למעלה מוביל לכאן.',
+					),
+					array(
+						'key'               => 'field_nad_pw_join_custom',
+						'label'             => 'הקישור',
+						'name'              => 'join_custom_url',
+						'type'              => 'url',
+						'placeholder'       => 'https://',
+						'conditional_logic' => array( array( array( 'field' => 'field_nad_pw_join_to', 'operator' => '==', 'value' => 'custom' ) ) ),
+					),
+				),
+				'location'           => array( array( array( 'param' => 'options_page', 'operator' => '==', 'value' => 'nadlanistim-paywall' ) ) ),
+				'show_in_graphql'    => 1,
+				'graphql_field_name' => 'paywall',
+			)
+		);
+	}
+);
+
+add_action(
+	'acf/init',
+	function () {
+		if ( ! function_exists( 'acf_add_options_sub_page' ) ) {
+			return;
+		}
+		acf_add_options_sub_page(
+			array(
+				'page_title'         => 'חומת תשלום',
+				'menu_title'         => 'חומת תשלום',
+				'menu_slug'          => 'nadlanistim-paywall',
+				'parent_slug'        => 'nadlanistim-settings',
+				'capability'         => 'edit_posts',
+				'show_in_graphql'    => true,
+				'graphql_type_name'  => 'PaywallSettings',
+				'graphql_field_name' => 'paywallSettings',
+			)
+		);
+	},
+	99
+);
+
+// The area's address and buttons read as a quiet line under its name, not as a block of text.
+add_action(
+	'admin_head',
+	function () {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! $screen || false === strpos( (string) $screen->id, 'nadlanistim-paywall' ) ) {
+			return;
+		}
+		echo '<style>.nad-pw-where{font-weight:600;color:#4b3fd6}.nad-pw-guest{color:#5d6878;font-size:12.5px}'
+			. '.acf-field-group>.acf-label label{font-size:15px}.acf-field-group>.acf-input>.acf-fields{border-radius:10px}</style>';
+	}
+);

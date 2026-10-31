@@ -1,24 +1,25 @@
 "use server";
 
 import { postForm, postJoin, type FormState } from "../../lib/forms";
-import { getSession } from "../../lib/auth";
+import { isLocked } from "../../lib/paywall";
 
 export async function sendJoin(_prev: FormState, form: FormData) {
   return postJoin(form);
 }
 
-// The page is gated too, but the action is callable on its own, so it checks again.
+// The pages are gated too, but an action is callable on its own, so each checks "חומת תשלום" again.
 export async function sendJob(_prev: FormState, form: FormData): Promise<FormState> {
-  if (!(await getSession())?.member) return { error: "פרסום בלוח הדרושים פתוח לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
+  if (await isLocked("jobNew")) return { error: "פרסום בלוח הדרושים פתוח לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
   return postForm("job", form);
 }
 
-export async function sendCollab(_prev: FormState, form: FormData) {
+export async function sendCollab(_prev: FormState, form: FormData): Promise<FormState> {
+  if (await isLocked("collabNew")) return { error: "פרסום שיתוף פעולה פתוח לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
   return postForm("collab", form);
 }
 
 export async function sendNadlanist(_prev: FormState, form: FormData): Promise<FormState> {
-  if (!(await getSession())?.member) return { error: "ההצטרפות למדריך פתוחה לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
+  if (await isLocked("nadlanistNew")) return { error: "ההצטרפות למדריך פתוחה לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
   return postForm("nadlanist", form);
 }
 

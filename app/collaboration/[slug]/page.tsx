@@ -4,6 +4,7 @@ import MembersLock from "../../collaborations/MembersLock";
 import HiddenName from "../../collaborations/HiddenName";
 import { getCollabs } from "../../collaborations/wp";
 import { getSession } from "../../../lib/auth";
+import { guard } from "../../../lib/paywall";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,10 +18,9 @@ const waNumber = (phone: string) => "972" + phone.replace(/\D/g, "").replace(/^0
 
 export default async function CollaborationSinglePage({ params }: { params: Promise<{ slug: string }> }) {
   const slug = decodeURIComponent((await params).slug);
-  const [collabs, session] = await Promise.all([getCollabs(), getSession()]);
+  const [collabs, session, { locked }] = await Promise.all([getCollabs(), getSession(), guard("collabPage", `/collaboration/${slug}`)]);
   const collab = collabs.find((c) => c.slug === slug);
-  // Members only. The open part is what the board card already shows; the rest renders only for a paying member.
-  const locked = !session?.member;
+  // Members only by default ("חומת תשלום"). The open part is what the board card already shows; the rest renders only when unlocked.
 
   if (!collab) {
     return (

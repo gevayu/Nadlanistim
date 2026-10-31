@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { pageMeta } from "@/lib/seo";
-import { getSession } from "@/lib/auth";
+import { guard } from "@/lib/paywall";
 
 export const metadata: Metadata = pageMeta("הצטרפות למדריך הנדלניסטים", "ממלאים פרופיל ומופיעים במדריך הנדלניסטים, כדי שחברי הקהילה ימצאו אתכם לפי תחום ומיקום.");
 
-// The directory and youth-team form is for signed-in members only; anyone else lands on the join page.
+// The directory and youth-team form; who may use it is set in "חומת תשלום" (members only by default).
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  if (!(await getSession())?.member) redirect("/join");
+  await guard("nadlanistNew", "/nadlanist-new");
   return children;
 }
