@@ -48,6 +48,9 @@ export default async function RootLayout({
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: A11Y_BOOT }} />
+        {/* The h1 (700) and body (400) weights start with the HTML instead of after the CSS is parsed. */}
+        <link rel="preload" href="/fonts/GoogleSans-Bold-heb.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/GoogleSans-Regular-heb.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>
         <LayoutGate>

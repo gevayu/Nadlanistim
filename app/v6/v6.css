@@ -671,9 +671,8 @@
 .v6-root [data-reveal] { opacity: 0; transform: translateY(32px); transition: opacity .9s var(--t), transform .9s var(--t); }
 .v6-root [data-reveal].is-visible { opacity: 1; transform: none; }
 /* The block holding the page's h1, and the one right after it (an article's cover), are on screen at load: they
-   animate in with CSS on first paint instead of waiting for JavaScript to mark them visible. */
-@keyframes v6-reveal-in { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
-.v6-root [data-reveal]:has(h1), .v6-root [data-reveal]:has(h1) + [data-reveal] { opacity: 1; transform: none; animation: v6-reveal-in .9s var(--t) both; }
+   show at once, with no entrance animation, so the main heading paints as soon as its font is in. */
+.v6-root [data-reveal]:has(h1), .v6-root [data-reveal]:has(h1) + [data-reveal] { opacity: 1; transform: none; transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .v6-hero__title .v6-line > span,
