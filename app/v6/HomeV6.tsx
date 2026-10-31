@@ -16,6 +16,7 @@ import type { Deal, HomeSettings, Sponsor } from "./wp";
 import type { Article } from "../post-archive/data";
 import type { Episode } from "../podcast/data";
 import "./v6.css";
+import LazyImg, { usePageLoaded } from "./LazyImg";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -235,6 +236,8 @@ function useStatCounters() {
 }
 
 function MembersCarousel({ items }: { items: MemberCategory[] }) {
+  // The avatars are CSS backgrounds, which never wait: they start once the page has loaded.
+  const pageLoaded = usePageLoaded();
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -351,7 +354,7 @@ function MembersCarousel({ items }: { items: MemberCategory[] }) {
                 <h3>{m.title}</h3>
                 <div className="v6-member__avatars" aria-hidden>
                   {m.avatars.map((a) => (
-                    <span key={a} style={{ backgroundImage: `url(${a})` }} />
+                    <span key={a} style={pageLoaded ? { backgroundImage: `url(${a})` } : undefined} />
                   ))}
                 </div>
               </a>
@@ -393,7 +396,7 @@ function NadlanistCarousel({ people }: { people: Nadlanist[] }) {
       onMouseLeave={() => { pausedRef.current = false; }}
     >
       <figure className="v6-story__img v6-meet__img">
-        {p.photo && <img loading="lazy" key={`meet-img-${i}`} src={p.photo} alt={p.name} />}
+        {p.photo && <LazyImg key={`meet-img-${i}`} src={p.photo} alt={p.name} />}
         {p.openToWork && <span className="v6-meet__otw">#OPENTOWORK</span>}
       </figure>
       <div className="v6-story__body">
@@ -457,7 +460,7 @@ function JobRotator({ jobs }: { jobs: JobOffer[] }) {
       aria-label="הצעות עבודה בקהילה"
     >
       <figure className="v6-jobrot__img">
-        {j.img && <img loading="lazy" key={`job-img-${i}`} src={j.img} alt="" />}
+        {j.img && <LazyImg key={`job-img-${i}`} src={j.img} alt="" />}
         <span className="v6-jobrot__badge">{JOB_KINDS[j.kind]}</span>
       </figure>
       <div className="v6-jobrot__body">
@@ -582,7 +585,7 @@ function CommunitiesCarousel({ items }: { items: { id: string; logo: string; lab
         >
           {rendered.map((c, i) => (
             <a key={`${c.id}-${i}`} href={c.href} className="v6-comm">
-              <div className="v6-comm__logo">{c.logo && <img loading="lazy" src={c.logo} alt="" />}</div>
+              <div className="v6-comm__logo">{c.logo && <LazyImg src={c.logo} alt="" />}</div>
               <span className="v6-comm__label">{c.label}</span>
             </a>
           ))}
@@ -819,12 +822,12 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <div className="v6-about__media" data-reveal>
               {about.imageLarge && (
                 <figure className="v6-about__img v6-about__img--lg" data-parallax="0.1">
-                  <img loading="lazy" src={about.imageLarge} alt="" />
+                  <LazyImg src={about.imageLarge} alt="" />
                 </figure>
               )}
               {about.imageSmall && (
                 <figure className="v6-about__img v6-about__img--sm" data-parallax="0.2">
-                  <img loading="lazy" src={about.imageSmall} alt="" />
+                  <LazyImg src={about.imageSmall} alt="" />
                 </figure>
               )}
               {about.badgeNumber != null && (
@@ -916,7 +919,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {featured && (
       <section className="v6-featured" id="featured">
         <div className="v6-featured__bg" data-parallax="0.25">
-          {about.featuredBg && <img loading="lazy" src={about.featuredBg} alt="" />}
+          {about.featuredBg && <LazyImg src={about.featuredBg} alt="" />}
         </div>
         <div className="v6-container v6-featured__grid">
           <div className="v6-featured__text">
@@ -941,7 +944,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </div>
           <aside className="v6-featured__card v6-glass" data-reveal>
             <div className="v6-featured__card-img">
-              {featured?.img && <img loading="lazy" src={featured.img} alt="" />}
+              {featured?.img && <LazyImg src={featured.img} alt="" />}
             </div>
             <div className="v6-featured__card-body">
               {([["מיקום", featured?.place], ["שעות", featured?.time], ["מחיר", featured?.price], ["למי", featured?.audience]] as const)
@@ -975,7 +978,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {deals.map((p) => (
               <a key={p.title} href={p.href} className="v6-project v6-glass" data-reveal>
                 <figure className="v6-project__img">
-                  {p.img && <img loading="lazy" src={p.img} alt="" />}
+                  {p.img && <LazyImg src={p.img} alt="" />}
                   <div className="v6-project__tag">{p.tag}</div>
                   <span className="v6-project__members">Members Only</span>
                 </figure>
@@ -1024,7 +1027,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </header>
           <div className="v6-youth" data-reveal>
             <div className="v6-youth__bg">
-              <img loading="lazy" src="/group-people-new-year-s-party.jpg" alt="" />
+              <LazyImg src="/group-people-new-year-s-party.jpg" alt="" />
             </div>
             <div className="v6-youth__content">
               <p>{youth.count} נדלניסטים ונדלניסטיות{youth.maxAge ? ` מתחת לגיל ${youth.maxAge}` : ""} שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
@@ -1054,7 +1057,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {leadArticle && (
               <a href={`/article/${leadArticle.slug}`} className="v6-article v6-article--feature v6-glass" data-reveal>
                 <figure className="v6-article__img">
-                  {leadArticle.img && <img loading="lazy" src={leadArticle.img} alt="" />}
+                  {leadArticle.img && <LazyImg src={leadArticle.img} alt="" />}
                 </figure>
                 <div className="v6-article__body">
                   <div className="v6-article__cat">{leadArticle.cats[0]}</div>
@@ -1098,7 +1101,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {episodes.slice(0, 4).map((p) => (
               <a key={p.slug} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
                 <figure className="v6-podcast__img">
-                  {p.img && <img loading="lazy" src={p.img} alt="" />}
+                  {p.img && <LazyImg src={p.img} alt="" />}
                 </figure>
                 <div className="v6-podcast__body">
                   <h3>{p.title}</h3>

@@ -5,6 +5,7 @@ import SiteShell from "../v6/SiteShell";
 import "./youth.css";
 import { roleLine, type TeamMember } from "./data";
 import type { YouthSettings } from "./wp";
+import LazyImg from "../v6/LazyImg";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -71,7 +72,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
           <div className="yt-members">
             {shown.map((m) => (
               <a key={m.slug} href={`/youth/${m.slug}`} className="yt-member v6-glass">
-                {m.photo && <div className="yt-member__av"><img loading="lazy" src={m.photo} alt={m.name} /></div>}
+                {m.photo && <div className="yt-member__av"><LazyImg src={m.photo} alt={m.name} /></div>}
                 <div className="yt-member__info">
                   <div className="yt-member__name">{m.name}</div>
                   {roleLine(m) && <div className="yt-member__role">{roleLine(m)}</div>}

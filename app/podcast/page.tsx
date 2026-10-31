@@ -2,6 +2,7 @@ import { guard } from "@/lib/paywall";
 import SiteShell from "../v6/SiteShell";
 import "./podcast.css";
 import { getEpisodes } from "./wp";
+import LazyImg from "../v6/LazyImg";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -27,7 +28,7 @@ export default async function PodcastArchivePage() {
               <a key={e.slug} href={`/podcast/${e.slug}`} className="pc-card v6-glass" data-reveal>
                 {e.img && (
                   <div className="pc-card__img">
-                    <img loading="lazy" src={e.img} alt="" />
+                    <LazyImg src={e.img} alt="" />
                     <span className="pc-card__play"><PlayIcon /></span>
                   </div>
                 )}

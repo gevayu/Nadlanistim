@@ -7,6 +7,7 @@ import "./collaborations.css";
 import HiddenName from "./HiddenName";
 import { collabRegion, collabTab, type Collab, type CollabTab } from "./data";
 import SaveButton from "../v6/SaveButton";
+import LazyImg from "../v6/LazyImg";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -86,7 +87,7 @@ export default function CollabBoard({ collabs, tabs, locked }: { collabs: Collab
                 <SaveButton variant="card" path={`/collaboration/${c.slug}`} title={c.title} />
                 {c.img && (
                   <figure className="pg-card__cover">
-                    <img src={c.img} alt="" loading="lazy" />
+                    <LazyImg src={c.img} alt="" />
                   </figure>
                 )}
                 {c.looking && <div className="pg-card__by">מחפש: <b>{c.looking}</b></div>}

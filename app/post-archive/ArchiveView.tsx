@@ -9,6 +9,7 @@ import Breadcrumbs from "../v6/Breadcrumbs";
 import SiteFooter from "../v6/SiteFooter";
 import type { Article } from "./data";
 import SaveButton from "../v6/SaveButton";
+import LazyImg from "../v6/LazyImg";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -98,7 +99,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
                   <SaveButton variant="card" path={`/article/${p.slug}`} title={p.title} />
                   {p.img && (
                     <figure className="pa-card__img">
-                      <img loading="lazy" src={p.img} alt="" />
+                      <LazyImg src={p.img} alt="" />
                       {p.type && <span className="pa-card__type">{p.type}</span>}
                     </figure>
                   )}
