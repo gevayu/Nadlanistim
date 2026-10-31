@@ -43,7 +43,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
 
           {a.img && (
             <figure className="post-cover" data-reveal>
-              <img src={a.img} alt="" />
+              <img fetchPriority="high" src={a.img} alt="" />
             </figure>
           )}
 
