@@ -3,6 +3,7 @@ import "./post.css";
 import type { Article, Block } from "../post-archive/data";
 import ShareButtons from "./ShareButtons";
 import SaveButton from "../v6/SaveButton";
+import LazyImg from "../v6/LazyImg";
 
 const BlockView = ({ b }: { b: Block }) => {
   switch (b.kind) {
@@ -12,7 +13,7 @@ const BlockView = ({ b }: { b: Block }) => {
     case "quote": return <blockquote className="post-quote">{b.text}</blockquote>;
     case "img": return (
       <figure className="post-figure">
-        <img src={b.src} alt="" />
+        <img loading="lazy" decoding="async" src={b.src} alt="" />
         {b.caption && <figcaption>{b.caption}</figcaption>}
       </figure>
     );
@@ -88,7 +89,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
             <div className="pg-grid">
               {related.map((r) => (
                 <a key={r.slug} href={`/article/${r.slug}`} className="pg-imgcard v6-glass" data-reveal>
-                  {r.img && <figure className="pg-imgcard__img"><img src={r.img} alt="" /></figure>}
+                  {r.img && <figure className="pg-imgcard__img"><LazyImg src={r.img} alt="" /></figure>}
                   <div className="pg-imgcard__body">
                     {r.cats[0] && <div className="pg-imgcard__meta">{r.cats[0]}</div>}
                     <h3>{r.title}</h3>
