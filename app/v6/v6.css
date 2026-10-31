@@ -1,25 +1,28 @@
 /* v6 - homepage styles, matched to reference spec. Scoped under .v6-root. */
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap");
+/* Google Sans cut to Latin, Hebrew and the symbols the site uses (about 33KB a weight instead of 500KB), made from
+   the full files beside them with fontTools: pyftsubset <file> --unicodes=U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,
+   U+02C6,U+02DA,U+02DC,U+0590-05FF,U+FB1D-FB4F,U+2000-206F,U+20AA,U+20AC,U+2116,U+2122,U+2190-21FF,U+2212,U+25CF,
+   U+2713,U+2715,U+FEFF --layout-features='*' --flavor=woff2. Anything outside falls back to Heebo. */
 
 @font-face {
   font-family: "Google Sans"; font-style: normal; font-weight: 400; font-display: swap;
-  src: url("/fonts/GoogleSans-Regular.woff2") format("woff2");
+  src: url("/fonts/GoogleSans-Regular-heb.woff2") format("woff2");
 }
 @font-face {
   font-family: "Google Sans"; font-style: normal; font-weight: 500; font-display: swap;
-  src: url("/fonts/GoogleSans-Medium.woff2") format("woff2");
+  src: url("/fonts/GoogleSans-Medium-heb.woff2") format("woff2");
 }
 @font-face {
   font-family: "Google Sans"; font-style: normal; font-weight: 600; font-display: swap;
-  src: url("/fonts/GoogleSans-SemiBold.woff2") format("woff2");
+  src: url("/fonts/GoogleSans-SemiBold-heb.woff2") format("woff2");
 }
 @font-face {
   font-family: "Google Sans"; font-style: italic; font-weight: 600; font-display: swap;
-  src: url("/fonts/GoogleSans-SemiBoldItalic.woff2") format("woff2");
+  src: url("/fonts/GoogleSans-SemiBoldItalic-heb.woff2") format("woff2");
 }
 @font-face {
   font-family: "Google Sans"; font-style: normal; font-weight: 700; font-display: swap;
-  src: url("/fonts/GoogleSans-Bold.woff2") format("woff2");
+  src: url("/fonts/GoogleSans-Bold-heb.woff2") format("woff2");
 }
 
 .v6-root {
