@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Background from "@/components/Background";
 import Header from "@/components/Header";
@@ -8,7 +8,7 @@ import RevealObserver from "@/components/RevealObserver";
 import LayoutGate from "@/components/LayoutGate";
 import A11yWidget from "@/components/A11yWidget";
 import { A11Y_KEY, applyA11y } from "@/lib/a11y";
-import { OG_BASE, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { OG_BASE, OG_DEFAULT_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getSponsorSlots } from "./v6/sponsors";
 import { SponsorSlotsProvider } from "./v6/SponsorSlotsContext";
 
@@ -27,8 +27,12 @@ export const metadata: Metadata = {
   description: HOME_DESCRIPTION,
   // Every page points search engines at its own address on SITE_URL (not vercel.app, not a ?query variant).
   alternates: { canonical: "./" },
-  openGraph: { ...OG_BASE, title: HOME_TITLE, description: HOME_DESCRIPTION },
+  openGraph: { ...OG_BASE, title: HOME_TITLE, description: HOME_DESCRIPTION, images: [OG_DEFAULT_IMAGE] },
 };
+
+// The browser bar on phones takes the site's background. favicon.ico, icon.png and apple-icon.png in app/
+// are the community badge (public/community-badge.png).
+export const viewport: Viewport = { themeColor: "#07080F" };
 
 export default async function RootLayout({
   children,

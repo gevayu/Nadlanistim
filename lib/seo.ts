@@ -9,6 +9,9 @@ export const SITE_URL = "https://nadlanistim.yuvalgeva.com";
 // url "./" is the page's own address (Next resolves it against metadataBase and the route).
 export const OG_BASE = { siteName: SITE_NAME, locale: "he_IL", type: "website", url: "./" } as const;
 
+/** The share picture for pages without one of their own (public/og-default.jpg, 1200x630: hero photo and logo). */
+export const OG_DEFAULT_IMAGE = { url: `${SITE_URL}/og-default.jpg`, width: 1200, height: 630, alt: SITE_NAME };
+
 /** One line of plain text, cut on a word boundary to fit a search snippet. */
 export function clip(text: string, max = 155): string {
   const s = text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -20,11 +23,11 @@ export function clip(text: string, max = 155): string {
 export function pageMeta(title: string, description: string, image?: string): Metadata {
   const desc = clip(description);
   // Only real image URLs: local events store an Unsplash id, uploaded avatars can be data URLs.
-  const images = image && /^https?:\/\//.test(image) ? [image] : undefined;
+  const images = image && /^https?:\/\//.test(image) ? [image] : [OG_DEFAULT_IMAGE];
   return {
     title,
     description: desc,
-    openGraph: { ...OG_BASE, title: `${title} | ${SITE_NAME}`, description: desc, ...(images && { images }) },
+    openGraph: { ...OG_BASE, title: `${title} | ${SITE_NAME}`, description: desc, images },
   };
 }
 

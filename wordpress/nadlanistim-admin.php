@@ -104,6 +104,24 @@ add_action(
 	}
 );
 
+// The same login name also left through oEmbed, the RSS feed, the users sitemap and public GraphQL. The site reads
+// none of them (articles carry their own author fields), so each is closed for visitors who are not signed in.
+add_filter(
+	'oembed_response_data',
+	function ( $data ) {
+		unset( $data['author_name'], $data['author_url'] );
+		return $data;
+	}
+);
+add_filter( 'the_author', fn( $name ) => is_feed() ? get_bloginfo( 'name' ) : $name );
+add_filter( 'wp_sitemaps_add_provider', fn( $provider, $name ) => 'users' === $name ? false : $provider, 10, 2 );
+add_filter(
+	'graphql_data_is_private',
+	fn( $is_private, $model_name ) => ( 'UserObject' === $model_name && ! current_user_can( 'list_users' ) ) ? true : $is_private,
+	10,
+	2
+);
+
 /* ─── Helpers ───────────────────────────────────────────────────────────── */
 
 function nad_admin_front() {

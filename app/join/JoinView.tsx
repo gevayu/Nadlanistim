@@ -160,6 +160,7 @@ export default function JoinView({ plans }: { plans: Product[] }) {
                   <textarea id="j-msg" name="about" placeholder="ספרו לנו על עצמכם ועל מה שאתם מחפשים בקהילה…" />
                 </div>
 
+                <p className="pg-privacy-note">נשתמש בפרטים כדי לטפל בבקשה ולנהל את החברות. התשלום עובר דרך iCount, ופרטי האשראי נשמרים אצלם. כל השדות חובה חוץ מ"כמה מילים עליכם".</p>
                 <label className="v6-contact__consent" htmlFor="j-consent">
                   <input id="j-consent" name="consent" value="1" type="checkbox" required />
                   <span>קראתי ואני מסכים/ה ל<a href="/terms" target="_blank" rel="noopener">תקנון הקהילה</a> ול<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</span>

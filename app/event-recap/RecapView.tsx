@@ -128,6 +128,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
                 <button type="submit" className="v6-btn v6-btn--primary" disabled={recap.pending}>{recap.pending ? "שולחים…" : "שלחו לי את החומרים"}</button>
               </form>
             )}
+            {!recap.state.ok && <p className="pg-privacy-note">נשתמש באימייל רק כדי לשלוח את החומרים. פרטים נוספים ב<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>}
             <FormError error={recap.state.error} />
           </div>
         </section>

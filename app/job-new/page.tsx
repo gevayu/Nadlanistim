@@ -101,9 +101,10 @@ export default function JobNewPage() {
                   </div>
                 </div>
 
+                <p className="pg-privacy-note">הפרטים נשמרים כדי לפרסם את המודעה אחרי שהצוות יאשר אותה. מה שכתוב במודעה, כולל דרכי הקשר, יוצג לחברי הקהילה.</p>
                 <label className="v6-contact__consent" htmlFor="j-consent">
                   <input id="j-consent" name="consent" value="1" type="checkbox" required />
-                  <span>מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.</span>
+                  <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> ותנאי הפרסום של הקהילה.</span>
                 </label>
 
                 <FormError error={state.error} />

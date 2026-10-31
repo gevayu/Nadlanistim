@@ -1227,6 +1227,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                 {ROLE_OPTIONS.map((o) => <option key={o}>{o}</option>)}
               </select>
             </div>
+            <p className="pg-privacy-note">נשתמש בפרטים כדי לחזור אליכם לגבי ההצטרפות. דיוורים יישלחו רק אם תסמנו את התיבה השנייה.</p>
             {/* Two boxes, worded exactly as nadlanistim_consent_texts() records them: privacy is required, newsletters are a free choice. */}
             <label className="v6-contact__consent" htmlFor="f-consent">
               <input id="f-consent" name="consent" value="1" type="checkbox" required />

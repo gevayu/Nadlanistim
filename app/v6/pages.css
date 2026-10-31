@@ -273,7 +273,3 @@
 .v6-save-card__btn[aria-pressed="true"] { color: var(--cyan); border-color: rgba(34,211,238,.5); }
 .v6-save-card__btn svg { width: 18px; height: 18px; }
 .v6-save__btn:focus-visible, .v6-save-card__btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
-
-/* Privacy line above a form's submit button, and the document links inside consent labels */
-.pg-privacy-note { margin: 4px 0 16px; font-size: 13px; line-height: 1.5; color: var(--muted); }
-.pg-privacy-note a, .v6-root .v6-contact__consent a { color: var(--cyan); text-decoration: underline; text-underline-offset: 2px; }

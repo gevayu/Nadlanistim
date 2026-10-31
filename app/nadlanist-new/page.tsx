@@ -84,9 +84,10 @@ export default function NadlanistNewPage() {
                   </div>
                 </div>
 
+                <p className="pg-privacy-note">הפרטים נשמרים כדי להעלות את הפרופיל למדריך אחרי שהצוות יאשר אותו. מה שתמלאו כאן יוצג לגולשים במדריך.</p>
                 <label className="v6-contact__consent" htmlFor="p-consent">
                   <input id="p-consent" name="consent" value="1" type="checkbox" required />
-                  <span>מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.</span>
+                  <span>מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה ל<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</span>
                 </label>
 
                 <FormError error={state.error} />
