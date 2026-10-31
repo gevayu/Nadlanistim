@@ -54,9 +54,10 @@ export const getPaywall = cache(async (): Promise<{ rules: Record<Area, Rule>; j
 
 /** True when this visitor may not see the area's members part: the area isn't open and they aren't a paying member. */
 export async function isLocked(area: Area): Promise<boolean> {
-  const { rules } = await getPaywall();
-  if (rules[area].access === "open") return false;
-  return !(await getSession())?.member;
+  // The session (a cookie read) comes first, always: it keeps every gated page rendered per visitor. Read only when the
+  // area is closed, an "open" page would be built once as static HTML and a later switch to members-only would not apply.
+  const [session, { rules }] = await Promise.all([getSession(), getPaywall()]);
+  return rules[area].access !== "open" && !session?.member;
 }
 
 /**
