@@ -1,6 +1,6 @@
 <?php
 /**
- * Checks the consent records end to end and removes the two records it writes:
+ * Checks the consent records end to end and removes the three records it writes:
  *   wp eval-file consent-check.php
  */
 
@@ -10,9 +10,12 @@ $mine  = fn() => get_posts( array( 'post_type' => 'nad_consent', 'post_status' =
 
 $ok( ! nadlanistim_consent_allows_marketing( $email ), 'an unknown address counts as consent' );
 nadlanistim_consent_record( $email, 'בדיקה', 'home', '203.0.113.7' );
-$ok( nadlanistim_consent_allows_marketing( $email ), 'the home sign-up did not count as newsletter consent' );
+$ok( ! nadlanistim_consent_allows_marketing( $email ), 'the privacy box on the home sign-up counted as newsletter consent' );
+sleep( 1 );
+nadlanistim_consent_record( $email, 'בדיקה', 'newsletter', '203.0.113.7' );
+$ok( nadlanistim_consent_allows_marketing( $email ), 'the newsletter box did not count as newsletter consent' );
 $rec = $mine();
-$ok( 1 === count( $rec ) && '203.0.113.7' === get_post_meta( $rec[0], 'ip', true ) && false !== strpos( get_post_meta( $rec[0], 'text', true ), 'דיוורים' ), 'the record lacks IP or wording' );
+$ok( 2 === count( $rec ) && '203.0.113.7' === get_post_meta( $rec[0], 'ip', true ) && false !== strpos( get_post_meta( $rec[0], 'text', true ), 'דיוורים' ), 'the newsletter record lacks IP or wording' );
 
 $url = nadlanistim_consent_unsubscribe_url( $email );
 parse_str( (string) wp_parse_url( $url, PHP_URL_QUERY ), $q );
@@ -26,4 +29,4 @@ foreach ( $mine() as $id ) {
 	wp_delete_post( $id, true );
 }
 $ok( ! $mine(), 'test records left behind' );
-WP_CLI::success( 'consent: record with IP and wording, signed opt-out link, withdrawal wins, test records removed' );
+WP_CLI::success( 'consent: privacy box is not newsletter consent, newsletter record with IP and wording, signed opt-out link, withdrawal wins, test records removed' );

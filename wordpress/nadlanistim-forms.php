@@ -114,8 +114,10 @@ function nadlanistim_forms_specs() {
 				'phone'   => array( 'label' => 'טלפון', 'type' => 'tel' ),
 				'field'   => array( 'label' => 'תחום עיסוק', 'type' => 'text' ),
 				'message' => array( 'label' => 'הודעה', 'type' => 'textarea' ),
-				// Required for the home page sign-up only (it promises newsletters); checked in nadlanistim_forms_submit.
-				'consent' => array( 'label' => 'הסכמה', 'type' => 'select', 'options' => array( '1' => 'כן' ) ),
+				// The privacy box, required for the home page sign-up only; checked in nadlanistim_forms_submit.
+				'consent'   => array( 'label' => 'הסכמה', 'type' => 'select', 'options' => array( '1' => 'כן' ) ),
+				// Newsletters: a separate box the visitor may leave empty (סעיף 30א asks for a free, separate yes).
+				'marketing' => array( 'label' => 'דיוור', 'type' => 'select', 'options' => array( '1' => 'כן' ) ),
 			),
 		),
 		'recap'     => array(
@@ -310,6 +312,9 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 	if ( isset( $values['consent'] ) && '1' === $values['consent'] ) {
 		$source = 'contact' === $form ? $values['source'] : $form;
 		nadlanistim_consent_record( $values['email'], $values['name'], $source, nadlanistim_forms_ip( $req ) );
+	}
+	if ( 'contact' === $form && 'home' === $values['source'] && '1' === $values['marketing'] ) {
+		nadlanistim_consent_record( $values['email'], $values['name'], 'newsletter', nadlanistim_forms_ip( $req ) );
 	}
 
 	// What the manager reads: the visitor's own wording for each filled field.
@@ -743,19 +748,21 @@ add_filter(
 
 /* ─── Consent records ──────────────────────────────────────────────────── */
 // Every ticked consent box becomes a record: who, from which form, the exact wording, IP and time (UTC). Under the
-// anti-spam rule (חוק התקשורת, סעיף 30א) only the home page sign-up asks for newsletters, so only it counts as consent
-// to marketing mail; the other boxes are the privacy policy and publishing terms. Records are never edited: a
+// anti-spam rule (חוק התקשורת, סעיף 30א) only the newsletter box on the home page sign-up, which nobody has to tick,
+// counts as consent to marketing mail; every other box is the privacy policy or publishing terms. Until October 2026
+// the home sign-up had one box for both: those 'home' records keep their own wording and their "yes". Records are never edited: a
 // withdrawal is a new record. Admins read them under "הסכמות".
 
 /** Each form's box, word for word as the site shows it. Kept here so a record never depends on what a browser sent. */
 function nadlanistim_consent_texts() {
 	return array(
-		'home'      => array( 'מוסכמים עלי מדיניות הפרטיות של האתר וקבלת דיוורים מהקהילה.', true ),
-		'join'      => array( 'קראתי ואני מסכים/ה לתקנון הקהילה ולמדיניות הפרטיות.', false ),
-		'job'       => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
-		'collab'    => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
-		'nadlanist' => array( 'מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.', false ),
-		'withdraw'  => array( 'ביטול ההסכמה לקבלת דיוורים, מהקישור במייל.', false ),
+		'home'       => array( 'מוסכמת עלי מדיניות הפרטיות של האתר.', false ),
+		'newsletter' => array( 'אשמח לקבל דיוורים ועדכונים מהקהילה.', true ),
+		'join'       => array( 'קראתי ואני מסכים/ה לתקנון הקהילה ולמדיניות הפרטיות.', false ),
+		'job'        => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
+		'collab'     => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
+		'nadlanist'  => array( 'מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.', false ),
+		'withdraw'   => array( 'ביטול ההסכמה לקבלת דיוורים, מהקישור במייל.', false ),
 	);
 }
 
@@ -862,7 +869,7 @@ add_filter(
 add_action(
 	'manage_nad_consent_posts_custom_column',
 	function ( $column, $post_id ) {
-		$names = array( 'home' => 'הרשמה בעמוד הבית', 'join' => 'הצטרפות', 'job' => 'פרסום משרה', 'collab' => 'שיתוף פעולה', 'nadlanist' => 'מדריך', 'withdraw' => 'ביטול מהמייל' );
+		$names = array( 'home' => 'הרשמה בעמוד הבית', 'newsletter' => 'דיוור (עמוד הבית)', 'join' => 'הצטרפות', 'job' => 'פרסום משרה', 'collab' => 'שיתוף פעולה', 'nadlanist' => 'מדריך', 'withdraw' => 'ביטול מהמייל' );
 		$meta  = array( 'nad_name' => 'name', 'nad_text' => 'text', 'nad_ip' => 'ip', 'nad_at' => 'at_utc' );
 		if ( isset( $meta[ $column ] ) ) {
 			echo esc_html( get_post_meta( $post_id, $meta[ $column ], true ) );
