@@ -69,6 +69,7 @@ export default function ContactView({ contact }: { contact: Contact }) {
                     <label htmlFor="c-msg">הודעה</label>
                     <textarea id="c-msg" name="message" required rows={6} placeholder="כתבו לנו כל מה שתרצו…" />
                   </div>
+                  <p className="pg-privacy-note">נשתמש בפרטים רק כדי לענות לפנייה. לא חייבים למסור טלפון. פרטים נוספים ב<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>
                   <FormError error={state.error} />
                   <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={pending} data-magnetic="">
                     <span>{pending ? "שולחים…" : "שלח הודעה"}</span>

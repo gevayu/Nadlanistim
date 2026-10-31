@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: HOME_TITLE, template: `%s | ${SITE_NAME}` },
   description: HOME_DESCRIPTION,
+  // Every page points search engines at its own address on SITE_URL (not vercel.app, not a ?query variant).
+  alternates: { canonical: "./" },
   openGraph: { ...OG_BASE, title: HOME_TITLE, description: HOME_DESCRIPTION },
 };
 

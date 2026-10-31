@@ -6,7 +6,8 @@ import type { Metadata } from "next";
 export const SITE_NAME = "הנדלניסטים";
 export const SITE_URL = "https://nadlanistim.yuvalgeva.com";
 
-export const OG_BASE = { siteName: SITE_NAME, locale: "he_IL", type: "website" } as const;
+// url "./" is the page's own address (Next resolves it against metadataBase and the route).
+export const OG_BASE = { siteName: SITE_NAME, locale: "he_IL", type: "website", url: "./" } as const;
 
 /** One line of plain text, cut on a word boundary to fit a search snippet. */
 export function clip(text: string, max = 155): string {

@@ -1,4 +1,5 @@
 import Profile from "./Profile";
+import { notFound } from "next/navigation";
 import { getSession } from "../../../lib/auth";
 import { guard } from "@/lib/paywall";
 import { publicCard } from "../../nadlanistim/data";
@@ -10,6 +11,7 @@ export default async function NadlanistPage({ params }: { params: Promise<{ slug
   const slug = decodeURIComponent((await params).slug);
   const [people, session, all, { locked }] = await Promise.all([getNadlanistim(), getSession(), getCommunities(), guard("nadlanistPage", `/nadlanist/${slug}`)]);
   const n = people.find((x) => x.slug === slug);
+  if (!n) notFound();
   // The communities the member ticked in /profile, by name, in the order the communities page shows them.
   const communities = locked || !n ? [] : all.filter((c) => n.communities?.includes(c.slug)).map(({ slug, name }) => ({ slug, name }));
   return <Profile n={n && (locked ? publicCard(n) : n)} locked={locked} session={session} communities={communities} />;

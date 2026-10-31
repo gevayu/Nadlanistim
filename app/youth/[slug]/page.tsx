@@ -1,4 +1,5 @@
 import { guard } from "@/lib/paywall";
+import { notFound } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import "../youth.css";
 import "../../collaborations/collaborations.css";
@@ -19,23 +20,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
   const members = await getYouth();
   const m = members.find((x) => x.slug === slug);
 
-  if (!m) {
-    return (
-      <SiteShell>
-        <section className="v6-section">
-          <div className="v6-container">
-            <div className="pg-head" data-reveal>
-              <h1>חבר/ת הנבחרת <em>לא נמצא/ה</em></h1>
-              <p>ייתכן שהקישור שגוי.</p>
-            </div>
-            <div className="pg-cta-row">
-              <a href="/youth" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה לנבחרת</span><ArrowIcon /></a>
-            </div>
-          </div>
-        </section>
-      </SiteShell>
-    );
-  }
+  if (!m) notFound();
 
   const others = members.filter((x) => x.slug !== m.slug).slice(0, 4);
 

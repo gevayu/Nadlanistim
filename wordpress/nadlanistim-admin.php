@@ -89,6 +89,21 @@ add_action(
 	0
 );
 
+/*
+ * Author archives (/?author=1, /author/<login>/) gave away an admin's login name in the redirect to them.
+ * The site has no author pages, so the request goes to the home page before WordPress resolves the name.
+ */
+add_action(
+	'parse_request',
+	function ( $wp ) {
+		if ( is_admin() || ( empty( $wp->query_vars['author'] ) && empty( $wp->query_vars['author_name'] ) ) ) {
+			return;
+		}
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+);
+
 /* ─── Helpers ───────────────────────────────────────────────────────────── */
 
 function nad_admin_front() {

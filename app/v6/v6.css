@@ -865,7 +865,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .v6-root *, .v6-root *::before, .v6-root *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  .v6-root *, .v6-root *::before, .v6-root *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }
 
 /* ===== Skip link: first stop for keyboard users, hidden until focused ===== */

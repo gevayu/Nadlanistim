@@ -675,7 +675,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       </div>
 
       {/* Nav */}
-      <a href="#top" className="v6-skip">דלג לתוכן</a>
+      <a href="#main" className="v6-skip">דלג לתוכן</a>
       <header className={`v6-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="v6-nav__inner v6-glass">
           <button className="v6-nav__menu" aria-label="פתח תפריט" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
@@ -716,6 +716,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
         </div>
       </div>
 
+      <main id="main">
       {/* Hero */}
       <section className="v6-hero" id="top">
         <div className="v6-hero__media" data-parallax="0.3">
@@ -1229,7 +1230,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             </div>
             <label className="v6-contact__consent" htmlFor="f-consent">
               <input id="f-consent" name="consent" value="1" type="checkbox" required />
-              <span>מוסכמים עלי מדיניות הפרטיות של האתר וקבלת דיוורים מהקהילה.</span>
+              <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> של האתר וקבלת דיוורים מהקהילה.</span>
             </label>
             <FormError error={contact.state.error} />
             <button type="submit" className="v6-btn v6-btn--primary v6-btn--block v6-btn--lg" disabled={contact.pending} data-magnetic="">
@@ -1243,6 +1244,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </form>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
     </div>

@@ -16,5 +16,8 @@ export const eventMetadata =
     if (!ev) return { title: "האירוע לא נמצא" };
     const when = [heDate(ev.date), ev.place].filter(Boolean).join(", ");
     const title = route === "/event-recap" ? `${ev.title}, סיכום האירוע` : ev.title;
-    return pageMeta(title, [when, ev.desc].filter(Boolean).join(". ") || "אירוע של קהילת הנדלניסטים.", ev.img);
+    const meta = pageMeta(title, [when, ev.desc].filter(Boolean).join(". ") || "אירוע של קהילת הנדלניסטים.", ev.img);
+    // ./ would drop ?e=, and every event would claim the same address
+    const url = `${route}?e=${encodeURIComponent(ev.slug)}`;
+    return { ...meta, alternates: { canonical: url }, openGraph: { ...meta.openGraph, url } };
   };
