@@ -1276,5 +1276,14 @@ body.login *:not(.dashicons):not([class*="dashicons"]){font-family:inherit;}
 .login #nav a:hover,.login #backtoblog a:hover{color:var(--cyan);}
 .login .language-switcher,.login .privacy-policy-page-link{display:none;}
 .login *:focus-visible{outline:2px solid #FACC15;outline-offset:2px;}
+/* Everything in the middle of the screen, the text too; the notices take their accent on top instead of the side. */
+body.login{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+#login{margin:auto;padding:32px 0;}
+.login form label,.login form p,.login .message,.login .notice,.login .success,.login #login_error,.login .forgetmenot{text-align:center;}
+.login .forgetmenot{float:none;margin-bottom:14px;}
+.login .message,.login .notice,.login .success,.login #login_error{border-inline-start-width:1px;border-top:3px solid var(--cyan);}
+.login #login_error,.login .notice-error{border-top-color:#F87171;}
+/* The reset and confirmation screens: no "התחבר" link under the form. The sign-in screen keeps "שכחת את הסיסמה?". */
+body.login:not(.login-action-login) #nav{display:none;}
 CSS;
 }
