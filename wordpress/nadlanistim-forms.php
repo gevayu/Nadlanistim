@@ -32,14 +32,14 @@ function nadlanistim_forms_specs() {
 			'post_type' => 'nad_job',
 			'subject'   => 'משרה חדשה לאישור',
 			'fields'    => array(
-				'kind'         => array( 'label' => 'סוג מודעה', 'type' => 'select', 'required' => true, 'options' => array( 'offer' => 'משרה פתוחה', 'seek' => 'מחפש/ת עבודה' ) ),
+				'kind'         => array( 'label' => 'סוג מודעה', 'type' => 'select', 'required' => true, 'acf' => 'kind', 'options' => array( 'offer' => 'offer', 'seek' => 'seek' ), 'labels' => array( 'offer' => 'משרה פתוחה', 'seek' => 'מחפש/ת עבודה' ) ),
 				'title'        => array( 'label' => 'כותרת', 'type' => 'text', 'required' => true, 'post' => true ),
 				'type'         => array(
 					'label'    => 'סוג עבודה',
 					'type'     => 'select',
 					'required' => true,
 					'acf'      => 'employment',
-					'options'  => array( 'משרה מלאה' => 'full', 'משרה חלקית' => 'part', 'פרילנס' => 'freelance', 'התנדבות' => 'volunteering', 'שותפות' => 'partnership' ),
+					'options'  => array( 'משרה מלאה' => 'full', 'משרה חלקית' => 'part', 'פרילנס' => 'freelance', 'התנדבות' => 'volunteering', 'שותפות' => 'partnership', 'מציעים שירותים' => 'services' ),
 				),
 				'area'         => array( 'label' => 'מיקום', 'type' => 'select', 'required' => true, 'acf' => 'location', 'options' => nadlanistim_forms_same( array( 'תל אביב', 'מרכז', 'צפון', 'דרום', 'ירושלים', 'מרחוק' ) ) ),
 				'field'        => array( 'label' => 'תחום עיסוק', 'type' => 'select', 'required' => true, 'acf' => 'field', 'options' => nadlanistim_forms_same( array( 'ניהול', 'שיווק', 'תיווך', 'שמאות', 'הנדסה', 'מימון', 'טכנולוגיה' ) ) ),
@@ -49,6 +49,7 @@ function nadlanistim_forms_specs() {
 				'name'         => array( 'label' => 'שם / חברה', 'type' => 'text', 'required' => true, 'acf' => 'publisher' ),
 				'phone'        => array( 'label' => 'טלפון', 'type' => 'tel', 'required' => true, 'acf' => 'contact_phone' ),
 				'email'        => array( 'label' => 'אימייל', 'type' => 'email', 'required' => true, 'acf' => 'contact_email' ),
+				'consent'      => array( 'label' => 'הסכמה', 'type' => 'select', 'required' => true, 'options' => array( '1' => 'כן' ) ),
 			),
 		),
 		'collab'    => array(
@@ -63,7 +64,7 @@ function nadlanistim_forms_specs() {
 					'type'     => 'select',
 					'required' => true,
 					'acf'      => 'looking',
-					'options'  => array( 'שותף פיננסי' => 'financial', 'שותף מקצועי' => 'profession', 'שותף לעסקת יזמות' => '', 'קבלן' => 'contractor', 'יועץ' => 'proptech' ),
+					'options'  => array( 'שותף פיננסי' => 'financial', 'שותף מקצועי' => 'profession', 'שותף לעסקת יזמות' => 'developer', 'קבלן' => 'contractor', 'יועץ' => 'proptech', 'שותף לקרקע' => 'land', 'משקיע שותף' => 'investor' ),
 				),
 				'area'        => array( 'label' => 'אזור', 'type' => 'select', 'required' => true, 'acf' => 'place', 'options' => nadlanistim_forms_same( array( 'צפון', 'שרון', 'מרכז', 'דרום', 'ירושלים', 'כל הארץ' ) ) ),
 				'invest'      => array(
@@ -78,12 +79,13 @@ function nadlanistim_forms_specs() {
 					'type'     => 'select',
 					'required' => true,
 					'acf'      => 'stage',
-					'options'  => array( 'רעיון' => 'idea', 'תכנון' => 'permits', 'ביצוע' => 'exec', 'מתקדם' => 'advanced' ),
+					'options'  => array( 'רעיון' => 'idea', 'תכנון' => 'permits', 'בנייה' => 'building', 'ביצוע' => 'exec', 'מתקדם' => 'advanced' ),
 				),
 				'description' => array( 'label' => 'תיאור', 'type' => 'textarea', 'required' => true, 'acf' => 'description' ),
 				'name'        => array( 'label' => 'שם', 'type' => 'text', 'required' => true, 'acf' => 'by' ),
 				'phone'       => array( 'label' => 'טלפון', 'type' => 'tel', 'required' => true, 'acf' => 'phone' ),
 				'email'       => array( 'label' => 'אימייל', 'type' => 'email', 'required' => true, 'acf' => 'email' ),
+				'consent'     => array( 'label' => 'הסכמה', 'type' => 'select', 'required' => true, 'options' => array( '1' => 'כן' ) ),
 			),
 		),
 		'nadlanist' => array(
@@ -100,6 +102,7 @@ function nadlanistim_forms_specs() {
 				// No ACF field for these yet: they reach the manager by email only.
 				'phone'    => array( 'label' => 'טלפון', 'type' => 'tel' ),
 				'linkedin' => array( 'label' => 'לינקדאין', 'type' => 'url' ),
+				'consent'  => array( 'label' => 'הסכמה', 'type' => 'select', 'required' => true, 'options' => array( '1' => 'כן' ) ),
 			),
 		),
 		'contact'   => array(
@@ -111,6 +114,8 @@ function nadlanistim_forms_specs() {
 				'phone'   => array( 'label' => 'טלפון', 'type' => 'tel' ),
 				'field'   => array( 'label' => 'תחום עיסוק', 'type' => 'text' ),
 				'message' => array( 'label' => 'הודעה', 'type' => 'textarea' ),
+				// Required for the home page sign-up only (it promises newsletters); checked in nadlanistim_forms_submit.
+				'consent' => array( 'label' => 'הסכמה', 'type' => 'select', 'options' => array( '1' => 'כן' ) ),
 			),
 		),
 		'recap'     => array(
@@ -282,6 +287,14 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 		$values[ $name ] = $value;
 	}
 
+	// One spec serves /contact and the home page sign-up: the message belongs to the first, the consent to the second.
+	if ( 'contact' === $form && 'home' !== $values['source'] && '' === $values['message'] ) {
+		return nadlanistim_forms_error( 'לא מילאתם את השדה הודעה.' );
+	}
+	if ( 'contact' === $form && 'home' === $values['source'] && '' === $values['consent'] ) {
+		return nadlanistim_forms_error( 'לא מילאתם את השדה הסכמה.' );
+	}
+
 	$event = null;
 	if ( 'recap' === $form ) {
 		$event = get_page_by_path( $values['event'], OBJECT, 'nad_event' );
@@ -303,8 +316,9 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 			continue;
 		}
 		$stored = 'select' === $f['type'] ? $f['options'][ $values[ $name ] ] : $values[ $name ];
-		// A select with no ACF field (job kind, contact source) shows its readable label instead of the code.
-		$rows[ $f['label'] ] = ( 'select' === $f['type'] && empty( $f['acf'] ) ) ? $stored : $values[ $name ];
+		// A select with no ACF field (contact source, consent) shows its readable label instead of the code;
+		// one whose stored code is not readable (job kind) names its own 'labels'.
+		$rows[ $f['label'] ] = isset( $f['labels'][ $stored ] ) ? $f['labels'][ $stored ] : ( ( 'select' === $f['type'] && empty( $f['acf'] ) ) ? $stored : $values[ $name ] );
 		if ( ! empty( $f['post'] ) ) {
 			$title = $values[ $name ];
 		}
@@ -401,21 +415,19 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 		}
 	}
 
-	if ( 'job' === $form && 'seek' === $values['kind'] ) {
-		$notes[] = 'זו מודעת חיפוש עבודה. באתר אין עדיין סימון לסוג הזה, אז היא תוצג בלוח כמשרה פתוחה.';
+	// The collab and directory forms may send a photo (a data URL the site shrank to 1600px). It becomes the
+	// draft's featured image; if it fails, the draft stays and the manager reads why.
+	$image = (string) $req->get_param( 'image' );
+	if ( 'job' !== $form && 0 === strpos( $image, 'data:image/' ) && function_exists( 'nadlanistim_auth_store_photo' ) ) {
+		$stored = nadlanistim_auth_store_photo( $image, $post_id );
+		if ( is_wp_error( $stored ) ) {
+			$notes[] = 'התמונה מהטופס לא נשמרה: ' . $stored->get_error_message();
+		} else {
+			set_post_thumbnail( $post_id, $stored );
+			$notes[] = 'התמונה מהטופס נשמרה כתמונה ראשית של הטיוטה.';
+		}
 	}
-	if ( 'job' !== $form ) {
-		$notes[] = 'הטופס לא מעביר תמונות. אם צריך תמונה, בקשו אותה בתשובה למייל הזה.';
-	}
-	$approve = add_query_arg(
-		array( 'post' => $post_id, 'sig' => nadlanistim_forms_sig( $post_id ) ),
-		rest_url( 'nadlanistim/v1/forms/approve' )
-	);
-	$blocks  = array(
-		'<p>' . nadlanistim_forms_button( $approve, 'לאישור ופרסום' ) . nadlanistim_forms_button( admin_url( 'post.php?post=' . $post_id . '&action=edit' ), 'לעריכת הטיוטה', false ) . '</p>',
-		nadlanistim_forms_note( 'האישור מפרסם את הטיוטה כמו שהיא. לשינויים, ערכו קודם ופרסמו ממסך העריכה.' ),
-	);
-	$blocks  = array_merge( $blocks, array_map( 'nadlanistim_forms_note', $notes ) );
+	$blocks = array_merge( nadlanistim_forms_approve_blocks( $post_id ), array_map( 'nadlanistim_forms_note', $notes ) );
 	// The draft is saved, so a failed manager email is logged but the visitor still sees success.
 	nadlanistim_forms_mail( $manager, $spec['subject'] . ': ' . $title, 'נשמרה טיוטה חדשה מהאתר. היא לא תופיע באתר עד שתאשרו.', $rows, $blocks, $visitor );
 
@@ -430,6 +442,18 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 		);
 	}
 	return array( 'ok' => true );
+}
+
+/** "לאישור ופרסום" and "לעריכת הטיוטה" for the manager's email about a new draft (site forms and /profile). */
+function nadlanistim_forms_approve_blocks( $post_id ) {
+	$approve = add_query_arg(
+		array( 'post' => $post_id, 'sig' => nadlanistim_forms_sig( $post_id ) ),
+		rest_url( 'nadlanistim/v1/forms/approve' )
+	);
+	return array(
+		'<p>' . nadlanistim_forms_button( $approve, 'לאישור ופרסום' ) . nadlanistim_forms_button( admin_url( 'post.php?post=' . $post_id . '&action=edit' ), 'לעריכת הטיוטה', false ) . '</p>',
+		nadlanistim_forms_note( 'האישור מפרסם את הטיוטה כמו שהיא. לשינויים, ערכו קודם ופרסמו ממסך העריכה.' ),
+	);
 }
 
 /** The manager's one-click link: publishes the draft, then opens its edit screen with a notice. */
@@ -543,9 +567,14 @@ add_filter(
 				'תחום'     => $p( 'field' ),
 				'מסלול'    => $p( 'track' ),
 				'על עצמי' => $p( 'about' ),
+				'הסכמה'   => '1' === $p( 'consent' ) ? 'כן' : '',
 			),
 			'strlen'
 		);
+		// The site's consent box (privacy policy and community newsletters), dated on the new account.
+		if ( $user && '1' === $p( 'consent' ) ) {
+			update_user_meta( $user->ID, 'nad_consent_at', current_time( 'mysql' ) );
+		}
 		$blocks = $user ? array( '<p>' . nadlanistim_forms_button( admin_url( 'user-edit.php?user_id=' . $user->ID ), 'לפרטי המשתמש', false ) . '</p>' ) : array();
 		$blocks[] = nadlanistim_forms_note( 'המשתמש נפתח במצב ממתין. תשובה למייל הזה תגיע ישירות למבקש.' );
 		nadlanistim_forms_mail( nadlanistim_forms_manager(), 'בקשת הצטרפות חדשה: ' . $p( 'name' ), 'בקשת הצטרפות חדשה מעמוד ההצטרפות באתר.', $rows, $blocks, $p( 'email' ) );

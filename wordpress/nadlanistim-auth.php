@@ -292,15 +292,15 @@ function nadlanistim_auth_url( $s ) {
 }
 
 /**
- * A data:image/... URL from /my-account -> attachment id on $post_id, or WP_Error.
- * The browser already shrank it to a 400px JPEG; anything over 3 MB or not a real image is refused.
+ * A data:image/... URL from /profile or a site form -> attachment id on $post_id, or WP_Error.
+ * The browser already shrank it (app/forms/image.ts); anything over 5 MB or not a real image is refused.
  */
 function nadlanistim_auth_store_photo( $data_url, $post_id ) {
 	if ( ! preg_match( '#^data:image/(jpeg|png|webp);base64,([A-Za-z0-9+/=\s]+)$#', $data_url, $m ) ) {
 		return nadlanistim_auth_error( 'bad_photo', 'אפשר להעלות תמונה מסוג JPG, PNG או WEBP.', 400 );
 	}
 	$bin = base64_decode( preg_replace( '/\s+/', '', $m[2] ), true );
-	if ( false === $bin || strlen( $bin ) > 3 * MB_IN_BYTES ) {
+	if ( false === $bin || strlen( $bin ) > 5 * MB_IN_BYTES ) {
 		return nadlanistim_auth_error( 'bad_photo', 'התמונה גדולה מדי. נסו תמונה קטנה יותר.', 400 );
 	}
 	$info = @getimagesizefromstring( $bin ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
@@ -504,6 +504,19 @@ function nadlanistim_auth_profile( WP_REST_Request $req ) {
 	// save_post already pinged the site, but before the fields above were written. Ping again now.
 	if ( function_exists( 'nadlanistim_revalidate_send' ) ) {
 		nadlanistim_revalidate_send();
+	}
+
+	// A first profile is a draft nobody knew about: tell the site manager, with the same approve button as the
+	// directory form. Later saves of the same profile send nothing. A failed email never fails the save.
+	if ( $created && function_exists( 'nadlanistim_forms_mail' ) && function_exists( 'nadlanistim_forms_approve_blocks' ) ) {
+		nadlanistim_forms_mail(
+			nadlanistim_forms_manager(),
+			'פרופיל חדש במדריך לאישור: ' . $name,
+			'חבר בקהילה יצר פרופיל מהאזור האישי באתר. הפרופיל לא יופיע במדריך עד שתאשרו.',
+			array_filter( array( 'שם' => $name, 'תפקיד' => $role, 'תחום' => $field, 'מיקום' => $place, 'אימייל' => $user->user_email ), 'strlen' ),
+			nadlanistim_forms_approve_blocks( $post_id ),
+			$user->user_email
+		);
 	}
 
 	$saved = get_post( $post_id );

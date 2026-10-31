@@ -83,9 +83,20 @@ add_action(
 					if ( ! $order || ! hash_equals( $order->get_order_key(), (string) $req['key'] ) ) {
 						return new WP_Error( 'not_found', 'Order not found', array( 'status' => 404 ) );
 					}
-					$items = array();
+					$items      = array();
+					$membership = false;
 					foreach ( $order->get_items() as $item ) {
 						$items[] = array( 'name' => $item->get_name(), 'qty' => $item->get_quantity(), 'total' => (float) $item->get_total() );
+						$product = is_callable( array( $item, 'get_product' ) ) ? $item->get_product() : null;
+						$base    = $product ? ( $product->get_parent_id() ? $product->get_parent_id() : $product->get_id() ) : 0;
+						$membership = $membership || ( $base && has_term( 'membership', 'product_cat', $base ) );
+					}
+					// For a membership order: where the buyer's join application stands, so the page can say what
+					// comes next. Nothing else about the account leaves here.
+					$state = null;
+					if ( $membership ) {
+						$user  = get_user_by( 'email', $order->get_billing_email() );
+						$state = ! $user ? 'none' : ( 'cancelled' === get_user_meta( $user->ID, 'nad_status', true ) ? 'blocked' : ( get_user_meta( $user->ID, 'nad_pending', true ) ? 'pending' : 'ok' ) );
 					}
 					return array(
 						'number'     => $order->get_order_number(),
@@ -95,6 +106,7 @@ add_action(
 						'first_name' => $order->get_billing_first_name(),
 						'email'      => $order->get_billing_email(),
 						'items'      => $items,
+						'membership' => $state,
 					);
 				},
 			)

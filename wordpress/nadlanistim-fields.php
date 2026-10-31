@@ -36,6 +36,32 @@ add_action(
 			)
 		);
 
+		// "משרה פתוחה" or "מחפש/ת עבודה": the jobs board filters and tags listings by it (app/jobs/wp.ts).
+		acf_add_local_field_group(
+			array(
+				'key'                => 'group_nad_job_extra',
+				'title'              => 'סוג פרסום',
+				'fields'             => array(
+					array(
+						'key'           => 'field_nad_job_kind',
+						'label'         => 'סוג פרסום',
+						'name'          => 'kind',
+						'type'          => 'select',
+						'choices'       => array( 'offer' => 'משרה פתוחה', 'seek' => 'מחפש/ת עבודה' ),
+						'default_value' => 'offer',
+						'allow_null'    => 0,
+						'return_format' => 'value',
+						'instructions'  => 'מחפש/ת עבודה: המודעה מסומנת ככזו בלוח, ולא מוצגת כמשרה פתוחה בכרטיס הקריירה בבית.',
+					),
+				),
+				'location'           => array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'nad_job' ) ) ),
+				'position'           => 'side',
+				'show_in_graphql'    => 1,
+				'graphql_field_name' => 'jobKind',
+				'graphql_types'      => array( 'Job' ),
+			)
+		);
+
 		// Profile extras a member also edits from /my-account on the site.
 		acf_add_local_field_group(
 			array(
@@ -304,17 +330,32 @@ add_action(
 	99
 );
 
-// The Importer plugin labels the "building" stage "תכנון והקמה", too close to "תכנון והיתרים".
-// Relabelled here so a plugin update cannot bring the old name back; the stored value stays "building".
-add_filter(
-	'acf/load_field/key=field_nad_col_stage',
-	function ( $field ) {
-		if ( isset( $field['choices']['building'] ) ) {
-			$field['choices']['building'] = 'בנייה';
+// The site shows the wording of its forms, not the Importer plugin's longer labels ("קבלן", not "קבלן מבצע").
+// Relabelled here so a plugin update cannot bring the old names back. Stored values never change; a key is
+// relabelled only where the plugin defines it. "developer" is new: the collab form's "שותף לעסקת יזמות".
+foreach (
+	array(
+		'field_nad_col_stage'      => array( 'idea' => 'רעיון', 'permits' => 'תכנון', 'building' => 'בנייה', 'advanced' => 'מתקדם' ),
+		'field_nad_col_looking'    => array( 'contractor' => 'קבלן', 'proptech' => 'יועץ' ),
+		'field_nad_col_invest'     => array( '1m' => 'מיליון+' ),
+		'field_nad_job_employment' => array( 'partnership' => 'שותפות' ),
+	) as $nad_key => $nad_labels
+) {
+	add_filter(
+		'acf/load_field/key=' . $nad_key,
+		function ( $field ) use ( $nad_labels ) {
+			foreach ( $nad_labels as $value => $label ) {
+				if ( isset( $field['choices'][ $value ] ) ) {
+					$field['choices'][ $value ] = $label;
+				}
+			}
+			if ( 'field_nad_col_looking' === $field['key'] && ! isset( $field['choices']['developer'] ) ) {
+				$field['choices']['developer'] = 'שותף לעסקת יזמות';
+			}
+			return $field;
 		}
-		return $field;
-	}
-);
+	);
+}
 
 // "חומת תשלום": for each members' area, what a visitor without a paying membership gets. The site reads it
 // through GraphQL (lib/paywall.ts); a paying member always sees everything. Defaults match what the site did before.
@@ -400,6 +441,27 @@ add_action(
 					$area( 'nadlanist_page', 'עמוד נדלניסט', '/nadlanist/...', 'הכרטיסים ב"הכר את הנדלניסט" ובעמוד הבית', 'מטושטש: רואים את הכרטיס מהמדריך, ושאר הפרופיל מוסתר.', true, 'blur' ),
 					$area( 'nadlanist_new', 'הצטרפות למדריך ולנבחרת', '/nadlanist-new', 'הכפתורים "הצטרף למדריך" ו"הגישו מועמדות" לנבחרת הצעירים', '', false, 'redirect' ),
 					array(
+						'key'     => 'field_nad_pw_more',
+						'label'   => 'שאר העמודים הפנימיים',
+						'name'    => '',
+						'type'    => 'message',
+						'message' => 'פתוחים לכולם עד שמשנים כאן. אפשר לפתוח אותם לחברים בלבד ולהעביר אורחים לעמוד אחר.',
+					),
+					$area( 'job_page', 'עמוד משרה', '/job/...', 'הכרטיסים בלוח הדרושים ובכרטיס הקריירה בבית', '', false, 'open' ),
+					$area( 'events', 'לוח האירועים', '/events', 'התפריט "אירועים"', '', false, 'open' ),
+					$area( 'event_page', 'עמוד אירוע ומסיבה', '/event, /event-party', 'הכרטיסים בלוח האירועים ובעמוד הבית', '', false, 'open' ),
+					$area( 'event_recap', 'סיכום אירוע', '/event-recap', 'אירועים שכבר היו, בלוח האירועים ובעמוד הבית', '', false, 'open' ),
+					$area( 'directory', 'מדריך הנדלניסטים', '/nadlanistim', 'התפריט "הכר את הנדלניסט"', '', false, 'open' ),
+					$area( 'communities', 'הקהילות', '/communities', 'הקרוסלה "הקהילות שלנו" בעמוד הבית', '', false, 'open' ),
+					$area( 'community_page', 'עמוד קהילה', '/community/...', 'הכרטיסים בעמוד הקהילות', '', false, 'open' ),
+					$area( 'youth', 'נבחרת הצעירים', '/youth', 'הבאנר של הנבחרת בעמוד הבית', '', false, 'open' ),
+					$area( 'youth_page', 'עמוד חבר בנבחרת', '/youth/...', 'הכרטיסים בעמוד הנבחרת', '', false, 'open' ),
+					$area( 'podcast', 'הפודקאסט', '/podcast', 'התפריט "פודקאסט"', '', false, 'open' ),
+					$area( 'episode', 'פרק בפודקאסט', '/podcast/...', 'הכרטיסים בעמוד הפודקאסט ובעמוד הבית', '', false, 'open' ),
+					$area( 'knowledge', 'מאגר הידע', '/post-archive', 'התפריט "תוכן מקצועי"', '', false, 'open' ),
+					$area( 'article', 'כתבה', '/post, /article/...', 'הכרטיסים במאגר הידע ובעמוד הבית', '', false, 'open' ),
+					$area( 'contact', 'צרו קשר', '/contact', 'התפריט "צרו קשר"', '', false, 'open' ),
+					array(
 						'key'           => 'field_nad_pw_join_to',
 						'label'         => 'כל כפתורי "הצטרפו לקהילה" מובילים אל',
 						'name'          => 'join_to',
@@ -457,6 +519,50 @@ add_action(
 			return;
 		}
 		echo '<style>.nad-pw-where{font-weight:600;color:#4b3fd6}.nad-pw-guest{color:#5d6878;font-size:12.5px}'
-			. '.acf-field-group>.acf-label label{font-size:15px}.acf-field-group>.acf-input>.acf-fields{border-radius:10px}</style>';
+			. '.acf-field-group>.acf-label label{font-size:15px}.acf-field-group>.acf-input>.acf-fields{border-radius:10px}'
+			. '#nad-pw-search{width:100%;max-width:420px;font-size:15px;padding:8px 12px;border-radius:8px;margin:4px 0 0}'
+			. '.nad-pw-none{color:#5d6878;margin:8px 0 0}</style>';
+	}
+);
+
+// A search box over the areas: typing a page's name or address shows only the rows that match.
+add_action(
+	'admin_footer',
+	function () {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! $screen || false === strpos( (string) $screen->id, 'nadlanistim-paywall' ) ) {
+			return;
+		}
+		?>
+		<script>
+		( function () {
+			var intro = document.querySelector( '.acf-field[data-key="field_nad_pw_intro"] .acf-input' );
+			if ( ! intro ) { return; }
+			var input = document.createElement( 'input' );
+			input.type = 'search';
+			input.id = 'nad-pw-search';
+			input.placeholder = 'חיפוש עמוד: שם או כתובת, למשל "אירוע" או /jobs';
+			input.setAttribute( 'aria-label', 'חיפוש עמוד' );
+			var none = document.createElement( 'p' );
+			none.className = 'nad-pw-none';
+			none.textContent = 'אין עמוד שמתאים לחיפוש.';
+			none.hidden = true;
+			intro.appendChild( input );
+			intro.appendChild( none );
+			var rows = document.querySelectorAll( '.acf-field-group[data-key^="field_nad_pw_"]' );
+			var more = document.querySelector( '.acf-field[data-key="field_nad_pw_more"]' );
+			input.addEventListener( 'input', function () {
+				var q = input.value.trim().toLowerCase(), shown = 0;
+				rows.forEach( function ( row ) {
+					var hit = ! q || row.textContent.toLowerCase().indexOf( q ) !== -1;
+					row.style.display = hit ? '' : 'none';
+					shown += hit ? 1 : 0;
+				} );
+				if ( more ) { more.style.display = q ? 'none' : ''; }
+				none.hidden = shown > 0;
+			} );
+		} )();
+		</script>
+		<?php
 	}
 );
