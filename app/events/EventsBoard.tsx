@@ -5,6 +5,13 @@ import SiteShell from "../v6/SiteShell";
 import SponsorStrip from "../v6/SponsorStrip";
 import { eventHref, featuredEvent, heDate, isVolunteer, metaLine, type EventItem } from "./data";
 
+// "הצג" reads as a real button: full site size, an icon and a label that says what it does.
+const SearchIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+  </svg>
+);
+
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
     <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -94,7 +101,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
                 {f.options.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
             ))}
-            <button type="submit" className="v6-btn v6-btn--primary" style={{ padding: "11px 22px", fontSize: 13.5 }}>הצג</button>
+            <button type="submit" className="v6-btn v6-btn--primary" style={{ padding: "10px 26px", fontWeight: 600 }}><SearchIcon /><span>הצג אירועים</span></button>
           </form>
 
           {nothing && <p className="pg-empty">לא נמצאו אירועים שמתאימים לסינון.</p>}
