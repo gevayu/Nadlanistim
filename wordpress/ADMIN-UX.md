@@ -60,7 +60,7 @@ Replaces the dashboard (`index.php` redirects; administrators reach the old one 
 2. ממתינים לאישור: drafts and pending items of nadlanist, job and collaboration, newest first. Row: type, title, who sent it and when, a key detail. Actions: "אישור ופרסום" (POST, nonce, `publish_post` check, fires `save_post` so the site refreshes) and "עריכה". Empty state says where items come from.
 3. אירועים שדורשים השלמה: upcoming events missing an image, place, time or description; past events not marked "התקיים"; past events with no recap gallery.
 4. הזמנות אחרונות: last 6 orders (users who can edit orders only), read only.
-5. Side column: every content area with published and waiting counts plus "הוספה"; quick links to the homepage, youth and sponsor settings; links to the live site pages.
+5. Side column: every content area with published and waiting counts plus "עריכה" (the full list) and "הוספה"; quick links to the homepage, youth and sponsor settings; links to the live site pages.
 
 ## Lists
 

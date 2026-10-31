@@ -742,6 +742,7 @@ function nad_admin_render_home() {
 								<span class="dashicons <?php echo esc_attr( $t[1] ); ?>" aria-hidden="true"></span>
 								<a class="nad-areas__name" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $type ) ); ?>"><?php echo esc_html( $t[0] ); ?></a>
 								<span class="nad-areas__count"><?php echo esc_html( $live . ( $waiting ? ' · ' . $waiting . ' בהמתנה' : '' ) ); ?></span>
+								<a class="nad-areas__edit" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $type ) ); ?>">עריכה<span class="screen-reader-text">: כל ה<?php echo esc_html( $t[0] ); ?></span></a>
 								<a class="nad-areas__add" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . $type ) ); ?>">הוספה<span class="screen-reader-text">: <?php echo esc_html( $t[2] ); ?></span></a>
 							</li>
 						<?php endforeach; ?>
@@ -1160,7 +1161,8 @@ body.nad-ui .acf-field p.description{color:var(--nad-ink-2);}
 .nad-areas__name{font-weight:600;text-decoration:none;color:var(--nad-ink)!important;}
 .nad-areas__name:hover{text-decoration:underline;}
 .nad-areas__count{color:var(--nad-ink-2);font-size:13px;font-variant-numeric:tabular-nums;}
-.nad-areas__add{margin-inline-start:auto;font-size:13px;}
+.nad-areas__edit{margin-inline-start:auto;font-size:13px;}
+.nad-areas__add{font-size:13px;}
 .nad-links li{margin:0;padding:7px 0;border-top:1px solid var(--nad-line);}
 .nad-links li:first-child{border-top:0;}
 .nad-links--ext a::after{content:"\2197";display:inline-block;margin-inline-start:4px;font-size:12px;}
