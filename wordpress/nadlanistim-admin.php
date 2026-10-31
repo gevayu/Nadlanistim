@@ -96,7 +96,9 @@ add_action(
 add_action(
 	'parse_request',
 	function ( $wp ) {
-		if ( is_admin() || ( empty( $wp->query_vars['author'] ) && empty( $wp->query_vars['author_name'] ) ) ) {
+		// GraphQL resolves nodeByUri through the same parse; there the users are private (below), so it just answers null.
+		$graphql = function_exists( 'is_graphql_request' ) && is_graphql_request();
+		if ( is_admin() || $graphql || ( empty( $wp->query_vars['author'] ) && empty( $wp->query_vars['author_name'] ) ) ) {
 			return;
 		}
 		wp_safe_redirect( home_url( '/' ), 301 );
@@ -115,6 +117,40 @@ add_filter(
 );
 add_filter( 'the_author', fn( $name ) => is_feed() ? get_bloginfo( 'name' ) : $name );
 add_filter( 'wp_sitemaps_add_provider', fn( $provider, $name ) => 'users' === $name ? false : $provider, 10, 2 );
+// The WordPress login screen said whether a username exists ("not registered" against "wrong password") and the
+// reset screen whether an account exists. Both now answer the same either way. The site's own login and reset
+// (nadlanistim-auth.php) already did.
+add_filter(
+	'wp_login_errors',
+	function ( $errors ) {
+		$bad = array_intersect( $errors->get_error_codes(), array( 'invalid_username', 'invalid_email', 'incorrect_password' ) );
+		if ( ! $bad ) {
+			return $errors;
+		}
+		foreach ( $bad as $code ) {
+			$errors->remove( $code );
+		}
+		$errors->add( 'nad_bad_login', '<strong>שגיאה:</strong> שם המשתמש, האימייל או הסיסמה לא נכונים.' );
+		return $errors;
+	},
+	5
+);
+add_action(
+	'lostpassword_post',
+	function ( $errors, $user_data ) {
+		// Only the wp-login.php form: the site's REST reset calls the same function and must keep its JSON answer.
+		if ( $user_data || 'wp-login.php' !== ( isset( $GLOBALS['pagenow'] ) ? $GLOBALS['pagenow'] : '' ) ) {
+			return;
+		}
+		if ( array_diff( $errors->get_error_codes(), array( 'invalid_email' ) ) ) {
+			return; // an empty field still says so
+		}
+		wp_safe_redirect( add_query_arg( 'checkemail', 'confirm', wp_login_url() ) );
+		exit;
+	},
+	10,
+	2
+);
 add_filter(
 	'graphql_data_is_private',
 	fn( $is_private, $model_name ) => ( 'UserObject' === $model_name && ! current_user_can( 'list_users' ) ) ? true : $is_private,
