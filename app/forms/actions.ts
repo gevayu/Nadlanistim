@@ -17,7 +17,8 @@ export async function sendCollab(_prev: FormState, form: FormData) {
   return postForm("collab", form);
 }
 
-export async function sendNadlanist(_prev: FormState, form: FormData) {
+export async function sendNadlanist(_prev: FormState, form: FormData): Promise<FormState> {
+  if (!(await getSession())?.member) return { error: "ההצטרפות למדריך פתוחה לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
   return postForm("nadlanist", form);
 }
 
