@@ -7,12 +7,12 @@ export type Nadlanist = {
   quote: string;
   bio: string[];
   email: string;
-  photo?: string; // WordPress featured image, or a data URL uploaded in /my-account
-  phone?: string; // collected, never shown on the site
+  photo?: string; // WordPress featured image, or a data URL uploaded in /profile
+  phone?: string; // shown to members only, on the profile page (call and WhatsApp); publicCard leaves it out
   linkedin?: string;
   instagram?: string;
   openToWork?: boolean; // green #OPENTOWORK ring around the avatar
-  communities?: string[]; // slugs of the communities the member ticked in /my-account
+  communities?: string[]; // slugs of the communities the member ticked in /profile
   homepage?: boolean; // tagged "הופעה בעמוד ראשי": shown in the homepage quotes carousel
 };
 
@@ -23,7 +23,7 @@ export type Nadlanist = {
 export const publicCard = ({ slug, name, role, field, place, quote, photo, openToWork }: Nadlanist): Nadlanist =>
   ({ slug, name, role, field, place, quote, photo, openToWork, bio: [], email: "" });
 
-// Choices for the member form (/my-account, /nadlanist-new). The directory filters list what members actually have.
+// Choices for the member form (/profile, /nadlanist-new). The directory filters list what members actually have.
 export const FIELDS = ["יזמות", "השקעות", "שיווק", "ייעוץ", "אדריכלות", "תיווך", "שמאות", "מימון", "פרופטק", "משפט"];
 export const PLACES = ["תל אביב", "מרכז", "צפון", "דרום", "ירושלים", "כל הארץ"];
 

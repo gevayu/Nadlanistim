@@ -10,7 +10,7 @@ export default async function NadlanistPage({ params }: { params: Promise<{ slug
   const slug = decodeURIComponent((await params).slug);
   const [people, session, all, { locked }] = await Promise.all([getNadlanistim(), getSession(), getCommunities(), guard("nadlanistPage", `/nadlanist/${slug}`)]);
   const n = people.find((x) => x.slug === slug);
-  // The communities the member ticked in /my-account, by name, in the order the communities page shows them.
+  // The communities the member ticked in /profile, by name, in the order the communities page shows them.
   const communities = locked || !n ? [] : all.filter((c) => n.communities?.includes(c.slug)).map(({ slug, name }) => ({ slug, name }));
   return <Profile n={n && (locked ? publicCard(n) : n)} locked={locked} session={session} communities={communities} />;
 }

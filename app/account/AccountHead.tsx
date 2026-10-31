@@ -31,7 +31,7 @@ export default function AccountHead({ session }: { session: Session }) {
       {session.member
         ? <span className="ac-head__badge">MEMBERS ONLY ✓</span>
         : <a href="/join" className="ac-head__badge">להצטרפות לחברות</a>}
-      <a href="/my-account" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>
+      <a href="/profile" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>
         {own ? "עריכת הפרופיל שלי" : "יצירת פרופיל במדריך"}
       </a>
       <form action={logout}>

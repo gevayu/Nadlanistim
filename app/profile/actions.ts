@@ -12,7 +12,7 @@ export type SaveResult =
 type ProfileReply = { ok: boolean; created: boolean; nadlanist: { id: number; slug: string; status: string } };
 
 /**
- * Saves /my-account to the member's nadlanist post in WordPress (a new draft if they have none).
+ * Saves /profile to the member's nadlanist post in WordPress (a new draft if they have none).
  * `newPhoto` is a data URL only when the member picked a new photo; WordPress stores it as the featured image.
  * The email is not sent: WordPress always writes the account's own email, which is what ties the post to the account.
  */

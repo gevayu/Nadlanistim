@@ -21,6 +21,7 @@ type WpNadlanist = {
     linkedin: string | null;
     instagram: string | null;
     openToWork: boolean | null;
+    phone: string | null;
     communities: { nodes: { slug: string }[] } | null;
   } | null;
 };
@@ -30,7 +31,7 @@ const QUERY = `{ nadlanists(first: 100) { nodes {
   featuredImage { node { sourceUrl(size: MEDIUM_LARGE) } }
   cohorts { nodes { name slug } }
   nadlanistFields { role field place quote bio email }
-  nadlanistExtra { linkedin instagram openToWork communities { nodes { slug } } }
+  nadlanistExtra { linkedin instagram openToWork phone communities { nodes { slug } } }
 } } }`;
 
 // "שיוכים" term "הופעה בעמוד ראשי": editors tick it to put a member in the homepage carousel.
@@ -51,6 +52,7 @@ const toNadlanist = ({ slug, title, featuredImage, cohorts, nadlanistFields: f, 
   linkedin: x?.linkedin || undefined,
   instagram: x?.instagram || undefined,
   openToWork: !!x?.openToWork,
+  phone: x?.phone?.trim() || undefined,
   communities: x?.communities?.nodes.map((c) => c.slug) ?? [],
 });
 

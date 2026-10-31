@@ -191,8 +191,9 @@ export default function MyAccount({ me, status: postStatus, verified, communitie
                   <small id="ma-email-hint" className="ma-hint">האימייל של החשבון. דרכו החשבון מחובר לפרופיל.</small>
                 </div>
                 <div className="v6-field">
-                  <label htmlFor="ma-phone">טלפון (לא מוצג באתר)</label>
-                  <input id="ma-phone" type="tel" value={form.phone ?? ""} onChange={(e) => set("phone", e.target.value)} placeholder="050-0000000" />
+                  <label htmlFor="ma-phone">טלפון</label>
+                  <input id="ma-phone" type="tel" value={form.phone ?? ""} onChange={(e) => set("phone", e.target.value)} placeholder="050-0000000" aria-describedby="ma-phone-hint" />
+                  <small id="ma-phone-hint" className="ma-hint">שימו לב: הטלפון יוצג לחברים באתר</small>
                 </div>
                 <div className="v6-field">
                   <label htmlFor="ma-linkedin">לינקדאין</label>

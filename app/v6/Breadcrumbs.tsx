@@ -26,7 +26,7 @@ const PAGES: Record<string, Crumb> = {
   "/contact": { label: "צור קשר" },
   "/join": { label: "הצטרפות לקהילה" },
   "/account": { label: "האזור האישי" },
-  "/my-account": { label: "החשבון שלי", parent: "/account" },
+  "/profile": { label: "החשבון שלי", parent: "/account" },
   "/checkout": { label: "תשלום" },
   "/thank-you": { label: "תודה" },
   "/login": { label: "כניסה לחברים" },

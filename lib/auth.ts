@@ -13,7 +13,7 @@ const SESSION_COOKIE = "nad_session";
 /** Not secret, readable by the browser: tells the header to point "Members" at /account. */
 export const SIGNED_IN_COOKIE = "nad_signed_in";
 
-/** The member's own nadlanist post, as /my-account edits it. */
+/** The member's own nadlanist post, as /profile edits it. */
 export type OwnedNadlanist = {
   id: number;
   slug: string; // "" until the site manager publishes a new profile

@@ -5,6 +5,7 @@ import HiddenName from "../../collaborations/HiddenName";
 import { getCollabs } from "../../collaborations/wp";
 import { getSession } from "../../../lib/auth";
 import { guard } from "../../../lib/paywall";
+import { waNumber } from "../../../lib/phone";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -13,8 +14,6 @@ const ArrowIcon = () => (
 );
 const WhatsappIcon = () => (<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M17.5 14.4l-2.6-1.3a.8.8 0 0 0-.9.1l-1.2 1.2c-1.9-.9-3.4-2.4-4.3-4.3l1.2-1.2a.8.8 0 0 0 .1-.9L8.5 5.4a.8.8 0 0 0-.9-.4l-2.3.6a.8.8 0 0 0-.6.8c0 5.9 4.8 10.7 10.7 10.7a.8.8 0 0 0 .8-.6l.6-2.3a.8.8 0 0 0-.4-.9z" /></svg>);
 
-// Israeli local number ("050-1234567") -> wa.me international form ("972501234567")
-const waNumber = (phone: string) => "972" + phone.replace(/\D/g, "").replace(/^0/, "");
 
 export default async function CollaborationSinglePage({ params }: { params: Promise<{ slug: string }> }) {
   const slug = decodeURIComponent((await params).slug);

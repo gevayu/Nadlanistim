@@ -65,7 +65,8 @@
 
 /* ===== Profile page (split hero) ===== */
 .pg-profile2__hero { display: flex; gap: 36px; align-items: center; }
-.pg-profile2__img { position: relative; flex: 1 1 50%; aspect-ratio: 1; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--glass-border-strong); }
+/* A round portrait, so the "Open to work" ring sits on its edge. */
+.pg-profile2__img { position: relative; flex: 0 1 min(420px, 46%); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 1px solid var(--glass-border-strong); }
 .pg-profile2__img img { width: 100%; height: 100%; object-fit: cover; }
 .pg-profile2__text { flex: 1 1 50%; }
 .pg-profile2__text h1 { font-size: clamp(30px, 3.4vw, 46px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
@@ -74,9 +75,11 @@
 .pg-quote2 { position: relative; max-width: 720px; margin: 48px auto; text-align: center; font-size: clamp(23px, 2.8vw, 36px); font-weight: 700; font-style: italic; line-height: 1.4; background: var(--grad-accent-text); -webkit-background-clip: text; background-clip: text; color: transparent; padding: 40px 50px 0; }
 .pg-quote2::before { content: '“'; position: absolute; top: 0; inset-inline-start: 50%; transform: translateX(-50%); font-family: Georgia, "Times New Roman", serif; font-size: 96px; line-height: 1; color: var(--violet); -webkit-text-fill-color: var(--violet); opacity: .5; }
 .pg-social-wrap { text-align: center; }
+.pg-call { margin-block: 14px 18px; }
+.pg-call .v6-btn svg { width: 18px; height: 18px; }
 @media (max-width: 760px) {
   .pg-profile2__hero { flex-direction: column-reverse; text-align: center; gap: 24px; }
-  .pg-profile2__img { width: 100%; flex: none; }
+  .pg-profile2__img { width: min(300px, 80%); flex: none; }
 }
 
 /* ===== Profile page ===== */

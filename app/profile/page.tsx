@@ -1,10 +1,34 @@
-import { redirect } from "next/navigation";
-import { getSession } from "../../lib/auth";
+import MyAccount from "./MyAccount";
+import { requireSession } from "../../lib/auth";
+import { getCommunities } from "../communities/wp";
+import type { Nadlanist } from "../nadlanistim/data";
 
-// "My profile": the signed-in member's published nadlanist page. No published profile yet: the edit form.
-export default async function ProfilePage() {
-  const session = await getSession();
-  if (!session) redirect("/login?next=/profile");
+export default async function MyAccountPage() {
+  const [session, communities] = await Promise.all([requireSession("/profile"), getCommunities()]);
   const own = session.nadlanist;
-  redirect(own?.status === "publish" && own.slug ? `/nadlanist/${own.slug}` : "/my-account");
+  // The member's own post as WordPress has it now (drafts included), or an empty form for a first profile.
+  const me: Nadlanist = {
+    slug: own?.slug ?? "",
+    name: own?.name || session.name,
+    role: own?.role ?? "",
+    field: own?.field ?? "",
+    place: own?.place ?? "",
+    quote: own?.quote ?? "",
+    bio: own?.bio ?? [],
+    email: session.email,
+    phone: session.phone,
+    photo: own?.photo || undefined,
+    linkedin: own?.linkedin ?? "",
+    instagram: own?.instagram ?? "",
+    openToWork: own?.openToWork ?? false,
+    communities: own?.communities ?? [],
+  };
+  return (
+    <MyAccount
+      me={me}
+      status={own?.status ?? null}
+      verified={session.verified}
+      communities={communities.map(({ slug, name }) => ({ slug, name }))}
+    />
+  );
 }

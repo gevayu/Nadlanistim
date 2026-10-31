@@ -22,6 +22,8 @@ const nextConfig = {
       { source: "/register", destination: "/join", permanent: true },
       // /posts never had a list page (only the legacy /posts/<slug> articles); the knowledge base is the list.
       { source: "/posts", destination: "/post-archive", permanent: true },
+      // The personal area moved to /profile.
+      { source: "/my-account", destination: "/profile", permanent: true },
       // WordPress sends a nadlanist's "View" to /profile?as=<slug>; plain /profile stays the member's own page.
       {
         source: "/profile",
