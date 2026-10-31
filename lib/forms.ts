@@ -52,11 +52,15 @@ export async function postJoin(form: FormData): Promise<FormState> {
   if (String(form.get("website") ?? "").trim()) return { ok: true };
   const field = (k: string) => String(form.get(k) ?? "").trim();
   const body = { name: field("name"), email: field("email"), phone: field("phone"), field: field("field"), track: field("track"), about: field("about"), consent: field("consent") };
+  // The visitor's IP, signed with the shared secret: WordPress keeps it in the consent record and rate-limits by it.
+  const secret = process.env.REVALIDATE_SECRET;
+  const h = await headers();
+  const ip = h.get("x-forwarded-for")?.split(",")[0].trim() || h.get("x-real-ip") || "";
   try {
     const res = await fetch(`${WP_URL}/wp-json/nadlanistim/v1/join-apply`, {
       method: "POST",
       cache: "no-store",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(secret && { "x-nadlanistim-secret": secret, "x-nadlanistim-client-ip": ip }) },
       body: JSON.stringify(body),
     });
     if (res.ok) return { ok: true };
