@@ -79,9 +79,6 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
               {ev.videoThumb && <img src={ev.videoThumb} alt="" />}
               <a href={ev.video} className="rc-video__play" aria-label="נגן וידאו"><PlayIcon /></a>
             </div>
-            <div className="rc-center-cta" data-reveal>
-              <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הצטרפו לעדכון המנויים</span><ArrowIcon /></a>
-            </div>
           </div>
         </section>
       )}
