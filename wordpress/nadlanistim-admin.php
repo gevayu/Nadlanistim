@@ -145,7 +145,8 @@ add_action(
 		if ( array_diff( $errors->get_error_codes(), array( 'invalid_email' ) ) ) {
 			return; // an empty field still says so
 		}
-		wp_safe_redirect( add_query_arg( 'checkemail', 'confirm', wp_login_url() ) );
+		// The same screen a real account gets. site_url, not wp_login_url(): that one points at the site's own login.
+		wp_safe_redirect( site_url( 'wp-login.php?checkemail=confirm', 'login' ) );
 		exit;
 	},
 	10,
