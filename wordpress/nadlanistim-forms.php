@@ -625,9 +625,25 @@ add_filter(
 	3
 );
 
+/**
+ * The site's logo in a dark band, on top of every email. The logo is white, so it never sits on the white of the mail.
+ * It links to the site and is served from it (the same file the login screens use). '' when the site address is unset.
+ */
+function nadlanistim_mail_logo() {
+	$front = function_exists( 'nadlanistim_auth_front' ) ? nadlanistim_auth_front() : '';
+	if ( ! $front ) {
+		return '';
+	}
+	return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="nad-mail-logo" style="border-collapse:collapse;margin:0 0 20px">'
+		. '<tr><td align="center"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;border-collapse:collapse">'
+		. '<tr><td align="center" style="background:#07080F;border-radius:12px;padding:22px 16px">'
+		. '<a href="' . esc_url( $front . '/' ) . '" style="text-decoration:none"><img src="' . esc_url( $front . '/v6-assets/logo.png' ) . '" alt="הנדלניסטים" width="200" style="display:inline-block;width:200px;max-width:70%;height:auto;border:0"></a>'
+		. '</td></tr></table></td></tr></table>';
+}
+
 /*
- * Every email the site sends reads right to left. Plain-text mail (WordPress's password reset and
- * notices, the email check) becomes simple RTL HTML with clickable links; HTML mail without a direction
+ * Every email the site sends reads right to left and opens with the logo. Plain-text mail (WordPress's password
+ * reset and notices, the email check) becomes simple RTL HTML with clickable links; HTML mail without a direction
  * gets one. The language itself comes from the site language (he_IL).
  */
 add_filter(
@@ -647,19 +663,23 @@ add_filter(
 		$message = (string) $atts['message'];
 		$style   = 'font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#111111;text-align:right';
 
+		$logo    = false === strpos( $message, 'nad-mail-logo' ) ? nadlanistim_mail_logo() : '';
+
 		if ( 0 === strpos( $type, 'text/html' ) ) {
+			$has_body = preg_match( '/<body[^>]*>/i', $message );
 			if ( false === stripos( $message, 'dir="rtl"' ) && false === stripos( $message, "dir='rtl'" ) ) {
-				$message = preg_match( '/<body[^>]*>/i', $message )
+				$message = $has_body
 					? preg_replace( '/<body([^>]*)>/i', '<body$1 dir="rtl">', $message, 1 )
 					: '<div dir="rtl" style="' . $style . '">' . $message . '</div>';
 			}
-			$atts['message'] = $message;
+			// A full document (WooCommerce) gets the logo right after <body>; a fragment gets it in front.
+			$atts['message'] = $has_body ? preg_replace( '/(<body[^>]*>)/i', '$1' . str_replace( '$', '\$', $logo ), $message, 1 ) : $logo . $message;
 			return $atts;
 		}
 
 		// Plain text: WordPress wraps links in <...>; drop that, escape, keep the line breaks and make links clickable.
 		$text            = preg_replace( '/<(https?:[^>\s]+)>/', '$1', $message );
-		$atts['message'] = '<div dir="rtl" style="' . $style . '">' . make_clickable( nl2br( esc_html( $text ) ) ) . '</div>';
+		$atts['message'] = $logo . '<div dir="rtl" style="' . $style . '">' . make_clickable( nl2br( esc_html( $text ) ) ) . '</div>';
 		$headers         = array_values( array_filter( $headers, fn( $h ) => 0 !== stripos( trim( $h ), 'content-type:' ) ) );
 		$headers[]       = 'Content-Type: text/html; charset=UTF-8';
 		$atts['headers'] = $headers;
