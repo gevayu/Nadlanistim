@@ -107,7 +107,7 @@ export default function Directory({ people }: { people: Nadlanist[] }) {
 
           <div className="pg-cta-row" data-reveal>
             <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך - הצטרף למדריך</span><ArrowIcon /></a>
-            <a href="/#contact" className="v6-btn v6-btn--glass v6-btn--lg">רוצה להיות חלק מהסיפור? הצטרף לקהילה</a>
+            <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg">רוצה להיות חלק מהסיפור? הצטרף לקהילה</a>
           </div>
         </div>
       </section>

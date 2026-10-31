@@ -141,7 +141,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
             <h2>נהנתם? הנה מה שאפשר לעשות עכשיו</h2>
             <div className="rc-band__btns">
               {next && <a href={eventHref(next)} className="v6-btn v6-btn--primary v6-btn--lg">שמרו מקום לאירוע הבא</a>}
-              <a href="/#contact" className="v6-btn v6-btn--glass v6-btn--lg">הצטרפו לקהילה</a>
+              <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg">הצטרפו לקהילה</a>
             </div>
           </div>
         </div>

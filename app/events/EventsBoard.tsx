@@ -154,7 +154,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
           )}
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להיות באירוע הבא? הצטרפו לקהילה</span><ArrowIcon /></a>
+            <a href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להיות באירוע הבא? הצטרפו לקהילה</span><ArrowIcon /></a>
             {pastAll.length > 0 && <a href="/event-recap" className="v6-btn v6-btn--glass v6-btn--lg">לרשימת האירועים הקודמים</a>}
           </div>
         </div>

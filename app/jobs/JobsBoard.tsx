@@ -102,7 +102,7 @@ export default function JobsBoard({ jobs }: { jobs: Job[] }) {
               <span>פרסם משרה פתוחה - חינם לחברי הקהילה</span>
               <ArrowIcon />
             </a>
-            <a href="/#contact" className="v6-btn v6-btn--glass v6-btn--lg">הצטרף לקהילה וקבל גישה מלאה</a>
+            <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg">הצטרף לקהילה וקבל גישה מלאה</a>
           </div>
         </div>
       </section>

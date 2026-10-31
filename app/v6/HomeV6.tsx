@@ -732,7 +732,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </h1>
           {settings.heroSub && <p className="v6-hero__sub">{settings.heroSub}</p>}
           <div className="v6-hero__cta">
-            <a href="#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+            <a href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>הצטרפו לקהילה</span>
               <ArrowIcon />
             </a>

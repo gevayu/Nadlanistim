@@ -81,7 +81,7 @@ export default function Header() {
 
         <div className="nav-actions">
           <button className="btn btn-glass">כניסת נדלניסטים</button>
-          <button className="btn btn-primary">הצטרפות</button>
+          <a href="/join" className="btn btn-primary">הצטרפות</a>
         </div>
       </div>
     </header>

@@ -32,7 +32,7 @@ export default function Footer() {
             <li><a href="#">לוח אירועים</a></li>
             <li><a href="#">זירת משרות</a></li>
             <li><a href="#">השקעות</a></li>
-            <li><a href="#">הצטרפות לקהילה</a></li>
+            <li><a href="/join">הצטרפות לקהילה</a></li>
           </ul>
         </div>
         <div className="footer-links">

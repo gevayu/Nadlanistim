@@ -155,9 +155,9 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <h2>רוצים להיות חלק מקהילת <em>{c.name}</em>?</h2>
             <p>הצטרפו ל{c.members ? `‑${c.members} ` : ""}חברים שכבר מדברים, לומדים וסוגרים עסקאות יחד. חינם לחברי הנדלניסטים.</p>
             <div className="pg-actions" style={{ justifyContent: "center" }}>
-              {/* The community's WhatsApp group when WordPress has its link; the site's join form otherwise. */}
+              {/* The community's WhatsApp group when WordPress has its link; the join page otherwise. */}
               <a
-                href={c.whatsapp ?? "/#contact"}
+                href={c.whatsapp ?? "/join"}
                 {...(c.whatsapp && { target: "_blank", rel: "noopener noreferrer" })}
                 className="v6-btn v6-btn--primary v6-btn--lg"
                 data-magnetic=""
