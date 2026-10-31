@@ -644,6 +644,16 @@ add_filter(
 	3
 );
 
+// The iCount gateway was never saved, so it carries its English default name into checkout and every order email.
+add_filter(
+	'woocommerce_gateway_title',
+	function ( $title, $id ) {
+		return 'wc_gateway_icount-wc_icount_gateway' === $id && false !== stripos( $title, 'Pay with' ) ? 'תשלום בכרטיס אשראי' : $title;
+	},
+	10,
+	2
+);
+
 // An order keeps the payment method's name from the day it was paid ("Pay with Debit or Credit Card" before the
 // gateway was renamed). Emails and screens show the gateway's current name.
 add_filter(
