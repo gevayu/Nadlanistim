@@ -27,7 +27,7 @@ export default async function PodcastArchivePage() {
               <a key={e.slug} href={`/podcast/${e.slug}`} className="pc-card v6-glass" data-reveal>
                 {e.img && (
                   <div className="pc-card__img">
-                    <img src={e.img} alt="" />
+                    <img loading="lazy" src={e.img} alt="" />
                     <span className="pc-card__play"><PlayIcon /></span>
                   </div>
                 )}

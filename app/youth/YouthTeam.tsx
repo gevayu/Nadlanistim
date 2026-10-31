@@ -71,7 +71,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
           <div className="yt-members">
             {shown.map((m) => (
               <a key={m.slug} href={`/youth/${m.slug}`} className="yt-member v6-glass">
-                {m.photo && <div className="yt-member__av"><img src={m.photo} alt={m.name} /></div>}
+                {m.photo && <div className="yt-member__av"><img loading="lazy" src={m.photo} alt={m.name} /></div>}
                 <div className="yt-member__info">
                   <div className="yt-member__name">{m.name}</div>
                   {roleLine(m) && <div className="yt-member__role">{roleLine(m)}</div>}

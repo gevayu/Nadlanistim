@@ -43,7 +43,7 @@ function EvCard({ e }: { e: EventItem }) {
   return (
     <a href={eventHref(e)} className="pg-imgcard v6-glass" data-reveal>
       <SaveButton variant="card" path={eventHref(e)} title={e.title} />
-      {e.img && <figure className="pg-imgcard__img"><img src={e.img} alt="" /></figure>}
+      {e.img && <figure className="pg-imgcard__img"><img loading="lazy" src={e.img} alt="" /></figure>}
       <div className="pg-imgcard__body">
         <div className="pg-imgcard__meta">{metaLine(heDate(e.date), e.place)}</div>
         <h3>{e.title}</h3>

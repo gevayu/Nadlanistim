@@ -24,7 +24,7 @@ export default async function CommunitiesPage() {
           <div className="cm-grid">
             {communities.map((c) => (
               <a key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
-                {c.logo && <div className="cm-card__logo"><img src={c.logo} alt="" /></div>}
+                {c.logo && <div className="cm-card__logo"><img loading="lazy" src={c.logo} alt="" /></div>}
                 <h3>{c.name}</h3>
                 <p>{c.tagline}</p>
                 {c.members && <div className="cm-card__members">{c.members} חברים</div>}

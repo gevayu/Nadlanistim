@@ -401,7 +401,7 @@ function NadlanistCarousel({ people }: { people: Nadlanist[] }) {
       onMouseLeave={() => { pausedRef.current = false; }}
     >
       <figure className="v6-story__img v6-meet__img">
-        {p.photo && <img key={`meet-img-${i}`} src={p.photo} alt={p.name} />}
+        {p.photo && <img loading="lazy" key={`meet-img-${i}`} src={p.photo} alt={p.name} />}
         {p.openToWork && <span className="v6-meet__otw">#OPENTOWORK</span>}
       </figure>
       <div className="v6-story__body">
@@ -465,7 +465,7 @@ function JobRotator({ jobs }: { jobs: JobOffer[] }) {
       aria-label="הצעות עבודה בקהילה"
     >
       <figure className="v6-jobrot__img">
-        {j.img && <img key={`job-img-${i}`} src={j.img} alt="" />}
+        {j.img && <img loading="lazy" key={`job-img-${i}`} src={j.img} alt="" />}
         <span className="v6-jobrot__badge">{JOB_KINDS[j.kind]}</span>
       </figure>
       <div className="v6-jobrot__body">
@@ -590,7 +590,7 @@ function CommunitiesCarousel({ items }: { items: { id: string; logo: string; lab
         >
           {rendered.map((c, i) => (
             <a key={`${c.id}-${i}`} href={c.href} className="v6-comm">
-              <div className="v6-comm__logo">{c.logo && <img src={c.logo} alt="" />}</div>
+              <div className="v6-comm__logo">{c.logo && <img loading="lazy" src={c.logo} alt="" />}</div>
               <span className="v6-comm__label">{c.label}</span>
             </a>
           ))}
@@ -720,7 +720,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {/* Hero */}
       <section className="v6-hero" id="top">
         <div className="v6-hero__media" data-parallax="0.3">
-          {about.heroImage && <img src={about.heroImage} alt="" />}
+          {about.heroImage && <img fetchPriority="high" src={about.heroImage} alt="" />}
           <div className="v6-hero__veil" />
         </div>
         <div className="v6-hero__glow" aria-hidden />
@@ -820,12 +820,12 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <div className="v6-about__media" data-reveal>
               {about.imageLarge && (
                 <figure className="v6-about__img v6-about__img--lg" data-parallax="0.1">
-                  <img src={about.imageLarge} alt="" />
+                  <img loading="lazy" src={about.imageLarge} alt="" />
                 </figure>
               )}
               {about.imageSmall && (
                 <figure className="v6-about__img v6-about__img--sm" data-parallax="0.2">
-                  <img src={about.imageSmall} alt="" />
+                  <img loading="lazy" src={about.imageSmall} alt="" />
                 </figure>
               )}
               {about.badgeNumber != null && (
@@ -917,7 +917,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {featured && (
       <section className="v6-featured" id="featured">
         <div className="v6-featured__bg" data-parallax="0.25">
-          {about.featuredBg && <img src={about.featuredBg} alt="" />}
+          {about.featuredBg && <img loading="lazy" src={about.featuredBg} alt="" />}
         </div>
         <div className="v6-container v6-featured__grid">
           <div className="v6-featured__text">
@@ -942,7 +942,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </div>
           <aside className="v6-featured__card v6-glass" data-reveal>
             <div className="v6-featured__card-img">
-              {featured?.img && <img src={featured.img} alt="" />}
+              {featured?.img && <img loading="lazy" src={featured.img} alt="" />}
             </div>
             <div className="v6-featured__card-body">
               {([["מיקום", featured?.place], ["שעות", featured?.time], ["מחיר", featured?.price], ["למי", featured?.audience]] as const)
@@ -976,7 +976,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {deals.map((p) => (
               <a key={p.title} href={p.href} className="v6-project v6-glass" data-reveal>
                 <figure className="v6-project__img">
-                  {p.img && <img src={p.img} alt="" />}
+                  {p.img && <img loading="lazy" src={p.img} alt="" />}
                   <div className="v6-project__tag">{p.tag}</div>
                   <span className="v6-project__members">Members Only</span>
                 </figure>
@@ -1006,7 +1006,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <h4 className="v6-sponsors__title">שותפים קבועים</h4>
             <div className="v6-sponsors__logos">
               {sponsors.map((s) => {
-                const mark = s.logo ? <img src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name;
+                const mark = s.logo ? <img loading="lazy" src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name;
                 return s.url
                   ? <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="v6-sponsors__logo">{mark}</a>
                   : <div key={s.name} className="v6-sponsors__logo">{mark}</div>;
@@ -1025,7 +1025,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </header>
           <div className="v6-youth" data-reveal>
             <div className="v6-youth__bg">
-              <img src="/group-people-new-year-s-party.jpg" alt="" />
+              <img loading="lazy" src="/group-people-new-year-s-party.jpg" alt="" />
             </div>
             <div className="v6-youth__content">
               <p>{youth.count} נדלניסטים ונדלניסטיות{youth.maxAge ? ` מתחת לגיל ${youth.maxAge}` : ""} שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
@@ -1055,7 +1055,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {leadArticle && (
               <a href={`/article/${leadArticle.slug}`} className="v6-article v6-article--feature v6-glass" data-reveal>
                 <figure className="v6-article__img">
-                  {leadArticle.img && <img src={leadArticle.img} alt="" />}
+                  {leadArticle.img && <img loading="lazy" src={leadArticle.img} alt="" />}
                 </figure>
                 <div className="v6-article__body">
                   <div className="v6-article__cat">{leadArticle.cats[0]}</div>
@@ -1099,7 +1099,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {episodes.slice(0, 4).map((p) => (
               <a key={p.slug} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
                 <figure className="v6-podcast__img">
-                  {p.img && <img src={p.img} alt="" />}
+                  {p.img && <img loading="lazy" src={p.img} alt="" />}
                 </figure>
                 <div className="v6-podcast__body">
                   <h3>{p.title}</h3>

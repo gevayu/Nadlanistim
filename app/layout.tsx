@@ -9,6 +9,8 @@ import LayoutGate from "@/components/LayoutGate";
 import A11yWidget from "@/components/A11yWidget";
 import { A11Y_KEY, applyA11y } from "@/lib/a11y";
 import { OG_BASE, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { getSponsorSlots } from "./v6/sponsors";
+import { SponsorSlotsProvider } from "./v6/SponsorSlotsContext";
 
 // Saved accessibility settings go on <html> before the first paint, so a visitor with large text or high
 // contrast never sees the page flash at the default size first.
@@ -28,11 +30,16 @@ export const metadata: Metadata = {
   openGraph: { ...OG_BASE, title: HOME_TITLE, description: HOME_DESCRIPTION },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Cached under the "wp" tag like every WordPress read; a failure leaves the strips to fetch on their own.
+  const slots = await getSponsorSlots().catch((e) => {
+    console.error("sponsor-slots:", e);
+    return null;
+  });
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <head>
@@ -43,7 +50,7 @@ export default function RootLayout({
           <Background />
         </LayoutGate>
         <Header />
-        {children}
+        <SponsorSlotsProvider slots={slots}>{children}</SponsorSlotsProvider>
         <LayoutGate>
           <Footer />
           <BentoMouseTracker />

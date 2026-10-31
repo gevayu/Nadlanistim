@@ -96,7 +96,7 @@ export default function Directory({ people }: { people: Nadlanist[] }) {
               <a key={p.slug} href={`/nadlanist/${p.slug}`} className="pg-person v6-glass">
                 <SaveButton variant="card" path={`/nadlanist/${p.slug}`} title={p.name} />
                 <div className="pg-person__av">
-                  <img src={p.photo} alt={p.openToWork ? `${p.name} · פתוח/ה להצעות עבודה` : p.name} />
+                  <img loading="lazy" src={p.photo} alt={p.openToWork ? `${p.name} · פתוח/ה להצעות עבודה` : p.name} />
                   {p.openToWork && <OpenToWorkRing />}
                 </div>
                 <div className="pg-person__name">{p.name}</div>

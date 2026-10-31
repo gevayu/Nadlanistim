@@ -98,7 +98,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
                   <SaveButton variant="card" path={`/article/${p.slug}`} title={p.title} />
                   {p.img && (
                     <figure className="pa-card__img">
-                      <img src={p.img} alt="" />
+                      <img loading="lazy" src={p.img} alt="" />
                       {p.type && <span className="pa-card__type">{p.type}</span>}
                     </figure>
                   )}

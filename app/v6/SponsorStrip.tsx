@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { SponsorSlot, SponsorSlotName, SponsorSlots } from "./sponsors";
 import "./sponsor-strip.css";
+import { SponsorSlotsContext } from "./SponsorSlotsContext";
 
 // One request per page load, shared by every strip on the page.
 let slotsRequest: Promise<SponsorSlots | null> | null = null;
@@ -15,17 +16,22 @@ const loadSlots = () =>
  * A sponsor strip from WordPress ("הגדרות אתר" → "חסויות"). "top" sits under the breadcrumbs on every
  * inner page (SiteShell, home, post-archive); "events" is the lower strip on home, /events,
  * /collaborations and /post-archive.
- * Nothing renders while loading, or when the slot is off or empty.
+ * The slots come with the page (root layout); only when that read failed does the strip fetch them after load.
+ * Nothing renders when the slot is off or empty.
  */
 export default function SponsorStrip({ slot = "top" }: { slot?: SponsorSlotName }) {
-  const [sponsor, setSponsor] = useState<SponsorSlot | null>(null);
+  const served = useContext(SponsorSlotsContext);
+  const [fetched, setFetched] = useState<SponsorSlot | null>(null);
   useEffect(() => {
+    if (served) return;
     let live = true;
-    loadSlots().then((s) => live && setSponsor(s?.[slot] ?? null));
+    loadSlots().then((s) => live && setFetched(s?.[slot] ?? null));
     return () => {
       live = false;
     };
-  }, [slot]);
+  }, [served, slot]);
+
+  const sponsor = served ? served[slot] : fetched;
 
   if (!sponsor) return null;
   const body = sponsor.banner ? (
@@ -33,7 +39,7 @@ export default function SponsorStrip({ slot = "top" }: { slot?: SponsorSlotName 
       <span className="sp-strip__label">בחסות</span>
       <picture className="sp-strip__banner">
         <source media="(max-width: 760px)" srcSet={sponsor.banner.mobile} />
-        <img src={sponsor.banner.desktop} alt={sponsor.name} />
+        <img loading="lazy" src={sponsor.banner.desktop} alt={sponsor.name} />
       </picture>
     </>
   ) : (
