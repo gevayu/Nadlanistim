@@ -7,6 +7,7 @@ import "../../communities/communities.css";
 import type { Community } from "../../communities/data";
 import type { Nadlanist } from "../../nadlanistim/data";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
+import SaveButton from "../../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -80,6 +81,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <div className="cs-hero__in">
               <span className="cs-hero__badge">● קהילה{c.members && ` · ${c.members} חברים`}</span>
               <h1>{c.name}</h1>
+              <SaveButton title={c.name} />
               <p>{c.tagline}</p>
               <a href="#join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הצטרפו לקהילה</span><ArrowIcon /></a>
             </div>

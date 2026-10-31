@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import { getJobById } from "../../jobs/wp";
 import { JOB_KINDS } from "../../jobs/data";
+import SaveButton from "../../v6/SaveButton";
 
 const MailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -26,6 +27,7 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
               <div className="pg-panel__title">
                 {job.kind === "seek" && <span className="pg-stage">{JOB_KINDS.seek}</span>}
                 <h1>{job.title}</h1>
+                <SaveButton title={job.title} />
                 <div className="pg-panel__by">פורסם על ידי <b>{job.by}</b></div>
                 <div className="pg-panel__id">מס׳ משרה {job.id}</div>
               </div>

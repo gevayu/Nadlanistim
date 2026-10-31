@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import { JOB_KINDS, type Job } from "./data";
+import SaveButton from "../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -76,6 +77,7 @@ export default function JobsBoard({ jobs }: { jobs: Job[] }) {
           <div className="pg-grid">
             {shown.map((j) => (
               <a key={j.id} href={`/job/${j.id}`} className="pg-card v6-glass" data-reveal>
+                <SaveButton variant="card" path={`/job/${j.id}`} title={j.title} />
                 <div className="pg-card__top">
                   <span className="pg-card__id">מס׳ {j.id}</span>
                   {j.kind === "seek" && <span className="pg-stage">{JOB_KINDS.seek}</span>}

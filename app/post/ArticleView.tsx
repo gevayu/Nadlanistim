@@ -2,6 +2,7 @@ import SiteShell from "../v6/SiteShell";
 import "./post.css";
 import type { Article, Block } from "../post-archive/data";
 import ShareButtons from "./ShareButtons";
+import SaveButton from "../v6/SaveButton";
 
 const BlockView = ({ b }: { b: Block }) => {
   switch (b.kind) {
@@ -18,7 +19,7 @@ const BlockView = ({ b }: { b: Block }) => {
   }
 };
 
-/** A single "בית הידע" article (the /post template), plus up to three more from `all` to read next. Empty fields render nothing. */
+/** A single "מרכז הידע" article (the /post template), plus up to three more from `all` to read next. Empty fields render nothing. */
 export default function ArticleView({ a, all }: { a: Article; all: Article[] }) {
   const cat = a.cats[0];
   const related = all.filter((r) => r.slug !== a.slug).slice(0, 3);
@@ -33,6 +34,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
           <div className="post-hero" data-reveal>
             {cat && <a href={`/post-archive?cat=${encodeURIComponent(cat)}`} className="post-cat">{cat}</a>}
             <h1>{a.titleMain}{a.titleAccent && <> <em>{a.titleAccent}</em></>}</h1>
+            <SaveButton title={a.title} />
             <div className="post-meta">
               {a.author.avatar && <span className="post-meta__av" style={{ backgroundImage: `url(${a.author.avatar})` }} />}
               {meta}
@@ -71,7 +73,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
 
           {/* Share */}
           <div className="post-share" data-reveal>
-            <a href="/post-archive" className="v6-btn v6-btn--glass">חזרה לבית הידע</a>
+            <a href="/post-archive" className="v6-btn v6-btn--glass">חזרה למרכז הידע</a>
             <ShareButtons />
           </div>
         </div>
@@ -81,7 +83,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
       {related.length > 0 && (
         <section className="v6-section">
           <div className="v6-container">
-            <h2 className="pg-subhead" data-reveal>עוד מבית הידע</h2>
+            <h2 className="pg-subhead" data-reveal>עוד ממרכז הידע</h2>
             <div className="pg-grid">
               {related.map((r) => (
                 <a key={r.slug} href={`/article/${r.slug}`} className="pg-imgcard v6-glass" data-reveal>

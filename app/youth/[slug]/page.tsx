@@ -4,6 +4,7 @@ import "../youth.css";
 import "../../collaborations/collaborations.css";
 import { roleLine } from "../data";
 import { getYouth } from "../wp";
+import SaveButton from "../../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -54,6 +55,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
               <div className="pg-profile2__text">
                 <span className="yt-badge" style={{ marginBottom: 16 }}>● חבר/ת נבחרת</span>
                 <h1>{m.name}</h1>
+                <SaveButton title={m.name} />
                 {roleLine(m) && <div className="pg-profile2__role">{roleLine(m)}</div>}
                 {m.oneLiner && <p className="pg-profile2__intro">{m.oneLiner}</p>}
                 {m.focus.length > 0 && (

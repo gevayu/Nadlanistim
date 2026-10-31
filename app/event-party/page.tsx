@@ -8,6 +8,7 @@ import { getEvent } from "../events/wp";
 import Faq from "../events/Faq";
 import "./event-party.css";
 import { eventMetadata } from "../events/meta";
+import SaveButton from "../v6/SaveButton";
 
 export const generateMetadata = eventMetadata("/event-party");
 
@@ -42,6 +43,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
             <div className="ep-hero">
               {ev.date && <span className="ep-badge">{heDate(ev.date)}</span>}
               <h1 className="ep-neon">{ev.title}</h1>
+              <SaveButton title={ev.title} />
               {ev.desc && <p>{ev.desc}</p>}
               <div className="ep-hero__cta">
                 <a href="#register" className="v6-btn v6-btn--lg ep-btn--party" data-magnetic=""><span>שריינו מקום</span><ArrowIcon /></a>

@@ -7,6 +7,7 @@ import { getEvent } from "../events/wp";
 import Faq from "../events/Faq";
 import "./event.css";
 import { eventMetadata } from "../events/meta";
+import SaveButton from "../v6/SaveButton";
 
 export const generateMetadata = eventMetadata("/event");
 
@@ -44,6 +45,7 @@ export default async function EventPage({ searchParams }: { searchParams: Promis
           <div className="ev-hero" data-reveal>
             <span className="ev-badge">● אירוע קרוב</span>
             <h1>{head}{tail && <> - <em>{tail}</em></>}</h1>
+            <SaveButton title={ev.title} />
             {ev.desc && <p>{ev.desc}</p>}
             <a href="#register" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שמרו לי מקום</span><ArrowIcon /></a>
           </div>

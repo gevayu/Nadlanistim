@@ -1,7 +1,7 @@
 const FOOTER_COLS: { h: string; links: [string, string][] }[] = [
   { h: "קהילה", links: [["/#about", "אודות"], ["/#members", "חברי הקהילה"]] },
   { h: "אירועים", links: [["/#events", "קרובים"], ["/#featured", "הכנס השנתי"], ["/events", "ארכיון אירועים"]] },
-  { h: "תוכן", links: [["/#articles", "כתבות"], ["/post-archive", "בית הידע"], ["/#podcast", "פודקאסט"]] },
+  { h: "תוכן", links: [["/#articles", "כתבות"], ["/post-archive", "מרכז הידע"], ["/#podcast", "פודקאסט"]] },
   { h: "צרו קשר", links: [["/contact", "צרו קשר"], ["/join", "הצטרפות"]] },
 ];
 

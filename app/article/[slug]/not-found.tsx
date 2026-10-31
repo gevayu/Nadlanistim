@@ -12,7 +12,7 @@ export default function ArticleNotFound() {
       <section className="v6-section">
         <div className="v6-container">
           <div className="pg-head" data-reveal><h1>המאמר <em>לא נמצא</em></h1><p>ייתכן שהקישור שגוי.</p></div>
-          <div className="pg-cta-row"><a href="/post-archive" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה לבית הידע</span><ArrowIcon /></a></div>
+          <div className="pg-cta-row"><a href="/post-archive" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה למרכז הידע</span><ArrowIcon /></a></div>
         </div>
       </section>
     </SiteShell>

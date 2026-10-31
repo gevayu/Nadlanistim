@@ -258,3 +258,18 @@
 .v6-upload-picked__x { background: none; border: 0; padding: 6px 4px; font: inherit; font-size: 13.5px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .v6-upload-picked__x:hover { color: var(--ink); }
 .v6-upload-error { margin-top: 8px; font-size: 13.5px; color: #F87171; }
+
+/* "שמירה במועדפים" (app/v6/SaveButton.tsx): under a content page's title, and as a heart in a card's corner. */
+.v6-save { position: relative; display: inline-flex; margin-top: 12px; }
+.v6-save__btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink-2); background: rgba(255,255,255,.05); border: 1px solid var(--glass-border); cursor: pointer; transition: color .3s var(--t), border-color .3s var(--t), background .3s var(--t); }
+.v6-save__btn:hover { color: var(--ink); border-color: var(--glass-border-strong); }
+.v6-save__btn[aria-pressed="true"] { color: var(--cyan); border-color: rgba(34,211,238,.45); background: rgba(34,211,238,.1); }
+.v6-save__btn svg { width: 18px; height: 18px; }
+.v6-save .v6-fav__note { inset-inline-end: auto; inset-inline-start: 0; }
+.pa-card, .pg-person, .pg-card, .pg-imgcard { position: relative; }
+.v6-save-card { position: absolute; top: 12px; inset-inline-end: 12px; z-index: 3; }
+.v6-save-card__btn { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: var(--ink); background: rgba(7,8,15,.62); border: 1px solid var(--glass-border); backdrop-filter: blur(6px); cursor: pointer; transition: color .3s var(--t), border-color .3s var(--t); }
+.v6-save-card__btn:hover { border-color: var(--glass-border-strong); }
+.v6-save-card__btn[aria-pressed="true"] { color: var(--cyan); border-color: rgba(34,211,238,.5); }
+.v6-save-card__btn svg { width: 18px; height: 18px; }
+.v6-save__btn:focus-visible, .v6-save-card__btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }

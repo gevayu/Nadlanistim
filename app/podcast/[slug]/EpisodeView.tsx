@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import SiteShell from "../../v6/SiteShell";
 import "../podcast.css";
 import type { Episode } from "../data";
+import SaveButton from "../../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -68,6 +69,7 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
             <div>
               <div className="pc-hero__eyebrow">{dot("נדלפודקאסט", !!ep.num && `פרק ${ep.num}`, ep.date)}</div>
               <h1>{ep.title}</h1>
+              <SaveButton title={ep.title} />
               {(ep.guests || ep.duration) && <div className="pc-hero__guests">{dot(!!ep.guests && `🎙️ ${ep.guests}`, ep.duration)}</div>}
             </div>
           </div>

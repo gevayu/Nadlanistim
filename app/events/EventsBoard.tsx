@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import SiteShell from "../v6/SiteShell";
 import SponsorStrip from "../v6/SponsorStrip";
 import { eventHref, featuredEvent, heDate, isVolunteer, metaLine, type EventItem } from "./data";
+import SaveButton from "../v6/SaveButton";
 
 // "הצג" reads as a real button: full site size, an icon and a label that says what it does.
 const SearchIcon = () => (
@@ -41,6 +42,7 @@ const matches = (e: EventItem, f: Filters) =>
 function EvCard({ e }: { e: EventItem }) {
   return (
     <a href={eventHref(e)} className="pg-imgcard v6-glass" data-reveal>
+      <SaveButton variant="card" path={eventHref(e)} title={e.title} />
       {e.img && <figure className="pg-imgcard__img"><img src={e.img} alt="" /></figure>}
       <div className="pg-imgcard__body">
         <div className="pg-imgcard__meta">{metaLine(heDate(e.date), e.place)}</div>

@@ -5,6 +5,7 @@ import type { Session } from "../../../lib/auth";
 import { type Nadlanist } from "../../nadlanistim/data";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 import { telHref, waNumber } from "../../../lib/phone";
+import SaveButton from "../../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -57,6 +58,7 @@ export default function Profile({ n, locked, session, communities = [] }: {
               </div>
               <div className="pg-profile2__text">
                 <h1>{n.name}</h1>
+                <SaveButton title={n.name} />
                 <div className="pg-profile2__role">{n.role}</div>
                 {locked ? n.quote && <p className="pg-profile2__intro">״{n.quote}״</p> : <p className="pg-profile2__intro">{n.bio[0]}</p>}
               </div>

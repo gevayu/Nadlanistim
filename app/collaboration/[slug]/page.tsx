@@ -6,6 +6,7 @@ import { getCollabs } from "../../collaborations/wp";
 import { getSession } from "../../../lib/auth";
 import { guard } from "@/lib/paywall";
 import { waNumber } from "../../../lib/phone";
+import SaveButton from "../../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -63,6 +64,7 @@ export default async function CollaborationSinglePage({ params }: { params: Prom
             <div className="pg-panel__head">
               <div className="pg-panel__title">
                 <h1>{collab.title}</h1>
+                <SaveButton title={collab.title} />
                 {(collab.by || collab.byRole) && (
                   <div className="pg-panel__by">
                     {/* Who published it is for members too: a visitor gets a blurred placeholder, never the name. */}

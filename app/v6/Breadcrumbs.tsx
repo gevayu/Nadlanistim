@@ -6,7 +6,7 @@ type Crumb = { label: string; parent?: string };
 
 // Every V6 inner page: its label and the page one level up (home is implied as the root).
 const PAGES: Record<string, Crumb> = {
-  "/post-archive": { label: "בית הידע" },
+  "/post-archive": { label: "מרכז הידע" },
   "/post": { label: "מיסוי מקרקעין 2026", parent: "/post-archive" },
   "/events": { label: "אירועים" },
   "/event": { label: "מאסטרקלאס: קרנות חוב פרטיות", parent: "/events" },

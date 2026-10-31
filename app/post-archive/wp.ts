@@ -1,4 +1,4 @@
-// "בית הידע" articles from WordPress (nad_article + its ACF groups: articleFields, and the articleBody flexible layout).
+// "מרכז הידע" articles from WordPress (nad_article + its ACF groups: articleFields, and the articleBody flexible layout).
 import { byPublished, wpLines, wpQuery } from "../../lib/wp";
 import type { Article, Block } from "./data";
 

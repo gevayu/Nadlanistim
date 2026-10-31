@@ -8,6 +8,7 @@ import SponsorStrip from "../v6/SponsorStrip";
 import Breadcrumbs from "../v6/Breadcrumbs";
 import SiteFooter from "../v6/SiteFooter";
 import type { Article } from "./data";
+import SaveButton from "../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -75,7 +76,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
         <section className="v6-section">
           <div className="v6-container">
             <div className="pa-head" data-reveal>
-              <h1>בית הידע <em>| {filter ?? "תוכן מקצועי שמקדם"}</em></h1>
+              <h1>מרכז הידע <em>| {filter ?? "תוכן מקצועי שמקדם"}</em></h1>
               <p>כי ידע זה לא רק כוח, זה גם רווח. מאמרים מעמיקים, מדריכים מקצועיים והסברים של אמת.</p>
             </div>
 
@@ -84,7 +85,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
                 type="search"
                 className="pa-search"
                 placeholder="חיפוש מאמר, נושא או כותב…"
-                aria-label="חיפוש בבית הידע"
+                aria-label="חיפוש במרכז הידע"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -94,6 +95,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
             <div className="pa-grid">
               {posts.map((p) => (
                 <a key={p.slug} href={`/article/${p.slug}`} className="pa-card v6-glass" data-reveal hidden={!matches(p)}>
+                  <SaveButton variant="card" path={`/article/${p.slug}`} title={p.title} />
                   {p.img && (
                     <figure className="pa-card__img">
                       <img src={p.img} alt="" />
@@ -119,7 +121,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
 
             <div className="pa-cta" data-reveal>
               <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
-                <span>רוצה לתרום לבית הידע? שלח לנו מאמר מקצועי</span>
+                <span>רוצה לתרום למרכז הידע? שלח לנו מאמר מקצועי</span>
                 <ArrowIcon />
               </a>
             </div>

@@ -6,6 +6,7 @@ import SponsorStrip from "../v6/SponsorStrip";
 import "./collaborations.css";
 import HiddenName from "./HiddenName";
 import { collabRegion, collabTab, type Collab, type CollabTab } from "./data";
+import SaveButton from "../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -82,6 +83,7 @@ export default function CollabBoard({ collabs, tabs, locked }: { collabs: Collab
           <div className="pg-grid">
             {shown.map((c) => (
               <a key={c.slug} href={`/collaboration/${c.slug}`} className="pg-card v6-glass" data-reveal>
+                <SaveButton variant="card" path={`/collaboration/${c.slug}`} title={c.title} />
                 {c.img && (
                   <figure className="pg-card__cover">
                     <img src={c.img} alt="" loading="lazy" />

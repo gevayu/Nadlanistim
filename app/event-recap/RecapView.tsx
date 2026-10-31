@@ -5,6 +5,7 @@ import { eventHref, heDate, metaLine, type EventItem } from "../events/data";
 import "./event-recap.css";
 import { sendRecap } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
+import SaveButton from "../v6/SaveButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -28,6 +29,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
           <div className="rc-hero" data-reveal>
             <span className="rc-badge">✓ האירוע הסתיים</span>
             <h1>{ev.title} - <em>תודה שהייתם איתנו</em></h1>
+            <SaveButton title={ev.title} />
             {ev.desc && <p>{ev.desc}</p>}
             {ev.video && <a href={ev.video} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>צפו בהקלטה המלאה</span><ArrowIcon /></a>}
           </div>

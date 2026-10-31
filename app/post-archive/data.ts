@@ -1,4 +1,4 @@
-// "בית הידע" article types. All content comes from WordPress (post-archive/wp.ts).
+// "מרכז הידע" article types. All content comes from WordPress (post-archive/wp.ts).
 
 /** One block of an article body, in the order the editor laid them out. */
 export type Block =

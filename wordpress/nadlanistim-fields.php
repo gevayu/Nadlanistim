@@ -296,7 +296,7 @@ add_action(
 				'title'              => 'פסי חסות',
 				'fields'             => array(
 					$slot( 'top', 'sponsor_strip_top', 'חסות 1: פס עליון', 'מוצג בכל עמוד פנימי, מתחת לשורת הניווט (פירורי הלחם).' ),
-					$slot( 'events', 'sponsor_strip_events', 'חסות 2: פס תחתון', 'מוצג בתחתית עמוד הבית, עמוד האירועים, לוח שיתופי הפעולה ובית הידע.' ),
+					$slot( 'events', 'sponsor_strip_events', 'חסות 2: פס תחתון', 'מוצג בתחתית עמוד הבית, עמוד האירועים, לוח שיתופי הפעולה ומרכז הידע.' ),
 				),
 				'location'           => array( array( array( 'param' => 'options_page', 'operator' => '==', 'value' => 'nadlanistim-sponsorships' ) ) ),
 				'show_in_graphql'    => 1,
@@ -356,6 +356,15 @@ foreach (
 		}
 	);
 }
+
+// The articles section is called "מרכז הידע"; the Importer plugin's instruction still has its old name.
+add_filter(
+	'acf/load_field/key=field_nad_art_type',
+	function ( $field ) {
+		$field['instructions'] = str_replace( 'בית הידע', 'מרכז הידע', (string) $field['instructions'] );
+		return $field;
+	}
+);
 
 // "חומת תשלום": for each members' area, what a visitor without a paying membership gets. The site reads it
 // through GraphQL (lib/paywall.ts); a paying member always sees everything. Defaults match what the site did before.
@@ -458,8 +467,8 @@ add_action(
 					$area( 'youth_page', 'עמוד חבר בנבחרת', '/youth/...', 'הכרטיסים בעמוד הנבחרת', '', false, 'open' ),
 					$area( 'podcast', 'הפודקאסט', '/podcast', 'התפריט "פודקאסט"', '', false, 'open' ),
 					$area( 'episode', 'פרק בפודקאסט', '/podcast/...', 'הכרטיסים בעמוד הפודקאסט ובעמוד הבית', '', false, 'open' ),
-					$area( 'knowledge', 'מאגר הידע', '/post-archive', 'התפריט "תוכן מקצועי"', '', false, 'open' ),
-					$area( 'article', 'כתבה', '/post, /article/...', 'הכרטיסים במאגר הידע ובעמוד הבית', '', false, 'open' ),
+					$area( 'knowledge', 'מרכז הידע', '/post-archive', 'התפריט "תוכן מקצועי"', '', false, 'open' ),
+					$area( 'article', 'כתבה', '/post, /article/...', 'הכרטיסים במרכז הידע ובעמוד הבית', '', false, 'open' ),
 					$area( 'contact', 'צרו קשר', '/contact', 'התפריט "צרו קשר"', '', false, 'open' ),
 					array(
 						'key'           => 'field_nad_pw_join_to',
