@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Form photos travel as data URLs inside server actions (app/forms/image.ts, up to 1600px). The 1MB default
+  // is too small for them; 3MB stays under Vercel's 4.5MB request cap.
+  experimental: { serverActions: { bodySizeLimit: "3mb" } },
   images: {
     remotePatterns: [
       {

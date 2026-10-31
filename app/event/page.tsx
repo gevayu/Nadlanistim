@@ -1,3 +1,4 @@
+import { guard } from "@/lib/paywall";
 import { redirect } from "next/navigation";
 import { CalendarDays, Gift, Handshake, MapPin, Sparkles, Target, Users, UtensilsCrossed, Wallet } from "lucide-react";
 import SiteShell from "../v6/SiteShell";
@@ -23,6 +24,7 @@ const FEATURE_ICONS = { sparkles: Sparkles, target: Target, deal: Handshake, gif
 
 // Every block below renders only when WordPress has data for it.
 export default async function EventPage({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
+  await guard("eventPage", "/events"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const ev = await getEvent("/event", (await searchParams).e);
   // No upcoming event of this kind (or a stale ?e= link): the events page lists what there is.
   if (!ev) redirect("/events");

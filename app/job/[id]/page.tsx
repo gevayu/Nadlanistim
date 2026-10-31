@@ -1,6 +1,8 @@
+import { guard } from "@/lib/paywall";
 import { notFound } from "next/navigation";
 import SiteShell from "../../v6/SiteShell";
 import { getJobById } from "../../jobs/wp";
+import { JOB_KINDS } from "../../jobs/data";
 
 const MailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -9,6 +11,7 @@ const MailIcon = () => (
 );
 
 export default async function JobPage({ params }: { params: Promise<{ id: string }> }) {
+  await guard("jobPage", "/jobs"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const job = await getJobById(Number((await params).id));
   if (!job) notFound();
   const paragraphs = job.desc.split(/\n+/).filter(Boolean);
@@ -21,6 +24,7 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
           <article className="pg-panel v6-glass" data-reveal>
             <div className="pg-panel__head">
               <div className="pg-panel__title">
+                {job.kind === "seek" && <span className="pg-stage">{JOB_KINDS.seek}</span>}
                 <h1>{job.title}</h1>
                 <div className="pg-panel__by">פורסם על ידי <b>{job.by}</b></div>
                 <div className="pg-panel__id">מס׳ משרה {job.id}</div>

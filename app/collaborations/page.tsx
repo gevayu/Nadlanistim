@@ -1,7 +1,7 @@
 import CollabBoard from "./CollabBoard";
 import { onBoard } from "./data";
 import { getCollabs, getCollabTabs } from "./wp";
-import { guard } from "../../lib/paywall";
+import { guard } from "@/lib/paywall";
 
 export default async function CollaborationsPage() {
   // The board shows cards only. Description, needs, tags and contact are members-only (/collaboration/<slug>),

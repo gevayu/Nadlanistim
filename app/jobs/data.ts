@@ -33,7 +33,7 @@ export const JOB_TYPES: Record<string, string> = {
   full: "משרה מלאה",
   part: "משרה חלקית",
   freelance: "פרילנס",
-  partnership: "שותפות עסקית",
+  partnership: "שותפות",
   volunteering: "התנדבות",
   services: "מציעים שירותים",
 };

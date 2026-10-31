@@ -13,7 +13,7 @@ const ArrowIcon = () => (
 );
 
 const SELECTS: { id: string; label: string; options: string[] }[] = [
-  { id: "type", label: "סוג עבודה", options: ["בחרו…", "משרה מלאה", "משרה חלקית", "פרילנס", "התנדבות", "שותפות"] },
+  { id: "type", label: "סוג עבודה", options: ["בחרו…", "משרה מלאה", "משרה חלקית", "פרילנס", "התנדבות", "שותפות", "מציעים שירותים"] },
   { id: "area", label: "מיקום", options: ["בחרו…", "תל אביב", "מרכז", "צפון", "דרום", "ירושלים", "מרחוק"] },
   { id: "field", label: "תחום עיסוק", options: ["בחרו…", "ניהול", "שיווק", "תיווך", "שמאות", "הנדסה", "מימון", "טכנולוגיה"] },
 ];
@@ -102,7 +102,7 @@ export default function JobNewPage() {
                 </div>
 
                 <label className="v6-contact__consent" htmlFor="j-consent">
-                  <input id="j-consent" type="checkbox" required />
+                  <input id="j-consent" name="consent" value="1" type="checkbox" required />
                   <span>מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.</span>
                 </label>
 

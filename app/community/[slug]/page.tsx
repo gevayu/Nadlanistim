@@ -1,9 +1,11 @@
+import { guard } from "@/lib/paywall";
 import CommunityView from "./CommunityView";
 import { getCommunities } from "../../communities/wp";
 import { getNadlanistim } from "../../nadlanistim/wp";
 import { publicCard } from "../../nadlanistim/data";
 
 export default async function CommunityPage({ params }: { params: Promise<{ slug: string }> }) {
+  await guard("communityPage", "/communities"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const slug = decodeURIComponent((await params).slug);
   const [all, people] = await Promise.all([getCommunities(), getNadlanistim()]);
   return (

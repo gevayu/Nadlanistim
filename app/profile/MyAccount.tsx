@@ -6,6 +6,7 @@ import OpenToWorkRing from "../v6/OpenToWorkRing";
 import { FIELDS, PLACES, type Nadlanist } from "../nadlanistim/data";
 import { logout } from "../login/actions";
 import { saveProfile, type SaveResult } from "./actions";
+import { readImage } from "../forms/image";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -17,23 +18,6 @@ const UploadIcon = () => (
     <path d="M12 15V3m0 0l4 4m-4-4L8 7M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-
-// Shrinks an uploaded photo to a 400px square JPEG before it goes to WordPress.
-function toSquareJpeg(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const side = Math.min(img.width, img.height);
-      const canvas = document.createElement("canvas");
-      canvas.width = canvas.height = 400;
-      canvas.getContext("2d")!.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, 400, 400);
-      URL.revokeObjectURL(img.src);
-      resolve(canvas.toDataURL("image/jpeg", 0.85));
-    };
-    img.onerror = reject;
-    img.src = URL.createObjectURL(file);
-  });
-}
 
 // Keeps a stored value selectable even if it isn't in the standard list (e.g. "הרצליה").
 const withCurrent = (list: string[], value: string) => (value && !list.includes(value) ? [value, ...list] : list);
@@ -71,10 +55,11 @@ export default function MyAccount({ me, status: postStatus, verified, communitie
   const onPhoto = async (file?: File) => {
     if (!file) return;
     try {
-      setNewPhoto(await toSquareJpeg(file));
+      // A 400px square JPEG: the photo is shown round and small everywhere.
+      setNewPhoto(await readImage(file, { square: 400 }));
       setResult(null);
-    } catch {
-      setResult({ ok: false, error: "לא הצלחנו לקרוא את התמונה. נסו קובץ JPG או PNG אחר." });
+    } catch (e) {
+      setResult({ ok: false, error: e instanceof Error ? e.message : "לא הצלחנו לקרוא את התמונה. נסו קובץ JPG או PNG אחר." });
     }
   };
 

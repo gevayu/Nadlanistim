@@ -12,6 +12,8 @@ a.sp-strip:hover .sp-strip__logo { opacity: 1; }
 /* Banner mode: the frame keeps the sizes the admin asks for (1920×320 desktop, 1080×540 mobile), so an image
    of other proportions is cropped to fit instead of stretching the strip. */
 .sp-strip--banner { padding: 12px 12px 14px; gap: 10px; }
+/* A banner sets its own height; the strip's fixed 240px cut its top and bottom on desktop. */
+.v6-sponsorstrip.sp-strip--banner { height: auto; }
 .sp-strip__banner { display: block; width: 100%; }
 .v6-root .sp-strip__banner img { display: block; width: 100%; height: auto; aspect-ratio: 6 / 1; object-fit: cover; border-radius: calc(var(--r-lg, 24px) - 10px); }
 @media (max-width: 760px) { .v6-root .sp-strip__banner img { aspect-ratio: 2 / 1; } }

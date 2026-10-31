@@ -67,7 +67,6 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
 
   const newestFirst = [...events].sort((a, b) => b.date.localeCompare(a.date));
   const filters = filtersFor(newestFirst);
-  const pastAll = newestFirst.filter((e) => e.past && !isVolunteer(e));
 
   const shown = events.filter((e) => matches(e, applied));
   const next = featuredEvent(events);
@@ -138,7 +137,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
 
       {/* Past events */}
       {past.length > 0 && (
-        <section className="v6-section">
+        <section className="v6-section" id="past">
           <div className="v6-container">
             <h2 className="pg-subhead" data-reveal>אירועים קודמים</h2>
             <div className="pg-grid">
@@ -162,7 +161,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
 
           <div className="pg-cta-row" data-reveal>
             <a href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להיות באירוע הבא? הצטרפו לקהילה</span><ArrowIcon /></a>
-            {pastAll.length > 0 && <a href="/event-recap" className="v6-btn v6-btn--glass v6-btn--lg">לרשימת האירועים הקודמים</a>}
+            {past.length > 0 && <a href="#past" className="v6-btn v6-btn--glass v6-btn--lg">לרשימת האירועים הקודמים</a>}
           </div>
         </div>
       </section>

@@ -20,21 +20,22 @@ type WpJob = {
     tags: string | null;
     contactEmail: string | null;
   } | null;
+  jobKind: { kind: string[] | null } | null;
 };
 
 const QUERY = `{ jobs(first: 100, where: { orderby: { field: DATE, order: DESC } }) { nodes {
   databaseId slug title date
   featuredImage { node { sourceUrl(size: MEDIUM_LARGE) } }
   jobFields { tag company publisher location field employment description requirements tags contactEmail }
+  jobKind { kind }
 } } }`;
 
-const toJob = ({ databaseId, slug, title, date, featuredImage, jobFields: f }: WpJob): Job => ({
+const toJob = ({ databaseId, slug, title, date, featuredImage, jobFields: f, jobKind }: WpJob): Job => ({
   // The WordPress post ID is the public serial: unique and never reused.
   id: databaseId,
   slug,
-  // ponytail: WordPress has no offer/seek field yet, so every listing is an open position.
-  // Upgrade: add a `kind` select to group_nad_job in the importer plugin and map it here.
-  kind: "offer",
+  // "סוג פרסום" (mu-plugin nadlanistim-fields.php). Listings saved before the field existed are open positions.
+  kind: jobKind?.kind?.[0] === "seek" ? "seek" : "offer",
   title,
   by: f?.publisher ?? "",
   email: f?.contactEmail ?? "",

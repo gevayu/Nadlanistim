@@ -1,3 +1,4 @@
+import { guard } from "@/lib/paywall";
 import SiteShell from "../v6/SiteShell";
 import "./podcast.css";
 import { getEpisodes } from "./wp";
@@ -10,6 +11,7 @@ const ArrowIcon = () => (
 const PlayIcon = () => (<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M8 5v14l11-7z" /></svg>);
 
 export default async function PodcastArchivePage() {
+  await guard("podcast", "/podcast"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const episodes = await getEpisodes();
   return (
     <SiteShell>

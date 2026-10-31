@@ -77,7 +77,7 @@ export default function Profile({ n, locked, session, communities = [] }: {
                   {n.bio.slice(1).map((p, i) => <p key={i}>{p}</p>)}
                 </div>
 
-                <blockquote className="pg-quote2">״{n.quote}״</blockquote>
+                {n.quote && <blockquote className="pg-quote2">״{n.quote}״</blockquote>}
 
                 <div className="co-meta-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", maxWidth: 520, margin: "0 auto" }}>
                   <div className="co-mi"><div className="co-mi__label">תחום עיסוק</div><div className="co-mi__val">{n.field}</div></div>

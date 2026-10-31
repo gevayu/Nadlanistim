@@ -1,3 +1,4 @@
+import { guard } from "@/lib/paywall";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import { CalendarDays, MapPin, Shirt, Ticket } from "lucide-react";
@@ -18,6 +19,7 @@ const ArrowIcon = () => (
 
 // Every block below renders only when WordPress has data for it.
 export default async function EventPartyPage({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
+  await guard("eventPage", "/events"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const ev = await getEvent("/event-party", (await searchParams).e);
   if (!ev) notFound();
   const details = [

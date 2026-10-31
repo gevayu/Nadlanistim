@@ -250,3 +250,11 @@
 .ct-info__mail bdi { font-size: 15px; font-weight: 500; direction: ltr; text-align: right; overflow-wrap: anywhere; }
 .ct-info__channels { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 @media (max-width: 860px) { .ct-grid { grid-template-columns: 1fr; } }
+
+/* A photo picked in a site form (app/forms/ImageField.tsx): thumbnail, file name, remove. */
+.v6-upload-picked { justify-content: flex-start; cursor: default; }
+.v6-upload-picked img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+.v6-upload-picked__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
+.v6-upload-picked__x { background: none; border: 0; padding: 6px 4px; font: inherit; font-size: 13.5px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.v6-upload-picked__x:hover { color: var(--ink); }
+.v6-upload-error { margin-top: 8px; font-size: 13.5px; color: #F87171; }

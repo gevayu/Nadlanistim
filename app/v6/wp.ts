@@ -130,7 +130,7 @@ const toSettings = (f: WpSettings | null, h: WpHome | null): HomeSettings => {
   };
 };
 
-/** The home fields of "הגדרות אתר", deals, and the "main" tier partners (event-tier partners belong to event pages). */
+/** The home fields of "הגדרות אתר", the 8 newest deals, and the "main" tier partners (event-tier partners belong to event pages). */
 export async function getHomeContent(): Promise<{ settings: HomeSettings; deals: Deal[]; sponsors: Sponsor[] }> {
   const data = await wpQuery<{
     siteSettings: { siteSettingsFields: WpSettings | null; homeContent: WpHome | null } | null;
@@ -139,7 +139,8 @@ export async function getHomeContent(): Promise<{ settings: HomeSettings; deals:
   }>(QUERY);
   return {
     settings: toSettings(data.siteSettings?.siteSettingsFields ?? null, data.siteSettings?.homeContent ?? null),
-    deals: data.deals.nodes.sort(byPublished).map(toDeal),
+    // The 8 newest deals, newest first. byPublished breaks same-date ties by ID, which GraphQL's own order does not.
+    deals: data.deals.nodes.sort(byPublished).reverse().slice(0, 8).map(toDeal),
     sponsors: data.sponsors.nodes
       .filter((s) => s.sponsorFields?.tier?.includes("main"))
       .sort(byPublished)

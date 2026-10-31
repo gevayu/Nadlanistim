@@ -254,7 +254,9 @@
   transition: color .25s var(--t), padding-inline-start .3s var(--t);
 }
 .v6-drawer__link:hover { color: var(--cyan); padding-inline-start: 8px; }
-.v6-drawer__cta { margin-top: auto; padding-top: 28px; }
+/* The gap above the drawer's button comes from the last link, so the button keeps .v6-btn--lg's even padding. */
+.v6-drawer__cta { margin-top: auto; }
+.v6-drawer__link:nth-last-child(2) { margin-bottom: 24px; }
 
 /* ===== Hero ===== */
 .v6-hero {
@@ -681,7 +683,7 @@
   .v6-nav__menu { display: flex; order: 0; }
   .v6-nav__links { display: none; }
   .v6-nav__logo { padding-inline-start: 0; justify-self: center; order: 1; }
-  .v6-nav__logo img { height: 30px; }
+  .v6-nav__logo img, .v6-nav.is-scrolled .v6-nav__logo img { height: 30px; }
   .v6-nav__cta { padding: 10px 18px; font-size: 13px; order: 3; gap: 6px; }
   .v6-nav__cta svg { display: none; }
   .v6-nav__cta-long { display: none; }
@@ -711,7 +713,7 @@
 @media (max-width: 760px) {
   .v6-root { --section-y: clamp(12px, 2.25vw, 18px); --gutter: 20px; }
 
-  .v6-hero { padding: 120px var(--gutter) 130px; min-height: auto; }
+  .v6-hero { padding: 120px var(--gutter) 130px; min-height: 75vh; min-height: 75svh; }
   .v6-hero__title { font-size: clamp(36px, 11vw, 52px); margin-bottom: 24px; max-width: none; }
   .v6-root .v6-hero__sub { font-size: 15px; margin-bottom: 32px; line-height: 1.55; }
   .v6-hero__sub br { display: none; }

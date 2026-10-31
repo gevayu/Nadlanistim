@@ -4,7 +4,7 @@ import { BOARD_TABS, type Collab, type CollabTab } from "./data";
 
 type Terms = { nodes: { name: string }[] };
 
-/** ACF select labels per field, as WordPress sets them: { stage: { idea: "רעיון ראשוני", ... }, ... } */
+/** ACF select labels per field, as WordPress sets them: { stage: { idea: "רעיון", ... }, ... } */
 type Choices = Record<string, Record<string, string>>;
 
 type WpCollab = {

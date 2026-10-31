@@ -7,6 +7,20 @@ import "../checkout/checkout.css";
 const shekels = (n: number) => `₪${n.toLocaleString("he-IL")}`;
 const PENDING = ["pending", "on-hold"];
 
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+    <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+// After paying for membership, what happens next with the join application (order-summary's "membership").
+const MEMBERSHIP: Record<"ok" | "pending" | "blocked" | "none", { text: string; cta?: [string, string] }> = {
+  ok: { text: "החברות פעילה. אפשר להיכנס עכשיו לאזור האישי.", cta: ["/account", "לאזור האישי"] },
+  none: { text: "התשלום נקלט, אבל עוד לא קיבלנו בקשת הצטרפות מהאימייל הזה. מלאו את טופס ההצטרפות, ואחרי האישור תוכלו להיכנס.", cta: ["/join#join-form", "לטופס ההצטרפות"] },
+  pending: { text: "הבקשה שלכם ממתינה לאישור מנהלי הקהילה. כשהיא תאושר, נשלח לכם מייל." },
+  blocked: { text: "החשבון הזה אינו פעיל. לפרטים כתבו לנו בעמוד צור קשר." },
+};
+
 export default async function ThankYouPage({ searchParams }: { searchParams: Promise<{ order?: string; key?: string }> }) {
   const { order, key } = await searchParams;
   const s = order && key ? await getOrderSummary(order, key) : null;
@@ -33,6 +47,8 @@ export default async function ThankYouPage({ searchParams }: { searchParams: Pro
     );
   }
 
+  const next = s.membership ? MEMBERSHIP[s.membership] : null;
+
   return (
     <SiteShell>
       <Celebrate />
@@ -56,7 +72,10 @@ export default async function ThankYouPage({ searchParams }: { searchParams: Pro
             <p className="co-done">אישור נשלח <span className="co-nowrap">ל-<b>{s.email}</b></span></p>
           </article>
 
+          {next && <div className="pg-sent" style={{ maxWidth: 560, marginTop: 20 }} data-reveal>{next.text}</div>}
+
           <div className="pg-cta-row">
+            {next?.cta && <a href={next.cta[0]} className="v6-btn v6-btn--primary"><span>{next.cta[1]}</span><ArrowIcon /></a>}
             <a href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></a>
           </div>
         </div>

@@ -161,7 +161,7 @@ export default function JoinView({ plans }: { plans: Product[] }) {
                 </div>
 
                 <label className="v6-contact__consent" htmlFor="j-consent">
-                  <input id="j-consent" type="checkbox" required />
+                  <input id="j-consent" name="consent" value="1" type="checkbox" required />
                   <span>קראתי ואני מסכים/ה לתקנון הקהילה ולמדיניות הפרטיות.</span>
                 </label>
 

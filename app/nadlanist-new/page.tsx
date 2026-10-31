@@ -3,18 +3,13 @@
 import SiteShell from "../v6/SiteShell";
 import { sendNadlanist } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
+import ImageField from "../forms/ImageField";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
     <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-const UploadIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-    <path d="M12 15V3m0 0l4 4m-4-4L8 7M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
 const SELECTS: { id: string; label: string; options: string[] }[] = [
   { id: "field", label: "תחום עיסוק", options: ["בחרו…", "יזמות", "השקעות", "שיווק", "ייעוץ", "אדריכלות", "תיווך", "שמאות", "מימון", "פרופטק", "משפט"] },
   { id: "area", label: "מיקום", options: ["בחרו…", "תל אביב", "מרכז", "צפון", "דרום", "ירושלים", "כל הארץ"] },
@@ -40,9 +35,7 @@ export default function NadlanistNewPage() {
               <form className="pg-form" onSubmit={onSubmit}>
                 <Honeypot />
                 <div className="v6-field pg-full">
-                  <label>תמונת פרופיל</label>
-                  <label className="pg-upload" htmlFor="p-img"><UploadIcon /> גררו תמונה לכאן או לחצו להעלאה</label>
-                  <input id="p-img" type="file" accept="image/*" hidden />
+                  <ImageField id="p-img" label="תמונת פרופיל" boxClass="pg-upload" />
                 </div>
 
                 <div className="pg-formgrid">
@@ -92,7 +85,7 @@ export default function NadlanistNewPage() {
                 </div>
 
                 <label className="v6-contact__consent" htmlFor="p-consent">
-                  <input id="p-consent" type="checkbox" required />
+                  <input id="p-consent" name="consent" value="1" type="checkbox" required />
                   <span>מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.</span>
                 </label>
 

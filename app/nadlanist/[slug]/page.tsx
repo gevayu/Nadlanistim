@@ -1,6 +1,6 @@
 import Profile from "./Profile";
 import { getSession } from "../../../lib/auth";
-import { guard } from "../../../lib/paywall";
+import { guard } from "@/lib/paywall";
 import { publicCard } from "../../nadlanistim/data";
 import { getNadlanistim } from "../../nadlanistim/wp";
 import { getCommunities } from "../../communities/wp";

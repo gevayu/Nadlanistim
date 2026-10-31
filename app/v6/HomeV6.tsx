@@ -9,7 +9,7 @@ import SponsorStrip from "./SponsorStrip";
 import SiteFooter from "./SiteFooter";
 import { useMembersLink } from "./SiteHeader";
 import type { Community } from "../communities/data";
-import type { Job } from "../jobs/data";
+import { JOB_KINDS, type Job, type JobKind } from "../jobs/data";
 import type { Nadlanist } from "../nadlanistim/data";
 import { eventHref, featuredEvent, isVolunteer, splitTitle, type EventItem } from "../events/data";
 import type { Deal, HomeSettings, Sponsor } from "./wp";
@@ -36,7 +36,7 @@ const ChevronLeft = () => (
 );
 
 export type MemberCategory = { title: string; count: number; avatars: string[] };
-type JobOffer = { tag: string; title: string; company: string; location: string; desc: string; img: string; href?: string };
+type JobOffer = { kind: JobKind; tag: string; title: string; company: string; location: string; desc: string; img: string; href?: string };
 
 const NAV_LINKS: [string, string][] = [
   ["#about", "מי אנחנו?"],
@@ -57,6 +57,7 @@ const STAT_BAR_WIDTHS = ["96%", "78%", "62%", "46%"];
 
 // Homepage career card from a WordPress listing: first paragraph only, linking to the listing.
 const toJobOffer = (j: Job): JobOffer => ({
+  kind: j.kind,
   tag: j.tag ?? "",
   title: j.title,
   company: j.company || j.by,
@@ -465,7 +466,7 @@ function JobRotator({ jobs }: { jobs: JobOffer[] }) {
     >
       <figure className="v6-jobrot__img">
         {j.img && <img key={`job-img-${i}`} src={j.img} alt="" />}
-        <span className="v6-jobrot__badge">משרה פתוחה</span>
+        <span className="v6-jobrot__badge">{JOB_KINDS[j.kind]}</span>
       </figure>
       <div className="v6-jobrot__body">
         <div className="v6-jobrot__slide" key={`job-${i}`}>
@@ -873,7 +874,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
 
       {/* Events (duplicate, above Stories) */}
       {upcoming.length > 0 && (
-      <section className="v6-section">
+      <section className="v6-section" id="events">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--row" data-reveal>
             <div>
@@ -1113,8 +1114,8 @@ export default function HomePageV6({ communities, jobs, events, people, categori
         </div>
       </section>
 
-      {/* Events */}
-      <section className="v6-section" id="events">
+      {/* Past events. "/#events" (hero, menu, footer) lands on the upcoming ones above; with none, here. */}
+      <section className="v6-section" id={upcoming.length > 0 ? "past-events" : "events"}>
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--row" data-reveal>
             <div>
@@ -1148,6 +1149,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       </section>
 
       {/* Stories */}
+      {jobOffers.length > 0 && (
       <section className="v6-section" id="stories">
         <div className="v6-container">
           <header className="v6-section-head v6-section-head--center v6-section-head--nowrap" data-reveal>
@@ -1159,6 +1161,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </div>
         </div>
       </section>
+      )}
 
       {/* Contact */}
       <section className="v6-section v6-contact" id="contact">
@@ -1225,7 +1228,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               </select>
             </div>
             <label className="v6-contact__consent" htmlFor="f-consent">
-              <input id="f-consent" type="checkbox" required />
+              <input id="f-consent" name="consent" value="1" type="checkbox" required />
               <span>מוסכמים עלי מדיניות הפרטיות של האתר וקבלת דיוורים מהקהילה.</span>
             </label>
             <FormError error={contact.state.error} />

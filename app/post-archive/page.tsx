@@ -1,8 +1,10 @@
+import { guard } from "@/lib/paywall";
 import ArchiveView from "./ArchiveView";
 import { getArticles } from "./wp";
 
 // WordPress links its category and tag archives here as ?cat=<name> / ?tag=<name>.
 export default async function PostArchivePage({ searchParams }: { searchParams: Promise<{ cat?: string; tag?: string }> }) {
+  await guard("knowledge", "/post-archive"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const { cat, tag } = await searchParams;
   const posts = (await getArticles()).filter((a) => (!cat || a.cats.includes(cat)) && (!tag || a.tags.includes(tag)));
   return <ArchiveView posts={posts} filter={cat ?? tag} />;

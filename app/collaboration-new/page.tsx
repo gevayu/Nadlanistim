@@ -4,24 +4,19 @@ import SiteShell from "../v6/SiteShell";
 import "../collaborations/collaborations.css";
 import { sendCollab } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
+import ImageField from "../forms/ImageField";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
     <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-const UploadIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-    <path d="M12 15V3m0 0l4 4m-4-4L8 7M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
 const SELECTS: { id: string; label: string; options: string[] }[] = [
   { id: "type", label: "סוג שיתוף הפעולה", options: ["בחרו…", "התחדשות עירונית", "קרקע", "בנייה", "שיפוצים", "השקעות", "טכנולוגיה"] },
-  { id: "role", label: "תפקיד נדרש", options: ["בחרו…", "שותף פיננסי", "שותף מקצועי", "שותף לעסקת יזמות", "קבלן", "יועץ"] },
+  { id: "role", label: "תפקיד נדרש", options: ["בחרו…", "שותף פיננסי", "שותף מקצועי", "שותף לעסקת יזמות", "קבלן", "יועץ", "שותף לקרקע", "משקיע שותף"] },
   { id: "area", label: "אזור", options: ["בחרו…", "צפון", "שרון", "מרכז", "דרום", "ירושלים", "כל הארץ"] },
   { id: "invest", label: "רמת השקעה", options: ["בחרו…", "עד 100K", "עד 500K", "מיליון+", "ללא השקעה כספית"] },
-  { id: "stage", label: "שלב הפרויקט", options: ["בחרו…", "רעיון", "תכנון", "ביצוע", "מתקדם"] },
+  { id: "stage", label: "שלב הפרויקט", options: ["בחרו…", "רעיון", "תכנון", "בנייה", "ביצוע", "מתקדם"] },
 ];
 
 export default function CollaborationNewPage() {
@@ -66,9 +61,7 @@ export default function CollaborationNewPage() {
                 </div>
 
                 <div className="v6-field co-full">
-                  <label>תמונת הפרויקט (אופציונלי)</label>
-                  <label className="co-upload" htmlFor="n-img"><UploadIcon /> גררו תמונה לכאן או לחצו להעלאה</label>
-                  <input id="n-img" type="file" accept="image/*" hidden />
+                  <ImageField id="n-img" label="תמונת הפרויקט (אופציונלי)" boxClass="co-upload" />
                 </div>
 
                 <div className="pg-divider" style={{ margin: "8px 0" }} />
@@ -89,7 +82,7 @@ export default function CollaborationNewPage() {
                 </div>
 
                 <label className="v6-contact__consent" htmlFor="n-consent">
-                  <input id="n-consent" type="checkbox" required />
+                  <input id="n-consent" name="consent" value="1" type="checkbox" required />
                   <span>מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.</span>
                 </label>
 

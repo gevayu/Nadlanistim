@@ -35,7 +35,7 @@ function MembersCarousel({ people }: { people: Nadlanist[] }) {
             <div className="cs-mem__av"><img src={n.photo} alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
             <div className="cs-mem__name">{n.name}</div>
             <div className="cs-mem__role">{n.role}</div>
-            <p className="cs-mem__quote">״{n.quote}״</p>
+            {n.quote && <p className="cs-mem__quote">״{n.quote}״</p>}
             <div className="cs-mem__foot">{n.field} · {n.place}</div>
           </a>
         ))}

@@ -36,6 +36,8 @@ export type OrderSummary = {
   first_name: string;
   email: string;
   items: { name: string; qty: number; total: number }[];
+  /** Membership orders only: the buyer's join application. null for anything else (a conference ticket). */
+  membership?: "ok" | "pending" | "blocked" | "none" | null;
 };
 
 export type CheckoutInput = {

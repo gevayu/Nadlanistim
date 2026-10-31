@@ -99,7 +99,7 @@ export default function Directory({ people }: { people: Nadlanist[] }) {
                 </div>
                 <div className="pg-person__name">{p.name}</div>
                 <div className="pg-person__role">{p.role}</div>
-                <p className="pg-person__q">״{p.quote}״</p>
+                {p.quote && <p className="pg-person__q">״{p.quote}״</p>}
                 <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>קרא עוד</span>
               </a>
             ))}

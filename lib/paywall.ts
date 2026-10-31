@@ -7,7 +7,11 @@ import { getSession, safeNext } from "./auth";
 
 /** open: everyone sees it. blur: a guest sees the page with the members' part hidden. redirect: a guest is sent elsewhere. */
 export type Access = "open" | "blur" | "redirect";
-export type Area = "jobsBoard" | "jobNew" | "collabBoard" | "collabPage" | "collabNew" | "nadlanistPage" | "nadlanistNew";
+export type Area =
+  | "jobsBoard" | "jobNew" | "collabBoard" | "collabPage" | "collabNew" | "nadlanistPage" | "nadlanistNew"
+  // The other inner pages: open to everyone unless the screen says otherwise.
+  | "jobPage" | "events" | "eventPage" | "eventRecap" | "directory" | "communities" | "communityPage"
+  | "youth" | "youthPage" | "podcast" | "episode" | "knowledge" | "article" | "contact";
 type Rule = { access: Access; to: string };
 
 // What the site did before the screen existed; also what it falls back to when WordPress can't be reached.
@@ -19,6 +23,20 @@ const DEFAULTS: Record<Area, Rule> = {
   collabNew: { access: "open", to: "/join" },
   nadlanistPage: { access: "blur", to: "/join" },
   nadlanistNew: { access: "redirect", to: "/join" },
+  jobPage: { access: "open", to: "/join" },
+  events: { access: "open", to: "/join" },
+  eventPage: { access: "open", to: "/join" },
+  eventRecap: { access: "open", to: "/join" },
+  directory: { access: "open", to: "/join" },
+  communities: { access: "open", to: "/join" },
+  communityPage: { access: "open", to: "/join" },
+  youth: { access: "open", to: "/join" },
+  youthPage: { access: "open", to: "/join" },
+  podcast: { access: "open", to: "/join" },
+  episode: { access: "open", to: "/join" },
+  knowledge: { access: "open", to: "/join" },
+  article: { access: "open", to: "/join" },
+  contact: { access: "open", to: "/join" },
 };
 // Areas whose page has a blurred guest view; anywhere else "blur" can't be picked.
 const CAN_BLUR: Area[] = ["collabBoard", "collabPage", "nadlanistPage"];

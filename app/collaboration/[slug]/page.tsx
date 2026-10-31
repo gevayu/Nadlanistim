@@ -4,7 +4,7 @@ import MembersLock from "../../collaborations/MembersLock";
 import HiddenName from "../../collaborations/HiddenName";
 import { getCollabs } from "../../collaborations/wp";
 import { getSession } from "../../../lib/auth";
-import { guard } from "../../../lib/paywall";
+import { guard } from "@/lib/paywall";
 import { waNumber } from "../../../lib/phone";
 
 const ArrowIcon = () => (

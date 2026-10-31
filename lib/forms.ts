@@ -51,7 +51,7 @@ export async function postForm(route: FormRoute, form: FormData): Promise<FormSt
 export async function postJoin(form: FormData): Promise<FormState> {
   if (String(form.get("website") ?? "").trim()) return { ok: true };
   const field = (k: string) => String(form.get(k) ?? "").trim();
-  const body = { name: field("name"), email: field("email"), phone: field("phone"), field: field("field"), track: field("track"), about: field("about") };
+  const body = { name: field("name"), email: field("email"), phone: field("phone"), field: field("field"), track: field("track"), about: field("about"), consent: field("consent") };
   try {
     const res = await fetch(`${WP_URL}/wp-json/nadlanistim/v1/join-apply`, {
       method: "POST",

@@ -1,3 +1,4 @@
+import { guard } from "@/lib/paywall";
 import SiteShell from "../v6/SiteShell";
 import "./communities.css";
 import { getCommunities } from "./wp";
@@ -9,6 +10,7 @@ const ArrowIcon = () => (
 );
 
 export default async function CommunitiesPage() {
+  await guard("communities", "/communities"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const communities = await getCommunities();
   return (
     <SiteShell>
