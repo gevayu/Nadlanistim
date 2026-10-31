@@ -27,6 +27,32 @@ export function usePageLoaded() {
   return loaded;
 }
 
+/**
+ * The carousel or side-scrolling list the picture sits in, if any: the nearest ancestor that clips content wider
+ * than itself. A margin on the screen does not reach past that clip, so slides there are watched against it instead.
+ */
+function scroller(el: HTMLElement): HTMLElement | null {
+  for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+    if (getComputedStyle(p).overflowX !== "visible" && p.scrollWidth > p.clientWidth + 1) return p;
+  }
+  return null;
+}
+
+/** Calls `onNear` once `el` comes within `margin` of `root` (the screen when null). Returns the disconnect. */
+function whenNear(el: Element, root: Element | null, margin: string, onNear: () => void) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        onNear();
+      }
+    },
+    { root, rootMargin: margin },
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}
+
 type Props = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "loading"> & { src?: string };
 
 export default function LazyImg({ src, alt = "", ...rest }: Props) {
@@ -34,23 +60,22 @@ export default function LazyImg({ src, alt = "", ...rest }: Props) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     let live = true;
-    let io: IntersectionObserver | undefined;
+    const stops: (() => void)[] = [];
     afterLoad().then(() => {
-      if (!live || !ref.current) return;
-      io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            setShow(true);
-            io?.disconnect();
-          }
-        },
-        { rootMargin: "600px" },
+      const img = ref.current;
+      if (!live || !img) return;
+      const track = scroller(img);
+      // Near the screen first (the carousel itself, when there is one), then near the carousel's visible part.
+      stops.push(
+        whenNear(track ?? img, null, "600px", () => {
+          if (!track) return setShow(true);
+          stops.push(whenNear(img, track, "0px 600px", () => setShow(true)));
+        }),
       );
-      io.observe(ref.current);
     });
     return () => {
       live = false;
-      io?.disconnect();
+      stops.forEach((stop) => stop());
     };
   }, []);
   return (
