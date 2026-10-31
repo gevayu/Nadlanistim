@@ -8,6 +8,7 @@ import Faq from "../events/Faq";
 import "./event.css";
 import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
+import { JsonLd, eventLd } from "@/lib/jsonld";
 
 export const generateMetadata = eventMetadata("/event");
 
@@ -39,6 +40,7 @@ export default async function EventPage({ searchParams }: { searchParams: Promis
   const sp = ev.speaker;
   return (
     <SiteShell crumb={ev.title}>
+      {!ev.past && <JsonLd data={eventLd(ev, `/event?e=${encodeURIComponent(ev.slug)}`)} />}
       {/* Hero */}
       <section className="v6-section">
         <div className="v6-container">

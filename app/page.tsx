@@ -8,6 +8,7 @@ import { getYouth, getYouthSettings } from "./youth/wp";
 import { getArticles } from "./post-archive/wp";
 import { getEpisodes } from "./podcast/wp";
 import { getHomeContent } from "./v6/wp";
+import { JsonLd, homeLd } from "@/lib/jsonld";
 
 // "חברי הקהילה": one card per professional field, counting every member (directory and youth team).
 function memberCategories(members: { field: string; photo?: string }[]): MemberCategory[] {
@@ -28,5 +29,10 @@ export default async function HomePage() {
   ]);
   // The directory already holds the youth team, so they count once.
   const categories = memberCategories(people);
-  return <HomePageV6 communities={communities} jobs={jobs} events={events} people={people.map((p) => ({ ...publicCard(p), homepage: p.homepage }))} categories={categories} youth={{ count: youth.length, maxAge: youthSettings.maxAge }} articles={articles} episodes={episodes} home={home} />;
+  return (
+    <>
+      <JsonLd data={homeLd()} />
+      <HomePageV6 communities={communities} jobs={jobs} events={events} people={people.map((p) => ({ ...publicCard(p), homepage: p.homepage }))} categories={categories} youth={{ count: youth.length, maxAge: youthSettings.maxAge }} articles={articles} episodes={episodes} home={home} />
+    </>
+  );
 }

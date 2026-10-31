@@ -2,6 +2,7 @@ import { guard } from "@/lib/paywall";
 import { notFound } from "next/navigation";
 import ArticleView from "../../post/ArticleView";
 import { getArticles } from "../../post-archive/wp";
+import { JsonLd, articleLd } from "@/lib/jsonld";
 
 // WordPress links every article here (/article/<slug>); slugs are Hebrew, so they arrive URL-encoded.
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -10,5 +11,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const all = await getArticles();
   const a = all.find((x) => x.slug === slug);
   if (!a) notFound();
-  return <ArticleView a={a} all={all} />;
+  return (
+    <>
+      <JsonLd data={articleLd(a)} />
+      <ArticleView a={a} all={all} />
+    </>
+  );
 }

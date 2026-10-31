@@ -22,6 +22,7 @@ export type Article = {
   excerpt: string;
   author: Author;
   date: string; // "יוני 2026"
+  published?: string; // ISO date from WordPress, for search engines
   featured: boolean;
   body: Block[];
   html?: string; // WordPress post content, used only when the article has no body blocks

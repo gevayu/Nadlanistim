@@ -4,6 +4,7 @@ import SiteShell from "../../v6/SiteShell";
 import { getJobById } from "../../jobs/wp";
 import { JOB_KINDS } from "../../jobs/data";
 import SaveButton from "../../v6/SaveButton";
+import { JsonLd, jobLd } from "@/lib/jsonld";
 
 const MailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -16,9 +17,11 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
   const job = await getJobById(Number((await params).id));
   if (!job) notFound();
   const paragraphs = job.desc.split(/\n+/).filter(Boolean);
+  const ld = jobLd(job);
 
   return (
     <SiteShell crumb={job.title}>
+      {ld && <JsonLd data={ld} />}
 
       <section className="v6-section">
         <div className="v6-container">

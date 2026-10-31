@@ -109,6 +109,7 @@ const toArticle = ({ date, slug, title, content, featuredImage, articleCategorie
       bio: f?.authorBio ?? "",
     },
     date: new Date(date).toLocaleDateString("he-IL", { month: "long", year: "numeric" }),
+    published: date,
     featured: !!f?.isFeatured,
     body,
     html,

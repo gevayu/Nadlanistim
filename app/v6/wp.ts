@@ -9,6 +9,8 @@ export type Contact = { email: string; whatsapp: string; instagram: string; tikt
 /** "עמוד הבית: תמונות ו"מי אנחנו"" in "הגדרות אתר" (mu-plugin nadlanistim-fields.php); empty parts are hidden. */
 export type HomeAbout = {
   heroImage: string;
+  /** WordPress's resized copies ("url 1536w, ..."), "" when it has none. */
+  heroSrcSet: string;
   title: string[];
   paragraphs: string[];
   points: string[];
@@ -49,7 +51,7 @@ type WpSettings = {
 
 type Img = { node: { sourceUrl: string } } | null;
 type WpHome = {
-  homeHeroImage: Img;
+  homeHeroImage: { node: { sourceUrl: string; srcSet: string | null } } | null;
   homeAboutTitle: string | null;
   homeAboutText: string | null;
   homeAboutPoints: string | null;
@@ -63,7 +65,7 @@ type WpHome = {
 const QUERY = `{
   siteSettings { siteSettingsFields { marquee heroSub heroLines { line } stats { count label suffix } contactEmail whatsappUrl instagramUrl tiktokUrl }
     homeContent {
-      homeHeroImage { node { sourceUrl } } homeAboutTitle homeAboutText homeAboutPoints
+      homeHeroImage { node { sourceUrl srcSet } } homeAboutTitle homeAboutText homeAboutPoints
       homeAboutImageLarge { node { sourceUrl } } homeAboutImageSmall { node { sourceUrl } }
       homeAboutBadgeNumber homeAboutBadgeText homeFeaturedBg { node { sourceUrl } }
     } }
@@ -100,6 +102,7 @@ const img = (i: Img) => i?.node.sourceUrl ?? "";
 
 const toAbout = (h: WpHome | null, stats: Stat[]): HomeAbout => ({
   heroImage: img(h?.homeHeroImage ?? null),
+  heroSrcSet: h?.homeHeroImage?.node.srcSet ?? "",
   title: wpLines(h?.homeAboutTitle),
   // "{מספר חברים}" is the first "מספרים" count, so the paragraph never disagrees with the stats strip.
   paragraphs: wpLines(h?.homeAboutText).map((p) => p.replace("{מספר חברים}", stats[0] ? stats[0].count.toLocaleString("en-US") : "")),

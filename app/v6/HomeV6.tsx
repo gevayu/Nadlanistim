@@ -137,14 +137,6 @@ function useRevealOnScroll() {
   }, []);
 }
 
-function useHeroIntro() {
-  useEffect(() => {
-    const hero = document.querySelector<HTMLElement>(".v6-hero");
-    if (!hero) return;
-    const id = requestAnimationFrame(() => hero.classList.add("is-loaded"));
-    return () => cancelAnimationFrame(id);
-  }, []);
-}
 
 function useParallax() {
   useEffect(() => {
@@ -622,6 +614,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const { settings, deals, sponsors } = home;
   // "הגדרות אתר" → "עמוד הבית: תמונות ו"מי אנחנו"". Each part shows only when its field is filled.
   const about = settings.about;
+  const heroMobile = about.heroSrcSet.split(",").map((s) => s.trim().split(" ")).find(([, w]) => w === "1536w")?.[0];
   const hasAbout = about.title.length > 0 || about.paragraphs.length > 0 || about.points.length > 0 || !!about.imageLarge || !!about.imageSmall;
   const c = settings.contact;
   const channels = [c.whatsapp, c.instagram, c.tiktok, c.email].filter(Boolean);
@@ -642,7 +635,6 @@ export default function HomePageV6({ communities, jobs, events, people, categori
     if (sent) celebrate();
   }, [sent]);
   const scrolled = useScrolled();
-  useHeroIntro();
   useRevealOnScroll();
   useStatCounters();
   useParallax();
@@ -720,7 +712,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
       {/* Hero */}
       <section className="v6-hero" id="top">
         <div className="v6-hero__media" data-parallax="0.3">
-          {about.heroImage && <img fetchPriority="high" src={about.heroImage} alt="" />}
+          {about.heroImage && (
+            // The hero is cropped to cover the screen, so a phone shows it about 1100px wide: the 1536px copy
+            // (a third of the original's weight) is enough under the dark veil. Wider screens choose from all sizes.
+            <picture>
+              {heroMobile && <source media="(max-width: 760px)" srcSet={heroMobile} />}
+              <img fetchPriority="high" src={about.heroImage} srcSet={about.heroSrcSet || undefined} sizes="100vw" alt="" />
+            </picture>
+          )}
           <div className="v6-hero__veil" />
         </div>
         <div className="v6-hero__glow" aria-hidden />
@@ -1228,9 +1227,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                 {ROLE_OPTIONS.map((o) => <option key={o}>{o}</option>)}
               </select>
             </div>
+            {/* Two boxes, worded exactly as nadlanistim_consent_texts() records them: privacy is required, newsletters are a free choice. */}
             <label className="v6-contact__consent" htmlFor="f-consent">
               <input id="f-consent" name="consent" value="1" type="checkbox" required />
-              <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> של האתר וקבלת דיוורים מהקהילה.</span>
+              <span>מוסכמת עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> של האתר.</span>
+            </label>
+            <label className="v6-contact__consent" htmlFor="f-marketing">
+              <input id="f-marketing" name="marketing" value="1" type="checkbox" />
+              <span>אשמח לקבל דיוורים ועדכונים מהקהילה.</span>
             </label>
             <FormError error={contact.state.error} />
             <button type="submit" className="v6-btn v6-btn--primary v6-btn--block v6-btn--lg" disabled={contact.pending} data-magnetic="">

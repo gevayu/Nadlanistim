@@ -9,6 +9,7 @@ import Faq from "../events/Faq";
 import "./event-party.css";
 import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
+import { JsonLd, eventLd } from "@/lib/jsonld";
 
 export const generateMetadata = eventMetadata("/event-party");
 
@@ -31,6 +32,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
   ].filter((d) => d.val || d.sub);
   return (
     <SiteShell crumb={ev.title}>
+      {!ev.past && <JsonLd data={eventLd(ev, `/event-party?e=${encodeURIComponent(ev.slug)}`)} />}
       {/* Hero */}
       <section className="v6-section">
         <div className="v6-container">
