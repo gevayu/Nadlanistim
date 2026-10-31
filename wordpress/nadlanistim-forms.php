@@ -114,7 +114,7 @@ function nadlanistim_forms_specs() {
 				'phone'   => array( 'label' => 'טלפון', 'type' => 'tel' ),
 				'field'   => array( 'label' => 'תחום עיסוק', 'type' => 'text' ),
 				'message' => array( 'label' => 'הודעה', 'type' => 'textarea' ),
-				// The privacy box, required for the home page sign-up only; checked in nadlanistim_forms_submit.
+				// The privacy box, required on both forms; checked in nadlanistim_forms_submit.
 				'consent'   => array( 'label' => 'הסכמה', 'type' => 'select', 'options' => array( '1' => 'כן' ) ),
 				// Newsletters: a separate box the visitor may leave empty (סעיף 30א asks for a free, separate yes).
 				'marketing' => array( 'label' => 'דיוור', 'type' => 'select', 'options' => array( '1' => 'כן' ) ),
@@ -125,6 +125,7 @@ function nadlanistim_forms_specs() {
 			'fields'  => array(
 				'email' => array( 'label' => 'אימייל', 'type' => 'email', 'required' => true ),
 				'event' => array( 'label' => 'אירוע', 'type' => 'slug', 'required' => true ),
+				'consent' => array( 'label' => 'הסכמה', 'type' => 'select', 'required' => true, 'options' => array( '1' => 'כן' ) ),
 			),
 		),
 	);
@@ -289,11 +290,11 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 		$values[ $name ] = $value;
 	}
 
-	// One spec serves /contact and the home page sign-up: the message belongs to the first, the consent to the second.
+	// One spec serves /contact and the home page sign-up: the message belongs to the first, the privacy box to both.
 	if ( 'contact' === $form && 'home' !== $values['source'] && '' === $values['message'] ) {
 		return nadlanistim_forms_error( 'לא מילאתם את השדה הודעה.' );
 	}
-	if ( 'contact' === $form && 'home' === $values['source'] && '' === $values['consent'] ) {
+	if ( 'contact' === $form && '' === $values['consent'] ) {
 		return nadlanistim_forms_error( 'לא מילאתם את השדה הסכמה.' );
 	}
 
@@ -311,7 +312,7 @@ function nadlanistim_forms_submit( $form, WP_REST_Request $req ) {
 
 	if ( isset( $values['consent'] ) && '1' === $values['consent'] ) {
 		$source = 'contact' === $form ? $values['source'] : $form;
-		nadlanistim_consent_record( $values['email'], $values['name'], $source, nadlanistim_forms_ip( $req ) );
+		nadlanistim_consent_record( $values['email'], isset( $values['name'] ) ? $values['name'] : '', $source, nadlanistim_forms_ip( $req ) );
 	}
 	if ( 'contact' === $form && 'home' === $values['source'] && '1' === $values['marketing'] ) {
 		nadlanistim_consent_record( $values['email'], $values['name'], 'newsletter', nadlanistim_forms_ip( $req ) );
@@ -756,12 +757,14 @@ add_filter(
 /** Each form's box, word for word as the site shows it. Kept here so a record never depends on what a browser sent. */
 function nadlanistim_consent_texts() {
 	return array(
-		'home'       => array( 'מוסכמת עלי מדיניות הפרטיות של האתר.', false ),
+		'home'       => array( 'מוסכמת עלי מדיניות הפרטיות של האתר, ושתשתמשו בפרטים כדי לחזור אליי לגבי ההצטרפות.', false ),
 		'newsletter' => array( 'אשמח לקבל דיוורים ועדכונים מהקהילה.', true ),
-		'join'       => array( 'קראתי ואני מסכים/ה לתקנון הקהילה ולמדיניות הפרטיות.', false ),
-		'job'        => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
-		'collab'     => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה.', false ),
-		'nadlanist'  => array( 'מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות.', false ),
+		'join'       => array( 'קראתי ואני מסכים/ה לתקנון הקהילה ולמדיניות הפרטיות. הפרטים ישמשו לטיפול בבקשה ולניהול החברות, והתשלום עובר דרך iCount.', false ),
+		'job'        => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה. המודעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.', false ),
+		'collab'     => array( 'מוסכמים עלי מדיניות הפרטיות ותנאי הפרסום של הקהילה. ההצעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.', false ),
+		'nadlanist'  => array( 'מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה למדיניות הפרטיות. הפרופיל יעלה למדריך אחרי אישור הצוות.', false ),
+		'contact'    => array( 'מסכים/ה למדיניות הפרטיות, ושתשתמשו בפרטים רק כדי לענות לפנייה.', false ),
+		'recap'      => array( 'מסכים/ה למדיניות הפרטיות, ושתשתמשו באימייל רק כדי לשלוח את החומרים.', false ),
 		'withdraw'   => array( 'ביטול ההסכמה לקבלת דיוורים, מהקישור במייל.', false ),
 	);
 }
@@ -869,7 +872,7 @@ add_filter(
 add_action(
 	'manage_nad_consent_posts_custom_column',
 	function ( $column, $post_id ) {
-		$names = array( 'home' => 'הרשמה בעמוד הבית', 'newsletter' => 'דיוור (עמוד הבית)', 'join' => 'הצטרפות', 'job' => 'פרסום משרה', 'collab' => 'שיתוף פעולה', 'nadlanist' => 'מדריך', 'withdraw' => 'ביטול מהמייל' );
+		$names = array( 'home' => 'הרשמה בעמוד הבית', 'newsletter' => 'דיוור (עמוד הבית)', 'contact' => 'צור קשר', 'recap' => 'חומרי אירוע', 'join' => 'הצטרפות', 'job' => 'פרסום משרה', 'collab' => 'שיתוף פעולה', 'nadlanist' => 'מדריך', 'withdraw' => 'ביטול מהמייל' );
 		$meta  = array( 'nad_name' => 'name', 'nad_text' => 'text', 'nad_ip' => 'ip', 'nad_at' => 'at_utc' );
 		if ( isset( $meta[ $column ] ) ) {
 			echo esc_html( get_post_meta( $post_id, $meta[ $column ], true ) );
