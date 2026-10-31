@@ -53,6 +53,15 @@ add_action(
 						'instructions' => 'מסגרת ירוקה עם #OPENTOWORK סביב התמונה במדריך ובפרופיל.',
 					),
 					array(
+						'key'          => 'field_nad_nad_phone',
+						'label'        => 'טלפון',
+						'name'         => 'phone',
+						'type'         => 'text',
+						'maxlength'    => 30,
+						'placeholder'  => '050-0000000',
+						'instructions' => 'מוצג לחברים מחוברים בעמוד הנדלניסט, עם כפתורי חיוג ו-WhatsApp. החבר/ה ממלא/ת אותו באזור האישי.',
+					),
+					array(
 						'key'           => 'field_nad_nad_communities',
 						'label'         => 'הקהילות שלי',
 						'name'          => 'communities',

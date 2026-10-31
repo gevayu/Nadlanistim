@@ -497,6 +497,8 @@ function nadlanistim_auth_profile( WP_REST_Request $req ) {
 	nadlanistim_auth_set( 'instagram', $instagram, $post_id );
 	nadlanistim_auth_set( 'open_to_work', $req->get_param( 'openToWork' ) ? 1 : 0, $post_id );
 	nadlanistim_auth_set( 'communities', $community_ids, $post_id );
+	// On the post for the profile page's call and WhatsApp buttons (members only), and on the account for WooCommerce.
+	nadlanistim_auth_set( 'phone', $phone, $post_id );
 	update_user_meta( $user->ID, 'billing_phone', $phone );
 
 	// save_post already pinged the site, but before the fields above were written. Ping again now.
