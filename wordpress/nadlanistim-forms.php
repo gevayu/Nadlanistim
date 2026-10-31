@@ -687,6 +687,12 @@ add_filter(
 	}
 );
 
+// WooCommerce lays out its email header by its own "header alignment" setting, saved here as left, so the Hebrew
+// title and store name sat on the left. They read right to left like the rest; and the logo band above replaces
+// WooCommerce's text logo (the store name), which would only repeat it.
+add_filter( 'pre_option_woocommerce_email_header_alignment', fn() => 'right' );
+add_filter( 'woocommerce_email_styles', fn( $css ) => $css . '#template_header_image{display:none !important;}#header_wrapper h1{text-align:right !important;}' );
+
 // WordPress writes a notice in the recipient's profile language (switch_to_user_locale), so mail to an admin who keeps
 // an English dashboard came out in English. Mail always goes out in the site language; the profile setting still
 // drives that person's own screens, because only that switch is answered here.
