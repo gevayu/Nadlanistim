@@ -1211,6 +1211,28 @@ add_filter(
 	}
 );
 
+// "Login page" links in WordPress's messages (after asking for a reset link, after choosing a new password) lead to
+// the site's login, where members sign in. The login form on this screen itself stays for the admins.
+function nad_login_to_front( $html ) {
+	$front = function_exists( 'nadlanistim_auth_front' ) ? nadlanistim_auth_front() : '';
+	return $front ? str_replace( array( esc_url( wp_login_url() ), wp_login_url() ), $front . '/login', (string) $html ) : $html;
+}
+add_filter( 'login_message', 'nad_login_to_front' );
+add_filter(
+	'wp_login_errors',
+	function ( $errors ) {
+		foreach ( $errors->get_error_codes() as $code ) {
+			$messages = $errors->get_error_messages( $code );
+			$data     = $errors->get_error_data( $code );
+			$errors->remove( $code );
+			foreach ( $messages as $message ) {
+				$errors->add( $code, nad_login_to_front( $message ), $data );
+			}
+		}
+		return $errors;
+	}
+);
+
 // login_head, late: WordPress prints its own login and RTL stylesheets on login_head, and this has to come after them.
 add_action(
 	'login_head',

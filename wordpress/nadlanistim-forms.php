@@ -629,6 +629,36 @@ add_filter(
 	}
 );
 
+// WordPress writes a notice in the recipient's profile language (switch_to_user_locale), so mail to an admin who keeps
+// an English dashboard came out in English. Mail always goes out in the site language; the profile setting still
+// drives that person's own screens, because only that switch is answered here.
+add_filter(
+	'get_user_metadata',
+	function ( $value, $user_id, $key ) {
+		if ( 'locale' !== $key || ! in_array( 'switch_to_user_locale', array_column( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 12 ), 'function' ), true ) ) {
+			return $value;
+		}
+		return array( '' );
+	},
+	10,
+	3
+);
+
+// An order keeps the payment method's name from the day it was paid ("Pay with Debit or Credit Card" before the
+// gateway was renamed). Emails and screens show the gateway's current name.
+add_filter(
+	'woocommerce_order_get_payment_method_title',
+	function ( $title, $order ) {
+		$gateways = function_exists( 'WC' ) && WC()->payment_gateways() ? WC()->payment_gateways()->payment_gateways() : array();
+		$id       = $order->get_payment_method();
+		$name     = isset( $gateways[ $id ] ) ? html_entity_decode( wp_strip_all_tags( $gateways[ $id ]->get_title() ), ENT_QUOTES, 'UTF-8' ) : '';
+		$name     = preg_replace( '/^[\s\x{00A0}]+|[\s\x{00A0}]+$/u', '', $name );
+		return '' !== $name ? $name : $title;
+	},
+	10,
+	2
+);
+
 // WordPress signs its mail "WordPress"; the site signs as itself. A name set elsewhere (FluentSMTP, WooCommerce) stays.
 add_filter(
 	'wp_mail_from_name',
