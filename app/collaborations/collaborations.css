@@ -88,6 +88,9 @@
 /* ─── Locked single page (/collaboration/<slug>, /nadlanist/<slug>) ─── */
 .lk-single { margin-top: 28px; }
 .lk-single .lk-locked { min-height: 230px; margin-top: 0; }
+/* The capsule sits at the foot of the blur, so the "כבר חברים?" line reads as its second row. */
+.lk-single .lk-capsule { inset: auto 0 12px; margin: 0 auto; }
+.lk-single .lk-login { margin-top: 2px; }
 .lk-bar { display: block; height: 12px; border-radius: 6px; background: var(--ink-2); }
 .lk-login { margin-top: 18px; text-align: center; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
 .lk-login a { display: inline-block; padding-block: 10px; color: var(--cyan); font-weight: 600; }
