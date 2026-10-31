@@ -145,8 +145,9 @@ add_action(
 		if ( array_diff( $errors->get_error_codes(), array( 'invalid_email' ) ) ) {
 			return; // an empty field still says so
 		}
-		// The same screen a real account gets. site_url, not wp_login_url(): that one points at the site's own login.
-		wp_safe_redirect( site_url( 'wp-login.php?checkemail=confirm', 'login' ) );
+		// The same screen a real account gets. A fixed address of this site, so plain wp_redirect: on the login
+		// screen home_url() is the front end, and wp_safe_redirect would treat the CMS host as foreign.
+		wp_redirect( site_url( 'wp-login.php?checkemail=confirm', 'login' ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 		exit;
 	},
 	10,
