@@ -1218,6 +1218,16 @@ function nad_login_to_front( $html ) {
 	return $front ? str_replace( array( esc_url( wp_login_url() ), wp_login_url() ), $front . '/login', (string) $html ) : $html;
 }
 add_filter( 'login_message', 'nad_login_to_front' );
+// "Go to הנדלניסטים" under the form points at the site, not at the backend's empty front page.
+add_filter(
+	'home_url',
+	function ( $url, $path ) {
+		$front = function_exists( 'nadlanistim_auth_front' ) ? nadlanistim_auth_front() : '';
+		return nad_on_login_screen() && $front && in_array( $path, array( '', '/' ), true ) ? $front . '/' : $url;
+	},
+	10,
+	2
+);
 add_filter(
 	'wp_login_errors',
 	function ( $errors ) {
