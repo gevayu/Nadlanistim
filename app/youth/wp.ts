@@ -59,13 +59,13 @@ export async function getYouth(): Promise<TeamMember[]> {
     .map(toMember);
 }
 
-export type YouthSettings = { hero: string; maxAge: number | null; intro: string };
+export type YouthSettings = { hero: string; heroSrcSet?: string; maxAge: number | null; intro: string };
 
 /** "הגדרות אתר" → עמוד נבחרת הצעירים (mu-plugin nadlanistim-fields.php). */
 export async function getYouthSettings(): Promise<YouthSettings> {
   const data = await wpQuery<{
-    siteSettings: { youthSettings: { youthHero: { node: { sourceUrl: string } } | null; youthMaxAge: number | null; youthIntro: string | null } | null } | null;
-  }>(`{ siteSettings { youthSettings { youthHero { node { sourceUrl } } youthMaxAge youthIntro } } }`);
+    siteSettings: { youthSettings: { youthHero: { node: { sourceUrl: string; srcSet: string | null } } | null; youthMaxAge: number | null; youthIntro: string | null } | null } | null;
+  }>(`{ siteSettings { youthSettings { youthHero { node { sourceUrl srcSet } } youthMaxAge youthIntro } } }`);
   const f = data.siteSettings?.youthSettings;
-  return { hero: f?.youthHero?.node.sourceUrl ?? "", maxAge: f?.youthMaxAge ?? null, intro: f?.youthIntro ?? "" };
+  return { hero: f?.youthHero?.node.sourceUrl ?? "", heroSrcSet: f?.youthHero?.node.srcSet ?? undefined, maxAge: f?.youthMaxAge ?? null, intro: f?.youthIntro ?? "" };
 }

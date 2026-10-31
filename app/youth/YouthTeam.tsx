@@ -27,7 +27,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
       <section className="v6-section">
         <div className="v6-container">
           <div className="yt-hero" data-reveal>
-            <div className="yt-hero__bg">{settings.hero && <img src={settings.hero} alt="" />}</div>
+            <div className="yt-hero__bg">{settings.hero && <img fetchPriority="high" src={settings.hero} srcSet={settings.heroSrcSet} sizes="100vw" alt="" />}</div>
             <div className="yt-hero__in">
               <span className="yt-badge">● פרויקט מיוחד</span>
               <h1>נבחרת הנדלניסטים <em>הצעירים</em></h1>
