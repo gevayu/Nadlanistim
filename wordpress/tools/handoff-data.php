@@ -30,8 +30,10 @@ foreach ( array( 'desktop', 'mobile' ) as $size ) {
 		update_post_meta( $id, '_nad_sample_banner', $size );
 		update_post_meta( $id, '_wp_attachment_image_alt', 'באנר לדוגמה' );
 	}
-	// A sub field of the slot's group: written through the group, so ACF stores it under the group's prefix.
-	update_sub_field( array( 'sponsor_strip_events', 'banner_' . $size ), $id, 'option' );
+	// A sub field of the slot's group, stored the way ACF stores it: value and field key under the group's prefix.
+	// (update_sub_field() wrote nothing from wp-cli on this site.)
+	update_option( 'options_sponsor_strip_events_banner_' . $size, $id );
+	update_option( '_options_sponsor_strip_events_banner_' . $size, 'field_nad_sp_events_banner_' . $size );
 	WP_CLI::log( "banner {$size}: attachment {$id} " . wp_get_attachment_url( $id ) );
 }
 
