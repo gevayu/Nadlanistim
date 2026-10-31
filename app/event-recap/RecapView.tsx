@@ -121,14 +121,19 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
             {recap.state.ok ? (
               <div className="pg-sent" data-reveal>שלחנו את החומרים למייל שלכם.</div>
             ) : (
-              <form className="rc-email" data-reveal onSubmit={recap.onSubmit}>
+              <form id="rc-email-form" className="rc-email" data-reveal onSubmit={recap.onSubmit}>
                 <Honeypot />
                 <input type="hidden" name="event" value={ev.slug} />
                 <input type="email" name="email" required placeholder="כתובת אימייל" aria-label="כתובת אימייל" />
                 <button type="submit" className="v6-btn v6-btn--primary" disabled={recap.pending}>{recap.pending ? "שולחים…" : "שלחו לי את החומרים"}</button>
               </form>
             )}
-            {!recap.state.ok && <p className="pg-privacy-note">נשתמש באימייל רק כדי לשלוח את החומרים. פרטים נוספים ב<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>}
+            {!recap.state.ok && (
+              <label className="v6-contact__consent rc-consent" htmlFor="rc-consent">
+                <input id="rc-consent" form="rc-email-form" name="consent" value="1" type="checkbox" required />
+                <span>מסכים/ה ל<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ושתשתמשו באימייל רק כדי לשלוח את החומרים.</span>
+              </label>
+            )}
             <FormError error={recap.state.error} />
           </div>
         </section>

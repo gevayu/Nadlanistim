@@ -81,10 +81,9 @@ export default function CollaborationNewPage() {
                   </div>
                 </div>
 
-                <p className="pg-privacy-note">הפרטים נשמרים כדי לפרסם את ההצעה אחרי שהצוות יאשר אותה. מה שכתוב בהצעה, כולל דרכי הקשר, יוצג לחברי הקהילה.</p>
                 <label className="v6-contact__consent" htmlFor="n-consent">
                   <input id="n-consent" name="consent" value="1" type="checkbox" required />
-                  <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> ותנאי הפרסום של הקהילה.</span>
+                  <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> ותנאי הפרסום של הקהילה. ההצעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.</span>
                 </label>
 
                 <FormError error={state.error} />

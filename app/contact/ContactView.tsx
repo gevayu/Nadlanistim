@@ -50,7 +50,7 @@ export default function ContactView({ contact }: { contact: Contact }) {
                   </div>
                   <div className="pg-formgrid">
                     <div className="v6-field">
-                      <label htmlFor="c-phone">טלפון</label>
+                      <label htmlFor="c-phone">טלפון (לא חובה)</label>
                       <input id="c-phone" name="phone" type="tel" autoComplete="tel" placeholder="050-0000000" />
                     </div>
                     <div className="v6-field">
@@ -69,7 +69,10 @@ export default function ContactView({ contact }: { contact: Contact }) {
                     <label htmlFor="c-msg">הודעה</label>
                     <textarea id="c-msg" name="message" required rows={6} placeholder="כתבו לנו כל מה שתרצו…" />
                   </div>
-                  <p className="pg-privacy-note">נשתמש בפרטים רק כדי לענות לפנייה. לא חייבים למסור טלפון. פרטים נוספים ב<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>
+                  <label className="v6-contact__consent" htmlFor="c-consent">
+                    <input id="c-consent" name="consent" value="1" type="checkbox" required />
+                    <span>מסכים/ה ל<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ושתשתמשו בפרטים רק כדי לענות לפנייה.</span>
+                  </label>
                   <FormError error={state.error} />
                   <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={pending} data-magnetic="">
                     <span>{pending ? "שולחים…" : "שלח הודעה"}</span>
