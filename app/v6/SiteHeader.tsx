@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import FavButton from "./FavButton";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -76,6 +77,7 @@ export default function SiteHeader() {
               <a key={label} href={href}>{label}</a>
             ))}
           </nav>
+          <FavButton />
           <a href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
             <span className="v6-nav__cta-long">{members.long}</span>
             <span className="v6-nav__cta-short">{members.short}</span>

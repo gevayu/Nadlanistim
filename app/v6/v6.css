@@ -209,6 +209,16 @@
 .v6-nav__links a:hover { color: var(--ink); }
 .v6-nav__cta { padding: 11px 22px; font-size: 13.5px; }
 .v6-nav__cta-short { display: none; }
+/* Favorites heart beside the members button: saves the current page to the personal area. */
+.v6-fav { position: relative; display: flex; margin-inline-end: -16px; }
+.v6-fav__btn { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: var(--ink-2); border: 1px solid var(--glass-border); background: rgba(255,255,255,.04); cursor: pointer; transition: color .3s var(--t), border-color .3s var(--t), background .3s var(--t); }
+.v6-fav__btn:hover { color: var(--ink); border-color: var(--glass-border-strong); }
+.v6-fav__btn[aria-pressed="true"] { color: var(--cyan); border-color: rgba(34,211,238,.45); background: rgba(34,211,238,.1); }
+.v6-fav__btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.v6-fav__btn svg { width: 20px; height: 20px; }
+.v6-fav__note { position: absolute; top: calc(100% + 12px); inset-inline-end: 0; white-space: nowrap; padding: 9px 14px; border-radius: 12px; font-size: 13px; color: var(--ink); background: rgba(7,8,15,.94); border: 1px solid var(--glass-border); }
+.v6-fav__note:empty { display: none; }
+.v6-fav__note a { margin-inline-start: 10px; color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
 /* 44px square: big enough to hit with a thumb, the lines stay 22px. */
 .v6-nav__menu { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 44px; min-height: 44px; padding: 8px; color: var(--ink); }
 .v6-nav__menu span { display: block; width: 22px; height: 2px; background: currentColor; }
@@ -665,12 +675,14 @@
 /* ===== Responsive - Tablet ≤1100 ===== */
 @media (max-width: 1100px) {
   .v6-nav { top: 12px; }
-  .v6-nav__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; }
+  .v6-nav__inner { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; padding: 10px 12px; }
+  .v6-fav { order: 2; margin-inline-end: 0; }
+  .v6-fav__btn { width: 40px; height: 40px; }
   .v6-nav__menu { display: flex; order: 0; }
   .v6-nav__links { display: none; }
   .v6-nav__logo { padding-inline-start: 0; justify-self: center; order: 1; }
   .v6-nav__logo img { height: 30px; }
-  .v6-nav__cta { padding: 10px 18px; font-size: 13px; order: 2; gap: 6px; }
+  .v6-nav__cta { padding: 10px 18px; font-size: 13px; order: 3; gap: 6px; }
   .v6-nav__cta svg { display: none; }
   .v6-nav__cta-long { display: none; }
   .v6-nav__cta-short { display: inline; }

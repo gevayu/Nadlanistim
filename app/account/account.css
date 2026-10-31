@@ -36,3 +36,12 @@
 /* Logout: a quiet text button at the end of the header */
 .ac-logout { background: none; border: 0; padding: 6px 4px; font: inherit; font-size: 13.5px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .ac-logout:hover { color: var(--ink); }
+
+/* Favorites: the row is a link plus a remove button, so the link is its own flex box inside the row. */
+.ac-row__main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 16px; color: inherit; }
+.ac-fav-x { flex-shrink: 0; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--glass-border); background: none; color: var(--muted); cursor: pointer; }
+.ac-fav-x:hover { color: var(--ink); border-color: var(--glass-border-strong); }
+.ac-fav-x:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.ac-fav-x:disabled { opacity: .4; cursor: progress; }
+.ac-fav-x svg { width: 16px; height: 16px; }
+.ac-empty { padding: 22px 24px; border-radius: var(--r); color: var(--muted); font-size: 15px; }

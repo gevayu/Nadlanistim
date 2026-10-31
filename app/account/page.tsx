@@ -1,26 +1,35 @@
 import SiteShell from "../v6/SiteShell";
 import "./account.css";
 import AccountHead from "./AccountHead";
+import FavRemove from "./FavRemove";
 import { requireSession } from "../../lib/auth";
 import { onBoard } from "../collaborations/data";
 import { getCollabs } from "../collaborations/wp";
-import { eventHref, isVolunteer } from "../events/data";
+import { isVolunteer } from "../events/data";
 import { getEvents } from "../events/wp";
 import { getJobs } from "../jobs/wp";
 import { getEpisodes } from "../podcast/wp";
+import { getFavorites } from "../../lib/favorites";
 
-const ChevronIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-    <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-// "יולי 2025" from the ISO date WordPress stores.
-const monthYear = (iso: string) => new Intl.DateTimeFormat("he-IL", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
 const dot = (...parts: string[]) => parts.filter(Boolean).join(" · ");
+const day = (iso: string) => new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric", year: "numeric", timeZone: "Asia/Jerusalem" }).format(new Date(iso)).replaceAll("/", ".");
+
+// What a saved page is, from its address.
+const KINDS: [RegExp, string, string][] = [
+  [/^\/collaboration/, "🤝", "עסקה"],
+  [/^\/job/, "💼", "משרה"],
+  [/^\/event/, "🎉", "אירוע"],
+  [/^\/nadlanist\//, "👤", "נדלניסט"],
+  [/^\/communit/, "👥", "קהילה"],
+  [/^\/(post|article)/, "📰", "כתבה"],
+  [/^\/podcast/, "🎙️", "פודקאסט"],
+  [/^\/youth/, "🌱", "נבחרת הצעירים"],
+];
+const OTHER: [RegExp, string, string] = [/./, "📌", "עמוד"];
+const kindOf = (path: string) => KINDS.find(([re]) => re.test(path)) ?? OTHER;
 
 export default async function AccountPage() {
-  const [session, collabs, jobs, events, episodes] = await Promise.all([requireSession("/account"), getCollabs(), getJobs(), getEvents(), getEpisodes()]);
+  const [session, collabs, jobs, events, episodes, favorites] = await Promise.all([requireSession("/account"), getCollabs(), getJobs(), getEvents(), getEpisodes(), getFavorites()]);
   const deals = collabs.filter(onBoard);
   const past = events.filter((e) => e.past && !isVolunteer(e)).sort((a, b) => b.date.localeCompare(a.date));
   const quick = [
@@ -48,64 +57,34 @@ export default async function AccountPage() {
             ))}
           </div>
 
-          {/* Exclusive deals */}
-          <div className="ac-section">
+          {/* Favorites: what the member saved with the heart in the header, newest first */}
+          <div className="ac-section" id="favorites">
             <div className="ac-section__head" data-reveal>
-              <h2>עסקאות בלעדיות <span>לחברים בלבד</span></h2>
-              <a href="/collaborations" className="v6-link-arrow"><span>לכל העסקאות</span><ChevronIcon /></a>
+              <h2>המועדפים שלי {favorites.length > 0 && <span>{favorites.length}</span>}</h2>
             </div>
-            <div className="ac-list">
-              {deals.slice(0, 3).map((d) => (
-                <a key={d.slug} href={`/collaboration/${d.slug}`} className="ac-row v6-glass" data-reveal>
-                  <div className="ac-row__ic">🤝</div>
-                  <div className="ac-row__body">
-                    <div className="ac-row__title">{d.title}</div>
-                    <div className="ac-row__meta">{dot(d.looking && `מחפש: ${d.looking}`, d.place, d.invest)}</div>
-                  </div>
-                  <span className="ac-row__arrow"><ChevronIcon /></span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Careers */}
-          <div className="ac-section">
-            <div className="ac-section__head" data-reveal>
-              <h2>קריירה <span>גישה מוקדמת</span></h2>
-              <a href="/jobs" className="v6-link-arrow"><span>לכל המשרות</span><ChevronIcon /></a>
-            </div>
-            <div className="ac-list">
-              {jobs.slice(0, 3).map((j) => (
-                <a key={j.id} href={`/job/${j.id}`} className="ac-row v6-glass" data-reveal>
-                  <div className="ac-row__ic">💼</div>
-                  <div className="ac-row__body">
-                    <div className="ac-row__title">{j.title}</div>
-                    <div className="ac-row__meta">{dot(j.company || j.by, j.place)}</div>
-                  </div>
-                  <span className="ac-row__arrow"><ChevronIcon /></span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Past parties & recordings */}
-          <div className="ac-section">
-            <div className="ac-section__head" data-reveal>
-              <h2>מסיבות עבר והקלטות <span>לחברים בלבד</span></h2>
-              <a href="/events" className="v6-link-arrow"><span>לכל האירועים</span><ChevronIcon /></a>
-            </div>
-            <div className="ac-list">
-              {past.slice(0, 3).map((p) => (
-                <a key={p.slug} href={eventHref(p)} className="ac-row v6-glass" data-reveal>
-                  <div className="ac-row__ic">🎉</div>
-                  <div className="ac-row__body">
-                    <div className="ac-row__title">{p.title}</div>
-                    <div className="ac-row__meta">{dot(monthYear(p.date), p.place)}</div>
-                  </div>
-                  <span className="ac-row__arrow"><ChevronIcon /></span>
-                </a>
-              ))}
-            </div>
+            {favorites.length === 0 ? (
+              <p className="ac-empty v6-glass" data-reveal>
+                עוד לא שמרתם כלום. בכל עמוד באתר יש לב ליד &quot;החשבון שלי&quot;: לחיצה עליו שומרת את העמוד כאן.
+              </p>
+            ) : (
+              <div className="ac-list">
+                {favorites.map((f) => {
+                  const [, ic, kind] = kindOf(f.path);
+                  return (
+                    <div key={f.path} className="ac-row v6-glass" data-reveal>
+                      <a href={f.path} className="ac-row__main">
+                        <div className="ac-row__ic">{ic}</div>
+                        <div className="ac-row__body">
+                          <div className="ac-row__title">{f.title}</div>
+                          <div className="ac-row__meta">{dot(kind, f.at && `נשמר ב-${day(f.at)}`)}</div>
+                        </div>
+                      </a>
+                      <FavRemove path={f.path} title={f.title} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </section>

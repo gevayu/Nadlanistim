@@ -540,10 +540,44 @@ function nadlanistim_auth_verify( WP_REST_Request $req ) {
 	return $res;
 }
 
+/* ─── Favorites ─────────────────────────────────────────────────────────── */
+
+/**
+ * Pages a member saved with the heart in the site header, newest first, kept on the account so they follow the
+ * member to any device. GET lists them; POST {path, title, on} adds or removes one page. Only paths on the site.
+ */
+function nadlanistim_auth_favorites( WP_REST_Request $req ) {
+	$user = nadlanistim_auth_user( $req );
+	if ( ! $user ) {
+		return nadlanistim_auth_error( 'unauthorized', 'צריך להתחבר מחדש.', 401 );
+	}
+	$list = get_user_meta( $user->ID, 'nad_favorites', true );
+	$list = is_array( $list ) ? $list : array();
+
+	if ( 'POST' === $req->get_method() ) {
+		$path = nadlanistim_auth_str( $req, 'path', 300 );
+		if ( ! preg_match( '#^/(?![/\\\\])\S*$#', $path ) ) {
+			return nadlanistim_auth_error( 'bad_path', 'העמוד הזה לא נשמר.', 400 );
+		}
+		$list = array_values( array_filter( $list, fn( $f ) => $f['path'] !== $path ) );
+		if ( rest_sanitize_boolean( $req->get_param( 'on' ) ) ) {
+			$title = sanitize_text_field( nadlanistim_auth_str( $req, 'title', 160 ) );
+			array_unshift( $list, array( 'path' => $path, 'title' => '' !== $title ? $title : $path, 'at' => gmdate( 'c' ) ) );
+			$list = array_slice( $list, 0, 200 );
+		}
+		update_user_meta( $user->ID, 'nad_favorites', $list );
+	}
+
+	$res = rest_ensure_response( array( 'items' => $list ) );
+	$res->header( 'Cache-Control', 'no-store, private' );
+	return $res;
+}
+
 add_action(
 	'rest_api_init',
 	function () {
 		$routes = array(
+			'favorites' => array( 'GET, POST', 'nadlanistim_auth_favorites' ),
 			'register' => array( 'POST', 'nadlanistim_auth_register' ),
 			'login'    => array( 'POST', 'nadlanistim_auth_login' ),
 			'me'       => array( 'GET', 'nadlanistim_auth_me' ),
