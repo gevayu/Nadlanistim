@@ -762,7 +762,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             {[...settings.marquee, ...settings.marquee].map((term, i) => (
               <Fragment key={i}>
                 <span>{term}</span>
-                <span className="v6-diamond">◆</span>
+                <span className="v6-diamond" aria-hidden>◆</span>
               </Fragment>
             ))}
           </div>
@@ -1005,7 +1005,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <h2>מיוצגים <em>בקהילה</em></h2>
           </header>
           <div className="v6-sponsors__group" data-reveal>
-            <h4 className="v6-sponsors__title">שותפים קבועים</h4>
+            <h3 className="v6-sponsors__title">שותפים קבועים</h3>
             <div className="v6-sponsors__logos">
               {sponsors.map((s) => {
                 const mark = s.logo ? <img loading="lazy" src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name;

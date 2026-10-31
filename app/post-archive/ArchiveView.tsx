@@ -108,7 +108,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
                       {p.cats[0] && <><span>{p.cats[0]}</span><span className="pa-dot" /></>}
                       <ClockIcon /><span>{p.minutes} דק׳</span>
                     </div>
-                    <h3 className="pa-card__title">{p.title}</h3>
+                    <h2 className="pa-card__title">{p.title}</h2>
                     {p.excerpt && <p className="pa-card__excerpt">{p.excerpt}</p>}
                     <span className="pa-card__more"><span>קרא עוד</span><ArrowIcon /></span>
                     <div className="pa-card__meta">

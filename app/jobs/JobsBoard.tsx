@@ -82,7 +82,7 @@ export default function JobsBoard({ jobs }: { jobs: Job[] }) {
                   <span className="pg-card__id">מס׳ {j.id}</span>
                   {j.kind === "seek" && <span className="pg-stage">{JOB_KINDS.seek}</span>}
                 </div>
-                <h3 className="pg-card__title">{j.title}</h3>
+                <h2 className="pg-card__title">{j.title}</h2>
                 <div className="pg-card__by">מפרסם: <b>{j.by}</b></div>
                 <div className="pg-card__rows">
                   <div><b>סוג עבודה:</b>{j.type}</div>

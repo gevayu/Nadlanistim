@@ -22,7 +22,7 @@ export default function SiteFooter() {
           <div className="v6-footer__cols">
             {FOOTER_COLS.map((c) => (
               <div key={c.h}>
-                <h5>{c.h}</h5>
+                <h2>{c.h}</h2>
                 {c.links.map(([href, label]) => (
                   <a key={label} href={href}>{label}</a>
                 ))}

@@ -26,7 +26,7 @@ export default async function CommunitiesPage() {
             {communities.map((c) => (
               <a key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
                 {c.logo && <div className="cm-card__logo"><LazyImg src={c.logo} alt="" /></div>}
-                <h3>{c.name}</h3>
+                <h2>{c.name}</h2>
                 <p>{c.tagline}</p>
                 {c.members && <div className="cm-card__members">{c.members} חברים</div>}
                 <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>

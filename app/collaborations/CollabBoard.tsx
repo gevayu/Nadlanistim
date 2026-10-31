@@ -91,7 +91,7 @@ export default function CollabBoard({ collabs, tabs, locked }: { collabs: Collab
                   </figure>
                 )}
                 {c.looking && <div className="pg-card__by">מחפש: <b>{c.looking}</b></div>}
-                <h3 className="pg-card__title">{c.title}</h3>
+                <h2 className="pg-card__title">{c.title}</h2>
                 {(c.place || c.invest) && (
                   <div className="pg-card__rows">
                     {c.place && <div><b>מיקום:</b>{c.place}</div>}
