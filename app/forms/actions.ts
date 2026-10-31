@@ -1,12 +1,15 @@
 "use server";
 
 import { postForm, postJoin, type FormState } from "../../lib/forms";
+import { getSession } from "../../lib/auth";
 
 export async function sendJoin(_prev: FormState, form: FormData) {
   return postJoin(form);
 }
 
-export async function sendJob(_prev: FormState, form: FormData) {
+// The page is gated too, but the action is callable on its own, so it checks again.
+export async function sendJob(_prev: FormState, form: FormData): Promise<FormState> {
+  if (!(await getSession())?.member) return { error: "פרסום בלוח הדרושים פתוח לחברי הקהילה בלבד. התחברו או הצטרפו לקהילה." };
   return postForm("job", form);
 }
 
