@@ -28,7 +28,8 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
       {/* Hero banner */}
       <section className="v6-section">
         <div className="v6-container">
-          <div className="yt-hero" data-reveal>
+          {/* No data-reveal: the hero is the first screen, and a reveal keeps it invisible until the script runs. */}
+          <div className="yt-hero">
             {/* A phone crops this wide picture to a tall box (about 1600px of picture behind 350px of screen), so
                 "100vw" made it pick the 390px copy and blur. 600px asks for the 1200px copy at 2x; it sits under a 60% dimming. */}
             <div className="yt-hero__bg">{settings.hero && <img fetchPriority="high" src={sized(settings.hero, 1920)} srcSet={srcSetOf(settings.hero)} sizes="(max-width: 760px) 600px, 100vw" alt="" />}</div>
