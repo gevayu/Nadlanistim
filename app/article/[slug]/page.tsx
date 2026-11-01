@@ -5,6 +5,9 @@ import { getArticles } from "../../post-archive/wp";
 import { JsonLd, articleLd } from "@/lib/jsonld";
 
 // WordPress links every article here (/article/<slug>); slugs are Hebrew, so they arrive URL-encoded.
+// None at build: each page is built on its first visit, then served from cache (an open area, lib/paywall.ts).
+export const generateStaticParams = async () => [];
+
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   await guard("article", "/post-archive"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const slug = decodeURIComponent((await params).slug);

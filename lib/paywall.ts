@@ -2,6 +2,7 @@
 // Set in WordPress, "הגדרות אתר" → "חומת תשלום" (mu-plugin wordpress/nadlanistim-fields.php). Server-side only.
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { workUnitAsyncStorage } from "next/dist/server/app-render/work-unit-async-storage.external";
 import { wpQuery } from "./wp";
 import { getSession, safeNext } from "./auth";
 
@@ -72,10 +73,15 @@ export const getPaywall = cache(async (): Promise<{ rules: Record<Area, Rule>; j
 
 /** True when this visitor may not see the area's members part: the area isn't open and they aren't a paying member. */
 export async function isLocked(area: Area): Promise<boolean> {
-  // The session (a cookie read) comes first, always: it keeps every gated page rendered per visitor. Read only when the
-  // area is closed, an "open" page would be built once as static HTML and a later switch to members-only would not apply.
-  const [session, { rules }] = await Promise.all([getSession(), getPaywall()]);
-  return rules[area].access !== "open" && !session?.member;
+  // An open area never reads the login cookie, so its page is built once and served from Vercel's cache.
+  // A closed area reads it, which makes the page render per visitor (decided at build time).
+  if ((await getPaywall()).rules[area].access === "open") return false;
+  // The area was open at the last build and has since been closed in WordPress: this static page can't turn
+  // per-visitor until the next deploy (saving the paywall screen triggers one, nadlanistim-revalidate.php).
+  // Until then everyone gets the locked view, members too, rather than the members' part leaking to guests.
+  // ponytail: reads Next's internal render store; if a Next upgrade moves it, this falls back to the cookie read.
+  if (process.env.NEXT_PHASE !== "phase-production-build" && workUnitAsyncStorage.getStore()?.type === "prerender-legacy") return true;
+  return !(await getSession())?.member;
 }
 
 /**

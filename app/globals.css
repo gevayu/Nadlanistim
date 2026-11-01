@@ -1196,3 +1196,12 @@ body.theme-light .news-ticker {
     .article-meta { flex-direction: column; gap: 10px; }
     .article-footer { flex-direction: column; gap: 20px; align-items: flex-start; }
 }
+
+/* The bar at the top while the next page loads (components/NavProgress.tsx). Grows from the right, in RTL. */
+.nav-progress {
+    position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 9999; pointer-events: none;
+    background: linear-gradient(270deg, #8B5CF6, #4F8DFB, #22D3EE);
+    transform-origin: right; animation: nav-progress 8s cubic-bezier(.1, .7, .2, 1) forwards;
+}
+.nav-progress--done { animation: none; transform: none; opacity: 0; transition: opacity .3s; }
+@keyframes nav-progress { from { transform: scaleX(0); } to { transform: scaleX(.9); } }

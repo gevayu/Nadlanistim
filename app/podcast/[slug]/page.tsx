@@ -2,6 +2,9 @@ import { guard } from "@/lib/paywall";
 import EpisodeView from "./EpisodeView";
 import { getEpisodes } from "../wp";
 
+// None at build: each page is built on its first visit, then served from cache (an open area, lib/paywall.ts).
+export const generateStaticParams = async () => [];
+
 export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
   await guard("episode", "/podcast"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const slug = decodeURIComponent((await params).slug);

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BentoMouseTracker from "@/components/BentoMouseTracker";
 import RevealObserver from "@/components/RevealObserver";
+import NavProgress from "@/components/NavProgress";
 import LayoutGate from "@/components/LayoutGate";
 import A11yWidget from "@/components/A11yWidget";
 import { A11Y_KEY, applyA11y } from "@/lib/a11y";
@@ -63,6 +64,7 @@ export default async function RootLayout({
           <BentoMouseTracker />
         </LayoutGate>
         <RevealObserver />
+        <NavProgress />
         <A11yWidget />
       </body>
     </html>

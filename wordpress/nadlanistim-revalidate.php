@@ -4,7 +4,8 @@
  * Description: Tells the Next.js site to drop its cached WordPress content whenever a nad_* post or the "הגדרות אתר" page is saved, or a nad_* post is trashed or deleted.
  *
  * Lives in wp-content/mu-plugins on nadlanistim-cms.bold-move.co.il. Source of truth: wordpress/ in the site repo.
- * Needs NADLANISTIM_REVALIDATE_SECRET in wp-config (same value as REVALIDATE_SECRET on Vercel).
+ * Needs NADLANISTIM_REVALIDATE_SECRET in wp-config (same value as REVALIDATE_SECRET on Vercel), and
+ * NADLANISTIM_DEPLOY_HOOK (a Vercel deploy hook URL) so that saving the paywall screen rebuilds the site.
  * The site address comes from the "הגדרות אתר" option via the Nadlanistim Headless plugin.
  */
 
@@ -46,6 +47,12 @@ add_action(
 	function ( $post_id ) {
 		if ( 'options' === $post_id ) {
 			nadlanistim_revalidate_send();
+			// Open pages are built once as static HTML, so closing one only takes full effect after a new build
+			// (until then the site shows its locked view to everyone, lib/paywall.ts). The paywall screen therefore
+			// also rebuilds the site. NADLANISTIM_DEPLOY_HOOK in wp-config is a Vercel deploy hook URL.
+			if ( defined( 'NADLANISTIM_DEPLOY_HOOK' ) && isset( $_GET['page'] ) && 'nadlanistim-paywall' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+				wp_remote_post( NADLANISTIM_DEPLOY_HOOK, array( 'timeout' => 3, 'blocking' => false ) );
+			}
 		}
 	},
 	20

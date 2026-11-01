@@ -12,6 +12,9 @@ const MailIcon = () => (
   </svg>
 );
 
+// None at build: each page is built on its first visit, then served from cache (an open area, lib/paywall.ts).
+export const generateStaticParams = async () => [];
+
 export default async function JobPage({ params }: { params: Promise<{ id: string }> }) {
   await guard("jobPage", "/jobs"); // "חומת תשלום" in WordPress; open to everyone unless set otherwise
   const job = await getJobById(Number((await params).id));
