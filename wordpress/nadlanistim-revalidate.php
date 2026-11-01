@@ -51,7 +51,8 @@ add_action(
 			// (until then the site shows its locked view to everyone, lib/paywall.ts). The paywall screen therefore
 			// also rebuilds the site. NADLANISTIM_DEPLOY_HOOK in wp-config is a Vercel deploy hook URL.
 			if ( defined( 'NADLANISTIM_DEPLOY_HOOK' ) && isset( $_GET['page'] ) && 'nadlanistim-paywall' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				wp_remote_post( NADLANISTIM_DEPLOY_HOOK, array( 'timeout' => 3, 'blocking' => false ) );
+				// Blocking: a fire-and-forget request never left the server, the save redirected before it was sent.
+				wp_remote_post( NADLANISTIM_DEPLOY_HOOK, array( 'timeout' => 5 ) );
 			}
 		}
 	},
