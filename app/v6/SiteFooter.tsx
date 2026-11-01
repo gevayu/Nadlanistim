@@ -1,3 +1,4 @@
+import Link from "next/link";
 const FOOTER_COLS: { h: string; links: [string, string][] }[] = [
   { h: "קהילה", links: [["/#about", "אודות"], ["/#members", "חברי הקהילה"]] },
   { h: "אירועים", links: [["/#events", "קרובים"], ["/#featured", "הכנס השנתי"], ["/events", "ארכיון אירועים"]] },
@@ -24,7 +25,7 @@ export default function SiteFooter() {
               <div key={c.h}>
                 <h2>{c.h}</h2>
                 {c.links.map(([href, label]) => (
-                  <a key={label} href={href}>{label}</a>
+                  <Link key={label} href={href}>{label}</Link>
                 ))}
               </div>
             ))}
@@ -34,7 +35,7 @@ export default function SiteFooter() {
           <span>© 2026 הנדלניסטים. כל הזכויות שמורות.</span>
           <span className="v6-footer__legal">
             {LEGAL_LINKS.map(([href, label]) => (
-              <a key={href} href={href}>{label}</a>
+              <Link key={href} href={href}>{label}</Link>
             ))}
           </span>
         </div>

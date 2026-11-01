@@ -1,4 +1,5 @@
 import type { Session } from "../../lib/auth";
+import Link from "next/link";
 
 const LockIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -21,15 +22,15 @@ export default function MembersLock({ session, next }: { session: Session | null
         <div className="lk-blur" aria-hidden="true">
           {BARS.map((w, i) => <span key={i} className="lk-bar" style={{ width: `${w}%` }} />)}
         </div>
-        <a href="/join" className="lk-capsule">
+        <Link href="/join" className="lk-capsule">
           <LockIcon />
           <span>Members Only</span>
           <b>להצטרפות</b>
-        </a>
+        </Link>
       </div>
       <p className="lk-login">
         {!session ? (
-          <>כבר חברים? <a href={`/login?next=${encodeURIComponent(next)}`}>להתחברות</a></>
+          <>כבר חברים? <Link href={`/login?next=${encodeURIComponent(next)}`}>להתחברות</Link></>
         ) : !session.verified ? (
           <>שלחנו קישור לאימות אל <bdi>{session.email}</bdi>. אחרי האישור הפרטים ייפתחו.</>
         ) : (

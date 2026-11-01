@@ -5,6 +5,7 @@ import SiteShell from "../../v6/SiteShell";
 import "../podcast.css";
 import type { Episode } from "../data";
 import SaveButton from "../../v6/SaveButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -47,7 +48,7 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
         <section className="v6-section">
           <div className="v6-container">
             <div className="pg-head" data-reveal><h1>הפרק <em>לא נמצא</em></h1><p>ייתכן שהקישור שגוי.</p></div>
-            <div className="pg-cta-row"><a href="/podcast" className="v6-btn v6-btn--primary v6-btn--lg"><span>לכל הפרקים</span><ArrowIcon /></a></div>
+            <div className="pg-cta-row"><Link href="/podcast" className="v6-btn v6-btn--primary v6-btn--lg"><span>לכל הפרקים</span><ArrowIcon /></Link></div>
           </div>
         </section>
       </SiteShell>
@@ -127,7 +128,7 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
             {(ep.desc || ep.notes.length > 0) && <div className="pg-divider" />}
             <div className="pg-actions">
               {ep.listen && <a href={ep.listen} target="_blank" rel="noopener" className="v6-btn v6-btn--primary" data-magnetic=""><span>האזינו ב‑Spotify</span><ArrowIcon /></a>}
-              <a href="/podcast" className="v6-btn v6-btn--glass">לכל הפרקים</a>
+              <Link href="/podcast" className="v6-btn v6-btn--glass">לכל הפרקים</Link>
             </div>
           </div>
         </div>
@@ -140,14 +141,14 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
             <h2 className="pg-subhead" data-reveal>עוד פרקים</h2>
             <div className="pg-grid">
               {others.map((e) => (
-                <a key={e.slug} href={`/podcast/${e.slug}`} className="pg-imgcard v6-glass" data-reveal>
+                <Link key={e.slug} href={`/podcast/${e.slug}`} className="pg-imgcard v6-glass" data-reveal>
                   {e.img && <figure className="pg-imgcard__img"><img src={e.img} alt="" /></figure>}
                   <div className="pg-imgcard__body">
                     <div className="pg-imgcard__meta">{dot(!!e.num && `פרק ${e.num}`, e.duration)}</div>
                     <h3>{e.title}</h3>
                     <span className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>לשמיעה</span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

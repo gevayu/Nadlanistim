@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { A11Y_KEY, A11Y_ZOOM, applyA11y, readA11y, type A11ySettings } from "@/lib/a11y";
 import "./a11y-widget.css";
+import NextLink from "next/link";
 
 type Toggle = Exclude<keyof A11ySettings, "text">;
 
@@ -121,7 +122,7 @@ export default function A11yWidget() {
               <RotateCcw aria-hidden />
               <span>איפוס</span>
             </button>
-            <a href="/accessibility">הצהרת נגישות</a>
+            <NextLink href="/accessibility">הצהרת נגישות</NextLink>
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SiteShell from "./v6/SiteShell";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "הדף לא נמצא" };
 
@@ -13,7 +14,7 @@ export default function NotFound() {
             <h1>הדף הזה לא נמצא</h1>
             <p>ייתכן שהקישור ישן או שהתוכן הוסר.</p>
             <p>
-              <a href="/" className="v6-btn v6-btn--primary v6-btn--lg">לעמוד הבית</a>
+              <Link href="/" className="v6-btn v6-btn--primary v6-btn--lg">לעמוד הבית</Link>
             </p>
           </div>
         </div>

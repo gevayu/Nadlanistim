@@ -8,6 +8,7 @@ import type { Community } from "../../communities/data";
 import type { Nadlanist } from "../../nadlanistim/data";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 import SaveButton from "../../v6/SaveButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -32,13 +33,13 @@ function MembersCarousel({ people }: { people: Nadlanist[] }) {
       <button className="cs-mem-arrow cs-mem-arrow--prev" aria-label="הקודם" onClick={() => scroll(1)}><ChevIcon /></button>
       <div className="cs-mem-track" ref={ref}>
         {people.map((n) => (
-          <a key={n.slug} href={`/nadlanist/${n.slug}`} className="cs-mem v6-glass">
+          <Link key={n.slug} href={`/nadlanist/${n.slug}`} className="cs-mem v6-glass">
             <div className="cs-mem__av"><img src={n.photo} alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
             <div className="cs-mem__name">{n.name}</div>
             <div className="cs-mem__role">{n.role}</div>
             {n.quote && <p className="cs-mem__quote">״{n.quote}״</p>}
             <div className="cs-mem__foot">{n.field} · {n.place}</div>
-          </a>
+          </Link>
         ))}
       </div>
       <button className="cs-mem-arrow cs-mem-arrow--next" aria-label="הבא" onClick={() => scroll(-1)}><ChevIcon /></button>
@@ -61,7 +62,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
               <p>ייתכן שהקישור שגוי.</p>
             </div>
             <div className="pg-cta-row">
-              <a href="/communities" className="v6-btn v6-btn--primary v6-btn--lg"><span>לכל הקהילות</span><ArrowIcon /></a>
+              <Link href="/communities" className="v6-btn v6-btn--primary v6-btn--lg"><span>לכל הקהילות</span><ArrowIcon /></Link>
             </div>
           </div>
         </section>
@@ -74,7 +75,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
       {/* Hero */}
       <section className="v6-section">
         <div className="v6-container">
-          <a href="/communities" className="cs-back" data-reveal>→ כל הקהילות</a>
+          <Link href="/communities" className="cs-back" data-reveal>→ כל הקהילות</Link>
 
           <div className="cs-hero" data-reveal>
             <div className="cs-hero__bg">{c.cover && <img src={c.cover} alt="" />}</div>
@@ -158,13 +159,13 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <p>הצטרפו ל{c.members ? `‑${c.members} ` : ""}חברים שכבר מדברים, לומדים וסוגרים עסקאות יחד. חינם לחברי הנדלניסטים.</p>
             <div className="pg-actions" style={{ justifyContent: "center" }}>
               {/* The community's WhatsApp group when WordPress has its link; the join page otherwise. */}
-              <a
+              <Link
                 href={c.whatsapp ?? "/join"}
                 {...(c.whatsapp && { target: "_blank", rel: "noopener noreferrer" })}
                 className="v6-btn v6-btn--primary v6-btn--lg"
                 data-magnetic=""
-              ><span>הצטרפו לקהילה</span><ArrowIcon /></a>
-              <a href="/communities" className="v6-btn v6-btn--glass v6-btn--lg">לכל הקהילות</a>
+              ><span>הצטרפו לקהילה</span><ArrowIcon /></Link>
+              <Link href="/communities" className="v6-btn v6-btn--glass v6-btn--lg">לכל הקהילות</Link>
             </div>
           </div>
         </div>
@@ -177,13 +178,13 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <h2 className="cs-title cs-title--center" data-reveal>עוד קהילות</h2>
             <div className="cm-grid">
               {others.map((o) => (
-                <a key={o.slug} href={`/community/${o.slug}`} className="cm-card v6-glass" data-reveal>
+                <Link key={o.slug} href={`/community/${o.slug}`} className="cm-card v6-glass" data-reveal>
                   {o.logo && <div className="cm-card__logo"><img src={o.logo} alt="" /></div>}
                   <h3>{o.name}</h3>
                   <p>{o.tagline}</p>
                   {o.members && <div className="cm-card__members">{o.members} חברים</div>}
                   <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

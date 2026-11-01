@@ -1,6 +1,7 @@
 import type { Session } from "../../lib/auth";
 import { logout } from "../login/actions";
 import OpenToWorkRing from "../v6/OpenToWorkRing";
+import Link from "next/link";
 
 /** "30.11.2026" from the ISO date the auth API sends. */
 const day = (iso: string) => new Intl.DateTimeFormat("he-IL", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Asia/Jerusalem" }).format(new Date(iso)).replaceAll("/", ".");
@@ -30,10 +31,10 @@ export default function AccountHead({ session }: { session: Session }) {
       </div>
       {session.member
         ? <span className="ac-head__badge">MEMBERS ONLY ✓</span>
-        : <a href="/join" className="ac-head__badge">להצטרפות לחברות</a>}
-      <a href="/profile" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>
+        : <Link href="/join" className="ac-head__badge">להצטרפות לחברות</Link>}
+      <Link href="/profile" className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>
         {own ? "עריכת הפרופיל שלי" : "יצירת פרופיל במדריך"}
-      </a>
+      </Link>
       <form action={logout}>
         <button type="submit" className="ac-logout">התנתקות</button>
       </form>

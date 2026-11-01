@@ -7,6 +7,7 @@ import { getSession } from "../../../lib/auth";
 import { guard } from "@/lib/paywall";
 import { waNumber } from "../../../lib/phone";
 import SaveButton from "../../v6/SaveButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -32,7 +33,7 @@ export default async function CollaborationSinglePage({ params }: { params: Prom
               <p>ייתכן שההזדמנות הוסרה או שהקישור שגוי.</p>
             </div>
             <div className="pg-cta-row">
-              <a href="/collaborations" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה ללוח שיתופי הפעולה</span><ArrowIcon /></a>
+              <Link href="/collaborations" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה ללוח שיתופי הפעולה</span><ArrowIcon /></Link>
             </div>
           </div>
         </section>
@@ -135,7 +136,7 @@ export default async function CollaborationSinglePage({ params }: { params: Prom
 
             <div className="pg-divider" />
             <div className="pg-actions">
-              <a href="/collaborations" className="v6-btn v6-btn--glass">חזרה ללוח שיתופי הפעולה</a>
+              <Link href="/collaborations" className="v6-btn v6-btn--glass">חזרה ללוח שיתופי הפעולה</Link>
             </div>
           </article>
         </div>

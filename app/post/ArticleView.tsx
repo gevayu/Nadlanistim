@@ -4,6 +4,7 @@ import type { Article, Block } from "../post-archive/data";
 import ShareButtons from "./ShareButtons";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const BlockView = ({ b }: { b: Block }) => {
   switch (b.kind) {
@@ -33,7 +34,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
       <section className="v6-section">
         <div className="v6-container">
           <div className="post-hero" data-reveal>
-            {cat && <a href={`/post-archive?cat=${encodeURIComponent(cat)}`} className="post-cat">{cat}</a>}
+            {cat && <Link href={`/post-archive?cat=${encodeURIComponent(cat)}`} className="post-cat">{cat}</Link>}
             <h1>{a.titleMain}{a.titleAccent && <> <em>{a.titleAccent}</em></>}</h1>
             <SaveButton title={a.title} />
             <div className="post-meta">
@@ -57,7 +58,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
           {/* Tags */}
           {a.tags.length > 0 && (
             <div className="post-tags" data-reveal>
-              {a.tags.map((t) => <a key={t} href={`/post-archive?tag=${encodeURIComponent(t)}`} className="pg-tag">{t}</a>)}
+              {a.tags.map((t) => <Link key={t} href={`/post-archive?tag=${encodeURIComponent(t)}`} className="pg-tag">{t}</Link>)}
             </div>
           )}
 
@@ -75,7 +76,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
 
           {/* Share */}
           <div className="post-share" data-reveal>
-            <a href="/post-archive" className="v6-btn v6-btn--glass">חזרה למרכז הידע</a>
+            <Link href="/post-archive" className="v6-btn v6-btn--glass">חזרה למרכז הידע</Link>
             <ShareButtons />
           </div>
         </div>
@@ -88,14 +89,14 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
             <h2 className="pg-subhead" data-reveal>עוד ממרכז הידע</h2>
             <div className="pg-grid">
               {related.map((r) => (
-                <a key={r.slug} href={`/article/${r.slug}`} className="pg-imgcard v6-glass" data-reveal>
+                <Link key={r.slug} href={`/article/${r.slug}`} className="pg-imgcard v6-glass" data-reveal>
                   {r.img && <figure className="pg-imgcard__img"><LazyImg src={r.img} alt="" /></figure>}
                   <div className="pg-imgcard__body">
                     {r.cats[0] && <div className="pg-imgcard__meta">{r.cats[0]}</div>}
                     <h3>{r.title}</h3>
                     <span className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>קרא עוד</span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

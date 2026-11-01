@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import "../v6/v6.css";
+import "../v6/pages.css"; // the save button on the cards (SaveButton) is styled there
 import "./post-archive.css";
 import SiteHeader from "../v6/SiteHeader";
 import SponsorStrip from "../v6/SponsorStrip";
@@ -10,6 +11,7 @@ import SiteFooter from "../v6/SiteFooter";
 import type { Article } from "./data";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -95,7 +97,7 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
 
             <div className="pa-grid">
               {posts.map((p) => (
-                <a key={p.slug} href={`/article/${p.slug}`} className="pa-card v6-glass" data-reveal hidden={!matches(p)}>
+                <Link key={p.slug} href={`/article/${p.slug}`} className="pa-card v6-glass" data-reveal hidden={!matches(p)}>
                   <SaveButton variant="card" path={`/article/${p.slug}`} title={p.title} />
                   {p.img && (
                     <figure className="pa-card__img">
@@ -116,15 +118,15 @@ export default function ArchiveView({ posts, filter }: { posts: Article[]; filte
                       <span>{p.date}</span>
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
 
             <div className="pa-cta" data-reveal>
-              <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+              <Link href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>רוצה לתרום למרכז הידע? שלח לנו מאמר מקצועי</span>
                 <ArrowIcon />
-              </a>
+              </Link>
             </div>
           </div>
         </section>

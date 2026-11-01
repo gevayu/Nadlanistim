@@ -1,6 +1,7 @@
 import SiteShell from "../v6/SiteShell";
 import "../collaborations/collaborations.css";
 import { getJobs } from "../jobs/wp";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -45,22 +46,22 @@ export default async function JobsLockedPage() {
                     <p className="pg-card__desc">{j.desc}</p>
                   </div>
 
-                  <a href="/join" className="lk-capsule">
+                  <Link href="/join" className="lk-capsule">
                     <LockIcon />
                     <span>Members Only</span>
                     <b>להצטרפות</b>
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+            <Link href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>הצטרפו לקהילה וחשפו את כל המשרות</span>
               <ArrowIcon />
-            </a>
-            <a href="/jobs" className="v6-btn v6-btn--glass v6-btn--lg">כבר חברים? ללוח המלא</a>
+            </Link>
+            <Link href="/jobs" className="v6-btn v6-btn--glass v6-btn--lg">כבר חברים? ללוח המלא</Link>
           </div>
         </div>
       </section>

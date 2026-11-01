@@ -3,6 +3,7 @@ import SiteShell from "../v6/SiteShell";
 import "./communities.css";
 import { getCommunities } from "./wp";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -24,18 +25,18 @@ export default async function CommunitiesPage() {
 
           <div className="cm-grid">
             {communities.map((c) => (
-              <a key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
+              <Link key={c.slug} href={`/community/${c.slug}`} className="cm-card v6-glass" data-reveal>
                 {c.logo && <div className="cm-card__logo"><LazyImg src={c.logo} alt="" /></div>}
                 <h2>{c.name}</h2>
                 <p>{c.tagline}</p>
                 {c.members && <div className="cm-card__members">{c.members} חברים</div>}
                 <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>לקהילה</span>
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>לא מצאתם קהילה? הציעו אחת חדשה</span><ArrowIcon /></a>
+            <Link href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>לא מצאתם קהילה? הציעו אחת חדשה</span><ArrowIcon /></Link>
           </div>
         </div>
       </section>

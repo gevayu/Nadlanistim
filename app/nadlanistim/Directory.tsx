@@ -6,6 +6,7 @@ import { type Nadlanist } from "./data";
 import OpenToWorkRing from "../v6/OpenToWorkRing";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -94,7 +95,7 @@ export default function Directory({ people }: { people: Nadlanist[] }) {
           {/* No data-reveal on the cards: the reveal runs once on load, so a card that comes back after a filter change would stay hidden. */}
           <div className="pg-grid">
             {shown.map((p) => (
-              <a key={p.slug} href={`/nadlanist/${p.slug}`} className="pg-person v6-glass">
+              <Link key={p.slug} href={`/nadlanist/${p.slug}`} className="pg-person v6-glass">
                 <SaveButton variant="card" path={`/nadlanist/${p.slug}`} title={p.name} />
                 <div className="pg-person__av">
                   <LazyImg src={p.photo} alt={p.openToWork ? `${p.name} · פתוח/ה להצעות עבודה` : p.name} />
@@ -104,13 +105,13 @@ export default function Directory({ people }: { people: Nadlanist[] }) {
                 <div className="pg-person__role">{p.role}</div>
                 {p.quote && <p className="pg-person__q">״{p.quote}״</p>}
                 <span className="v6-btn v6-btn--glass" style={{ padding: "10px 20px", fontSize: 13.5 }}>קרא עוד</span>
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך - הצטרף למדריך</span><ArrowIcon /></a>
-            <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg">רוצה להיות חלק מהסיפור? הצטרף לקהילה</a>
+            <Link href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>שתף את הסיפור שלך - הצטרף למדריך</span><ArrowIcon /></Link>
+            <Link href="/join" className="v6-btn v6-btn--glass v6-btn--lg">רוצה להיות חלק מהסיפור? הצטרף לקהילה</Link>
           </div>
         </div>
       </section>

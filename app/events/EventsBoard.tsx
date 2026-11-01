@@ -6,6 +6,7 @@ import SponsorStrip from "../v6/SponsorStrip";
 import { eventHref, featuredEvent, heDate, isVolunteer, metaLine, type EventItem } from "./data";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 // "הצג" reads as a real button: full site size, an icon and a label that says what it does.
 const SearchIcon = () => (
@@ -42,7 +43,7 @@ const matches = (e: EventItem, f: Filters) =>
 
 function EvCard({ e }: { e: EventItem }) {
   return (
-    <a href={eventHref(e)} className="pg-imgcard v6-glass" data-reveal>
+    <Link href={eventHref(e)} className="pg-imgcard v6-glass" data-reveal>
       <SaveButton variant="card" path={eventHref(e)} title={e.title} />
       {e.img && <figure className="pg-imgcard__img"><LazyImg src={e.img} alt="" /></figure>}
       <div className="pg-imgcard__body">
@@ -51,7 +52,7 @@ function EvCard({ e }: { e: EventItem }) {
         {e.desc && <p className="pg-imgcard__desc">{e.desc}</p>}
         <span className="v6-btn v6-btn--glass" style={{ padding: "10px 18px", fontSize: 13.5 }}>{e.past ? "צפו במדיה" : "לפרטים והרשמה"}</span>
       </div>
-    </a>
+    </Link>
   );
 }
 
@@ -112,7 +113,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
           {featured && (
             <>
               <h2 className="pg-subhead" data-reveal>האירוע הקרוב</h2>
-              <a href={eventHref(featured)} className="pg-featured v6-glass" data-reveal>
+              <Link href={eventHref(featured)} className="pg-featured v6-glass" data-reveal>
                 {featured.img && <div className="pg-featured__img"><img src={featured.img} alt="" /></div>}
                 <div className="pg-featured__body">
                   <div className="pg-featured__date">{metaLine(heDate(featured.date), featured.place)}</div>
@@ -120,7 +121,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
                   {featured.desc && <p>{featured.desc}</p>}
                   <span className="v6-btn v6-btn--primary" data-magnetic="" style={{ alignSelf: "flex-start" }}><span>לפרטים והרשמה</span><ArrowIcon /></span>
                 </div>
-              </a>
+              </Link>
             </>
           )}
         </div>
@@ -163,7 +164,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
           )}
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להיות באירוע הבא? הצטרפו לקהילה</span><ArrowIcon /></a>
+            <Link href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להיות באירוע הבא? הצטרפו לקהילה</span><ArrowIcon /></Link>
             {past.length > 0 && <a href="#past" className="v6-btn v6-btn--glass v6-btn--lg">לרשימת האירועים הקודמים</a>}
           </div>
         </div>

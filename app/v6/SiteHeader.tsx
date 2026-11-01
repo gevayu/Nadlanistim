@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import FavButton from "./FavButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -69,20 +70,20 @@ export default function SiteHeader() {
           <button className="v6-nav__menu" aria-label="פתח תפריט" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
             <span /><span /><span />
           </button>
-          <a href="/" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
+          <Link href="/" className="v6-nav__logo" aria-label="הנדלניסטים - דף הבית">
             <img src="/v6-assets/logo-360.png" width={360} height={114} alt="הנדלניסטים" />
-          </a>
+          </Link>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">
             {NAV_LINKS.map(([href, label]) => (
-              <a key={label} href={href}>{label}</a>
+              <Link key={label} href={href}>{label}</Link>
             ))}
           </nav>
           <FavButton />
-          <a href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
+          <Link href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
             <span className="v6-nav__cta-long">{members.long}</span>
             <span className="v6-nav__cta-short">{members.short}</span>
             <ArrowIcon />
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -95,12 +96,12 @@ export default function SiteHeader() {
             </svg>
           </button>
           {NAV_LINKS.map(([href, label]) => (
-            <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
+            <Link key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</Link>
           ))}
-          <a href={members.href} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
+          <Link href={members.href} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
             <span>{members.long}</span>
             <ArrowIcon />
-          </a>
+          </Link>
         </div>
       </div>
     </>

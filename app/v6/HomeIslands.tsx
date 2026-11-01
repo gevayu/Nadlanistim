@@ -14,6 +14,7 @@ import { JOB_KINDS, type JobKind } from "../jobs/data";
 import type { Nadlanist } from "../nadlanistim/data";
 import LazyImg, { usePageLoaded } from "./LazyImg";
 import { ArrowIcon, ChevronLeft, ChevronRight } from "./HomeIcons";
+import Link from "next/link";
 
 export type MemberCategory = { title: string; count: number; avatars: string[] };
 export type JobOffer = { kind: JobKind; tag: string; title: string; company: string; location: string; desc: string; img: string; href?: string };
@@ -221,14 +222,14 @@ export function HomeNav() {
           </a>
           <nav className="v6-nav__links" aria-label="ניווט ראשי">
             {NAV_LINKS.map(([href, label]) => (
-              <a key={label} href={href}>{label}</a>
+              <Link key={label} href={href}>{label}</Link>
             ))}
           </nav>
-          <a href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
+          <Link href={members.href} className="v6-btn v6-btn--primary v6-nav__cta" data-magnetic="">
             <span className="v6-nav__cta-long">{members.long}</span>
             <span className="v6-nav__cta-short">{members.short}</span>
             <ArrowIcon />
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -242,12 +243,12 @@ export function HomeNav() {
             </svg>
           </button>
           {NAV_LINKS.map(([href, label]) => (
-            <a key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</a>
+            <Link key={label} href={href} className="v6-drawer__link" onClick={closeDrawer}>{label}</Link>
           ))}
-          <a href={members.href} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
+          <Link href={members.href} className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block v6-drawer__cta" onClick={closeDrawer}>
             <span>{members.long}</span>
             <ArrowIcon />
-          </a>
+          </Link>
         </div>
       </div>
     </>
@@ -361,7 +362,7 @@ export function MembersCarousel({ items }: { items: MemberCategory[] }) {
             // The loop renders three copies; only the middle one is reachable by keyboard and screen readers.
             const copy = enabled && (i < items.length || i >= 2 * items.length);
             return (
-              <a
+              <Link
                 key={`${m.title}-${i}`}
                 href={`/nadlanistim?field=${encodeURIComponent(m.title)}`}
                 className="v6-member v6-glass"
@@ -376,7 +377,7 @@ export function MembersCarousel({ items }: { items: MemberCategory[] }) {
                     <span key={a} style={pageLoaded ? { backgroundImage: `url(${a})` } : undefined} />
                   ))}
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>
@@ -430,7 +431,7 @@ export function NadlanistCarousel({ people }: { people: QuotedMember[] }) {
           </div>
         </div>
         <div className="v6-cardfoot">
-          <a href={`/nadlanist/${p.slug}`} className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
+          <Link href={`/nadlanist/${p.slug}`} className="v6-btn v6-btn--glass v6-cardcta">לפרטים</Link>
           <div className="v6-cardnav">
             <button type="button" className="v6-cardarrow" aria-label="הנדלניסט הקודם" onClick={() => setI((prev) => (prev - 1 + people.length) % people.length)}>
               <ChevronRight />
@@ -492,7 +493,7 @@ export function JobRotator({ jobs }: { jobs: JobOffer[] }) {
           <p>{j.desc}</p>
         </div>
         <div className="v6-cardfoot">
-          <a href={j.href ?? "/jobs"} className="v6-btn v6-btn--glass v6-cardcta">לפרטים</a>
+          <Link href={j.href ?? "/jobs"} className="v6-btn v6-btn--glass v6-cardcta">לפרטים</Link>
           <div className="v6-cardnav">
             <button type="button" className="v6-cardarrow" aria-label="המשרה הקודמת" onClick={() => setI((prev) => (prev - 1 + jobs.length) % jobs.length)}>
               <ChevronRight />
@@ -603,10 +604,10 @@ export function CommunitiesCarousel({ items }: { items: { id: string; logo: stri
           style={{ transform: `translate3d(${translate}px, 0, 0)`, transition: animate ? undefined : "none" }}
         >
           {rendered.map((c, i) => (
-            <a key={`${c.id}-${i}`} href={c.href} className="v6-comm">
+            <Link key={`${c.id}-${i}`} href={c.href} className="v6-comm">
               <div className="v6-comm__logo">{c.logo && <LazyImg src={c.logo} alt="" />}</div>
               <span className="v6-comm__label">{c.label}</span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -657,7 +658,7 @@ export function HomeContactForm() {
       {/* Two boxes, worded exactly as nadlanistim_consent_texts() records them: privacy is required, newsletters are a free choice. */}
       <label className="v6-contact__consent" htmlFor="f-consent">
         <input id="f-consent" name="consent" value="1" type="checkbox" required />
-        <span>מוסכמת עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> של האתר, ושתשתמשו בפרטים כדי לחזור אליי לגבי ההצטרפות.</span>
+        <span>מוסכמת עלי <Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link> של האתר, ושתשתמשו בפרטים כדי לחזור אליי לגבי ההצטרפות.</span>
       </label>
       <label className="v6-contact__consent" htmlFor="f-marketing">
         <input id="f-marketing" name="marketing" value="1" type="checkbox" />

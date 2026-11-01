@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -32,7 +33,7 @@ export default function Footer() {
             <li><a href="#">לוח אירועים</a></li>
             <li><a href="#">זירת משרות</a></li>
             <li><a href="#">השקעות</a></li>
-            <li><a href="/join">הצטרפות לקהילה</a></li>
+            <li><Link href="/join">הצטרפות לקהילה</Link></li>
           </ul>
         </div>
         <div className="footer-links">

@@ -9,6 +9,7 @@ import "./event.css";
 import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
 import { JsonLd, eventLd } from "@/lib/jsonld";
+import Link from "next/link";
 
 export const generateMetadata = eventMetadata("/event");
 
@@ -160,7 +161,7 @@ export default async function EventPage({ searchParams }: { searchParams: Promis
         <div className="v6-container">
           <div className="ev-band" data-reveal>
             <h2>אל תפספסו את ההזדמנות</h2>
-            <a href={ev.cta || "/#contact"} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>כן, אני רוצה להשתתף</span><ArrowIcon /></a>
+            <Link href={ev.cta || "/#contact"} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>כן, אני רוצה להשתתף</span><ArrowIcon /></Link>
           </div>
         </div>
       </section>

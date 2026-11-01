@@ -10,6 +10,7 @@ import { getEvents } from "../events/wp";
 import { getJobs } from "../jobs/wp";
 import { getEpisodes } from "../podcast/wp";
 import { getFavorites } from "../../lib/favorites";
+import Link from "next/link";
 
 const dot = (...parts: string[]) => parts.filter(Boolean).join(" · ");
 const day = (iso: string) => new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric", year: "numeric", timeZone: "Asia/Jerusalem" }).format(new Date(iso)).replaceAll("/", ".");
@@ -49,11 +50,11 @@ export default async function AccountPage() {
           {/* Quick access */}
           <div className="ac-quick">
             {quick.map((q) => (
-              <a key={q.t} href={q.href} className="ac-ql v6-glass" data-reveal>
+              <Link key={q.t} href={q.href} className="ac-ql v6-glass" data-reveal>
                 <div className="ac-ql__ic">{q.ic}</div>
                 <div className="ac-ql__t">{q.t}</div>
                 <div className="ac-ql__n">{q.n}</div>
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -72,13 +73,13 @@ export default async function AccountPage() {
                   const [, ic, kind] = kindOf(f.path);
                   return (
                     <div key={f.path} className="ac-row v6-glass" data-reveal>
-                      <a href={f.path} className="ac-row__main">
+                      <Link href={f.path} className="ac-row__main">
                         <div className="ac-row__ic">{ic}</div>
                         <div className="ac-row__body">
                           <div className="ac-row__title">{f.title}</div>
                           <div className="ac-row__meta">{dot(kind, f.at && `נשמר ב-${day(f.at)}`)}</div>
                         </div>
-                      </a>
+                      </Link>
                       <FavRemove path={f.path} title={f.title} />
                     </div>
                   );

@@ -8,6 +8,7 @@ import HiddenName from "./HiddenName";
 import { collabRegion, collabTab, type Collab, type CollabTab } from "./data";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -83,7 +84,7 @@ export default function CollabBoard({ collabs, tabs, locked }: { collabs: Collab
 
           <div className="pg-grid">
             {shown.map((c) => (
-              <a key={c.slug} href={`/collaboration/${c.slug}`} className="pg-card v6-glass" data-reveal>
+              <Link key={c.slug} href={`/collaboration/${c.slug}`} className="pg-card v6-glass" data-reveal>
                 <SaveButton variant="card" path={`/collaboration/${c.slug}`} title={c.title} />
                 {c.img && (
                   <figure className="pg-card__cover">
@@ -105,16 +106,16 @@ export default function CollabBoard({ collabs, tabs, locked }: { collabs: Collab
                     <span>פרטים נוספים</span>
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/collaboration-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+            <Link href="/collaboration-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>פרסם שיתוף פעולה - חינם לחברי הקהילה</span>
               <ArrowIcon />
-            </a>
-            <a href="/profile" className="v6-btn v6-btn--glass v6-btn--lg">הצג את הפרויקטים שלך</a>
+            </Link>
+            <Link href="/profile" className="v6-btn v6-btn--glass v6-btn--lg">הצג את הפרויקטים שלך</Link>
           </div>
         </div>
       </section>

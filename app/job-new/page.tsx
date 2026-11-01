@@ -5,6 +5,7 @@ import SiteShell from "../v6/SiteShell";
 import { JOB_KINDS, type JobKind } from "../jobs/data";
 import { sendJob } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -103,7 +104,7 @@ export default function JobNewPage() {
 
                 <label className="v6-contact__consent" htmlFor="j-consent">
                   <input id="j-consent" name="consent" value="1" type="checkbox" required />
-                  <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> ותנאי הפרסום של הקהילה. המודעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.</span>
+                  <span>מוסכמים עלי <Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link> ותנאי הפרסום של הקהילה. המודעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.</span>
                 </label>
 
                 <FormError error={state.error} />
@@ -116,7 +117,7 @@ export default function JobNewPage() {
           </article>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/jobs" className="v6-btn v6-btn--glass v6-btn--lg">חזרה ללוח הדרושים</a>
+            <Link href="/jobs" className="v6-btn v6-btn--glass v6-btn--lg">חזרה ללוח הדרושים</Link>
           </div>
         </div>
       </section>

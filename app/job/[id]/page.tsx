@@ -5,6 +5,7 @@ import { getJobById } from "../../jobs/wp";
 import { JOB_KINDS } from "../../jobs/data";
 import SaveButton from "../../v6/SaveButton";
 import { JsonLd, jobLd } from "@/lib/jsonld";
+import Link from "next/link";
 
 const MailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -83,7 +84,7 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
               >
                 <MailIcon />
               </a>
-              <a href="/jobs" className="v6-btn v6-btn--glass">חזרה ללוח הדרושים</a>
+              <Link href="/jobs" className="v6-btn v6-btn--glass">חזרה ללוח הדרושים</Link>
             </div>
           </article>
         </div>

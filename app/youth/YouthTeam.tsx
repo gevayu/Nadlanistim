@@ -6,6 +6,7 @@ import "./youth.css";
 import { roleLine, type TeamMember } from "./data";
 import type { YouthSettings } from "./wp";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -32,7 +33,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
               <span className="yt-badge">● פרויקט מיוחד</span>
               <h1>נבחרת הנדלניסטים <em>הצעירים</em></h1>
               <p>{members.length} נדלניסטים ונדלניסטיות{settings.maxAge ? ` מתחת לגיל ${settings.maxAge}` : ""} שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
-              <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הגישו מועמדות</span><ArrowIcon /></a>
+              <Link href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הגישו מועמדות</span><ArrowIcon /></Link>
               <div className="yt-stats">
                 <div className="yt-stat"><b>{members.length}</b><span>חברי נבחרת</span></div>
                 {settings.maxAge && <div className="yt-stat"><b>{settings.maxAge}</b><span>גיל מקסימלי</span></div>}
@@ -71,7 +72,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
           </div>
           <div className="yt-members">
             {shown.map((m) => (
-              <a key={m.slug} href={`/youth/${m.slug}`} className="yt-member v6-glass">
+              <Link key={m.slug} href={`/youth/${m.slug}`} className="yt-member v6-glass">
                 {m.photo && <div className="yt-member__av"><LazyImg src={m.photo} alt={m.name} /></div>}
                 <div className="yt-member__info">
                   <div className="yt-member__name">{m.name}</div>
@@ -79,7 +80,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
                   {m.oneLiner && <p className="yt-member__line">{m.oneLiner}</p>}
                   <span className="yt-member__more">לפרופיל המלא <ArrowIcon /></span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -89,7 +90,7 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
       <section className="v6-section">
         <div className="v6-container">
           <div className="pg-cta-row" data-reveal>
-            <a href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להצטרף לנבחרת? הגישו מועמדות</span><ArrowIcon /></a>
+            <Link href="/nadlanist-new" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>רוצים להצטרף לנבחרת? הגישו מועמדות</span><ArrowIcon /></Link>
           </div>
         </div>
       </section>

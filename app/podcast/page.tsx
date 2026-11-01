@@ -3,6 +3,7 @@ import SiteShell from "../v6/SiteShell";
 import "./podcast.css";
 import { getEpisodes } from "./wp";
 import LazyImg from "../v6/LazyImg";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -25,7 +26,7 @@ export default async function PodcastArchivePage() {
 
           <div className="pc-grid">
             {episodes.map((e) => (
-              <a key={e.slug} href={`/podcast/${e.slug}`} className="pc-card v6-glass" data-reveal>
+              <Link key={e.slug} href={`/podcast/${e.slug}`} className="pc-card v6-glass" data-reveal>
                 {e.img && (
                   <div className="pc-card__img">
                     <LazyImg src={e.img} alt="" />
@@ -38,12 +39,12 @@ export default async function PodcastArchivePage() {
                   {e.guests && <div className="pc-card__guests">{e.guests}</div>}
                   <span className="pc-card__more">לשמיעה <ArrowIcon /></span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הירשמו לעדכון על פרקים חדשים</span><ArrowIcon /></a>
+            <Link href="/#contact" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic=""><span>הירשמו לעדכון על פרקים חדשים</span><ArrowIcon /></Link>
           </div>
         </div>
       </section>

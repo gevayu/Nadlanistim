@@ -5,6 +5,7 @@ import { sendContact } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import { ROLE_OPTIONS } from "../forms/options";
 import type { Contact } from "../v6/wp";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -71,7 +72,7 @@ export default function ContactView({ contact }: { contact: Contact }) {
                   </div>
                   <label className="v6-contact__consent" htmlFor="c-consent">
                     <input id="c-consent" name="consent" value="1" type="checkbox" required />
-                    <span>מסכים/ה ל<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ושתשתמשו בפרטים רק כדי לענות לפנייה.</span>
+                    <span>מסכים/ה ל<Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link>, ושתשתמשו בפרטים רק כדי לענות לפנייה.</span>
                   </label>
                   <FormError error={state.error} />
                   <button type="submit" className="v6-btn v6-btn--primary v6-btn--lg v6-btn--block" disabled={pending} data-magnetic="">
@@ -97,7 +98,7 @@ export default function ContactView({ contact }: { contact: Contact }) {
                 {channels.length > 0 && (
                   <div className="ct-info__channels">
                     {channels.map((c) => (
-                      <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="v6-btn v6-btn--glass">{c.label}</a>
+                      <Link key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="v6-btn v6-btn--glass">{c.label}</Link>
                     ))}
                   </div>
                 )}

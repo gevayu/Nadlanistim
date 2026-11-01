@@ -1,4 +1,5 @@
 import SiteShell from "../v6/SiteShell";
+import Link from "next/link";
 
 export default function ThankYouNotFound() {
   return (
@@ -10,7 +11,7 @@ export default function ThankYouNotFound() {
             <p>הקישור לא תקין.</p>
           </div>
           <div className="pg-cta-row">
-            <a href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></a>
+            <Link href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></Link>
           </div>
         </div>
       </section>

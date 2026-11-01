@@ -6,6 +6,7 @@ import "./event-recap.css";
 import { sendRecap } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import SaveButton from "../v6/SaveButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -131,7 +132,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
             {!recap.state.ok && (
               <label className="v6-contact__consent rc-consent" htmlFor="rc-consent">
                 <input id="rc-consent" form="rc-email-form" name="consent" value="1" type="checkbox" required />
-                <span>מסכים/ה ל<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ושתשתמשו באימייל רק כדי לשלוח את החומרים.</span>
+                <span>מסכים/ה ל<Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link>, ושתשתמשו באימייל רק כדי לשלוח את החומרים.</span>
               </label>
             )}
             <FormError error={recap.state.error} />
@@ -145,8 +146,8 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
           <div className="rc-band" data-reveal>
             <h2>נהנתם? הנה מה שאפשר לעשות עכשיו</h2>
             <div className="rc-band__btns">
-              {next && <a href={eventHref(next)} className="v6-btn v6-btn--primary v6-btn--lg">שמרו מקום לאירוע הבא</a>}
-              <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg">הצטרפו לקהילה</a>
+              {next && <Link href={eventHref(next)} className="v6-btn v6-btn--primary v6-btn--lg">שמרו מקום לאירוע הבא</Link>}
+              <Link href="/join" className="v6-btn v6-btn--glass v6-btn--lg">הצטרפו לקהילה</Link>
             </div>
           </div>
         </div>
@@ -162,7 +163,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
               <div className="rc-next__body">
                 <div className="rc-next__date">{metaLine(heDate(next.date), next.place)}</div>
                 <h3>{next.title}</h3>
-                <a href={eventHref(next)} className="v6-btn v6-btn--primary"><span>שמרו לי מקום</span><ArrowIcon /></a>
+                <Link href={eventHref(next)} className="v6-btn v6-btn--primary"><span>שמרו לי מקום</span><ArrowIcon /></Link>
               </div>
             </div>
           </div>

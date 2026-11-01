@@ -3,6 +3,7 @@ import SiteShell from "../v6/SiteShell";
 import { getOrderSummary } from "../../lib/store";
 import Celebrate from "./Celebrate";
 import "../checkout/checkout.css";
+import Link from "next/link";
 
 const shekels = (n: number) => `₪${n.toLocaleString("he-IL")}`;
 const PENDING = ["pending", "on-hold"];
@@ -39,7 +40,7 @@ export default async function ThankYouPage({ searchParams }: { searchParams: Pro
                 : <p>הזמנה מס׳ {s.number} לא שולמה.</p>}
             </div>
             <div className="pg-cta-row">
-              <a href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></a>
+              <Link href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></Link>
             </div>
           </div>
         </section>
@@ -75,8 +76,8 @@ export default async function ThankYouPage({ searchParams }: { searchParams: Pro
           {next && <div className="pg-sent" style={{ maxWidth: 560, marginTop: 20 }} data-reveal>{next.text}</div>}
 
           <div className="pg-cta-row">
-            {next?.cta && <a href={next.cta[0]} className="v6-btn v6-btn--primary"><span>{next.cta[1]}</span><ArrowIcon /></a>}
-            <a href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></a>
+            {next?.cta && <Link href={next.cta[0]} className="v6-btn v6-btn--primary"><span>{next.cta[1]}</span><ArrowIcon /></Link>}
+            <Link href="/" className="v6-btn v6-btn--glass"><span>לדף הבית</span></Link>
           </div>
         </div>
       </section>

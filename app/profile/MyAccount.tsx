@@ -7,6 +7,7 @@ import { FIELDS, PLACES, type Nadlanist } from "../nadlanistim/data";
 import { logout } from "../login/actions";
 import { saveProfile, type SaveResult } from "./actions";
 import { readImage } from "../forms/image";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -192,7 +193,7 @@ export default function MyAccount({ me, status: postStatus, verified, communitie
 
               {result?.ok && (result.status === "publish" && result.slug ? (
                 <div className="pg-sent" role="status">
-                  נשמר. ✓ <a href={`/nadlanist/${result.slug}`}>לפרופיל שלך</a> · <a href="/nadlanistim">למדריך</a>
+                  נשמר. ✓ <Link href={`/nadlanist/${result.slug}`}>לפרופיל שלך</Link> · <Link href="/nadlanistim">למדריך</Link>
                 </div>
               ) : (
                 <div className="pg-sent" role="status">נשמר. ✓ הפרופיל ממתין לאישור מנהל האתר, ואחרי האישור יופיע במדריך.</div>

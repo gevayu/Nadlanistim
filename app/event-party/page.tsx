@@ -10,6 +10,7 @@ import "./event-party.css";
 import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
 import { JsonLd, eventLd } from "@/lib/jsonld";
+import Link from "next/link";
 
 export const generateMetadata = eventMetadata("/event-party");
 
@@ -169,7 +170,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
           <div className="ep-band v6-glass" data-reveal>
             <div className="ep-band__bg" />
             <h2>אל תישארו בבית</h2>
-            <a href={ev.cta || "/#contact"} className="v6-btn v6-btn--lg ep-btn--party" data-magnetic=""><span>כן, אני בא/ה!</span><ArrowIcon /></a>
+            <Link href={ev.cta || "/#contact"} className="v6-btn v6-btn--lg ep-btn--party" data-magnetic=""><span>כן, אני בא/ה!</span><ArrowIcon /></Link>
           </div>
         </div>
       </section>

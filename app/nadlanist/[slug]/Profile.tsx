@@ -6,6 +6,7 @@ import { type Nadlanist } from "../../nadlanistim/data";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 import { telHref, waNumber } from "../../../lib/phone";
 import SaveButton from "../../v6/SaveButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -38,7 +39,7 @@ export default function Profile({ n, locked, session, communities = [] }: {
               <p>ייתכן שהקישור שגוי.</p>
             </div>
             <div className="pg-cta-row">
-              <a href="/nadlanistim" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה למדריך הנדלניסטים</span><ArrowIcon /></a>
+              <Link href="/nadlanistim" className="v6-btn v6-btn--primary v6-btn--lg"><span>חזרה למדריך הנדלניסטים</span><ArrowIcon /></Link>
             </div>
           </div>
         </section>
@@ -90,7 +91,7 @@ export default function Profile({ n, locked, session, communities = [] }: {
                   <div className="pg-block" style={{ marginTop: 32 }}>
                     <h2>הקהילות שלי</h2>
                     <div className="pg-tags">
-                      {communities.map((c) => <a key={c.slug} href={`/community/${c.slug}`} className="pg-tag">{c.name}</a>)}
+                      {communities.map((c) => <Link key={c.slug} href={`/community/${c.slug}`} className="pg-tag">{c.name}</Link>)}
                     </div>
                   </div>
                 )}
@@ -117,7 +118,7 @@ export default function Profile({ n, locked, session, communities = [] }: {
 
             <div className="pg-divider" />
             <div className="pg-actions" style={{ justifyContent: "center" }}>
-              <a href="/nadlanistim" className="v6-btn v6-btn--glass">חזרה למדריך הנדלניסטים</a>
+              <Link href="/nadlanistim" className="v6-btn v6-btn--glass">חזרה למדריך הנדלניסטים</Link>
             </div>
           </article>
         </div>

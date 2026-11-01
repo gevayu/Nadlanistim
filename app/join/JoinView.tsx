@@ -7,6 +7,7 @@ import { celebrate } from "../v6/confetti";
 import type { Product } from "../../lib/store";
 import { sendJoin } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -87,9 +88,9 @@ export default function JoinView({ plans }: { plans: Product[] }) {
                 <ul className="jn-plan__feats">
                   {p.features.map((f) => <li key={f}><CheckIcon />{f}</li>)}
                 </ul>
-                <a href={`/checkout?product=${p.id}`} className={`v6-btn ${p.featured ? "v6-btn--primary" : "v6-btn--glass"}`} data-magnetic="">
+                <Link href={`/checkout?product=${p.id}`} className={`v6-btn ${p.featured ? "v6-btn--primary" : "v6-btn--glass"}`} data-magnetic="">
                   <span>בחרו {p.name}</span>
-                </a>
+                </Link>
               </div>
             ))}
           </div>
@@ -162,7 +163,7 @@ export default function JoinView({ plans }: { plans: Product[] }) {
 
                 <label className="v6-contact__consent" htmlFor="j-consent">
                   <input id="j-consent" name="consent" value="1" type="checkbox" required />
-                  <span>קראתי ואני מסכים/ה ל<a href="/terms" target="_blank" rel="noopener">תקנון הקהילה</a> ול<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. הפרטים ישמשו לטיפול בבקשה ולניהול החברות, והתשלום עובר דרך iCount.</span>
+                  <span>קראתי ואני מסכים/ה ל<Link href="/terms" target="_blank" rel="noopener">תקנון הקהילה</Link> ול<Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link>. הפרטים ישמשו לטיפול בבקשה ולניהול החברות, והתשלום עובר דרך iCount.</span>
                 </label>
 
                 <FormError error={state.error} />

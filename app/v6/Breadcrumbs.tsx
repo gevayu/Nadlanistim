@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 type Crumb = { label: string; parent?: string };
 
@@ -63,11 +64,11 @@ export default function Breadcrumbs({ current }: { current?: string }) {
   return (
     <nav className="v6-container v6-crumbs" aria-label="פירורי לחם">
       <ol>
-        <li><a href="/">דף הבית</a></li>
+        <li><Link href="/">דף הבית</Link></li>
         {items.map((c, i) =>
           i === items.length - 1
             ? <li key={c.href} aria-current="page">{c.label}</li>
-            : <li key={c.href}><a href={c.href}>{c.label}</a></li>
+            : <li key={c.href}><Link href={c.href}>{c.label}</Link></li>
         )}
       </ol>
     </nav>

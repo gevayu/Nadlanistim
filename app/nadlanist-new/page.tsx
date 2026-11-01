@@ -4,6 +4,7 @@ import SiteShell from "../v6/SiteShell";
 import { sendNadlanist } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import ImageField from "../forms/ImageField";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -86,7 +87,7 @@ export default function NadlanistNewPage() {
 
                 <label className="v6-contact__consent" htmlFor="p-consent">
                   <input id="p-consent" name="consent" value="1" type="checkbox" required />
-                  <span>מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה ל<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. הפרופיל יעלה למדריך אחרי אישור הצוות.</span>
+                  <span>מאשר/ת הצגת הפרטים במדריך הנדלניסטים ומסכים/ה ל<Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link>. הפרופיל יעלה למדריך אחרי אישור הצוות.</span>
                 </label>
 
                 <FormError error={state.error} />
@@ -99,7 +100,7 @@ export default function NadlanistNewPage() {
           </article>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/nadlanistim" className="v6-btn v6-btn--glass v6-btn--lg">חזרה למדריך הנדלניסטים</a>
+            <Link href="/nadlanistim" className="v6-btn v6-btn--glass v6-btn--lg">חזרה למדריך הנדלניסטים</Link>
           </div>
         </div>
       </section>

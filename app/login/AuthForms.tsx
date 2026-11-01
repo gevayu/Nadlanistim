@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { forgotPassword, login, type AuthFormState } from "./actions";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -35,10 +36,10 @@ export function LoginForm({ next, notice }: { next: string; notice?: string }) {
       <FormError text={state.error} />
       <Submit pending={pending} label="כניסה" busy="נכנסים…" />
       <div className="au-links">
-        <a href="/forgot-password">שכחתם סיסמה?</a>
+        <Link href="/forgot-password">שכחתם סיסמה?</Link>
       </div>
       {/* New members start at the join page; it opens their user, and "שכחתם סיסמה?" sets the password. */}
-      <a href="/join" className="v6-btn v6-btn--glass v6-btn--lg v6-btn--block au-join">אין לכם חשבון? להרשמה</a>
+      <Link href="/join" className="v6-btn v6-btn--glass v6-btn--lg v6-btn--block au-join">אין לכם חשבון? להרשמה</Link>
     </form>
   );
 }
@@ -51,7 +52,7 @@ export function ForgotForm() {
         <p className="au-note" role="status">
           אם יש חשבון עם <bdi>{state.values?.email}</bdi>, הקישור כבר בדרך. לא הגיע תוך כמה דקות? בדקו בתיקיית הספאם.
         </p>
-        <div className="au-links"><a href="/login">חזרה לכניסה</a></div>
+        <div className="au-links"><Link href="/login">חזרה לכניסה</Link></div>
       </div>
     );
   }
@@ -64,7 +65,7 @@ export function ForgotForm() {
       <FormError text={state.error} />
       <Submit pending={pending} label="שליחת קישור לאיפוס" busy="שולחים…" />
       <div className="au-links">
-        <a href="/login">נזכרתם? לכניסה</a>
+        <Link href="/login">נזכרתם? לכניסה</Link>
       </div>
     </form>
   );

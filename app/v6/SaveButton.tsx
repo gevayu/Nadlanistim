@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useFavorite, type FavResult } from "./favorites";
+import Link from "next/link";
 
 export const HeartIcon = ({ on }: { on: boolean }) => (
   <svg viewBox="0 0 24 24" fill={on ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -26,7 +27,7 @@ export function useFavNote() {
   const el = note && note !== "login" && (
     <span className="v6-fav__note" role="status">
       {NOTES[note]}
-      {note === "saved" && <a href="/account#favorites">לאזור האישי</a>}
+      {note === "saved" && <Link href="/account#favorites">לאזור האישי</Link>}
     </span>
   );
   return { setNote, el };

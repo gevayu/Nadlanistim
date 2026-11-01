@@ -6,6 +6,7 @@ import "../../collaborations/collaborations.css";
 import { roleLine } from "../data";
 import { getYouth } from "../wp";
 import SaveButton from "../../v6/SaveButton";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -31,7 +32,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
     <SiteShell crumb={m.name}>
       <section className="v6-section">
         <div className="v6-container">
-          <a href="/youth" className="yt-back" data-reveal>→ נבחרת הנדלניסטים הצעירים</a>
+          <Link href="/youth" className="yt-back" data-reveal>→ נבחרת הנדלניסטים הצעירים</Link>
 
           <article className="pg-panel v6-glass" data-reveal>
             <div className="pg-profile2__hero">
@@ -75,7 +76,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
 
             <div className="pg-divider" />
             <div className="pg-actions" style={{ justifyContent: "center" }}>
-              <a href="/youth" className="v6-btn v6-btn--glass">חזרה לנבחרת</a>
+              <Link href="/youth" className="v6-btn v6-btn--glass">חזרה לנבחרת</Link>
             </div>
           </article>
         </div>
@@ -88,7 +89,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
             <h2 className="yt-section-title" data-reveal>עוד מהנבחרת</h2>
             <div className="yt-members">
               {others.map((o) => (
-                <a key={o.slug} href={`/youth/${o.slug}`} className="yt-member v6-glass" data-reveal>
+                <Link key={o.slug} href={`/youth/${o.slug}`} className="yt-member v6-glass" data-reveal>
                   {o.photo && <div className="yt-member__av"><img src={o.photo} alt={o.name} /></div>}
                   <div className="yt-member__info">
                     <div className="yt-member__name">{o.name}</div>
@@ -96,7 +97,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
                     {o.oneLiner && <p className="yt-member__line">{o.oneLiner}</p>}
                     <span className="yt-member__more">לפרופיל המלא <ArrowIcon /></span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

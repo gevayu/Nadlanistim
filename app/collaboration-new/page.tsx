@@ -5,6 +5,7 @@ import "../collaborations/collaborations.css";
 import { sendCollab } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import ImageField from "../forms/ImageField";
+import Link from "next/link";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -83,7 +84,7 @@ export default function CollaborationNewPage() {
 
                 <label className="v6-contact__consent" htmlFor="n-consent">
                   <input id="n-consent" name="consent" value="1" type="checkbox" required />
-                  <span>מוסכמים עלי <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a> ותנאי הפרסום של הקהילה. ההצעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.</span>
+                  <span>מוסכמים עלי <Link href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</Link> ותנאי הפרסום של הקהילה. ההצעה תתפרסם אחרי אישור הצוות, ומה שכתוב בה, כולל דרכי הקשר, יוצג לחברי הקהילה.</span>
                 </label>
 
                 <FormError error={state.error} />
@@ -96,7 +97,7 @@ export default function CollaborationNewPage() {
           </article>
 
           <div className="pg-cta-row" data-reveal>
-            <a href="/collaborations" className="v6-btn v6-btn--glass v6-btn--lg">חזרה ללוח שיתופי הפעולה</a>
+            <Link href="/collaborations" className="v6-btn v6-btn--glass v6-btn--lg">חזרה ללוח שיתופי הפעולה</Link>
           </div>
         </div>
       </section>

@@ -16,6 +16,7 @@ import "./v6.css";
 import LazyImg from "./LazyImg";
 import { ArrowIcon } from "./HomeIcons";
 import { CommunitiesCarousel, HomeContactForm, HomeEffects, HomeNav, JobRotator, MembersCarousel, NadlanistCarousel, type JobOffer, type MemberCategory } from "./HomeIslands";
+import Link from "next/link";
 
 export type { MemberCategory };
 
@@ -116,10 +117,10 @@ export default function HomePageV6({ communities, jobs, events, people, categori
           </h1>
           {settings.heroSub && <p className="v6-hero__sub">{settings.heroSub}</p>}
           <div className="v6-hero__cta">
-            <a href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+            <Link href="/join" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
               <span>הצטרפו לקהילה</span>
               <ArrowIcon />
-            </a>
+            </Link>
             <a href="#events" className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">
               <span>האירועים הקרובים</span>
             </a>
@@ -264,14 +265,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <span className="v6-eyebrow"><span className="v6-dot" />אירועים קרובים</span>
               <h2>אירועי נדלניסטים <em>הקרובים</em></h2>
             </div>
-            <a href="/events" className="v6-link-arrow">
+            <Link href="/events" className="v6-link-arrow">
               <span>כל האירועים</span>
               <ArrowIcon />
-            </a>
+            </Link>
           </header>
           <div className="v6-events__list">
             {upcoming.map((e) => (
-              <a key={e.slug} href={eventHref(e)} className="v6-event v6-glass" data-reveal>
+              <Link key={e.slug} href={eventHref(e)} className="v6-event v6-glass" data-reveal>
                 <div className="v6-event__date">
                   <span className="v6-event__day">{heDay(e.date)}</span>
                   <span className="v6-event__month">{heMonth(e.date)}</span>
@@ -288,7 +289,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                   <span>הירשמו</span>
                   <ArrowIcon />
                 </span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -314,12 +315,12 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             </h2>
             <p className="v6-featured__desc" data-reveal>{featured?.desc}</p>
             <div className="v6-featured__cta" data-reveal>
-              <a href={featured?.cta || (featured ? eventHref(featured) : "/events")} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+              <Link href={featured?.cta || (featured ? eventHref(featured) : "/events")} className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>הירשמו לכנס</span>
                 <ArrowIcon />
-              </a>
-              <a href={featured ? eventHref(featured) : "/events"} className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תוכנית הכנס</a>
-              <a href={past[0] ? eventHref(past[0]) : "/events"} className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תמונות מהכנס שעבר</a>
+              </Link>
+              <Link href={featured ? eventHref(featured) : "/events"} className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תוכנית הכנס</Link>
+              <Link href={past[0] ? eventHref(past[0]) : "/events"} className="v6-btn v6-btn--glass v6-btn--lg" data-magnetic="">תמונות מהכנס שעבר</Link>
             </div>
           </div>
           <aside className="v6-featured__card v6-glass" data-reveal>
@@ -349,14 +350,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <h2>חדר <em>עסקאות.</em> <span className="v6-tag-members">Members Only</span></h2>
               <p className="v6-section-head__sub">פרויקטים, עסקאות ושיתופי פעולה שנולדו בתוך הקהילה.</p>
             </div>
-            <a href="/collaborations" className="v6-link-arrow">
+            <Link href="/collaborations" className="v6-link-arrow">
               <span>כל ההצעות</span>
               <ArrowIcon />
-            </a>
+            </Link>
           </header>
           <div className="v6-projects__grid">
             {deals.map((p) => (
-              <a key={p.title} href={p.href} className="v6-project v6-glass" data-reveal>
+              <Link key={p.title} href={p.href} className="v6-project v6-glass" data-reveal>
                 <figure className="v6-project__img">
                   {p.img && <LazyImg src={p.img} alt="" />}
                   <div className="v6-project__tag">{p.tag}</div>
@@ -369,7 +370,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                     <span>{p.period}</span><span>·</span><span>{p.partners}</span>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -411,10 +412,10 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             </div>
             <div className="v6-youth__content">
               <p>{youth.count} נדלניסטים ונדלניסטיות{youth.maxAge ? ` מתחת לגיל ${youth.maxAge}` : ""} שעוד יכבשו את עולם הנדל״ן של ישראל!</p>
-              <a href="/youth" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
+              <Link href="/youth" className="v6-btn v6-btn--primary v6-btn--lg" data-magnetic="">
                 <span>צפו בפרויקט המיוחד</span>
                 <ArrowIcon />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -428,14 +429,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <span className="v6-eyebrow"><span className="v6-dot" />תוכן מקצועי</span>
               <h2>חברי הקהילה <em>כותבים</em></h2>
             </div>
-            <a href="/post-archive" className="v6-link-arrow">
+            <Link href="/post-archive" className="v6-link-arrow">
               <span>כל הכתבות</span>
               <ArrowIcon />
-            </a>
+            </Link>
           </header>
           <div className="v6-articles__grid">
             {leadArticle && (
-              <a href={`/article/${leadArticle.slug}`} className="v6-article v6-article--feature v6-glass" data-reveal>
+              <Link href={`/article/${leadArticle.slug}`} className="v6-article v6-article--feature v6-glass" data-reveal>
                 <figure className="v6-article__img">
                   {leadArticle.img && <LazyImg src={leadArticle.img} alt="" />}
                 </figure>
@@ -447,17 +448,17 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                     <span>{leadArticle.author.name}</span><span>·</span><span>{leadArticle.minutes} דק׳ קריאה</span><span>·</span><span>{leadArticle.date}</span>
                   </div>
                 </div>
-              </a>
+              </Link>
             )}
             {moreArticles.map((a) => (
-              <a key={a.slug} href={`/article/${a.slug}`} className="v6-article v6-glass" data-reveal>
+              <Link key={a.slug} href={`/article/${a.slug}`} className="v6-article v6-glass" data-reveal>
                 <div className="v6-article__cat">{a.cats[0]}</div>
                 <h3>{a.title}</h3>
                 <p className="v6-article__excerpt">{a.excerpt}</p>
                 <div className="v6-article__meta">
                   <span>{a.author.name}</span><span>·</span><span>{a.minutes} דק׳</span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -472,14 +473,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <h2>הפרקים הכי <em>נצפים</em></h2>
               <p className="v6-section-head__sub">שיחות עומק עם האנשים שמזיזים את שוק הנדל״ן בישראל.</p>
             </div>
-            <a href="/podcast" className="v6-link-arrow">
+            <Link href="/podcast" className="v6-link-arrow">
               <span>כל הפרקים</span>
               <ArrowIcon />
-            </a>
+            </Link>
           </header>
           <div className="v6-podcasts__grid">
             {episodes.slice(0, 4).map((p) => (
-              <a key={p.slug} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
+              <Link key={p.slug} href={`/podcast/${p.slug}`} className="v6-podcast v6-glass" data-reveal>
                 <figure className="v6-podcast__img">
                   {p.img && <LazyImg src={p.img} alt="" />}
                 </figure>
@@ -491,7 +492,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                     <ArrowIcon />
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -505,14 +506,14 @@ export default function HomePageV6({ communities, jobs, events, people, categori
               <span className="v6-eyebrow"><span className="v6-dot" />אירועי עבר</span>
               <h2>חוזרים <em>לרגעים היפים.</em></h2>
             </div>
-            <a href="/events" className="v6-link-arrow">
+            <Link href="/events" className="v6-link-arrow">
               <span>כל האירועים</span>
               <ArrowIcon />
-            </a>
+            </Link>
           </header>
           <div className="v6-events__list">
             {past.map((e) => (
-              <a key={e.slug} href={eventHref(e)} className="v6-event v6-event--nodate v6-glass" data-reveal>
+              <Link key={e.slug} href={eventHref(e)} className="v6-event v6-event--nodate v6-glass" data-reveal>
                 <div className="v6-event__body">
                   <span className="v6-event__tag">{e.types[0]}</span>
                   <h3>{e.title}</h3>
@@ -525,7 +526,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
                   <span>לתמונות</span>
                   <ArrowIcon />
                 </span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
