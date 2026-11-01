@@ -11,6 +11,7 @@ import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
 import { JsonLd, eventLd } from "@/lib/jsonld";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 export const generateMetadata = eventMetadata("/event-party");
 
@@ -40,7 +41,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
           <div className="ep-herowrap" data-reveal>
             {ev.img && (
               <div className="ep-herowrap__bg">
-                <img src={ev.img} alt="" />
+                <img src={sized(ev.img, 1080)} alt="" />
               </div>
             )}
             <div className="ep-hero">
@@ -111,7 +112,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
             <div className="ep-lineup">
               {ev.lineup.map((dj) => (
                 <article key={dj.name} className="ep-dj v6-glass" data-reveal>
-                  {dj.img && <div className="ep-dj__img"><img src={dj.img} alt={dj.name} /></div>}
+                  {dj.img && <div className="ep-dj__img"><img src={sized(dj.img, 384)} alt={dj.name} /></div>}
                   <div className="ep-dj__body">
                     <div className="ep-dj__name">{dj.name}</div>
                     {dj.role && <div className="ep-dj__role">{dj.role}</div>}
@@ -130,7 +131,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
             <h2 className="ep-section-title" data-reveal>ככה זה נראה <span className="ep-neon">אצלנו</span></h2>
             <div className="ep-gallery">
               {ev.partyGallery.map((g) => (
-                <figure key={g} data-reveal><img src={g} alt="" /></figure>
+                <figure key={g} data-reveal><img src={sized(g, 828)} alt="" /></figure>
               ))}
             </div>
           </div>

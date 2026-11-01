@@ -8,6 +8,7 @@ import { logout } from "../login/actions";
 import { saveProfile, type SaveResult } from "./actions";
 import { readImage } from "../forms/image";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -100,7 +101,7 @@ export default function MyAccount({ me, status: postStatus, verified, communitie
             <form className="pg-form" onSubmit={onSave}>
               <div className="ma-photo">
                 <div className="pg-person__av ma-photo__av">
-                  {photo && <img src={photo} alt={form.name} />}
+                  {photo && <img src={sized(photo, 256)} alt={form.name} />}
                   {form.openToWork && <OpenToWorkRing />}
                 </div>
                 <div className="v6-field" style={{ flex: 1 }}>

@@ -2,6 +2,7 @@ import type { Session } from "../../lib/auth";
 import { logout } from "../login/actions";
 import OpenToWorkRing from "../v6/OpenToWorkRing";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 /** "30.11.2026" from the ISO date the auth API sends. */
 const day = (iso: string) => new Intl.DateTimeFormat("he-IL", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Asia/Jerusalem" }).format(new Date(iso)).replaceAll("/", ".");
@@ -21,7 +22,7 @@ export default function AccountHead({ session }: { session: Session }) {
   return (
     <div className="ac-head v6-glass" data-reveal>
       <div className="ac-head__av">
-        {own?.photo && <img src={own.photo} alt="" />}
+        {own?.photo && <img src={sized(own.photo, 256)} alt="" />}
         {own?.openToWork && <OpenToWorkRing />}
       </div>
       <div>

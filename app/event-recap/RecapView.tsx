@@ -7,6 +7,7 @@ import { sendRecap } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import SaveButton from "../v6/SaveButton";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -44,7 +45,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
             <h2 className="rc-section-title" data-reveal>רגעים מהאירוע</h2>
             <div className="rc-gallery">
               {ev.recapGallery.map((g) => (
-                <figure key={g} data-reveal><img src={g} alt="" /></figure>
+                <figure key={g} data-reveal><img src={sized(g, 828)} alt="" /></figure>
               ))}
             </div>
           </div>
@@ -79,7 +80,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
           <div className="v6-container">
             <h2 className="rc-section-title" data-reveal>לא הצלחתם להגיע? הנה רגעי השיא</h2>
             <div className="rc-video v6-glass" data-reveal>
-              {ev.videoThumb && <img src={ev.videoThumb} alt="" />}
+              {ev.videoThumb && <img src={sized(ev.videoThumb, 1080)} alt="" />}
               <a href={ev.video} className="rc-video__play" aria-label="נגן וידאו"><PlayIcon /></a>
             </div>
           </div>
@@ -96,7 +97,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
                 <article key={t.q} className="rc-testi__card v6-glass" data-reveal>
                   <div className="rc-testi__q">״{t.q}״</div>
                   <div className="rc-testi__by">
-                    {t.img && <div className="rc-testi__av" style={{ backgroundImage: `url(${t.img})` }} />}
+                    {t.img && <div className="rc-testi__av" style={{ backgroundImage: `url(${sized(t.img, 128)})` }} />}
                     <div>
                       <div className="rc-testi__name">{t.name}</div>
                       {t.role && <div className="rc-testi__role">{t.role}</div>}
@@ -159,7 +160,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
           <div className="v6-container">
             <h2 className="rc-section-title" data-reveal>▶▶ האירוע הבא שלנו:</h2>
             <div className="rc-next v6-glass" data-reveal>
-              {next.img && <div className="rc-next__img"><img src={next.img} alt="" /></div>}
+              {next.img && <div className="rc-next__img"><img src={sized(next.img, 828)} alt="" /></div>}
               <div className="rc-next__body">
                 <div className="rc-next__date">{metaLine(heDate(next.date), next.place)}</div>
                 <h3>{next.title}</h3>

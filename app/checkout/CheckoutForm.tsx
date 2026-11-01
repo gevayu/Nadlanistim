@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import type { Product } from "../../lib/store";
 import { checkout, type CheckoutState } from "./actions";
+import { sized } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -21,7 +22,7 @@ export default function CheckoutForm({ product }: { product: Product }) {
   return (
     <div className="co-grid">
       <aside className="co-summary v6-glass" data-reveal>
-        {product.image && <img className="co-summary__img" src={product.image} alt="" />}
+        {product.image && <img className="co-summary__img" src={sized(product.image, 384)} alt="" />}
         <h2 className="co-summary__name">{product.name}</h2>
         {product.note && <p className="co-summary__note">{product.note}</p>}
 

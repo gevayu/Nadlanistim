@@ -13,6 +13,7 @@ import { useMembersLink } from "./SiteHeader";
 import { JOB_KINDS, type JobKind } from "../jobs/data";
 import type { Nadlanist } from "../nadlanistim/data";
 import LazyImg, { usePageLoaded } from "./LazyImg";
+import { sized } from "@/lib/img";
 import { ArrowIcon, ChevronLeft, ChevronRight } from "./HomeIcons";
 import Link from "next/link";
 
@@ -374,7 +375,7 @@ export function MembersCarousel({ items }: { items: MemberCategory[] }) {
                 <h3>{m.title}</h3>
                 <div className="v6-member__avatars" aria-hidden>
                   {m.avatars.map((a) => (
-                    <span key={a} style={pageLoaded ? { backgroundImage: `url(${a})` } : undefined} />
+                    <span key={a} style={pageLoaded ? { backgroundImage: `url(${sized(a, 64)})` } : undefined} />
                   ))}
                 </div>
               </Link>

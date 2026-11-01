@@ -25,11 +25,12 @@ export default async function PodcastArchivePage() {
           </div>
 
           <div className="pc-grid">
-            {episodes.map((e) => (
+            {episodes.map((e, i) => (
               <Link key={e.slug} href={`/podcast/${e.slug}`} className="pc-card v6-glass" data-reveal>
                 {e.img && (
                   <div className="pc-card__img">
-                    <LazyImg src={e.img} alt="" />
+                    {/* The first card is the largest thing on a phone's first screen: its picture starts with the page. */}
+                    <LazyImg src={e.img} alt="" priority={i === 0} />
                     <span className="pc-card__play"><PlayIcon /></span>
                   </div>
                 )}

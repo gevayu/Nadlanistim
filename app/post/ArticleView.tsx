@@ -4,6 +4,7 @@ import type { Article, Block } from "../post-archive/data";
 import ShareButtons from "./ShareButtons";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
+import { sized, srcSetOf } from "@/lib/img";
 import Link from "next/link";
 
 const BlockView = ({ b }: { b: Block }) => {
@@ -14,7 +15,7 @@ const BlockView = ({ b }: { b: Block }) => {
     case "quote": return <blockquote className="post-quote">{b.text}</blockquote>;
     case "img": return (
       <figure className="post-figure">
-        <img loading="lazy" decoding="async" src={b.src} alt="" />
+        <img loading="lazy" decoding="async" src={sized(b.src, 1080)} srcSet={srcSetOf(b.src)} sizes="(max-width: 960px) 100vw, 960px" alt="" />
         {b.caption && <figcaption>{b.caption}</figcaption>}
       </figure>
     );
@@ -38,7 +39,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
             <h1>{a.titleMain}{a.titleAccent && <> <em>{a.titleAccent}</em></>}</h1>
             <SaveButton title={a.title} />
             <div className="post-meta">
-              {a.author.avatar && <span className="post-meta__av" style={{ backgroundImage: `url(${a.author.avatar})` }} />}
+              {a.author.avatar && <span className="post-meta__av" style={{ backgroundImage: `url(${sized(a.author.avatar, 96)})` }} />}
               {meta}
             </div>
           </div>
@@ -46,7 +47,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
           {a.img && (
             <figure className="post-cover" data-reveal>
               {/* The cover is the largest thing on the page: fetched first, and a phone takes the copy its screen needs. */}
-              <img fetchPriority="high" src={a.img} srcSet={a.imgSrcSet} sizes="(max-width: 960px) 100vw, 960px" alt="" />
+              <img fetchPriority="high" src={sized(a.img, 1080)} srcSet={srcSetOf(a.img) ?? a.imgSrcSet} sizes="(max-width: 960px) 100vw, 960px" alt="" />
             </figure>
           )}
 
@@ -65,7 +66,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
           {/* Author */}
           {a.author.name && (
             <div className="post-author v6-glass" data-reveal>
-              {a.author.avatar && <div className="post-author__av" style={{ backgroundImage: `url(${a.author.avatar})` }} />}
+              {a.author.avatar && <div className="post-author__av" style={{ backgroundImage: `url(${sized(a.author.avatar, 256)})` }} />}
               <div>
                 <div className="post-author__name">{a.author.name}</div>
                 {a.author.role && <div className="post-author__role">{a.author.role}</div>}

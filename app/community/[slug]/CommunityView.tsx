@@ -9,6 +9,7 @@ import type { Nadlanist } from "../../nadlanistim/data";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 import SaveButton from "../../v6/SaveButton";
 import Link from "next/link";
+import { sized, srcSetOf } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -34,7 +35,7 @@ function MembersCarousel({ people }: { people: Nadlanist[] }) {
       <div className="cs-mem-track" ref={ref}>
         {people.map((n) => (
           <Link key={n.slug} href={`/nadlanist/${n.slug}`} className="cs-mem v6-glass">
-            <div className="cs-mem__av"><img src={n.photo} alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
+            <div className="cs-mem__av"><img src={sized(n.photo, 256)} alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
             <div className="cs-mem__name">{n.name}</div>
             <div className="cs-mem__role">{n.role}</div>
             {n.quote && <p className="cs-mem__quote">״{n.quote}״</p>}
@@ -78,7 +79,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
           <Link href="/communities" className="cs-back" data-reveal>→ כל הקהילות</Link>
 
           <div className="cs-hero" data-reveal>
-            <div className="cs-hero__bg">{c.cover && <img src={c.cover} alt="" />}</div>
+            <div className="cs-hero__bg">{c.cover && <img src={sized(c.cover, 1920)} srcSet={srcSetOf(c.cover)} sizes="100vw" alt="" />}</div>
             <div className="cs-hero__in">
               <span className="cs-hero__badge">● קהילה{c.members && ` · ${c.members} חברים`}</span>
               <h1>{c.name}</h1>
@@ -133,7 +134,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <div className="cs-gallery">
               {c.gallery.map((g, i) => (
                 <figure key={g + i} className="cs-shot" data-reveal>
-                  <img src={g} alt="" />
+                  <img src={sized(g, 828)} alt="" />
                 </figure>
               ))}
             </div>
@@ -179,7 +180,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <div className="cm-grid">
               {others.map((o) => (
                 <Link key={o.slug} href={`/community/${o.slug}`} className="cm-card v6-glass" data-reveal>
-                  {o.logo && <div className="cm-card__logo"><img src={o.logo} alt="" /></div>}
+                  {o.logo && <div className="cm-card__logo"><img src={sized(o.logo, 256)} alt="" /></div>}
                   <h3>{o.name}</h3>
                   <p>{o.tagline}</p>
                   {o.members && <div className="cm-card__members">{o.members} חברים</div>}

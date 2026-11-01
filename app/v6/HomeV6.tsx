@@ -14,6 +14,7 @@ import type { Article } from "../post-archive/data";
 import type { Episode } from "../podcast/data";
 import "./v6.css";
 import LazyImg from "./LazyImg";
+import { sized, srcSetOf } from "@/lib/img";
 import { ArrowIcon } from "./HomeIcons";
 import { CommunitiesCarousel, HomeContactForm, HomeEffects, HomeNav, JobRotator, MembersCarousel, NadlanistCarousel, type JobOffer, type MemberCategory } from "./HomeIslands";
 import Link from "next/link";
@@ -67,7 +68,6 @@ export default function HomePageV6({ communities, jobs, events, people, categori
   const { settings, deals, sponsors } = home;
   // "הגדרות אתר" → "עמוד הבית: תמונות ו"מי אנחנו"". Each part shows only when its field is filled.
   const about = settings.about;
-  const heroMobile = about.heroSrcSet.split(",").map((s) => s.trim().split(" ")).find(([, w]) => w === "1024w")?.[0];
   const hasAbout = about.title.length > 0 || about.paragraphs.length > 0 || about.points.length > 0 || !!about.imageLarge || !!about.imageSmall;
   const c = settings.contact;
   const channels = [c.whatsapp, c.instagram, c.tiktok, c.email].filter(Boolean);
@@ -98,10 +98,10 @@ export default function HomePageV6({ communities, jobs, events, people, categori
         <div className="v6-hero__media" data-parallax="0.3">
           {about.heroImage && (
             // The hero is cropped to cover the screen, so a phone shows it about 1100px wide. Under the 45% dark veil
-            // the 1024px copy (63KB, a sixth of the original) is enough there. Wider screens choose from all sizes.
+            // the 1080px copy is enough there. Wider screens choose from all sizes (lib/img.ts).
             <picture>
-              {heroMobile && <source media="(max-width: 760px)" srcSet={heroMobile} />}
-              <img fetchPriority="high" src={about.heroImage} srcSet={about.heroSrcSet || undefined} sizes="100vw" alt="" />
+              <source media="(max-width: 760px)" srcSet={sized(about.heroImage, 1080)} />
+              <img fetchPriority="high" src={sized(about.heroImage, 1920)} srcSet={srcSetOf(about.heroImage)} sizes="100vw" alt="" />
             </picture>
           )}
           <div className="v6-hero__veil" />
@@ -389,7 +389,7 @@ export default function HomePageV6({ communities, jobs, events, people, categori
             <h3 className="v6-sponsors__title">שותפים קבועים</h3>
             <div className="v6-sponsors__logos">
               {sponsors.map((s) => {
-                const mark = s.logo ? <img loading="lazy" src={s.logo} alt={s.name} className="v6-sponsors__img" /> : s.name;
+                const mark = s.logo ? <img loading="lazy" src={sized(s.logo, 384)} alt={s.name} className="v6-sponsors__img" /> : s.name;
                 return s.url
                   ? <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="v6-sponsors__logo">{mark}</a>
                   : <div key={s.name} className="v6-sponsors__logo">{mark}</div>;

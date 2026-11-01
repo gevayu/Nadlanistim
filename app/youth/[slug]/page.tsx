@@ -7,6 +7,7 @@ import { roleLine } from "../data";
 import { getYouth } from "../wp";
 import SaveButton from "../../v6/SaveButton";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -38,7 +39,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
             <div className="pg-profile2__hero">
               {m.photo && (
                 <div className="pg-profile2__img">
-                  <img src={m.photo} alt={m.name} />
+                  <img src={sized(m.photo, 384)} alt={m.name} />
                 </div>
               )}
               <div className="pg-profile2__text">
@@ -90,7 +91,7 @@ export default async function YouthMemberPage({ params }: { params: Promise<{ sl
             <div className="yt-members">
               {others.map((o) => (
                 <Link key={o.slug} href={`/youth/${o.slug}`} className="yt-member v6-glass" data-reveal>
-                  {o.photo && <div className="yt-member__av"><img src={o.photo} alt={o.name} /></div>}
+                  {o.photo && <div className="yt-member__av"><img src={sized(o.photo, 256)} alt={o.name} /></div>}
                   <div className="yt-member__info">
                     <div className="yt-member__name">{o.name}</div>
                     {roleLine(o) && <div className="yt-member__role">{roleLine(o)}</div>}

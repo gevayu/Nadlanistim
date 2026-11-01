@@ -10,6 +10,7 @@ import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
 import { JsonLd, eventLd } from "@/lib/jsonld";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 export const generateMetadata = eventMetadata("/event");
 
@@ -99,7 +100,7 @@ export default async function EventPage({ searchParams }: { searchParams: Promis
           <div className="v6-container">
             <h2 className="ev-section-title" data-reveal>מי מעביר - על המנחה</h2>
             <div className="ev-speaker v6-glass" data-reveal>
-              {sp.photo && <div className="ev-speaker__img"><img src={sp.photo} alt="" /></div>}
+              {sp.photo && <div className="ev-speaker__img"><img src={sized(sp.photo, 384)} alt="" /></div>}
               <div>
                 <h3>{sp.name}</h3>
                 {sp.role && <div className="ev-speaker__role">{sp.role}</div>}

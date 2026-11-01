@@ -7,6 +7,7 @@ import OpenToWorkRing from "../../v6/OpenToWorkRing";
 import { telHref, waNumber } from "../../../lib/phone";
 import SaveButton from "../../v6/SaveButton";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -54,7 +55,7 @@ export default function Profile({ n, locked, session, communities = [] }: {
           <article className="pg-panel v6-glass" data-reveal>
             <div className="pg-profile2__hero">
               <div className="pg-profile2__img">
-                <img src={n.photo} alt={n.openToWork ? `${n.name} · פתוח/ה להצעות עבודה` : n.name} />
+                <img src={sized(n.photo, 384)} alt={n.openToWork ? `${n.name} · פתוח/ה להצעות עבודה` : n.name} />
                 {n.openToWork && <OpenToWorkRing />}
               </div>
               <div className="pg-profile2__text">

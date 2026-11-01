@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import type { SponsorSlot, SponsorSlotName, SponsorSlots } from "./sponsors";
 import "./sponsor-strip.css";
 import { SponsorSlotsContext } from "./SponsorSlotsContext";
+import { sized } from "@/lib/img";
 
 // One request per page load, shared by every strip on the page.
 let slotsRequest: Promise<SponsorSlots | null> | null = null;
@@ -38,14 +39,14 @@ export default function SponsorStrip({ slot = "top" }: { slot?: SponsorSlotName 
     <>
       <span className="sp-strip__label">בחסות</span>
       <picture className="sp-strip__banner">
-        <source media="(max-width: 760px)" srcSet={sponsor.banner.mobile} />
-        <img loading="lazy" src={sponsor.banner.desktop} alt={sponsor.name} />
+        <source media="(max-width: 760px)" srcSet={sized(sponsor.banner.mobile, 828)} />
+        <img loading="lazy" src={sized(sponsor.banner.desktop, 1920)} alt={sponsor.name} />
       </picture>
     </>
   ) : (
     <>
       <span className="sp-strip__label">בחסות</span>
-      {sponsor.logo ? <img src={sponsor.logo} alt={sponsor.name} className="sp-strip__logo" /> : <b className="sp-strip__name">{sponsor.name}</b>}
+      {sponsor.logo ? <img src={sized(sponsor.logo, 640)} alt={sponsor.name} className="sp-strip__logo" /> : <b className="sp-strip__name">{sponsor.name}</b>}
       {sponsor.text && <span className="sp-strip__text">{sponsor.text}</span>}
     </>
   );

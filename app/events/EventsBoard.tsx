@@ -7,6 +7,7 @@ import { eventHref, featuredEvent, heDate, isVolunteer, metaLine, type EventItem
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
 import Link from "next/link";
+import { sized } from "@/lib/img";
 
 // "הצג" reads as a real button: full site size, an icon and a label that says what it does.
 const SearchIcon = () => (
@@ -114,7 +115,7 @@ export default function EventsBoard({ events }: { events: EventItem[] }) {
             <>
               <h2 className="pg-subhead" data-reveal>האירוע הקרוב</h2>
               <Link href={eventHref(featured)} className="pg-featured v6-glass" data-reveal>
-                {featured.img && <div className="pg-featured__img"><img src={featured.img} alt="" /></div>}
+                {featured.img && <div className="pg-featured__img"><img src={sized(featured.img, 1080)} alt="" /></div>}
                 <div className="pg-featured__body">
                   <div className="pg-featured__date">{metaLine(heDate(featured.date), featured.place)}</div>
                   <h3>{featured.title}</h3>

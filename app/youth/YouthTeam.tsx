@@ -6,6 +6,7 @@ import "./youth.css";
 import { roleLine, type TeamMember } from "./data";
 import type { YouthSettings } from "./wp";
 import LazyImg from "../v6/LazyImg";
+import { sized, srcSetOf } from "@/lib/img";
 import Link from "next/link";
 
 const ArrowIcon = () => (
@@ -28,7 +29,9 @@ export default function YouthTeam({ members, settings }: { members: TeamMember[]
       <section className="v6-section">
         <div className="v6-container">
           <div className="yt-hero" data-reveal>
-            <div className="yt-hero__bg">{settings.hero && <img fetchPriority="high" src={settings.hero} srcSet={settings.heroSrcSet} sizes="100vw" alt="" />}</div>
+            {/* A phone crops this wide picture to a tall box (about 1600px of picture behind 350px of screen), so
+                "100vw" made it pick the 390px copy and blur. 600px asks for the 1200px copy at 2x; it sits under a 60% dimming. */}
+            <div className="yt-hero__bg">{settings.hero && <img fetchPriority="high" src={sized(settings.hero, 1920)} srcSet={srcSetOf(settings.hero)} sizes="(max-width: 760px) 600px, 100vw" alt="" />}</div>
             <div className="yt-hero__in">
               <span className="yt-badge">● פרויקט מיוחד</span>
               <h1>נבחרת הנדלניסטים <em>הצעירים</em></h1>

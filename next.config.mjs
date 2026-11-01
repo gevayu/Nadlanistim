@@ -16,12 +16,13 @@ const nextConfig = {
   // Form photos travel as data URLs inside server actions (app/forms/image.ts, up to 1600px). The 1MB default
   // is too small for them; 3MB stays under Vercel's 4.5MB request cap.
   experimental: { serverActions: { bodySizeLimit: "3mb" } },
+  // lib/img.ts sends WordPress pictures through /_next/image. A copy is kept for a month (or longer when WordPress
+  // says so); WordPress names every new upload anew, so a replaced picture never hides behind an old copy.
   images: {
+    minimumCacheTTL: 2678400,
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "nadlanistim-cms.bold-move.co.il", pathname: "/wp-content/uploads/**" },
     ],
   },
   async redirects() {
