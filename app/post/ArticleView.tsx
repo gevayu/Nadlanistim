@@ -4,7 +4,7 @@ import type { Article, Block } from "../post-archive/data";
 import ShareButtons from "./ShareButtons";
 import SaveButton from "../v6/SaveButton";
 import LazyImg from "../v6/LazyImg";
-import { sized, srcSetOf } from "@/lib/img";
+import { sized, sizedHtml, srcSetOf } from "@/lib/img";
 import Link from "next/link";
 
 const BlockView = ({ b }: { b: Block }) => {
@@ -53,7 +53,7 @@ export default function ArticleView({ a, all }: { a: Article; all: Article[] }) 
 
           {/* Body: editor blocks; the post content field is trusted HTML from our own backend */}
           {a.html
-            ? <article className="post-body" data-reveal dangerouslySetInnerHTML={{ __html: a.html }} />
+            ? <article className="post-body" data-reveal dangerouslySetInnerHTML={{ __html: sizedHtml(a.html) }} />
             : a.body.length > 0 && <article className="post-body" data-reveal>{a.body.map((b, i) => <BlockView key={i} b={b} />)}</article>}
 
           {/* Tags */}

@@ -7,7 +7,7 @@ import { sendRecap } from "../forms/actions";
 import { FormError, Honeypot, useFormSend } from "../forms/FormParts";
 import SaveButton from "../v6/SaveButton";
 import Link from "next/link";
-import { sized } from "@/lib/img";
+import { GALLERY_SIZES, sized, srcSetOf } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -45,7 +45,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
             <h2 className="rc-section-title" data-reveal>רגעים מהאירוע</h2>
             <div className="rc-gallery">
               {ev.recapGallery.map((g) => (
-                <figure key={g} data-reveal><img src={sized(g, 828)} alt="" /></figure>
+                <figure key={g} data-reveal><img src={sized(g, 828)} srcSet={srcSetOf(g)} sizes={GALLERY_SIZES} alt="" /></figure>
               ))}
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function RecapView({ ev, next }: { ev: EventItem; next?: EventIte
           <div className="v6-container">
             <h2 className="rc-section-title" data-reveal>▶▶ האירוע הבא שלנו:</h2>
             <div className="rc-next v6-glass" data-reveal>
-              {next.img && <div className="rc-next__img"><img src={sized(next.img, 828)} alt="" /></div>}
+              {next.img && <div className="rc-next__img"><img src={sized(next.img, 828)} srcSet={srcSetOf(next.img)} sizes="(max-width: 760px) 85vw, 220px" alt="" /></div>}
               <div className="rc-next__body">
                 <div className="rc-next__date">{metaLine(heDate(next.date), next.place)}</div>
                 <h3>{next.title}</h3>

@@ -9,7 +9,7 @@ import type { Nadlanist } from "../../nadlanistim/data";
 import OpenToWorkRing from "../../v6/OpenToWorkRing";
 import SaveButton from "../../v6/SaveButton";
 import Link from "next/link";
-import { sized, srcSetOf } from "@/lib/img";
+import { GALLERY_SIZES, sized, srcSetOf } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -35,7 +35,7 @@ function MembersCarousel({ people }: { people: Nadlanist[] }) {
       <div className="cs-mem-track" ref={ref}>
         {people.map((n) => (
           <Link key={n.slug} href={`/nadlanist/${n.slug}`} className="cs-mem v6-glass">
-            <div className="cs-mem__av"><img src={sized(n.photo, 256)} alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
+            <div className="cs-mem__av"><img src={sized(n.photo, 256)} srcSet={srcSetOf(n.photo, [96, 256])} sizes="88px" alt={n.name} />{n.openToWork && <OpenToWorkRing />}</div>
             <div className="cs-mem__name">{n.name}</div>
             <div className="cs-mem__role">{n.role}</div>
             {n.quote && <p className="cs-mem__quote">״{n.quote}״</p>}
@@ -134,7 +134,7 @@ export default function CommunityView({ c, others, people }: { c?: Community; ot
             <div className="cs-gallery">
               {c.gallery.map((g, i) => (
                 <figure key={g + i} className="cs-shot" data-reveal>
-                  <img src={sized(g, 828)} alt="" />
+                  <img src={sized(g, 828)} srcSet={srcSetOf(g)} sizes={GALLERY_SIZES} alt="" />
                 </figure>
               ))}
             </div>

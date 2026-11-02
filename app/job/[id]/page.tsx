@@ -6,7 +6,7 @@ import { JOB_KINDS } from "../../jobs/data";
 import SaveButton from "../../v6/SaveButton";
 import { JsonLd, jobLd } from "@/lib/jsonld";
 import Link from "next/link";
-import { sized } from "@/lib/img";
+import { sized, srcSetOf } from "@/lib/img";
 
 const MailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
@@ -41,7 +41,7 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
               </div>
               {job.img && (
                 <div className="pg-panel__logo">
-                  <img src={sized(job.img, 256)} alt="" />
+                  <img src={sized(job.img, 256)} srcSet={srcSetOf(job.img, [96, 128, 256])} sizes="(max-width: 760px) 64px, 84px" alt="" />
                 </div>
               )}
             </div>

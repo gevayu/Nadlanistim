@@ -8,7 +8,7 @@ import { guard } from "@/lib/paywall";
 import { waNumber } from "../../../lib/phone";
 import SaveButton from "../../v6/SaveButton";
 import Link from "next/link";
-import { sized } from "@/lib/img";
+import { sized, srcSetOf } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -58,7 +58,7 @@ export default async function CollaborationSinglePage({ params }: { params: Prom
           <article className="pg-panel v6-glass" style={{ maxWidth: 920 }} data-reveal>
             {collab.img && (
               <figure className="co-cover">
-                <img src={sized(collab.img, 1080)} alt="" />
+                <img src={sized(collab.img, 1080)} srcSet={srcSetOf(collab.img)} sizes="(max-width: 960px) 80vw, 820px" alt="" />
                 {collab.stage && <span className="co-cover__stage">שלב: {collab.stage}</span>}
               </figure>
             )}

@@ -11,7 +11,7 @@ import { eventMetadata } from "../events/meta";
 import SaveButton from "../v6/SaveButton";
 import { JsonLd, eventLd } from "@/lib/jsonld";
 import Link from "next/link";
-import { sized } from "@/lib/img";
+import { GALLERY_SIZES, sized, srcSetOf } from "@/lib/img";
 
 export const generateMetadata = eventMetadata("/event-party");
 
@@ -131,7 +131,7 @@ export default async function EventPartyPage({ searchParams }: { searchParams: P
             <h2 className="ep-section-title" data-reveal>ככה זה נראה <span className="ep-neon">אצלנו</span></h2>
             <div className="ep-gallery">
               {ev.partyGallery.map((g) => (
-                <figure key={g} data-reveal><img src={sized(g, 828)} alt="" /></figure>
+                <figure key={g} data-reveal><img src={sized(g, 828)} srcSet={srcSetOf(g)} sizes={GALLERY_SIZES} alt="" /></figure>
               ))}
             </div>
           </div>

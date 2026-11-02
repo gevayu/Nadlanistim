@@ -6,7 +6,7 @@ import "../podcast.css";
 import type { Episode } from "../data";
 import SaveButton from "../../v6/SaveButton";
 import Link from "next/link";
-import { sized } from "@/lib/img";
+import { sized, srcSetOf } from "@/lib/img";
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -64,7 +64,7 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
           <div className="pc-hero" data-reveal>
             {ep.img && (
               <div className="pc-hero__cover">
-                <img src={sized(ep.img, 828)} alt="" />
+                <img src={sized(ep.img, 828)} srcSet={srcSetOf(ep.img, [256, 384, 640])} sizes="(max-width: 760px) 200px, 260px" alt="" />
                 {mp3 && <button className="pc-hero__play" aria-label={playLabel} onClick={toggle}><PlayPause /></button>}
               </div>
             )}
@@ -143,7 +143,7 @@ export default function EpisodeView({ ep, others }: { ep?: Episode; others: Epis
             <div className="pg-grid">
               {others.map((e) => (
                 <Link key={e.slug} href={`/podcast/${e.slug}`} className="pg-imgcard v6-glass" data-reveal>
-                  {e.img && <figure className="pg-imgcard__img"><img src={sized(e.img, 828)} alt="" /></figure>}
+                  {e.img && <figure className="pg-imgcard__img"><img src={sized(e.img, 828)} srcSet={srcSetOf(e.img)} sizes="(max-width: 760px) 90vw, (max-width: 1100px) 48vw, 420px" alt="" /></figure>}
                   <div className="pg-imgcard__body">
                     <div className="pg-imgcard__meta">{dot(!!e.num && `פרק ${e.num}`, e.duration)}</div>
                     <h3>{e.title}</h3>
