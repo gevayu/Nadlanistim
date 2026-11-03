@@ -1,5 +1,5 @@
 // WooCommerce on the headless WordPress backend (public Store API, no keys). Server-side only.
-// Prices and stock must be live, so nothing here is cached.
+// The checkout reads prices and stock live. Only the plan list on /join is cached, for a minute.
 import "server-only";
 
 const WP_STORE_URL = process.env.WP_STORE_URL ?? "https://nadlanistim-cms.bold-move.co.il";
@@ -106,9 +106,13 @@ export async function getProduct(id: number): Promise<Product | null> {
   return toProduct(await res.json());
 }
 
-/** Membership plans, cheapest first. */
+/**
+ * Membership plans, cheapest first. A minute of cache keeps /join on the CDN instead of waiting about a second for
+ * WooCommerce on every visit. Saving a product doesn't revalidate the site (nadlanistim-revalidate.php only fires for
+ * nad_ post types), so this short time is what brings a new price to the page.
+ */
 export async function getMembershipPlans(): Promise<Product[]> {
-  const res = await fetch(`${STORE_API}/products?category=membership&orderby=price&order=asc`, { cache: "no-store" });
+  const res = await fetch(`${STORE_API}/products?category=membership&orderby=price&order=asc`, { next: { revalidate: 60 } });
   if (!res.ok) throw new Error(`WooCommerce membership plans: HTTP ${res.status}`);
   return ((await res.json()) as StoreProduct[]).map(toProduct);
 }

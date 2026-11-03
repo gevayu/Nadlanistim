@@ -11,7 +11,13 @@ const SECURITY_HEADERS = [
 const nextConfig = {
   poweredByHeader: false,
   async headers() {
-    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      // Files in public/ default to max-age=0, so a returning visitor asks the server about them on every visit.
+      // Their names carry no hash: a changed font needs a new file name, a changed logo reaches visitors within a week.
+      { source: "/fonts/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+      { source: "/v6-assets/logo-360.png", headers: [{ key: "Cache-Control", value: "public, max-age=604800" }] },
+    ];
   },
   // Form photos travel as data URLs inside server actions (app/forms/image.ts, up to 1600px). The 1MB default
   // is too small for them; 3MB stays under Vercel's 4.5MB request cap.

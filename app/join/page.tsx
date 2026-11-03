@@ -11,7 +11,7 @@ export default async function JoinPage() {
   // Every join button on the site points here; "חומת תשלום" can send them to another address instead.
   const { join } = await getPaywall();
   if (join !== "/join") redirect(join);
-  // Plans are live (no cache). If the store is down, the page still serves the application form, without plans.
+  // Plans are cached for a minute. If the store is down, the page still serves the application form, without plans.
   const plans = await getMembershipPlans().catch((e) => {
     console.error(e);
     return [];
